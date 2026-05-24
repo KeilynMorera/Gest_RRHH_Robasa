@@ -25,7 +25,12 @@
 
         <div class="left-content">
           <div class="logo">
-            <i class="fas fa-users"></i>
+            <img
+              src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
+              alt="Logo Robasa"
+              class="logo-img"
+            />
+
             <h1>ROBASA</h1>
             <span>DISTRIBUIDORA</span>
           </div>
@@ -78,7 +83,8 @@
             <button
               type="button"
               class="btn-login"
-              onclick="window.location.href='{% url 'inicio' %}'">
+              onclick="window.location.href='{% url 'inicio' %}'"
+            >
               <i class="fas fa-right-to-bracket"></i>
               Iniciar sesión
             </button>
