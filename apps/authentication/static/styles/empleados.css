@@ -1,10 +1,3 @@
-/* ============================================================
-   reg_empleados.css
-   Estilos exclusivos de la página de registro de empleados.
-   Depende de inicio.css para las clases base del layout
-   (sidebar, topbar, footer, etc.)
-   ============================================================ */
-
 /* =========================
    RESET
 ========================= */
@@ -49,24 +42,59 @@ body {
 }
 
 
+/* =========================
+   LOGO ROBASA
+========================= */
+
 .logo {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 35px;
 }
 
-.logo i {
-    font-size: 42px;
-    margin-bottom: 10px;
+/* Imagen */
+.logo-img {
+    width: 320px;
+    max-width: 100%;
+    height: auto;
+
+    display: block;
+    margin: 0 auto 25px;
+
+    /* Hace que resalte */
+    padding: 18px;
+
+    border-radius: 22px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    border: 1px solid rgba(255,255,255,0.12);
+
+    backdrop-filter: blur(6px);
+
+    /* Glow */
+    filter:
+        drop-shadow(0 0 10px rgba(255,255,255,0.25))
+        drop-shadow(0 0 25px rgba(255,255,255,0.12))
+        brightness(1.18)
+        contrast(1.15);
+
+    transition: all 0.3s ease;
 }
 
-.logo h2 {
-    font-size: 34px;
-    font-weight: 800;
+/* Hover elegante */
+.logo-img:hover {
+    transform: scale(1.03);
+
+    filter:
+        drop-shadow(0 0 16px rgba(255,255,255,0.4))
+        drop-shadow(0 0 32px rgba(255,255,255,0.18))
+        brightness(1.25)
+        contrast(1.2);
 }
 
 .logo span {
-    font-size: 12px;
-    letter-spacing: 5px;
+    font-size: 18px;
+    letter-spacing: 6px;
     color: #9bc0ff;
 }
 
@@ -567,4 +595,422 @@ body {
     text-align: center;
     color: #7a8599;
     font-size: 14px;
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN
+   Pantallas grandes, medianas y pequeñas
+===================================================== */
+
+/* =====================================================
+   PANTALLAS GRANDES
+   (Laptop grandes y monitores)
+===================================================== */
+@media screen and (min-width: 1400px) {
+
+    .main-content {
+        padding: 40px;
+    }
+
+    .form-card {
+        max-width: 1400px;
+        margin: 25px auto;
+    }
+
+    .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 28px 36px;
+    }
+
+    .page-title h1 {
+        font-size: 38px;
+    }
+
+    .search-box {
+        max-width: 520px;
+    }
+
+    .sidebar {
+        width: 300px;
+    }
+
+    .main-content {
+        margin-left: 300px;
+    }
+}
+
+
+/* =====================================================
+   PANTALLAS MEDIANAS
+   (Tablets y laptops pequeñas)
+===================================================== */
+@media screen and (max-width: 1199px) {
+
+    /* Sidebar más compacta */
+    .sidebar {
+        width: 240px;
+        padding: 24px 16px;
+    }
+
+    .main-content {
+        margin-left: 240px;
+        padding: 24px;
+    }
+
+    /* Logo */
+    .logo-img {
+        width: 220px;
+        padding: 14px;
+    }
+
+    /* Topbar */
+    .topbar {
+        gap: 16px;
+    }
+
+    .page-title h1 {
+        font-size: 30px;
+    }
+
+    .page-title p {
+        font-size: 14px;
+    }
+
+    .search-box {
+        max-width: 100%;
+    }
+
+    .topbar-actions {
+        gap: 16px;
+    }
+
+    /* Tarjeta */
+    .form-card {
+        margin: 18px 0;
+    }
+
+    .form-card-header,
+    .form-body {
+        padding: 24px;
+    }
+
+    /* Grid */
+    .form-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    /* Footer formulario */
+    .form-footer {
+        flex-wrap: wrap;
+    }
+}
+
+
+/* =====================================================
+   TABLETS
+===================================================== */
+@media screen and (max-width: 991px) {
+
+    /* Sidebar fija pero más pequeña */
+    .sidebar {
+        width: 210px;
+        padding: 20px 14px;
+    }
+
+    .main-content {
+        margin-left: 210px;
+        padding: 20px;
+    }
+
+    /* Menú */
+    .menu a {
+        padding: 12px 14px;
+        font-size: 14px;
+    }
+
+    /* Logo */
+    .logo-img {
+        width: 180px;
+    }
+
+    /* Topbar */
+    .topbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+    }
+
+    .topbar-actions {
+        justify-content: space-between;
+        margin-left: 0;
+    }
+
+    .search-box {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+        padding: 10px 0 0;
+        flex-wrap: wrap;
+    }
+
+    /* Formulario */
+    .form-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Botones */
+    .form-footer {
+        justify-content: flex-start;
+    }
+}
+
+
+/* =====================================================
+   MÓVILES GRANDES
+===================================================== */
+@media screen and (max-width: 767px) {
+
+    /* Sidebar compacta */
+    .sidebar {
+        width: 90px;
+        padding: 20px 10px;
+        align-items: center;
+    }
+
+    /* Ocultar texto del menú */
+    .menu a {
+        justify-content: center;
+        padding: 14px 10px;
+        font-size: 0;
+    }
+
+    .menu a i {
+        font-size: 18px;
+        margin: 0;
+        width: auto;
+    }
+
+    /* Logout */
+    .logout a {
+        justify-content: center;
+        font-size: 0;
+    }
+
+    .logout a i {
+        font-size: 18px;
+    }
+
+    /* Logo */
+    .logo-img {
+        width: 65px;
+        padding: 10px;
+        border-radius: 16px;
+    }
+
+    /* Main */
+    .main-content {
+        margin-left: 90px;
+        padding: 16px;
+    }
+
+    /* Títulos */
+    .page-title h1 {
+        font-size: 26px;
+    }
+
+    .page-title p {
+        font-size: 13px;
+    }
+
+    /* Topbar */
+    .topbar {
+        gap: 14px;
+    }
+
+    .topbar-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    /* Usuario */
+    .user-profile {
+        padding: 8px 10px;
+    }
+
+    .user-info strong {
+        font-size: 13px;
+    }
+
+    .user-info span {
+        font-size: 11px;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+        font-size: 12px;
+        gap: 6px;
+    }
+
+    /* Tarjeta */
+    .form-card {
+        margin: 16px 0;
+        border-radius: 12px;
+    }
+
+    .form-card-header,
+    .form-body {
+        padding: 20px;
+    }
+
+    .form-card-title {
+        font-size: 18px;
+    }
+
+    .form-card-subtitle {
+        font-size: 12px;
+    }
+
+    /* Formulario */
+    .field > label {
+        font-size: 12px;
+    }
+
+    .field input,
+    .field select {
+        font-size: 13px;
+        padding: 10px 12px;
+    }
+
+    /* Status */
+    .status-group {
+        flex-direction: column;
+    }
+
+    /* Botones */
+    .form-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .form-footer .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+
+/* =====================================================
+   MÓVILES PEQUEÑOS
+===================================================== */
+@media screen and (max-width: 480px) {
+
+    /* Sidebar ultra compacta */
+    .sidebar {
+        width: 72px;
+        padding: 16px 8px;
+    }
+
+    .main-content {
+        margin-left: 72px;
+        padding: 12px;
+    }
+
+    /* Logo */
+    .logo-img {
+        width: 52px;
+        padding: 8px;
+    }
+
+    /* Menú */
+    .menu {
+        gap: 6px;
+    }
+
+    .menu a {
+        padding: 12px 8px;
+    }
+
+    .menu a i {
+        font-size: 16px;
+    }
+
+    /* Header */
+    .page-title h1 {
+        font-size: 22px;
+    }
+
+    .page-title p {
+        font-size: 12px;
+    }
+
+    /* Buscador */
+    .search-box input {
+        padding: 12px 14px 12px 42px;
+        font-size: 13px;
+    }
+
+    /* Usuario */
+    .user-profile {
+        gap: 8px;
+        padding: 6px 8px;
+    }
+
+    .user-profile img {
+        width: 38px;
+        height: 38px;
+    }
+
+    .user-info {
+        display: none;
+    }
+
+    /* Tarjeta */
+    .form-card-header,
+    .form-body {
+        padding: 16px;
+    }
+
+    .form-card-title {
+        font-size: 16px;
+    }
+
+    .form-card-subtitle {
+        font-size: 11px;
+    }
+
+    /* Icono */
+    .form-card-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    /* Inputs */
+    .field input,
+    .field select {
+        font-size: 12px;
+        padding: 9px 10px;
+    }
+
+    /* Botones */
+    .btn {
+        font-size: 13px;
+        padding: 10px 14px;
+    }
+
+    /* Footer */
+    .footer {
+        font-size: 12px;
+        margin-top: 20px;
+    }
 }

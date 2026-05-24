@@ -42,24 +42,59 @@ body {
 }
 
 
+/* =========================
+   LOGO ROBASA
+========================= */
+
 .logo {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 35px;
 }
 
-.logo i {
-    font-size: 42px;
-    margin-bottom: 10px;
+/* Imagen */
+.logo-img {
+    width: 320px;
+    max-width: 100%;
+    height: auto;
+
+    display: block;
+    margin: 0 auto 25px;
+
+    /* Hace que resalte */
+    padding: 18px;
+
+    border-radius: 22px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    border: 1px solid rgba(255,255,255,0.12);
+
+    backdrop-filter: blur(6px);
+
+    /* Glow */
+    filter:
+        drop-shadow(0 0 10px rgba(255,255,255,0.25))
+        drop-shadow(0 0 25px rgba(255,255,255,0.12))
+        brightness(1.18)
+        contrast(1.15);
+
+    transition: all 0.3s ease;
 }
 
-.logo h2 {
-    font-size: 34px;
-    font-weight: 800;
+/* Hover elegante */
+.logo-img:hover {
+    transform: scale(1.03);
+
+    filter:
+        drop-shadow(0 0 16px rgba(255,255,255,0.4))
+        drop-shadow(0 0 32px rgba(255,255,255,0.18))
+        brightness(1.25)
+        contrast(1.2);
 }
 
 .logo span {
-    font-size: 12px;
-    letter-spacing: 5px;
+    font-size: 18px;
+    letter-spacing: 6px;
     color: #9bc0ff;
 }
 
@@ -700,4 +735,476 @@ body {
     font-size: 12px;
     color: #e8600a;
     line-height: 1.5;
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN
+   Pantallas pequeñas, medianas y grandes
+===================================================== */
+
+/* =====================================================
+   PANTALLAS GRANDES (1200px en adelante)
+===================================================== */
+@media (min-width: 1200px) {
+
+    .main-content {
+        padding: 40px;
+    }
+
+    .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px 32px;
+    }
+
+    .form-card {
+        max-width: 1400px;
+    }
+
+    .search-box {
+        max-width: 500px;
+    }
+
+    .page-title h1 {
+        font-size: 38px;
+    }
+
+    .form-card-title {
+        font-size: 26px;
+    }
+}
+
+/* =====================================================
+   LAPTOPS Y TABLETS GRANDES
+   992px - 1199px
+===================================================== */
+@media (max-width: 1199px) {
+
+    /* Sidebar más compacta */
+    .sidebar {
+        width: 240px;
+        padding: 24px 16px;
+    }
+
+    .main-content {
+        margin-left: 240px;
+        padding: 24px;
+    }
+
+    .logo-img {
+        width: 240px;
+    }
+
+    .menu a {
+        font-size: 14px;
+        padding: 12px 14px;
+    }
+
+    .page-title h1 {
+        font-size: 30px;
+    }
+
+    .search-box {
+        max-width: 350px;
+    }
+
+    .form-grid {
+        gap: 20px;
+    }
+}
+
+/* =====================================================
+   TABLETS MEDIANAS
+   768px - 991px
+===================================================== */
+@media (max-width: 991px) {
+
+    /* Sidebar siempre visible */
+    .sidebar {
+        width: 210px;
+        padding: 20px 14px;
+    }
+
+    .main-content {
+        margin-left: 210px;
+        padding: 20px;
+    }
+
+    /* Logo */
+    .logo-img {
+        width: 180px;
+        padding: 14px;
+    }
+
+    /* Menú */
+    .menu {
+        gap: 6px;
+    }
+
+    .menu a {
+        font-size: 13px;
+        padding: 11px 12px;
+        gap: 10px;
+    }
+
+    .menu i {
+        width: 18px;
+        font-size: 14px;
+    }
+
+    /* Topbar */
+    .topbar {
+        gap: 16px;
+    }
+
+    .page-title {
+        min-width: 100%;
+    }
+
+    .page-title h1 {
+        font-size: 28px;
+    }
+
+    .page-title p {
+        font-size: 14px;
+    }
+
+    /* Buscador */
+    .search-box {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Acciones */
+    .topbar-actions {
+        width: 100%;
+        justify-content: space-between;
+        margin-left: 0;
+    }
+
+    /* Usuario */
+    .user-profile {
+        padding: 8px 12px;
+    }
+
+    .user-profile img {
+        width: 40px;
+        height: 40px;
+    }
+
+    /* Formulario */
+    .form-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-body {
+        padding: 24px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .field-full {
+        grid-column: auto;
+    }
+
+    /* Fotografía */
+    .photo-upload {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .photo-preview {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+/* =====================================================
+   MÓVILES GRANDES
+   576px - 767px
+===================================================== */
+@media (max-width: 767px) {
+
+    /* Sidebar fija y más angosta */
+    .sidebar {
+        width: 180px;
+        padding: 18px 12px;
+    }
+
+    .main-content {
+        margin-left: 180px;
+        padding: 18px;
+    }
+
+    /* Logo */
+    .logo-img {
+        width: 150px;
+        padding: 10px;
+        border-radius: 16px;
+    }
+
+    /* Menú */
+    .menu a {
+        font-size: 12px;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .menu i {
+        font-size: 13px;
+        width: 16px;
+    }
+
+    /* Logout */
+    .logout a {
+        font-size: 12px;
+        padding: 10px;
+    }
+
+    /* Topbar */
+    .topbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .page-title h1 {
+        font-size: 24px;
+    }
+
+    .page-title p {
+        font-size: 13px;
+    }
+
+    /* Buscador */
+    .search-box input {
+        font-size: 14px;
+        padding: 12px 14px 12px 42px;
+    }
+
+    /* Acciones */
+    .topbar-actions {
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    /* Usuario */
+    .user-profile {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .user-info strong {
+        font-size: 13px;
+    }
+
+    .user-info span {
+        font-size: 11px;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+        font-size: 12px;
+    }
+
+    /* Tarjeta formulario */
+    .form-card {
+        border-radius: 14px;
+    }
+
+    .form-card-header {
+        padding: 20px;
+    }
+
+    .form-body {
+        padding: 20px;
+    }
+
+    .form-card-title {
+        font-size: 20px;
+    }
+
+    .form-card-subtitle {
+        font-size: 13px;
+    }
+
+    /* Campos */
+    .field input,
+    .field select,
+    .field textarea {
+        font-size: 13px;
+    }
+
+    /* Footer formulario */
+    .form-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .form-footer .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Upload */
+    .photo-upload {
+        padding: 16px;
+    }
+
+    .photo-preview {
+        width: 90px;
+        height: 90px;
+    }
+}
+
+/* =====================================================
+   MÓVILES PEQUEÑOS
+   hasta 575px
+===================================================== */
+@media (max-width: 575px) {
+
+    /* Sidebar ultra compacta */
+    .sidebar {
+        width: 150px;
+        padding: 14px 10px;
+    }
+
+    .main-content {
+        margin-left: 150px;
+        padding: 14px;
+    }
+
+    /* Logo */
+    .logo-img {
+        width: 120px;
+        padding: 8px;
+    }
+
+    /* Menú */
+    .menu {
+        gap: 4px;
+    }
+
+    .menu a {
+        font-size: 11px;
+        padding: 8px;
+        gap: 8px;
+    }
+
+    .menu i {
+        font-size: 12px;
+        width: 14px;
+    }
+
+    /* Logout */
+    .logout a {
+        font-size: 11px;
+        padding: 8px;
+    }
+
+    /* Topbar */
+    .page-title h1 {
+        font-size: 22px;
+    }
+
+    .page-title p {
+        font-size: 12px;
+    }
+
+    /* Buscador */
+    .search-box input {
+        font-size: 13px;
+    }
+
+    /* Notificación */
+    .notification {
+        font-size: 18px;
+    }
+
+    .badge {
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+    }
+
+    /* Usuario */
+    .user-profile {
+        padding: 6px 10px;
+        gap: 8px;
+    }
+
+    .user-profile img {
+        width: 34px;
+        height: 34px;
+    }
+
+    .user-info strong {
+        font-size: 12px;
+    }
+
+    .user-info span {
+        font-size: 10px;
+    }
+
+    /* Tarjeta */
+    .form-card-header {
+        padding: 16px;
+    }
+
+    .form-body {
+        padding: 16px;
+    }
+
+    .form-card-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 18px;
+    }
+
+    .form-card-title {
+        font-size: 18px;
+    }
+
+    .form-card-subtitle {
+        font-size: 12px;
+    }
+
+    /* Campos */
+    .field label {
+        font-size: 12px;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+        font-size: 12px;
+        padding: 10px 12px;
+    }
+
+    /* Botones */
+    .btn {
+        font-size: 12px;
+        padding: 10px 14px;
+    }
+
+    /* Upload */
+    .photo-upload {
+        padding: 14px;
+        gap: 14px;
+    }
+
+    .photo-preview {
+        width: 80px;
+        height: 80px;
+    }
+
+    .help-text {
+        font-size: 11px;
+    }
+
+    /* Footer */
+    .footer {
+        font-size: 12px;
+    }
 }

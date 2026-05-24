@@ -23,11 +23,16 @@
              SIDEBAR
         ========================== -->
       <aside class="sidebar">
-        <!-- Logo -->
-        <div class="logo">
-          <i class="fas fa-users"></i>
-          <h2>ROBASA</h2>
-          <span>DISTRIBUIDORA</span>
+        <!-- ======================================================
+             LOGO DE LA EMPRESA
+        ====================================================== -->
+        <div class="logo-container">
+          <!-- Logo cargado desde archivos estáticos -->
+          <img
+            src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
+            alt="Logo Robasa"
+            class="logo-img"
+          />
         </div>
 
         <!-- Menú -->
@@ -161,7 +166,7 @@
         <div class="breadcrumb">
           <a href="{% url 'inicio' %}"><i class="fas fa-house"></i> Inicio</a>
           <i class="fas fa-chevron-right sep"></i>
-          <a href="{% url 'per_emp' %}">Pasantes</a>
+          <a href="{% url 'per_emp' %}">Personas o Empleados</a>
           <i class="fas fa-chevron-right sep"></i>
           <span class="current">Registro de nuevo pasante</span>
         </div>
