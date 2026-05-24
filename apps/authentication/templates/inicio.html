@@ -25,7 +25,12 @@
       <aside class="sidebar">
         <!-- Logo -->
         <div class="logo">
-          <i class="fas fa-users"></i>
+          <img
+            src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
+            alt="Logo Robasa"
+            class="logo-img"
+          />
+
           <h2>ROBASA</h2>
           <span>DISTRIBUIDORA</span>
         </div>
@@ -49,7 +54,7 @@
 
           <a href="{% url 'comple_Empresa' %}">
             <i class="fas fa-briefcase"></i>
-             Gerencias, Departamentos y Puestos
+            Gerencias, Departamentos y Puestos
           </a>
 
           <a href="{% url 'salario' %}">
