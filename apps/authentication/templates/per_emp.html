@@ -1,225 +1,331 @@
-<!-- Cargar la librería al inicio del template, para usar archivos estaticos -->
+<!-- ======================================================
+     CARGA DE LIBRERÍAS Y ARCHIVOS ESTÁTICOS DE DJANGO
+====================================================== -->
 {% load static %}
 
 <!doctype html>
+
+<!-- Idioma principal del sitio -->
 <html lang="es">
   <head>
+    <!-- Configuración de caracteres -->
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard - Gestión de Talento Humano</title>
 
-    <!-- CSS local -->
+    <!-- Responsive Design para móviles -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Título de la pestaña del navegador -->
+    <title>Nuevo Ingreso - Gestión de Talento Humano</title>
+
+    <!-- ======================================================
+         ARCHIVO CSS LOCAL
+         Conexión del archivo tarjetas.css
+    ====================================================== -->
     <link rel="stylesheet" href="{% static 'styles/tarjetas.css' %}" />
 
-    <!-- Font Awesome -->
+    <!-- ======================================================
+         FONT AWESOME
+         Librería para utilizar iconos
+    ====================================================== -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
   </head>
+
   <body>
+    <!-- ======================================================
+         CONTENEDOR PRINCIPAL DEL DASHBOARD
+    ====================================================== -->
     <div class="dashboard-container">
-      <!-- =========================
-             SIDEBAR
-        ========================== -->
+      <!-- ======================================================
+           SIDEBAR / MENÚ LATERAL
+      ====================================================== -->
       <aside class="sidebar">
-        <!-- Logo -->
-        <div class="logo">
-          <i class="fas fa-users"></i>
-          <h2>ROBASA</h2>
-          <span>DISTRIBUIDORA</span>
+        <!-- ======================================================
+             CONTENEDOR DEL LOGO
+        ====================================================== -->
+        <div class="logo-container">
+          <!-- Imagen del logo cargada desde archivos estáticos -->
+          <img
+            src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
+            alt="Logo Robasa"
+            class="logo-img"
+          />
         </div>
 
-        <!-- Menú -->
+        <!-- ======================================================
+             MENÚ DE NAVEGACIÓN
+        ====================================================== -->
         <nav class="menu">
+          <!-- Opción Inicio -->
           <a href="{% url 'inicio' %}">
             <i class="fas fa-house"></i>
             Inicio
           </a>
 
+          <!-- Opción Personas o Empleados -->
           <a href="{% url 'per_emp' %}">
             <i class="fas fa-user-group"></i>
             Personas o Empleados
           </a>
 
+          <!-- Opción Empresas -->
           <a href="{% url 'empresas' %}">
             <i class="fas fa-building"></i>
             Empresas
           </a>
 
+          <!-- Opción Gerencias, Departamentos y Puestos -->
           <a href="{% url 'comple_Empresa' %}">
             <i class="fas fa-briefcase"></i>
-             Gerencias, Departamentos y Puestos
+            Gerencias, Departamentos y Puestos
           </a>
 
+          <!-- Opción Salarios -->
           <a href="{% url 'salario' %}">
             <i class="fas fa-money-bill-wave"></i>
             Salarios
           </a>
 
+          <!-- Opción Reclutamiento -->
           <a href="{% url 'reclutamiento' %}">
             <i class="fas fa-wallet"></i>
             Reclutamiento
           </a>
 
+          <!-- Opción Vacaciones -->
           <a href="{% url 'vacaciones' %}">
             <i class="fas fa-umbrella-beach"></i>
             Vacaciones
           </a>
 
+          <!-- Opción Asistencia y Permisos -->
           <a href="{% url 'elec_Asistencia' %}">
             <i class="fas fa-clock"></i>
             Asistencia y Permiso
           </a>
 
+          <!-- Opción Evaluaciones -->
           <a href="{% url 'evaluaciones' %}">
             <i class="fas fa-chart-line"></i>
             Evaluación de Desempeño
           </a>
 
+          <!-- Opción KPIs -->
           <a href="{% url 'elec_KPI' %}">
             <i class="fas fa-file-lines"></i>
             KPIs
           </a>
 
+          <!-- Opción Reportes -->
           <a href="{% url 'reportes' %}">
             <i class="fas fa-file-lines"></i>
             Reportes
           </a>
 
+          <!-- Opción Usuarios y Roles -->
           <a href="{% url 'usuarios' %}">
             <i class="fas fa-users-cog"></i>
             Usuarios y Roles
           </a>
 
+          <!-- Opción Configuración -->
           <a href="{% url 'configuraciones' %}">
             <i class="fas fa-gear"></i>
             Configuración
           </a>
         </nav>
 
-        <!-- Cerrar sesión -->
+        <!-- ======================================================
+             BOTÓN CERRAR SESIÓN
+        ====================================================== -->
         <div class="logout">
           <a href="login.html">
+            <!-- Icono de cerrar sesión -->
             <i class="fas fa-right-from-bracket"></i>
+
             Cerrar sesión
           </a>
         </div>
       </aside>
 
-      <!-- =========================
-             CONTENIDO PRINCIPAL
-        ========================== -->
+      <!-- ======================================================
+           CONTENIDO PRINCIPAL
+      ====================================================== -->
       <main class="main-content">
-        <!-- Header -->
+        <!-- ======================================================
+             HEADER / BARRA SUPERIOR
+        ====================================================== -->
         <header class="topbar">
-          <!-- Botón menú -->
+          <!-- ======================================================
+               BOTÓN MENÚ HAMBURGUESA
+          ====================================================== -->
           <button class="menu-toggle">
             <i class="fas fa-bars"></i>
           </button>
 
-          <!-- Título -->
+          <!-- ======================================================
+               TÍTULO DE LA PÁGINA
+          ====================================================== -->
           <div class="page-title">
             <h1>Nuevo Ingreso</h1>
+
             <p>Selecione el tipo de registro que desea agregar</p>
           </div>
 
-          <!-- Barra de búsqueda -->
+          <!-- ======================================================
+               BARRA DE BÚSQUEDA
+          ====================================================== -->
           <div class="search-box">
+            <!-- Icono de búsqueda -->
             <i class="fas fa-search"></i>
+
+            <!-- Campo de búsqueda -->
             <input
               type="text"
               placeholder="Buscar empleado, módulo, reporte..."
             />
           </div>
 
-          <!-- Acciones -->
+          <!-- ======================================================
+               ACCIONES DEL HEADER
+          ====================================================== -->
           <div class="topbar-actions">
-            <!-- Notificaciones -->
+            <!-- ======================================================
+                 NOTIFICACIONES
+            ====================================================== -->
             <div class="notification">
+              <!-- Icono de campana -->
               <i class="fas fa-bell"></i>
+
+              <!-- Cantidad de notificaciones -->
               <span class="badge">3</span>
             </div>
 
-            <!-- Usuario -->
+            <!-- ======================================================
+                 PERFIL DEL USUARIO
+            ====================================================== -->
             <div class="user-profile">
+              <!-- Imagen del usuario -->
               <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
 
+              <!-- Información del usuario -->
               <div class="user-info">
                 <strong>María Gómez</strong>
+
                 <span>Recursos Humanos</span>
               </div>
 
+              <!-- Flecha desplegable -->
               <i class="fas fa-chevron-down"></i>
             </div>
           </div>
         </header>
 
-        <!-- =========================
-     CONTENIDO VISUAL
-========================== -->
+        <!-- ======================================================
+             CONTENIDO VISUAL PRINCIPAL
+        ====================================================== -->
 
-        <!-- Tarjetas de acción -->
+        <!-- ======================================================
+             TARJETAS DE ACCIÓN
+             Opciones para registrar nuevos ingresos
+        ====================================================== -->
         <section class="action-cards-grid">
-          <!-- Tarjeta: Ingresar Persona -->
+          <!-- ======================================================
+               TARJETA: INGRESAR PERSONA
+          ====================================================== -->
           <div class="action-card">
+            <!-- Icono superior -->
             <div class="action-card-illustration">
               <i class="fas fa-user-pen"></i>
             </div>
+
+            <!-- Contenido de la tarjeta -->
             <div class="action-card-body">
+              <!-- Título -->
               <h3 class="action-card-title">Ingresar Persona</h3>
+
+              <!-- Descripción -->
               <p class="action-card-desc">
                 Registra los datos personales de un individuo en el sistema:
                 nombre, identificación, contacto y más. Este paso es previo al
                 registro como empleado.
               </p>
+
+              <!-- Botón -->
               <a href="{% url 'personas' %}" class="action-card-btn">
                 <i class="fas fa-plus"></i>
+
                 Ingresar persona
               </a>
             </div>
           </div>
 
-          <!-- Tarjeta: Registrar Nuevo Empleado -->
+          <!-- ======================================================
+               TARJETA: REGISTRAR NUEVO EMPLEADO
+          ====================================================== -->
           <div class="action-card">
+            <!-- Icono superior -->
             <div class="action-card-illustration accent">
               <i class="fas fa-user-tie"></i>
             </div>
+
+            <!-- Contenido -->
             <div class="action-card-body">
+              <!-- Título -->
               <h3 class="action-card-title">Registrar Nuevo Empleado</h3>
+
+              <!-- Descripción -->
               <p class="action-card-desc">
                 Asigna una persona ya registrada a un puesto dentro de la
                 empresa. Define su tipo de contrato, estado y fecha de ingreso
                 para completar su perfil laboral.
               </p>
+
+              <!-- Botón -->
               <a href="{% url 'empleados' %}" class="action-card-btn accent">
                 <i class="fas fa-user-plus"></i>
+
                 Registrar empleado
               </a>
             </div>
           </div>
 
-          <!-- Tarjeta: Ingresar Pasante -->
+          <!-- ======================================================
+               TARJETA: REGISTRAR PASANTE
+          ====================================================== -->
           <div class="action-card">
+            <!-- Icono superior -->
             <div class="action-card-illustration">
-              <i class="fas fa-user-pen"></i>
+              <i class="fas fa-user-graduate"></i>
             </div>
+
+            <!-- Contenido -->
             <div class="action-card-body">
+              <!-- Título -->
               <h3 class="action-card-title">Registrar Pasante</h3>
+
+              <!-- Descripción -->
               <p class="action-card-desc">
-                Asigna una persona ya registrada a un puesto temporal dentro de la
-                empresa. Define su tipo de carrera, tutores estado y
-                fecha de inicio y fin para completar su perfil laboral.
+                Asigna una persona ya registrada a un puesto temporal dentro de
+                la empresa. Define su tipo de carrera, tutores estado y fecha de
+                inicio y fin para completar su perfil laboral.
               </p>
+
+              <!-- Botón -->
               <a href="{% url 'pasantes' %}" class="action-card-btn">
-                <i class="fas fa-plus"></i>
+                <i class="fas fa-user-plus"></i>
+
                 Ingresar pasante
               </a>
             </div>
           </div>
         </section>
 
-        <!-- Footer -->
+        <!-- ======================================================
+             FOOTER / PIE DE PÁGINA
+        ====================================================== -->
         <footer class="footer">
           © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
         </footer>

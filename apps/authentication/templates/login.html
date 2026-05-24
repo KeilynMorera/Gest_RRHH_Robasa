@@ -1,107 +1,246 @@
-<!-- Cargar la librería al inicio del template, para usar archivos estaticos -->
+<!-- =====================================================
+     CARGA DE LIBRERÍA STATIC DE DJANGO
+     Permite usar archivos estáticos como CSS, JS e imágenes
+===================================================== -->
 {% load static %}
 
 <!doctype html>
+
+<!-- Idioma principal del sitio -->
 <html lang="es">
+
   <head>
+
+    <!-- Codificación de caracteres -->
     <meta charset="UTF-8" />
+
+    <!-- Hace el sitio responsive en móviles -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Título que aparece en la pestaña del navegador -->
     <title>Login - Gestión de Talento Humano</title>
 
-    <!-- CSS local -->
+    <!-- =====================================================
+         ARCHIVO CSS LOCAL
+         Conecta el archivo login.css desde la carpeta static
+    ===================================================== -->
     <link rel="stylesheet" href="{% static 'styles/login.css' %}" />
 
-    <!-- Font Awesome para iconos -->
+    <!-- =====================================================
+         FONT AWESOME
+         Librería de iconos
+    ===================================================== -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
+
   </head>
+
   <body>
+
+    <!-- =====================================================
+         CONTENEDOR PRINCIPAL DEL LOGIN
+         Divide la pantalla en panel izquierdo y derecho
+    ===================================================== -->
     <div class="login-container">
-      <!-- Panel Izquierdo -->
+
+      <!-- =====================================================
+           PANEL IZQUIERDO
+           Contiene logo, información y diseño visual
+      ===================================================== -->
       <div class="left-panel">
+
+        <!-- Capa overlay para efectos visuales -->
         <div class="overlay"></div>
 
+        <!-- Contenido interno del panel izquierdo -->
         <div class="left-content">
+
+          <!-- =====================================================
+               LOGO DE LA EMPRESA
+          ===================================================== -->
           <div class="logo">
+
+            <!-- Imagen del logo desde archivos estáticos -->
             <img
               src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
               alt="Logo Robasa"
               class="logo-img"
             />
+
           </div>
 
+          <!-- =====================================================
+               TÍTULO PRINCIPAL
+          ===================================================== -->
           <h2 class="subtitulo-login">
+
+            <!-- Texto con span para resaltar palabras -->
             Sistema de Gestión de <span>Talento Humano</span>
+
           </h2>
 
+          <!-- =====================================================
+               DESCRIPCIÓN DEL SISTEMA
+          ===================================================== -->
           <p class="intro-login">
+
             Administre, gestione y potencie el talento de su empresa desde una
             sola plataforma.
+
           </p>
 
+          <!-- =====================================================
+               ICONO DECORATIVO
+          ===================================================== -->
           <div class="illustration">
+
+            <!-- Icono de Font Awesome -->
             <i class="fas fa-chart-line"></i>
+
           </div>
 
+          <!-- =====================================================
+               FRASE MOTIVACIONAL
+          ===================================================== -->
           <blockquote>
+
             “La gestión de las personas impulsa el éxito de las organizaciones.”
+
           </blockquote>
+
         </div>
       </div>
 
-      <!-- Panel Derecho -->
+      <!-- =====================================================
+           PANEL DERECHO
+           Contiene el formulario de login
+      ===================================================== -->
       <div class="right-panel">
+
+        <!-- Caja principal del login -->
         <div class="login-box">
+
+          <!-- Título de bienvenida -->
           <h2>Bienvenido de nuevo</h2>
+
+          <!-- Texto descriptivo -->
           <p>Inicie sesión para continuar</p>
 
+          <!-- =====================================================
+               FORMULARIO DE LOGIN
+          ===================================================== -->
           <form>
+
+            <!-- =====================================================
+                 CAMPO DE CORREO ELECTRÓNICO
+            ===================================================== -->
             <div class="input-group">
+
+              <!-- Etiqueta -->
               <label>Correo electrónico</label>
+
+              <!-- Contenedor del input -->
               <div class="input-wrapper">
+
+                <!-- Icono -->
                 <i class="fas fa-envelope"></i>
+
+                <!-- Campo email -->
                 <input type="email" placeholder="ejemplo@empresa.com" />
+
               </div>
             </div>
 
+            <!-- =====================================================
+                 CAMPO DE CONTRASEÑA
+            ===================================================== -->
             <div class="input-group">
+
+              <!-- Etiqueta -->
               <label>Contraseña</label>
+
+              <!-- Contenedor -->
               <div class="input-wrapper">
+
+                <!-- Icono candado -->
                 <i class="fas fa-lock"></i>
+
+                <!-- Campo password -->
                 <input type="password" placeholder="Ingrese su contraseña" />
+
+                <!-- Icono mostrar contraseña -->
                 <i class="fas fa-eye"></i>
+
               </div>
             </div>
 
-            <a href="#" class="forgot-password">¿Olvidó su contraseña?</a>
+            <!-- =====================================================
+                 ENLACE RECUPERAR CONTRASEÑA
+            ===================================================== -->
+            <a href="#" class="forgot-password">
 
+              ¿Olvidó su contraseña?
+
+            </a>
+
+            <!-- =====================================================
+                 BOTÓN INICIAR SESIÓN
+                 Redirige a la vista "inicio"
+            ===================================================== -->
             <button
               type="button"
               class="btn-login"
+
+              <!-- Redirección usando URL de Django -->
               onclick="window.location.href='{% url 'inicio' %}'"
             >
+
+              <!-- Icono -->
               <i class="fas fa-right-to-bracket"></i>
+
               Iniciar sesión
+
             </button>
+
           </form>
 
+          <!-- =====================================================
+               DIVISOR VISUAL
+          ===================================================== -->
           <div class="divider">
+
             <span>o continuar con</span>
+
           </div>
 
+          <!-- =====================================================
+               BOTÓN LOGIN CON GOOGLE
+          ===================================================== -->
           <button class="btn-google">
+
+            <!-- Icono Google -->
             <i class="fab fa-google"></i>
+
             Continuar con Google
+
           </button>
 
+          <!-- =====================================================
+               TEXTO CONTACTAR ADMINISTRADOR
+          ===================================================== -->
           <p class="contact-admin">
+
             ¿No tiene una cuenta?
+
             <a href="#">Contacte al administrador</a>
+
           </p>
+
         </div>
       </div>
     </div>
+
   </body>
 </html>
