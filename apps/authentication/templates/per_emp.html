@@ -1,0 +1,229 @@
+<!-- Cargar la librería al inicio del template, para usar archivos estaticos -->
+{% load static %}
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Gestión de Talento Humano</title>
+
+    <!-- CSS local -->
+    <link rel="stylesheet" href="{% static 'styles/tarjetas.css' %}" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <!-- =========================
+             SIDEBAR
+        ========================== -->
+      <aside class="sidebar">
+        <!-- Logo -->
+        <div class="logo">
+          <i class="fas fa-users"></i>
+          <h2>ROBASA</h2>
+          <span>DISTRIBUIDORA</span>
+        </div>
+
+        <!-- Menú -->
+        <nav class="menu">
+          <a href="{% url 'inicio' %}">
+            <i class="fas fa-house"></i>
+            Inicio
+          </a>
+
+          <a href="{% url 'per_emp' %}">
+            <i class="fas fa-user-group"></i>
+            Personas o Empleados
+          </a>
+
+          <a href="{% url 'empresas' %}">
+            <i class="fas fa-building"></i>
+            Empresas
+          </a>
+
+          <a href="{% url 'comple_Empresa' %}">
+            <i class="fas fa-briefcase"></i>
+             Gerencias, Departamentos y Puestos
+          </a>
+
+          <a href="{% url 'salario' %}">
+            <i class="fas fa-money-bill-wave"></i>
+            Salarios
+          </a>
+
+          <a href="{% url 'reclutamiento' %}">
+            <i class="fas fa-wallet"></i>
+            Reclutamiento
+          </a>
+
+          <a href="{% url 'vacaciones' %}">
+            <i class="fas fa-umbrella-beach"></i>
+            Vacaciones
+          </a>
+
+          <a href="{% url 'elec_Asistencia' %}">
+            <i class="fas fa-clock"></i>
+            Asistencia y Permiso
+          </a>
+
+          <a href="{% url 'evaluaciones' %}">
+            <i class="fas fa-chart-line"></i>
+            Evaluación de Desempeño
+          </a>
+
+          <a href="{% url 'elec_KPI' %}">
+            <i class="fas fa-file-lines"></i>
+            KPIs
+          </a>
+
+          <a href="{% url 'reportes' %}">
+            <i class="fas fa-file-lines"></i>
+            Reportes
+          </a>
+
+          <a href="{% url 'usuarios' %}">
+            <i class="fas fa-users-cog"></i>
+            Usuarios y Roles
+          </a>
+
+          <a href="{% url 'configuraciones' %}">
+            <i class="fas fa-gear"></i>
+            Configuración
+          </a>
+        </nav>
+
+        <!-- Cerrar sesión -->
+        <div class="logout">
+          <a href="login.html">
+            <i class="fas fa-right-from-bracket"></i>
+            Cerrar sesión
+          </a>
+        </div>
+      </aside>
+
+      <!-- =========================
+             CONTENIDO PRINCIPAL
+        ========================== -->
+      <main class="main-content">
+        <!-- Header -->
+        <header class="topbar">
+          <!-- Botón menú -->
+          <button class="menu-toggle">
+            <i class="fas fa-bars"></i>
+          </button>
+
+          <!-- Título -->
+          <div class="page-title">
+            <h1>Nuevo Ingreso</h1>
+            <p>Selecione el tipo de registro que desea agregar</p>
+          </div>
+
+          <!-- Barra de búsqueda -->
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input
+              type="text"
+              placeholder="Buscar empleado, módulo, reporte..."
+            />
+          </div>
+
+          <!-- Acciones -->
+          <div class="topbar-actions">
+            <!-- Notificaciones -->
+            <div class="notification">
+              <i class="fas fa-bell"></i>
+              <span class="badge">3</span>
+            </div>
+
+            <!-- Usuario -->
+            <div class="user-profile">
+              <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
+
+              <div class="user-info">
+                <strong>María Gómez</strong>
+                <span>Recursos Humanos</span>
+              </div>
+
+              <i class="fas fa-chevron-down"></i>
+            </div>
+          </div>
+        </header>
+
+        <!-- =========================
+     CONTENIDO VISUAL
+========================== -->
+
+        <!-- Tarjetas de acción -->
+        <section class="action-cards-grid">
+          <!-- Tarjeta: Ingresar Persona -->
+          <div class="action-card">
+            <div class="action-card-illustration">
+              <i class="fas fa-user-pen"></i>
+            </div>
+            <div class="action-card-body">
+              <h3 class="action-card-title">Ingresar Persona</h3>
+              <p class="action-card-desc">
+                Registra los datos personales de un individuo en el sistema:
+                nombre, identificación, contacto y más. Este paso es previo al
+                registro como empleado.
+              </p>
+              <a href="{% url 'personas' %}" class="action-card-btn">
+                <i class="fas fa-plus"></i>
+                Ingresar persona
+              </a>
+            </div>
+          </div>
+
+          <!-- Tarjeta: Registrar Nuevo Empleado -->
+          <div class="action-card">
+            <div class="action-card-illustration accent">
+              <i class="fas fa-user-tie"></i>
+            </div>
+            <div class="action-card-body">
+              <h3 class="action-card-title">Registrar Nuevo Empleado</h3>
+              <p class="action-card-desc">
+                Asigna una persona ya registrada a un puesto dentro de la
+                empresa. Define su tipo de contrato, estado y fecha de ingreso
+                para completar su perfil laboral.
+              </p>
+              <a href="{% url 'empleados' %}" class="action-card-btn accent">
+                <i class="fas fa-user-plus"></i>
+                Registrar empleado
+              </a>
+            </div>
+          </div>
+
+          <!-- Tarjeta: Ingresar Pasante -->
+          <div class="action-card">
+            <div class="action-card-illustration">
+              <i class="fas fa-user-pen"></i>
+            </div>
+            <div class="action-card-body">
+              <h3 class="action-card-title">Registrar Pasante</h3>
+              <p class="action-card-desc">
+                Asigna una persona ya registrada a un puesto temporal dentro de la
+                empresa. Define su tipo de carrera, tutores estado y
+                fecha de inicio y fin para completar su perfil laboral.
+              </p>
+              <a href="{% url 'pasantes' %}" class="action-card-btn">
+                <i class="fas fa-plus"></i>
+                Ingresar pasante
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+          © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

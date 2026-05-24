@@ -1,0 +1,513 @@
+<!-- Cargar la librería al inicio del template, para usar archivos estaticos -->
+{% load static %}
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Compensacion Puesto - Gestión de Talento Humano</title>
+
+    <!-- CSS local -->
+    <link rel="stylesheet" href="{% static 'styles/reportes.css' %}" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <!-- =========================
+             SIDEBAR
+        ========================== -->
+      <aside class="sidebar">
+        <!-- Logo -->
+        <div class="logo">
+          <i class="fas fa-users"></i>
+          <h2>ROBASA</h2>
+          <span>DISTRIBUIDORA</span>
+        </div>
+
+        <!-- Menú -->
+        <nav class="menu">
+          <a href="{% url 'inicio' %}">
+            <i class="fas fa-house"></i>
+            Inicio
+          </a>
+
+          <a href="{% url 'per_emp' %}">
+            <i class="fas fa-user-group"></i>
+            Personas o Empleados
+          </a>
+
+          <a href="{% url 'empresas' %}">
+            <i class="fas fa-building"></i>
+            Empresas
+          </a>
+
+          <a href="{% url 'comple_Empresa' %}">
+            <i class="fas fa-briefcase"></i>
+            Gerencias, Departamentos y Puestos
+          </a>
+
+          <a href="{% url 'salario' %}">
+            <i class="fas fa-money-bill-wave"></i>
+            Salarios
+          </a>
+
+          <a href="{% url 'reclutamiento' %}">
+            <i class="fas fa-wallet"></i>
+            Reclutamiento
+          </a>
+
+          <a href="{% url 'vacaciones' %}">
+            <i class="fas fa-umbrella-beach"></i>
+            Vacaciones
+          </a>
+
+          <a href="{% url 'elec_Asistencia' %}">
+            <i class="fas fa-clock"></i>
+            Asistencia y Permiso
+          </a>
+
+          <a href="{% url 'evaluaciones' %}">
+            <i class="fas fa-chart-line"></i>
+            Evaluación de Desempeño
+          </a>
+
+          <a href="{% url 'elec_KPI' %}">
+            <i class="fas fa-file-lines"></i>
+            KPIs
+          </a>
+
+          <a href="{% url 'reportes' %}">
+            <i class="fas fa-file-lines"></i>
+            Reportes
+          </a>
+
+          <a href="{% url 'usuarios' %}">
+            <i class="fas fa-users-cog"></i>
+            Usuarios y Roles
+          </a>
+
+          <a href="{% url 'configuraciones' %}">
+            <i class="fas fa-gear"></i>
+            Configuración
+          </a>
+        </nav>
+
+        <!-- Cerrar sesión -->
+        <div class="logout">
+          <a href="login.html">
+            <i class="fas fa-right-from-bracket"></i>
+            Cerrar sesión
+          </a>
+        </div>
+      </aside>
+
+      <!-- =========================
+             CONTENIDO PRINCIPAL
+        ========================== -->
+      <main class="main-content">
+        <!-- Header -->
+        <header class="topbar">
+          <!-- Botón menú -->
+          <button class="menu-toggle">
+            <i class="fas fa-bars"></i>
+          </button>
+
+          <!-- Título -->
+          <div class="page-title">
+            <h1>Departamento</h1>
+            <p>Registro de un nuevo departamento</p>
+          </div>
+
+          <!-- Barra de búsqueda -->
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input
+              type="text"
+              placeholder="Buscar empleado, módulo, reporte..."
+            />
+          </div>
+
+          <!-- Acciones -->
+          <div class="topbar-actions">
+            <!-- Notificaciones -->
+            <div class="notification">
+              <i class="fas fa-bell"></i>
+              <span class="badge">3</span>
+            </div>
+
+            <!-- Usuario -->
+            <div class="user-profile">
+              <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
+              <div class="user-info">
+                <strong>María Gómez</strong>
+                <span>Recursos Humanos</span>
+              </div>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+          </div>
+        </header>
+
+        <!-- =========================
+                 CONTENIDO VISUAL
+            ========================== -->
+
+        <!-- =========================================================
+     GENERADOR DE REPORTES
+========================================================= -->
+
+        <!-- =========================================================
+     GENERADOR DINÁMICO DE REPORTES
+========================================================= -->
+
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+          <a href="#">
+            <i class="fas fa-house"></i>
+            Inicio
+          </a>
+
+          <i class="fas fa-chevron-right sep"></i>
+
+          <a href="#"> Reportes </a>
+
+          <i class="fas fa-chevron-right sep"></i>
+
+          <span class="current"> Generador Personalizado </span>
+        </div>
+
+        <!-- =========================================================
+     CARD PRINCIPAL
+========================================================= -->
+        <section class="form-card">
+          <!-- HEADER -->
+          <div class="form-card-header">
+            <div class="form-card-header-left">
+              <div class="form-card-icon">
+                <i class="fas fa-sliders"></i>
+              </div>
+
+              <div>
+                <h2 class="form-card-title">
+                  Generador Personalizado de Reportes
+                </h2>
+
+                <p class="form-card-subtitle">
+                  Seleccione el tipo de reporte y los datos que desea visualizar
+                  o exportar.
+                </p>
+              </div>
+            </div>
+
+            <p class="required-note"><span>*</span> Configuración flexible</p>
+          </div>
+
+          <!-- =====================================================
+       BODY
+  ====================================================== -->
+          <div class="form-body">
+            <form action="#" method="POST">
+              <!-- =====================================================
+           CONFIGURACIÓN GENERAL
+      ====================================================== -->
+              <div class="form-section">
+                <h4 class="form-section-title">Configuración del Reporte</h4>
+
+                <div class="form-grid">
+                  <!-- TIPO -->
+                  <div class="field">
+                    <label for="tipo_reporte">
+                      <i class="fas fa-chart-line field-icon"></i>
+                      Tipo de Reporte
+                      <span class="req">*</span>
+                    </label>
+
+                    <select id="tipo_reporte" required>
+                      <option disabled selected>Seleccione un tipo...</option>
+
+                      <option>Empleados</option>
+
+                      <option>Evaluaciones</option>
+
+                      <option>Vacaciones</option>
+
+                      <option>Reclutamiento</option>
+
+                      <option>Vacantes</option>
+
+                      <option>Asistencia</option>
+
+                      <option>Usuarios del Sistema</option>
+                    </select>
+                  </div>
+
+                  <!-- FORMATO -->
+                  <div class="field">
+                    <label for="formato">
+                      <i class="fas fa-file-export field-icon"></i>
+                      Formato de Exportación
+                    </label>
+
+                    <select id="formato">
+                      <option selected>PDF</option>
+
+                      <option>Excel</option>
+
+                      <option>PDF + Excel</option>
+                    </select>
+                  </div>
+
+                  <!-- FECHA -->
+                  <div class="field">
+                    <label for="fecha_inicio">
+                      <i class="fas fa-calendar field-icon"></i>
+                      Fecha Inicio
+                    </label>
+
+                    <input type="date" id="fecha_inicio" />
+                  </div>
+
+                  <!-- FECHA -->
+                  <div class="field">
+                    <label for="fecha_fin">
+                      <i class="fas fa-calendar-check field-icon"></i>
+                      Fecha Fin
+                    </label>
+
+                    <input type="date" id="fecha_fin" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- =====================================================
+           CAMPOS A MOSTRAR
+      ====================================================== -->
+              <div class="form-section">
+                <h4 class="form-section-title">
+                  Seleccione los Datos a Mostrar
+                </h4>
+
+                <div class="fields-selector">
+                  <!-- ITEM -->
+                  <label class="field-check">
+                    <input type="checkbox" checked />
+
+                    <span class="check-custom"></span>
+
+                    <div class="check-info">
+                      <strong>Nombre del Empleado</strong>
+
+                      <small>
+                        Muestra el nombre completo del colaborador.
+                      </small>
+                    </div>
+                  </label>
+
+                  <!-- ITEM -->
+                  <label class="field-check">
+                    <input type="checkbox" checked />
+
+                    <span class="check-custom"></span>
+
+                    <div class="check-info">
+                      <strong>Departamento</strong>
+
+                      <small> Área o departamento asignado. </small>
+                    </div>
+                  </label>
+
+                  <!-- ITEM -->
+                  <label class="field-check">
+                    <input type="checkbox" checked />
+
+                    <span class="check-custom"></span>
+
+                    <div class="check-info">
+                      <strong>Evaluación</strong>
+
+                      <small> Resultado o calificación obtenida. </small>
+                    </div>
+                  </label>
+
+                  <!-- ITEM -->
+                  <label class="field-check">
+                    <input type="checkbox" />
+
+                    <span class="check-custom"></span>
+
+                    <div class="check-info">
+                      <strong>Salario</strong>
+
+                      <small> Información salarial autorizada. </small>
+                    </div>
+                  </label>
+
+                  <!-- ITEM -->
+                  <label class="field-check">
+                    <input type="checkbox" />
+
+                    <span class="check-custom"></span>
+
+                    <div class="check-info">
+                      <strong>Fecha de Ingreso</strong>
+
+                      <small> Fecha oficial de contratación. </small>
+                    </div>
+                  </label>
+
+                  <!-- ITEM -->
+                  <label class="field-check">
+                    <input type="checkbox" checked />
+
+                    <span class="check-custom"></span>
+
+                    <div class="check-info">
+                      <strong>Estado</strong>
+
+                      <small> Estado actual del registro. </small>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <!-- =====================================================
+           FILTROS ADICIONALES
+      ====================================================== -->
+              <div class="form-section">
+                <h4 class="form-section-title">Filtros Avanzados</h4>
+
+                <div class="filter-tags">
+                  <div class="filter-tag active">
+                    <i class="fas fa-building"></i>
+                    Recursos Humanos
+                  </div>
+
+                  <div class="filter-tag">
+                    <i class="fas fa-chart-column"></i>
+                    Alto desempeño
+                  </div>
+
+                  <div class="filter-tag">
+                    <i class="fas fa-user-check"></i>
+                    Activos
+                  </div>
+
+                  <div class="filter-tag">
+                    <i class="fas fa-calendar-days"></i>
+                    Últimos 6 meses
+                  </div>
+
+                  <div class="filter-tag">
+                    <i class="fas fa-money-bill-wave"></i>
+                    Salarios altos
+                  </div>
+                </div>
+              </div>
+
+              <!-- =====================================================
+           VISTA PREVIA
+      ====================================================== -->
+              <div class="form-section">
+                <h4 class="form-section-title">Vista Previa del Reporte</h4>
+
+                <div class="report-preview">
+                  <!-- HEADER -->
+                  <div class="preview-header">
+                    <div>
+                      <h3>Reporte Personalizado</h3>
+
+                      <span> 5 columnas seleccionadas </span>
+                    </div>
+
+                    <div class="preview-format">
+                      <span class="format-badge pdf"> PDF </span>
+
+                      <span class="format-badge excel"> Excel </span>
+                    </div>
+                  </div>
+
+                  <!-- TABLE -->
+                  <div class="table-container">
+                    <table class="results-table">
+                      <thead>
+                        <tr>
+                          <th>Empleado</th>
+                          <th>Departamento</th>
+                          <th>Evaluación</th>
+                          <th>Estado</th>
+                          <th>Fecha</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        <tr>
+                          <td>Carlos Méndez</td>
+
+                          <td>Comercial</td>
+
+                          <td>92%</td>
+
+                          <td>
+                            <span class="status-badge success"> Activo </span>
+                          </td>
+
+                          <td>20/07/2026</td>
+                        </tr>
+
+                        <tr>
+                          <td>Ana Rodríguez</td>
+
+                          <td>Finanzas</td>
+
+                          <td>88%</td>
+
+                          <td>
+                            <span class="status-badge pending">
+                              Vacaciones
+                            </span>
+                          </td>
+
+                          <td>18/07/2026</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- =====================================================
+           BOTONES
+      ====================================================== -->
+              <div class="form-footer">
+                <button type="reset" class="btn btn-ghost">
+                  <i class="fas fa-rotate-left"></i>
+                  Limpiar
+                </button>
+
+                <button type="button" class="btn btn-secondary">
+                  <i class="fas fa-eye"></i>
+                  Vista previa
+                </button>
+
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-file-arrow-down"></i>
+                  Generar reporte
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+          © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

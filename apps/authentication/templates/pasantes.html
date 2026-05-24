@@ -1,0 +1,400 @@
+<!-- Cargar la librería al inicio del template, para usar archivos estaticos -->
+{% load static %}
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro de Pasante - Gestión de Talento Humano</title>
+
+    <!-- CSS local -->
+    <link rel="stylesheet" href="{% static 'styles/pasantes.css' %}" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <!-- =========================
+             SIDEBAR
+        ========================== -->
+      <aside class="sidebar">
+        <!-- Logo -->
+        <div class="logo">
+          <i class="fas fa-users"></i>
+          <h2>ROBASA</h2>
+          <span>DISTRIBUIDORA</span>
+        </div>
+
+        <!-- Menú -->
+        <nav class="menu">
+          <a href="{% url 'inicio' %}">
+            <i class="fas fa-house"></i>
+            Inicio
+          </a>
+
+          <a href="{% url 'per_emp' %}">
+            <i class="fas fa-user-group"></i>
+            Personas o Empleados
+          </a>
+
+          <a href="{% url 'empresas' %}">
+            <i class="fas fa-building"></i>
+            Empresas
+          </a>
+
+          <a href="{% url 'comple_Empresa' %}">
+            <i class="fas fa-briefcase"></i>
+             Gerencias, Departamentos y Puestos
+          </a>
+
+          <a href="{% url 'salario' %}">
+            <i class="fas fa-money-bill-wave"></i>
+            Salarios
+          </a>
+
+          <a href="{% url 'reclutamiento' %}">
+            <i class="fas fa-wallet"></i>
+            Reclutamiento
+          </a>
+
+          <a href="{% url 'vacaciones' %}">
+            <i class="fas fa-umbrella-beach"></i>
+            Vacaciones
+          </a>
+
+          <a href="{% url 'elec_Asistencia' %}">
+            <i class="fas fa-clock"></i>
+            Asistencia y Permiso
+          </a>
+
+          <a href="{% url 'evaluaciones' %}">
+            <i class="fas fa-chart-line"></i>
+            Evaluación de Desempeño
+          </a>
+
+          <a href="{% url 'elec_KPI' %}">
+            <i class="fas fa-file-lines"></i>
+            KPIs
+          </a>
+
+          <a href="{% url 'reportes' %}">
+            <i class="fas fa-file-lines"></i>
+            Reportes
+          </a>
+
+          <a href="{% url 'usuarios' %}">
+            <i class="fas fa-users-cog"></i>
+            Usuarios y Roles
+          </a>
+
+          <a href="{% url 'configuraciones' %}">
+            <i class="fas fa-gear"></i>
+            Configuración
+          </a>
+        </nav>
+
+        <!-- Cerrar sesión -->
+        <div class="logout">
+          <a href="login.html">
+            <i class="fas fa-right-from-bracket"></i>
+            Cerrar sesión
+          </a>
+        </div>
+      </aside>
+
+      <!-- =========================
+             CONTENIDO PRINCIPAL
+        ========================== -->
+      <main class="main-content">
+        <!-- Header -->
+        <header class="topbar">
+          <!-- Botón menú -->
+          <button class="menu-toggle">
+            <i class="fas fa-bars"></i>
+          </button>
+
+          <!-- Título -->
+          <div class="page-title">
+            <h1>Pasantes</h1>
+            <p>Registro de un nuevo pasante</p>
+          </div>
+
+          <!-- Barra de búsqueda -->
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input
+              type="text"
+              placeholder="Buscar empleado, módulo, reporte..."
+            />
+          </div>
+
+          <!-- Acciones -->
+          <div class="topbar-actions">
+            <!-- Notificaciones -->
+            <div class="notification">
+              <i class="fas fa-bell"></i>
+              <span class="badge">3</span>
+            </div>
+
+            <!-- Usuario -->
+            <div class="user-profile">
+              <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
+              <div class="user-info">
+                <strong>María Gómez</strong>
+                <span>Recursos Humanos</span>
+              </div>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+          </div>
+        </header>
+
+        <!-- =========================
+                 CONTENIDO VISUAL
+            ========================== -->
+
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+          <a href="{% url 'inicio' %}"><i class="fas fa-house"></i> Inicio</a>
+          <i class="fas fa-chevron-right sep"></i>
+          <a href="{% url 'per_emp' %}">Pasantes</a>
+          <i class="fas fa-chevron-right sep"></i>
+          <span class="current">Registro de nuevo pasante</span>
+        </div>
+
+        <!-- Tarjeta del formulario -->
+        <section class="form-card">
+          <!-- Encabezado de la tarjeta -->
+          <div class="form-card-header">
+            <div class="form-card-header-left">
+              <div class="form-card-icon">
+                <i class="fas fa-user-plus"></i>
+              </div>
+              <div>
+                <h2 class="form-card-title">Registro de un nuevo Pasante</h2>
+                <p class="form-card-subtitle">
+                  Complete los campos requeridos para crear el perfil del
+                  pasante
+                </p>
+              </div>
+            </div>
+            <p class="required-note">
+              Los campos marcados con <span>*</span> son obligatorios
+            </p>
+          </div>
+
+            <!-- Cuerpo del formulario -->
+            <div class="form-body">
+              <form method="POST" action="#">
+                {% csrf_token %}
+
+                <!-- =========================
+                    DATOS DEL PASANTE
+                    ========================== -->
+                <div class="form-section">
+                  <h4 class="form-section-title">Datos del Pasante</h4>
+
+                  <div class="form-grid">
+                    <!-- Persona -->
+                    <div class="field">
+                      <label for="persona">
+                        <i class="fas fa-user field-icon"></i>
+                        Persona <span class="req">*</span>
+                      </label>
+                      <select id="persona" name="persona" required>
+                        <option value="" disabled selected>
+                          Seleccione una persona…
+                        </option>
+                        {% for persona in personas %}
+                        <option value="{{ persona.idPersona }}">
+                          {{ persona.Nombre }}
+                        </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+
+                    <!-- Puesto -->
+                    <div class="field">
+                      <label for="puesto">
+                        <i class="fas fa-briefcase field-icon"></i>
+                        Puesto de práctica <span class="req">*</span>
+                      </label>
+                      <select id="puesto" name="puesto" required>
+                        <option value="" disabled selected>
+                          Seleccione un puesto…
+                        </option>
+                        {% for puesto in puestos %}
+                        <option value="{{ puesto.idPuesto }}">
+                          {{ puesto.Nombre_Puesto }}
+                        </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+
+                    <!-- Supervisor -->
+                    <div class="field field-full">
+                      <label for="supervisor">
+                        <i class="fas fa-user-tie field-icon"></i>
+                        Empleado supervisor <span class="req">*</span>
+                      </label>
+                      <select id="supervisor" name="supervisor" required>
+                        <option value="" disabled selected>
+                          Seleccione un supervisor…
+                        </option>
+                        {% for empleado in empleados %}
+                        <option value="{{ empleado.idEmpleado }}">
+                          {{ empleado.persona.Nombre }}
+                        </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+
+                    <!-- Estado -->
+                    <div class="field">
+                      <label>
+                        <i class="fas fa-circle-dot field-icon"></i>
+                        Estado <span class="req">*</span>
+                      </label>
+
+                      <div class="status-group">
+                        <div class="status-option">
+                          <input
+                            type="radio"
+                            name="estado"
+                            id="estadoActivo"
+                            value="1"
+                            checked
+                          />
+                          <label for="estadoActivo">
+                            <span class="dot"></span> Activo
+                          </label>
+                        </div>
+
+                        <div class="status-option">
+                          <input
+                            type="radio"
+                            name="estado"
+                            id="estadoInactivo"
+                            value="2"
+                          />
+                          <label for="estadoInactivo">
+                            <span class="dot"></span> Inactivo
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Universidad -->
+                    <div class="field">
+                      <label for="universidad">
+                        <i class="fas fa-university field-icon"></i>
+                        Universidad <span class="req">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="universidad"
+                        name="universidad"
+                        maxlength="200"
+                        placeholder="Nombre de la universidad"
+                        required
+                      />
+                    </div>
+
+                    <!-- Carrera -->
+                    <div class="field">
+                      <label for="carrera">
+                        <i class="fas fa-book field-icon"></i>
+                        Carrera <span class="req">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="carrera"
+                        name="carrera"
+                        maxlength="200"
+                        placeholder="Nombre de la carrera"
+                        required
+                      />
+                    </div>
+
+                    <!-- Tutor Universitario -->
+                    <div class="field">
+                      <label for="tutor_universitario">
+                        <i class="fas fa-chalkboard-teacher field-icon"></i>
+                        Tutor universitario <span class="req">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="tutor_universitario"
+                        name="tutor_universitario"
+                        maxlength="200"
+                        placeholder="Nombre del tutor"
+                        required
+                      />
+                    </div>
+
+                    <!-- Fecha Inicio -->
+                    <div class="field">
+                      <label for="fecha_inicio">
+                        <i class="fas fa-calendar-day field-icon"></i>
+                        Fecha de inicio <span class="req">*</span>
+                      </label>
+                      <input
+                        type="date"
+                        id="fecha_inicio"
+                        name="fecha_inicio"
+                        required
+                      />
+                    </div>
+
+                    <!-- Fecha Fin -->
+                    <div class="field">
+                      <label for="fecha_fin">
+                        <i class="fas fa-calendar-check field-icon"></i>
+                        Fecha de finalización <span class="req">*</span>
+                      </label>
+                      <input
+                        type="date"
+                        id="fecha_fin"
+                        name="fecha_fin"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Botones -->
+                <div class="form-footer">
+                  <a href="{% url 'per_emp' %}" class="btn btn-ghost">
+                    <i class="fas fa-arrow-left"></i>
+                    Cancelar
+                  </a>
+
+                  <button type="reset" class="btn btn-secondary">
+                    <i class="fas fa-rotate-left"></i>
+                    Limpiar
+                  </button>
+
+                  <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-floppy-disk"></i>
+                    Guardar pasante
+                  </button>
+                </div>
+              </form>
+            </div>
+          </section>
+          <!-- /form-body -->
+        </section>
+        <!-- /form-card -->
+
+        <!-- Footer -->
+        <footer class="footer">
+          © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

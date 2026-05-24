@@ -1,0 +1,642 @@
+<!-- Cargar la librería al inicio del template, para usar archivos estaticos -->
+{% load static %}
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Compensacion Puesto - Gestión de Talento Humano</title>
+
+    <!-- CSS local -->
+    <link rel="stylesheet" href="{% static 'styles/kpi.css' %}" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <!-- =========================
+             SIDEBAR
+        ========================== -->
+      <aside class="sidebar">
+        <!-- Logo -->
+        <div class="logo">
+          <i class="fas fa-users"></i>
+          <h2>ROBASA</h2>
+          <span>DISTRIBUIDORA</span>
+        </div>
+
+        <!-- Menú -->
+        <nav class="menu">
+          <a href="{% url 'inicio' %}">
+            <i class="fas fa-house"></i>
+            Inicio
+          </a>
+
+          <a href="{% url 'per_emp' %}">
+            <i class="fas fa-user-group"></i>
+            Personas o Empleados
+          </a>
+
+          <a href="{% url 'empresas' %}">
+            <i class="fas fa-building"></i>
+            Empresas
+          </a>
+
+          <a href="{% url 'comple_Empresa' %}">
+            <i class="fas fa-briefcase"></i>
+            Gerencias, Departamentos y Puestos
+          </a>
+
+          <a href="{% url 'salario' %}">
+            <i class="fas fa-money-bill-wave"></i>
+            Salarios
+          </a>
+
+          <a href="{% url 'reclutamiento' %}">
+            <i class="fas fa-wallet"></i>
+            Reclutamiento
+          </a>
+
+          <a href="{% url 'vacaciones' %}">
+            <i class="fas fa-umbrella-beach"></i>
+            Vacaciones
+          </a>
+
+          <a href="{% url 'elec_Asistencia' %}">
+            <i class="fas fa-clock"></i>
+            Asistencia y Permiso
+          </a>
+
+          <a href="{% url 'evaluaciones' %}">
+            <i class="fas fa-chart-line"></i>
+            Evaluación de Desempeño
+          </a>
+
+          <a href="{% url 'elec_KPI' %}">
+            <i class="fas fa-file-lines"></i>
+            KPIs
+          </a>
+
+          <a href="{% url 'reportes' %}">
+            <i class="fas fa-file-lines"></i>
+            Reportes
+          </a>
+
+          <a href="{% url 'usuarios' %}">
+            <i class="fas fa-users-cog"></i>
+            Usuarios y Roles
+          </a>
+
+          <a href="{% url 'configuraciones' %}">
+            <i class="fas fa-gear"></i>
+            Configuración
+          </a>
+        </nav>
+
+        <!-- Cerrar sesión -->
+        <div class="logout">
+          <a href="login.html">
+            <i class="fas fa-right-from-bracket"></i>
+            Cerrar sesión
+          </a>
+        </div>
+      </aside>
+
+      <!-- =========================
+             CONTENIDO PRINCIPAL
+        ========================== -->
+      <main class="main-content">
+        <!-- Header -->
+        <header class="topbar">
+          <!-- Botón menú -->
+          <button class="menu-toggle">
+            <i class="fas fa-bars"></i>
+          </button>
+
+          <!-- Título -->
+          <div class="page-title">
+            <h1>Departamento</h1>
+            <p>Registro de un nuevo departamento</p>
+          </div>
+
+          <!-- Barra de búsqueda -->
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input
+              type="text"
+              placeholder="Buscar empleado, módulo, reporte..."
+            />
+          </div>
+
+          <!-- Acciones -->
+          <div class="topbar-actions">
+            <!-- Notificaciones -->
+            <div class="notification">
+              <i class="fas fa-bell"></i>
+              <span class="badge">3</span>
+            </div>
+
+            <!-- Usuario -->
+            <div class="user-profile">
+              <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
+              <div class="user-info">
+                <strong>María Gómez</strong>
+                <span>Recursos Humanos</span>
+              </div>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+          </div>
+        </header>
+
+        <!-- =========================
+                 CONTENIDO VISUAL
+            ========================== -->
+
+        <!-- =========================================================
+     DASHBOARD KPI
+========================================================= -->
+
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+          <a href="#">
+            <i class="fas fa-house"></i>
+            Inicio
+          </a>
+
+          <i class="fas fa-chevron-right sep"></i>
+
+          <a href="#"> KPIs </a>
+
+          <i class="fas fa-chevron-right sep"></i>
+
+          <span class="current"> Dashboard KPI </span>
+        </div>
+
+        <!-- =========================================================
+     DASHBOARD PRINCIPAL
+========================================================= -->
+        <section class="form-card">
+          <!-- HEADER -->
+          <div class="form-card-header">
+            <div class="form-card-header-left">
+              <div class="form-card-icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+
+              <div>
+                <h2 class="form-card-title">Dashboard de KPIs</h2>
+
+                <p class="form-card-subtitle">
+                  Visualización general del desempeño mensual, premios e
+                  incentivos.
+                </p>
+              </div>
+            </div>
+
+            <div class="dashboard-period">
+              <i class="fas fa-calendar-days"></i>
+
+              <span> Julio 2026 </span>
+            </div>
+          </div>
+
+          <!-- =====================================================
+       BODY
+  ====================================================== -->
+          <div class="form-body">
+            <!-- =====================================================
+         FILTROS
+    ====================================================== -->
+            <div class="filter-bar">
+              <!-- DEPARTAMENTO -->
+              <div class="field filter-field">
+                <label>
+                  <i class="fas fa-building field-icon"></i>
+                  Departamento
+                </label>
+
+                <select>
+                  <option selected>Todos los departamentos</option>
+
+                  <option>Comercial</option>
+
+                  <option>Finanzas</option>
+
+                  <option>Recursos Humanos</option>
+                </select>
+              </div>
+
+              <!-- MES -->
+              <div class="field filter-field">
+                <label>
+                  <i class="fas fa-calendar field-icon"></i>
+                  Mes
+                </label>
+
+                <select>
+                  <option selected>Julio</option>
+
+                  <option>Junio</option>
+
+                  <option>Mayo</option>
+                </select>
+              </div>
+
+              <!-- AÑO -->
+              <div class="field filter-field">
+                <label>
+                  <i class="fas fa-clock field-icon"></i>
+                  Año
+                </label>
+
+                <select>
+                  <option selected>2026</option>
+
+                  <option>2025</option>
+                </select>
+              </div>
+
+              <!-- BOTÓN -->
+              <button class="btn btn-primary">
+                <i class="fas fa-magnifying-glass-chart"></i>
+                Consultar
+              </button>
+            </div>
+
+            <!-- =====================================================
+         RESUMEN KPI
+    ====================================================== -->
+            <div class="stats-grid">
+              <!-- TOTAL KPI -->
+              <div class="stat-card performance">
+                <div class="stat-top">
+                  <span> KPIs Registrados </span>
+
+                  <i class="fas fa-chart-column"></i>
+                </div>
+
+                <h2>124</h2>
+
+                <p>KPIs procesados este mes.</p>
+              </div>
+
+              <!-- BONOS -->
+              <div class="stat-card potential">
+                <div class="stat-top">
+                  <span> Bonos Generados </span>
+
+                  <i class="fas fa-money-bill-wave"></i>
+                </div>
+
+                <h2>₡4.8M</h2>
+
+                <p>Incentivos acumulados del periodo.</p>
+              </div>
+
+              <!-- PREMIOS -->
+              <div class="stat-card semestral">
+                <div class="stat-top">
+                  <span> Premios Asignados </span>
+
+                  <i class="fas fa-award"></i>
+                </div>
+
+                <h2>18</h2>
+
+                <p>Colaboradores premiados.</p>
+              </div>
+
+              <!-- EFECTIVIDAD -->
+              <div class="stat-card cliente">
+                <div class="stat-top">
+                  <span> Efectividad Global </span>
+
+                  <i class="fas fa-bullseye"></i>
+                </div>
+
+                <h2>91%</h2>
+
+                <p>Cumplimiento promedio mensual.</p>
+              </div>
+            </div>
+
+            <!-- =====================================================
+         CONTENIDO PRINCIPAL
+    ====================================================== -->
+            <div class="results-layout">
+              <!-- ===================================================
+           IZQUIERDA
+      ==================================================== -->
+              <div class="results-left">
+                <!-- ===============================================
+             TOP EMPLEADOS
+        ================================================ -->
+                <div class="result-panel">
+                  <div class="panel-header">
+                    <h3>
+                      <i class="fas fa-ranking-star"></i>
+                      Top Colaboradores
+                    </h3>
+
+                    <span class="status-badge high"> TOP KPI </span>
+                  </div>
+
+                  <!-- LISTA -->
+                  <div class="ranking-list">
+                    <!-- ITEM -->
+                    <div class="ranking-item">
+                      <div class="ranking-position">1</div>
+
+                      <div class="ranking-user">
+                        <img src="https://i.pravatar.cc/100?img=11" alt="" />
+
+                        <div>
+                          <strong> Carlos Méndez </strong>
+
+                          <span> Comercial </span>
+                        </div>
+                      </div>
+
+                      <div class="ranking-score">
+                        <strong> 98% </strong>
+                      </div>
+                    </div>
+
+                    <!-- ITEM -->
+                    <div class="ranking-item">
+                      <div class="ranking-position">2</div>
+
+                      <div class="ranking-user">
+                        <img src="https://i.pravatar.cc/100?img=15" alt="" />
+
+                        <div>
+                          <strong> Ana Rodríguez </strong>
+
+                          <span> Finanzas </span>
+                        </div>
+                      </div>
+
+                      <div class="ranking-score">
+                        <strong> 95% </strong>
+                      </div>
+                    </div>
+
+                    <!-- ITEM -->
+                    <div class="ranking-item">
+                      <div class="ranking-position">3</div>
+
+                      <div class="ranking-user">
+                        <img src="https://i.pravatar.cc/100?img=21" alt="" />
+
+                        <div>
+                          <strong> María López </strong>
+
+                          <span> RRHH </span>
+                        </div>
+                      </div>
+
+                      <div class="ranking-score">
+                        <strong> 92% </strong>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ===============================================
+             INDICADORES
+        ================================================ -->
+                <div class="result-panel">
+                  <div class="panel-header">
+                    <h3>
+                      <i class="fas fa-chart-pie"></i>
+                      Indicadores KPI
+                    </h3>
+                  </div>
+
+                  <div class="indicator-list">
+                    <!-- ITEM -->
+                    <div class="indicator-item">
+                      <div class="indicator-top">
+                        <span> Cobro Efectividad </span>
+
+                        <strong> 94% </strong>
+                      </div>
+
+                      <div class="progress-bar">
+                        <div
+                          class="progress-fill performance"
+                          style="width: 94%"
+                        ></div>
+                      </div>
+                    </div>
+
+                    <!-- ITEM -->
+                    <div class="indicator-item">
+                      <div class="indicator-top">
+                        <span> Comisiones </span>
+
+                        <strong> 88% </strong>
+                      </div>
+
+                      <div class="progress-bar">
+                        <div
+                          class="progress-fill potential"
+                          style="width: 88%"
+                        ></div>
+                      </div>
+                    </div>
+
+                    <!-- ITEM -->
+                    <div class="indicator-item">
+                      <div class="indicator-top">
+                        <span> Evaluación Supervisor </span>
+
+                        <strong> 97% </strong>
+                      </div>
+
+                      <div class="progress-bar">
+                        <div
+                          class="progress-fill cliente"
+                          style="width: 97%"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ===================================================
+           DERECHA
+      ==================================================== -->
+              <div class="results-right">
+                <!-- ===============================================
+             PREMIOS RECIENTES
+        ================================================ -->
+                <div class="result-panel">
+                  <div class="panel-header">
+                    <h3>
+                      <i class="fas fa-gift"></i>
+                      Premios Otorgados
+                    </h3>
+                  </div>
+
+                  <!-- LIST -->
+                  <div class="awards-list">
+                    <!-- ITEM -->
+                    <div class="award-item">
+                      <div class="award-icon gold">
+                        <i class="fas fa-trophy"></i>
+                      </div>
+
+                      <div class="award-content">
+                        <strong> Bono Oro </strong>
+
+                        <span> Carlos Méndez - ₡150,000 </span>
+                      </div>
+                    </div>
+
+                    <!-- ITEM -->
+                    <div class="award-item">
+                      <div class="award-icon silver">
+                        <i class="fas fa-medal"></i>
+                      </div>
+
+                      <div class="award-content">
+                        <strong> Incentivo Comercial </strong>
+
+                        <span> Ana Rodríguez - ₡85,000 </span>
+                      </div>
+                    </div>
+
+                    <!-- ITEM -->
+                    <div class="award-item">
+                      <div class="award-icon bronze">
+                        <i class="fas fa-star"></i>
+                      </div>
+
+                      <div class="award-content">
+                        <strong> Reconocimiento </strong>
+
+                        <span> María López - ₡50,000 </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ===============================================
+             RESUMEN FINANCIERO
+        ================================================ -->
+                <div class="result-panel">
+                  <div class="panel-header">
+                    <h3>
+                      <i class="fas fa-wallet"></i>
+                      Resumen Financiero
+                    </h3>
+                  </div>
+
+                  <div class="financial-summary">
+                    <!-- ITEM -->
+                    <div class="financial-item">
+                      <span> Total Comisiones </span>
+
+                      <strong> ₡2,350,000 </strong>
+                    </div>
+
+                    <!-- ITEM -->
+                    <div class="financial-item">
+                      <span> Bonos KPI </span>
+
+                      <strong> ₡1,240,000 </strong>
+                    </div>
+
+                    <!-- ITEM -->
+                    <div class="financial-item">
+                      <span> Premios Especiales </span>
+
+                      <strong> ₡980,000 </strong>
+                    </div>
+
+                    <!-- ITEM -->
+                    <div class="financial-item total">
+                      <span> Total General </span>
+
+                      <strong> ₡4,570,000 </strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- =====================================================
+         TABLA KPI
+    ====================================================== -->
+            <div class="form-section">
+              <h4 class="form-section-title">Historial KPI del Mes</h4>
+
+              <div class="table-container">
+                <table class="results-table">
+                  <thead>
+                    <tr>
+                      <th>Empleado</th>
+                      <th>Categoría</th>
+                      <th>% Alcanzado</th>
+                      <th>Monto</th>
+                      <th>Premio</th>
+                      <th>Estado</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <!-- ITEM -->
+                    <tr>
+                      <td>Carlos Méndez</td>
+
+                      <td>Cobro efectividad</td>
+
+                      <td>98%</td>
+
+                      <td>₡250,000</td>
+
+                      <td>Bono Oro</td>
+
+                      <td>
+                        <span class="status-badge success"> Completado </span>
+                      </td>
+                    </tr>
+
+                    <!-- ITEM -->
+                    <tr>
+                      <td>Ana Rodríguez</td>
+
+                      <td>Comisión</td>
+
+                      <td>92%</td>
+
+                      <td>₡180,000</td>
+
+                      <td>Incentivo Comercial</td>
+
+                      <td>
+                        <span class="status-badge pending"> En revisión </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+          © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,512 @@
+<!-- Cargar la librería al inicio del template, para usar archivos estaticos -->
+{% load static %}
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro de Empresas - Gestión de Talento Humano</title>
+
+    <!-- CSS local -->
+    <link rel="stylesheet" href="{% static 'styles/reult_Evaluacion.css' %}" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <!-- =========================
+             SIDEBAR
+        ========================== -->
+      <aside class="sidebar">
+        <!-- Logo -->
+        <div class="logo">
+          <i class="fas fa-users"></i>
+          <h2>ROBASA</h2>
+          <span>DISTRIBUIDORA</span>
+        </div>
+
+        <!-- Menú -->
+        <nav class="menu">
+          <a href="{% url 'inicio' %}">
+            <i class="fas fa-house"></i>
+            Inicio
+          </a>
+
+          <a href="{% url 'per_emp' %}">
+            <i class="fas fa-user-group"></i>
+            Personas o Empleados
+          </a>
+
+          <a href="{% url 'empresas' %}">
+            <i class="fas fa-building"></i>
+            Empresas
+          </a>
+
+          <a href="{% url 'comple_Empresa' %}">
+            <i class="fas fa-briefcase"></i>
+            Gerencias, Departamentos y Puestos
+          </a>
+
+          <a href="{% url 'salario' %}">
+            <i class="fas fa-money-bill-wave"></i>
+            Salarios
+          </a>
+
+          <a href="{% url 'reclutamiento' %}">
+            <i class="fas fa-wallet"></i>
+            Reclutamiento
+          </a>
+
+          <a href="{% url 'vacaciones' %}">
+            <i class="fas fa-umbrella-beach"></i>
+            Vacaciones
+          </a>
+
+          <a href="{% url 'elec_Asistencia' %}">
+            <i class="fas fa-clock"></i>
+            Asistencia y Permiso
+          </a>
+
+          <a href="{% url 'evaluaciones' %}">
+            <i class="fas fa-chart-line"></i>
+            Evaluación de Desempeño
+          </a>
+
+          <a href="{% url 'elec_KPI' %}">
+            <i class="fas fa-file-lines"></i>
+            KPIs
+          </a>
+
+          <a href="{% url 'reportes' %}">
+            <i class="fas fa-file-lines"></i>
+            Reportes
+          </a>
+
+          <a href="{% url 'usuarios' %}">
+            <i class="fas fa-users-cog"></i>
+            Usuarios y Roles
+          </a>
+
+          <a href="{% url 'configuraciones' %}">
+            <i class="fas fa-gear"></i>
+            Configuración
+          </a>
+        </nav>
+
+        <!-- Cerrar sesión -->
+        <div class="logout">
+          <a href="login.html">
+            <i class="fas fa-right-from-bracket"></i>
+            Cerrar sesión
+          </a>
+        </div>
+      </aside>
+
+      <!-- =========================
+             CONTENIDO PRINCIPAL
+        ========================== -->
+      <main class="main-content">
+        <!-- Header -->
+        <header class="topbar">
+          <!-- Botón menú -->
+          <button class="menu-toggle">
+            <i class="fas fa-bars"></i>
+          </button>
+
+          <!-- Título -->
+          <div class="page-title">
+            <h1>Empresas</h1>
+            <p>Registro de una nueva empresa</p>
+          </div>
+
+          <!-- Barra de búsqueda -->
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input
+              type="text"
+              placeholder="Buscar empleado, módulo, reporte..."
+            />
+          </div>
+
+          <!-- Acciones -->
+          <div class="topbar-actions">
+            <!-- Notificaciones -->
+            <div class="notification">
+              <i class="fas fa-bell"></i>
+              <span class="badge">3</span>
+            </div>
+
+            <!-- Usuario -->
+            <div class="user-profile">
+              <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
+              <div class="user-info">
+                <strong>María Gómez</strong>
+                <span>Recursos Humanos</span>
+              </div>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+          </div>
+        </header>
+
+        <!-- =========================
+                 CONTENIDO VISUAL
+            ========================== -->
+
+        <!-- =========================================================
+     RESULTADOS DE EVALUACIÓN - VISTA VISUAL
+========================================================= -->
+
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+          <a href="{% url 'inicio' %}">
+            <i class="fas fa-house"></i>
+            Inicio
+          </a>
+
+          <i class="fas fa-chevron-right sep"></i>
+
+          <a href="{% url 'evaluaciones' %}"> Evaluaciones </a>
+
+          <i class="fas fa-chevron-right sep"></i>
+
+          <span class="current"> Resultados de Evaluación </span>
+        </div>
+
+        <!-- =========================================================
+                CARD PRINCIPAL
+             ========================================================= -->
+        <section class="form-card">
+          <!-- Header -->
+          <div class="form-card-header">
+            <div class="form-card-header-left">
+              <div class="form-card-icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+
+              <div>
+                <h2 class="form-card-title">
+                  Dashboard de Resultados de Desempeño
+                </h2>
+
+                <p class="form-card-subtitle">
+                  Visualización gráfica y porcentual de evaluaciones históricas
+                  del colaborador.
+                </p>
+              </div>
+            </div>
+
+            <div class="employee-mini-card">
+              <img src="https://i.pravatar.cc/120?img=12" alt="Empleado" />
+
+              <div>
+                <strong>Carlos Méndez</strong>
+                <span>Supervisor Comercial</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- =====================================================
+       BODY
+  ====================================================== -->
+          <div class="form-body">
+            <!-- =====================================================
+         FILTRO SUPERIOR
+    ====================================================== -->
+            <div class="filter-bar">
+              <div class="field filter-field">
+                <label>
+                  <i class="fas fa-user field-icon"></i>
+                  Colaborador
+                </label>
+
+                <select>
+                  <option selected>Carlos Méndez</option>
+
+                  <option>María López</option>
+
+                  <option>José Ramírez</option>
+                </select>
+              </div>
+
+              <div class="field filter-field">
+                <label>
+                  <i class="fas fa-calendar field-icon"></i>
+                  Periodo
+                </label>
+
+                <select>
+                  <option selected>Año 2026</option>
+
+                  <option>Año 2025</option>
+                </select>
+              </div>
+
+              <button class="btn btn-primary">
+                <i class="fas fa-magnifying-glass-chart"></i>
+                Consultar
+              </button>
+            </div>
+
+            <!-- =====================================================
+         RESUMEN GENERAL
+    ====================================================== -->
+            <div class="stats-grid">
+              <!-- CARD -->
+              <div class="stat-card performance">
+                <div class="stat-top">
+                  <span>Desempeño</span>
+                  <i class="fas fa-chart-column"></i>
+                </div>
+
+                <h2>92%</h2>
+
+                <p>Excelente rendimiento general</p>
+              </div>
+
+              <!-- CARD -->
+              <div class="stat-card potential">
+                <div class="stat-top">
+                  <span>Potencial</span>
+                  <i class="fas fa-rocket"></i>
+                </div>
+
+                <h2>88%</h2>
+
+                <p>Alto potencial de crecimiento</p>
+              </div>
+
+              <!-- CARD -->
+              <div class="stat-card semestral">
+                <div class="stat-top">
+                  <span>Semestral</span>
+                  <i class="fas fa-calendar-check"></i>
+                </div>
+
+                <h2>90%</h2>
+
+                <p>Resultado consolidado</p>
+              </div>
+
+              <!-- CARD -->
+              <div class="stat-card cliente">
+                <div class="stat-top">
+                  <span>Cliente Interno</span>
+                  <i class="fas fa-users"></i>
+                </div>
+
+                <h2>95%</h2>
+
+                <p>Excelente colaboración</p>
+              </div>
+            </div>
+
+            <!-- =====================================================
+         PANEL PRINCIPAL
+    ====================================================== -->
+            <div class="results-layout">
+              <!-- ===================================================
+           IZQUIERDA
+      ==================================================== -->
+              <div class="results-left">
+                <!-- ===============================================
+             9 BOX
+        ================================================ -->
+                <div class="result-panel">
+                  <div class="panel-header">
+                    <h3>
+                      <i class="fas fa-border-all"></i>
+                      Matriz 9 Box
+                    </h3>
+
+                    <span class="status-badge high"> High Performer </span>
+                  </div>
+
+                  <!-- MATRIZ -->
+                  <div class="ninebox-grid">
+                    <!-- FILA -->
+                    <div class="box-item low"></div>
+                    <div class="box-item medium"></div>
+                    <div class="box-item high"></div>
+
+                    <div class="box-item medium"></div>
+                    <div class="box-item medium active">
+                      <i class="fas fa-user"></i>
+                    </div>
+                    <div class="box-item high"></div>
+
+                    <div class="box-item low"></div>
+                    <div class="box-item high"></div>
+                    <div class="box-item high"></div>
+                  </div>
+
+                  <div class="matrix-labels">
+                    <span>Potencial Bajo</span>
+                    <span>Potencial Alto</span>
+                  </div>
+                </div>
+
+                <!-- ===============================================
+             HISTORIAL
+        ================================================ -->
+                <div class="result-panel">
+                  <div class="panel-header">
+                    <h3>
+                      <i class="fas fa-clock-rotate-left"></i>
+                      Historial de Evaluaciones
+                    </h3>
+                  </div>
+
+                  <!-- TIMELINE -->
+                  <div class="timeline">
+                    <!-- ITEM -->
+                    <div class="timeline-item">
+                      <div class="timeline-dot"></div>
+
+                      <div class="timeline-content">
+                        <div class="timeline-top">
+                          <strong>Evaluación Semestral 2026</strong>
+                          <span>92%</span>
+                        </div>
+
+                        <p>Clasificación: Alto desempeño y alto potencial.</p>
+                      </div>
+                    </div>
+
+                    <!-- ITEM -->
+                    <div class="timeline-item">
+                      <div class="timeline-dot"></div>
+
+                      <div class="timeline-content">
+                        <div class="timeline-top">
+                          <strong>Evaluación Trimestral 2026</strong>
+                          <span>89%</span>
+                        </div>
+
+                        <p>
+                          Excelente colaboración y cumplimiento de objetivos.
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- ITEM -->
+                    <div class="timeline-item">
+                      <div class="timeline-dot"></div>
+
+                      <div class="timeline-content">
+                        <div class="timeline-top">
+                          <strong>Evaluación Anual 2025</strong>
+                          <span>85%</span>
+                        </div>
+
+                        <p>
+                          Buen rendimiento general y capacidad de liderazgo.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ===================================================
+           DERECHA
+      ==================================================== -->
+              <div class="results-right">
+                <!-- ===============================================
+             INDICADORES
+        ================================================ -->
+                <div class="result-panel">
+                  <div class="panel-header">
+                    <h3>
+                      <i class="fas fa-chart-pie"></i>
+                      Indicadores
+                    </h3>
+                  </div>
+
+                  <!-- PROGRESS -->
+                  <div class="indicator-list">
+                    <!-- ITEM -->
+                    <div class="indicator-item">
+                      <div class="indicator-top">
+                        <span>Desempeño</span>
+                        <strong>92%</strong>
+                      </div>
+
+                      <div class="progress-bar">
+                        <div
+                          class="progress-fill performance"
+                          style="width: 92%"
+                        ></div>
+                      </div>
+                    </div>
+
+                    <!-- ITEM -->
+                    <div class="indicator-item">
+                      <div class="indicator-top">
+                        <span>Potencial</span>
+                        <strong>88%</strong>
+                      </div>
+
+                      <div class="progress-bar">
+                        <div
+                          class="progress-fill potential"
+                          style="width: 88%"
+                        ></div>
+                      </div>
+                    </div>
+
+                    <!-- ITEM -->
+                    <div class="indicator-item">
+                      <div class="indicator-top">
+                        <span>Cliente Interno</span>
+                        <strong>95%</strong>
+                      </div>
+
+                      <div class="progress-bar">
+                        <div
+                          class="progress-fill cliente"
+                          style="width: 95%"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ===============================================
+             OBSERVACIÓN
+        ================================================ -->
+                <div class="result-panel">
+                  <div class="panel-header">
+                    <h3>
+                      <i class="fas fa-comments"></i>
+                      Comentario General
+                    </h3>
+                  </div>
+
+                  <div class="comment-box">
+                    <p>
+                      El colaborador ha demostrado un desempeño sobresaliente,
+                      manteniendo altos niveles de productividad y liderazgo
+                      dentro de su equipo. Se recomienda considerar para
+                      programas de crecimiento y sucesión.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- /form-card -->
+
+        <!-- Footer -->
+        <footer class="footer">
+          © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,878 @@
+/* =====================================================
+   LISTA DE EVALUACIÓN
+====================================================== */
+.evaluation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* =====================================================
+   TARJETA DE CRITERIO
+====================================================== */
+.evaluation-item {
+    background: #ffffff;
+    border: 1.5px solid #e7ebf5;
+    border-radius: 14px;
+    padding: 20px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 10px rgba(30, 42, 94, 0.04);
+}
+
+.evaluation-item:hover {
+    border-color: rgba(232, 96, 10, 0.35);
+    box-shadow: 0 6px 18px rgba(30, 42, 94, 0.08);
+    transform: translateY(-1px);
+}
+
+/* =====================================================
+   INFORMACIÓN DEL CRITERIO
+====================================================== */
+.evaluation-info {
+    flex: 1;
+}
+
+.evaluation-info h5 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a2042;
+    margin-bottom: 6px;
+}
+
+.evaluation-info p {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #6b7499;
+}
+
+/* =====================================================
+   STATUS GROUP
+====================================================== */
+.evaluation-item .status-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 280px;
+    justify-content: flex-end;
+}
+
+/* =====================================================
+   OPCIÓN
+====================================================== */
+.evaluation-item .status-option {
+    position: relative;
+    flex: 1;
+}
+
+.evaluation-item .status-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* =====================================================
+   LABEL
+====================================================== */
+.evaluation-item .status-option label {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1.5px solid #dde2f0;
+    background: #f7f8fc;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b7499;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Hover */
+.evaluation-item .status-option label:hover {
+    border-color: #e8600a;
+    background: rgba(232, 96, 10, 0.05);
+    color: #e8600a;
+}
+
+/* =====================================================
+   RADIO ACTIVO
+====================================================== */
+.evaluation-item .status-option input:checked + label {
+    border-color: #e8600a;
+    background: rgba(232, 96, 10, 0.10);
+    color: #e8600a;
+    box-shadow: 0 4px 12px rgba(232, 96, 10, 0.14);
+}
+
+/* =====================================================
+   DOT
+====================================================== */
+.evaluation-item .status-option .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+}
+
+/* =====================================================
+   TEXTAREA OBSERVACIONES
+====================================================== */
+textarea {
+    resize: vertical;
+    min-height: 130px;
+    line-height: 1.5;
+}
+
+/* =========================
+   RESET
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f7fb;
+    color: #d35b1a;
+}
+
+/* =========================
+   LAYOUT GENERAL
+========================= */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+.sidebar {
+    width: 280px;
+    background: #26317a;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    /* Permite que el contenido haga scroll vertical */
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+.logo {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.logo i {
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.logo h2 {
+    font-size: 34px;
+    font-weight: 800;
+}
+
+.logo span {
+    font-size: 12px;
+    letter-spacing: 5px;
+    color: #9bc0ff;
+}
+
+/* Menú */
+.menu {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 5px; /* evita que el texto se pegue al scroll */
+}
+
+.menu a {
+    color: #FEFEFD;
+    text-decoration: none;
+    padding: 14px 18px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: 0.3s;
+}
+
+.menu a:hover,
+.menu a.active {
+    background: #4567b7;
+    color: white;
+}
+
+.menu i {
+    width: 20px;
+}
+
+/* Opcional: personalizar la barra de scroll */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* Logout */
+.logout {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.15);
+}
+
+.logout a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    gap: 12px;
+    padding: 14px 18px;
+    border-radius: 12px;
+}
+
+.logout a:hover {
+    background: rgba(255,255,255,0.08);
+}
+
+/* =========================
+   CONTENIDO PRINCIPAL
+========================= */
+.main-content {
+    flex: 1;
+    margin-left: 280px;
+    padding: 30px;
+}
+
+/* =========================
+   TOPBAR
+========================= */
+.topbar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.menu-toggle {
+    border: none;
+    background: none;
+    font-size: 26px;
+    cursor: pointer;
+    color: #293477;
+}
+
+.page-title {
+    min-width: 260px;
+}
+
+.page-title h1 {
+    font-size: 34px;
+    margin-bottom: 5px;
+}
+
+.page-title p {
+    color: #7a8599;
+    font-size: 15px;
+}
+
+/* Buscador */
+.search-box {
+    flex: 1;
+    max-width: 420px;
+    position: relative;
+}
+
+.search-box i {
+    position: absolute;
+    top: 50%;
+    left: 18px;
+    transform: translateY(-50%);
+    color: #8a94a6;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 14px 18px 14px 48px;
+    border: 1px solid #dbe2ef;
+    border-radius: 12px;
+    font-size: 15px;
+    outline: none;
+}
+
+.search-box input:focus {
+    border-color: #0c45ca;
+    box-shadow: 0 0 0 3px rgba(31,100,255,0.1);
+}
+
+/* Acciones */
+.topbar-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+/* Notificaciones */
+.notification {
+    position: relative;
+    font-size: 22px;
+    cursor: pointer;
+    color: #1b2b4b;
+}
+
+.badge {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: #ff4d4f;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Usuario */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    padding: 8px 14px;
+    border-radius: 50px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    cursor: pointer;
+}
+
+.user-profile img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-info strong {
+    font-size: 14px;
+}
+
+.user-info span {
+    font-size: 12px;
+    color: #7a8599;
+}
+
+/* =====================================================
+   FORMULARIO DE REGISTRO DE PERSONAS
+===================================================== */
+
+/* ── Breadcrumb ───────────────────────────────────── */
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: #6b7499;
+}
+
+.breadcrumb a {
+    color: #6b7499;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.breadcrumb a:hover {
+    color: #e8600a;
+}
+
+.breadcrumb .sep {
+    font-size: 10px;
+    color: #c5cbdf;
+}
+
+.breadcrumb .current {
+    color: #e8600a;
+    font-weight: 700;
+}
+
+/* ── Tarjeta principal del formulario ─────────────── */
+.form-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(30, 42, 94, 0.08);
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+/* ── Encabezado de la tarjeta ─────────────────────── */
+.form-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 24px 30px;
+    border-bottom: 1px solid #e8ecf6;
+    flex-wrap: wrap;
+}
+
+.form-card-header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.form-card-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: rgba(232, 96, 10, 0.12);
+    color: #e8600a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+.form-card-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a2042;
+    margin-bottom: 4px;
+}
+
+.form-card-subtitle {
+    font-size: 14px;
+    color: #6b7499;
+    margin: 0;
+}
+
+.required-note {
+    font-size: 13px;
+    color: #6b7499;
+}
+
+.required-note span {
+    color: #e53935;
+    font-weight: bold;
+}
+
+/* ── Cuerpo del formulario ────────────────────────── */
+.form-body {
+    padding: 30px;
+}
+
+/* ── Secciones internas ───────────────────────────── */
+.form-section {
+    margin-bottom: 35px;
+}
+
+.form-section-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #e8600a;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e8ecf6;
+}
+
+/* ── Grid del formulario ──────────────────────────── */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px 28px;
+}
+
+/* Campo que ocupa todo el ancho */
+.field-full {
+    grid-column: 1 / -1;
+}
+
+/* ── Campos individuales ─────────────────────────── */
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.field label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a2042;
+}
+
+.field-icon {
+    color: #6b7499;
+    width: 14px;
+    text-align: center;
+}
+
+.req {
+    color: #e53935;
+}
+
+/* ── Inputs, Select y Textarea ────────────────────── */
+.field input,
+.field select,
+.field textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid #dde2f0;
+    border-radius: 10px;
+    background: #f7f8fc;
+    font-size: 14px;
+    font-family: inherit;
+    color: #1a2042;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.field textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+    border-color: #e8600a;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
+}
+
+/* Placeholder */
+.field input::placeholder,
+.field textarea::placeholder {
+    color: #9aa3b8;
+}
+
+/* Select personalizado */
+.field select {
+    appearance: none;
+    cursor: pointer;
+    padding-right: 40px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7499' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+}
+
+/* ── Footer del formulario ───────────────────────── */
+.form-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 24px;
+    border-top: 1px solid #e8ecf6;
+}
+
+/* ── Botones ─────────────────────────────────────── */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 22px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-ghost {
+    background: transparent;
+    border: 1.5px solid #dde2f0;
+    color: #6b7499;
+}
+
+.btn-ghost:hover {
+    background: #f0f2f8;
+    color: #1e2a5e;
+    border-color: #1e2a5e;
+}
+
+.btn-secondary {
+    background: #1e2a5e;
+    color: #ffffff;
+}
+
+.btn-secondary:hover {
+    background: #2f438f;
+}
+
+.btn-primary {
+    background: #e8600a;
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(232, 96, 10, 0.25);
+}
+
+.btn-primary:hover {
+    background: #f07530;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(232, 96, 10, 0.35);
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+/* Tablets */
+@media (max-width: 991px) {
+    .form-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .field-full {
+        grid-column: auto;
+    }
+
+    .form-body {
+        padding: 24px;
+    }
+
+    .form-card-header {
+        padding: 24px;
+    }
+}
+
+/* Móviles */
+@media (max-width: 767px) {
+    .breadcrumb {
+        font-size: 12px;
+    }
+
+    .form-card-title {
+        font-size: 20px;
+    }
+
+    .form-card-subtitle {
+        font-size: 13px;
+    }
+
+    .form-body {
+        padding: 20px;
+    }
+
+    .form-card-header {
+        padding: 20px;
+    }
+
+    .form-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .form-footer .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+    .form-card-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+    }
+
+    .form-card-title {
+        font-size: 18px;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+        font-size: 13px;
+        padding: 11px 12px;
+    }
+
+    .btn {
+        font-size: 13px;
+        padding: 10px 16px;
+    }
+}
+
+/* =========================
+   FOOTER
+========================= */
+.footer {
+    margin-top: 30px;
+    text-align: center;
+    color: #7a8599;
+    font-size: 14px;
+}
+
+/* =========================================================
+   CARGA DE FOTOGRAFÍA
+========================================================= */
+.photo-upload {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 20px;
+    border: 2px dashed #dde2f0;
+    border-radius: 12px;
+    background: #f8faff;
+}
+
+/* Vista previa circular */
+.photo-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid #e8600a;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Imagen dentro del contenedor */
+.photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Si no existe imagen, mostrar ícono centrado */
+.photo-preview::before {
+    content: "\f007";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 42px;
+    color: #c3c9dc;
+    position: absolute;
+}
+
+/* Oculta el ícono cuando la imagen sí cargó */
+.photo-preview img[src]:not([src=""]) + .photo-preview::before {
+    display: none;
+}
+
+/* Controles del upload */
+.photo-upload-controls {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Input file */
+.photo-upload-controls input[type="file"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid #e8600a;
+    border-radius: 10px;
+    background: #ffffff;
+    font-family: inherit;
+    font-size: 14px;
+    color: #1a2042;
+    cursor: pointer;
+}
+
+/* Texto de ayuda */
+.help-text {
+    font-size: 12px;
+    color: #e8600a;
+    line-height: 1.5;
+}
+
+/* ==========================================
+   TEXTAREA - DESCRIPCIÓN DE EMPRESA
+========================================== */
+.field textarea {
+    width: 100%;
+    border: 1.5px solid #dde2f0;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13.5px;
+    font-family: inherit;
+    color: #1a2042;
+    background: #f7f8fc;
+    outline: none;
+    resize: vertical;
+    min-height: 130px;
+    line-height: 1.6;
+    transition: border-color .2s, box-shadow .2s, background .2s;
+}
+
+.field textarea:focus {
+    border-color: #e8600a;
+    box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
+    background: #ffffff;
+}
+
+.field textarea::placeholder {
+    color: #9aa4bd;
+}
+
+/* Campo que ocupa todo el ancho */
+.field-full {
+    grid-column: 1 / -1;
+}
+
+/* Texto de ayuda */
+.field-help {
+    font-size: 12px;
+    color: #7a8599;
+    margin-top: 4px;
+}

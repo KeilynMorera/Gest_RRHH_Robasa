@@ -1,0 +1,404 @@
+/* ============================================================
+   Tarjetas de acción grandes — reemplazo de cards-grid
+   Agregar en inicio.css o en un archivo CSS separado
+   ============================================================ */
+
+/* =========================
+   RESET
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f7fb;
+    color: #d35b1a;
+}
+
+/* =========================
+   LAYOUT GENERAL
+========================= */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+.sidebar {
+    width: 280px;
+    background: #26317a;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    /* Permite que el contenido haga scroll vertical */
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+.logo {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.logo i {
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.logo h2 {
+    font-size: 34px;
+    font-weight: 800;
+}
+
+.logo span {
+    font-size: 12px;
+    letter-spacing: 5px;
+    color: #9bc0ff;
+}
+
+/* Menú */
+.menu {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 5px; /* evita que el texto se pegue al scroll */
+}
+
+.menu a {
+    color: #FEFEFD;
+    text-decoration: none;
+    padding: 14px 18px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: 0.3s;
+}
+
+.menu a:hover,
+.menu a.active {
+    background: #4567b7;
+    color: white;
+}
+
+.menu i {
+    width: 20px;
+}
+
+/* Opcional: personalizar la barra de scroll */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* Logout */
+.logout {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.15);
+}
+
+.logout a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    gap: 12px;
+    padding: 14px 18px;
+    border-radius: 12px;
+}
+
+.logout a:hover {
+    background: rgba(255,255,255,0.08);
+}
+
+/* =========================
+   CONTENIDO PRINCIPAL
+========================= */
+.main-content {
+    flex: 1;
+    margin-left: 280px;
+    padding: 30px;
+}
+
+/* =========================
+   TOPBAR
+========================= */
+.topbar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.menu-toggle {
+    border: none;
+    background: none;
+    font-size: 26px;
+    cursor: pointer;
+    color: #293477;
+}
+
+.page-title {
+    min-width: 260px;
+}
+
+.page-title h1 {
+    font-size: 34px;
+    margin-bottom: 5px;
+}
+
+.page-title p {
+    color: #7a8599;
+    font-size: 15px;
+}
+
+/* Buscador */
+.search-box {
+    flex: 1;
+    max-width: 420px;
+    position: relative;
+}
+
+.search-box i {
+    position: absolute;
+    top: 50%;
+    left: 18px;
+    transform: translateY(-50%);
+    color: #8a94a6;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 14px 18px 14px 48px;
+    border: 1px solid #dbe2ef;
+    border-radius: 12px;
+    font-size: 15px;
+    outline: none;
+}
+
+.search-box input:focus {
+    border-color: #0c45ca;
+    box-shadow: 0 0 0 3px rgba(31,100,255,0.1);
+}
+
+/* Acciones */
+.topbar-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+/* Notificaciones */
+.notification {
+    position: relative;
+    font-size: 22px;
+    cursor: pointer;
+    color: #1b2b4b;
+}
+
+.badge {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: #ff4d4f;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Usuario */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    padding: 8px 14px;
+    border-radius: 50px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    cursor: pointer;
+}
+
+.user-profile img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-info strong {
+    font-size: 14px;
+}
+
+.user-info span {
+    font-size: 12px;
+    color: #7a8599;
+}
+
+.action-cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    padding: 28px;
+}
+
+/* ── Tarjeta base ───────────────────────────────────────────── */
+.action-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(30, 42, 94, .10);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform .2s, box-shadow .2s;
+}
+
+.action-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 28px rgba(30, 42, 94, .15);
+}
+
+/* ── Zona de ilustración (parte superior de la tarjeta) ─────── */
+.action-card-illustration {
+    background: linear-gradient(135deg, #1e2a5e 0%, #2e3f8f 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 160px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Círculos decorativos de fondo */
+.action-card-illustration::before,
+.action-card-illustration::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .06);
+}
+.action-card-illustration::before {
+    width: 200px; height: 200px;
+    top: -60px; right: -60px;
+}
+.action-card-illustration::after {
+    width: 130px; height: 130px;
+    bottom: -40px; left: -30px;
+}
+
+.action-card-illustration.accent {
+    background: linear-gradient(135deg, #b84a00 0%, #e8600a 100%);
+}
+
+.action-card-illustration i {
+    font-size: 64px;
+    color: rgba(255, 255, 255, .90);
+    position: relative; /* encima de los círculos */
+    z-index: 1;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,.20));
+}
+
+/* ── Cuerpo de texto ────────────────────────────────────────── */
+.action-card-body {
+    padding: 24px 26px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+}
+
+.action-card-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a2042;
+    margin: 0;
+}
+
+.action-card-desc {
+    font-size: 13.5px;
+    color: #6b7499;
+    line-height: 1.65;
+    margin: 0;
+    flex: 1;
+}
+
+/* ── Botón ──────────────────────────────────────────────────── */
+.action-card-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+    margin-top: 6px;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    background: #1e2a5e;
+    color: #ffffff;
+    transition: background .2s, box-shadow .2s, transform .15s;
+    box-shadow: 0 4px 12px rgba(30, 42, 94, .25);
+}
+
+.action-card-btn:hover {
+    background: #2e3f8f;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(30, 42, 94, .30);
+}
+
+.action-card-btn.accent {
+    background: #e8600a;
+    box-shadow: 0 4px 12px rgba(232, 96, 10, .30);
+}
+
+.action-card-btn.accent:hover {
+    background: #f07530;
+    box-shadow: 0 6px 16px rgba(232, 96, 10, .38);
+}
+
+/* =========================
+   FOOTER
+========================= */
+.footer {
+    margin-top: 30px;
+    text-align: center;
+    color: #7a8599;
+    font-size: 14px;
+}

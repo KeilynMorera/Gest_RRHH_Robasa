@@ -1,0 +1,104 @@
+<!-- Cargar la librería al inicio del template, para usar archivos estaticos -->
+{% load static %}
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Gestión de Talento Humano</title>
+
+    <!-- CSS local -->
+    <link rel="stylesheet" href="{% static 'styles/login.css' %}" />
+
+    <!-- Font Awesome para iconos -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="login-container">
+      <!-- Panel Izquierdo -->
+      <div class="left-panel">
+        <div class="overlay"></div>
+
+        <div class="left-content">
+          <div class="logo">
+            <i class="fas fa-users"></i>
+            <h1>ROBASA</h1>
+            <span>DISTRIBUIDORA</span>
+          </div>
+
+          <h2 class="subtitulo-login">
+            Sistema de Gestión de <span>Talento Humano</span>
+          </h2>
+
+          <p class="intro-login">
+            Administre, gestione y potencie el talento de su empresa desde una
+            sola plataforma.
+          </p>
+
+          <div class="illustration">
+            <i class="fas fa-chart-line"></i>
+          </div>
+
+          <blockquote>
+            “La gestión de las personas impulsa el éxito de las organizaciones.”
+          </blockquote>
+        </div>
+      </div>
+
+      <!-- Panel Derecho -->
+      <div class="right-panel">
+        <div class="login-box">
+          <h2>Bienvenido de nuevo</h2>
+          <p>Inicie sesión para continuar</p>
+
+          <form>
+            <div class="input-group">
+              <label>Correo electrónico</label>
+              <div class="input-wrapper">
+                <i class="fas fa-envelope"></i>
+                <input type="email" placeholder="ejemplo@empresa.com" />
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label>Contraseña</label>
+              <div class="input-wrapper">
+                <i class="fas fa-lock"></i>
+                <input type="password" placeholder="Ingrese su contraseña" />
+                <i class="fas fa-eye"></i>
+              </div>
+            </div>
+
+            <a href="#" class="forgot-password">¿Olvidó su contraseña?</a>
+
+            <button
+              type="button"
+              class="btn-login"
+              onclick="window.location.href='{% url 'inicio' %}'">
+              <i class="fas fa-right-to-bracket"></i>
+              Iniciar sesión
+            </button>
+          </form>
+
+          <div class="divider">
+            <span>o continuar con</span>
+          </div>
+
+          <button class="btn-google">
+            <i class="fab fa-google"></i>
+            Continuar con Google
+          </button>
+
+          <p class="contact-admin">
+            ¿No tiene una cuenta?
+            <a href="#">Contacte al administrador</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

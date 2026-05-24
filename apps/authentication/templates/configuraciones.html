@@ -1,0 +1,521 @@
+<!-- Cargar la librería al inicio del template, para usar archivos estaticos -->
+{% load static %}
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro de Departamento - Gestión de Talento Humano</title>
+
+    <!-- CSS local -->
+    <link rel="stylesheet" href="{% static 'styles/configuraciones.css' %}" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <!-- =========================
+             SIDEBAR
+        ========================== -->
+      <aside class="sidebar">
+        <!-- Logo -->
+        <div class="logo">
+          <i class="fas fa-users"></i>
+          <h2>ROBASA</h2>
+          <span>DISTRIBUIDORA</span>
+        </div>
+
+        <!-- Menú -->
+        <nav class="menu">
+          <a href="{% url 'inicio' %}">
+            <i class="fas fa-house"></i>
+            Inicio
+          </a>
+
+          <a href="{% url 'per_emp' %}">
+            <i class="fas fa-user-group"></i>
+            Personas o Empleados
+          </a>
+
+          <a href="{% url 'empresas' %}">
+            <i class="fas fa-building"></i>
+            Empresas
+          </a>
+
+          <a href="{% url 'comple_Empresa' %}">
+            <i class="fas fa-briefcase"></i>
+            Gerencias, Departamentos y Puestos
+          </a>
+
+          <a href="{% url 'salario' %}">
+            <i class="fas fa-money-bill-wave"></i>
+            Salarios
+          </a>
+
+          <a href="{% url 'reclutamiento' %}">
+            <i class="fas fa-wallet"></i>
+            Reclutamiento
+          </a>
+
+          <a href="{% url 'vacaciones' %}">
+            <i class="fas fa-umbrella-beach"></i>
+            Vacaciones
+          </a>
+
+          <a href="{% url 'elec_Asistencia' %}">
+            <i class="fas fa-clock"></i>
+            Asistencia y Permiso
+          </a>
+
+          <a href="{% url 'evaluaciones' %}">
+            <i class="fas fa-chart-line"></i>
+            Evaluación de Desempeño
+          </a>
+
+          <a href="{% url 'reportes' %}">
+            <i class="fas fa-file-lines"></i>
+            Reportes
+          </a>
+
+          <a href="{% url 'elec_KPI' %}">
+            <i class="fas fa-file-lines"></i>
+            KPIs
+          </a>
+
+          <a href="{% url 'usuarios' %}">
+            <i class="fas fa-users-cog"></i>
+            Usuarios y Roles
+          </a>
+
+          <a href="{% url 'configuraciones' %}">
+            <i class="fas fa-gear"></i>
+            Configuración
+          </a>
+        </nav>
+
+        <!-- Cerrar sesión -->
+        <div class="logout">
+          <a href="login.html">
+            <i class="fas fa-right-from-bracket"></i>
+            Cerrar sesión
+          </a>
+        </div>
+      </aside>
+
+      <!-- =========================
+             CONTENIDO PRINCIPAL
+        ========================== -->
+      <main class="main-content">
+        <!-- Header -->
+        <header class="topbar">
+          <!-- Botón menú -->
+          <button class="menu-toggle">
+            <i class="fas fa-bars"></i>
+          </button>
+
+          <!-- Título -->
+          <div class="page-title">
+            <h1>Departamento</h1>
+            <p>Registro de un nuevo departamento</p>
+          </div>
+
+          <!-- Barra de búsqueda -->
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input
+              type="text"
+              placeholder="Buscar empleado, módulo, reporte..."
+            />
+          </div>
+
+          <!-- Acciones -->
+          <div class="topbar-actions">
+            <!-- Notificaciones -->
+            <div class="notification">
+              <i class="fas fa-bell"></i>
+              <span class="badge">3</span>
+            </div>
+
+            <!-- Usuario -->
+            <div class="user-profile">
+              <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
+              <div class="user-info">
+                <strong>María Gómez</strong>
+                <span>Recursos Humanos</span>
+              </div>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+          </div>
+        </header>
+
+        <!-- =========================
+                 CONTENIDO VISUAL
+            ========================== -->
+
+        <!-- =========================================================
+     CONFIGURACIÓN GENERAL DEL SISTEMA
+     GESTIÓN DE TALENTO HUMANO
+========================================================= -->
+
+        <!-- =========================================================
+     CONFIGURACIÓN GENERAL DEL SISTEMA
+========================================================= -->
+
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+          <a href="#">
+            <i class="fas fa-house"></i>
+            Inicio
+          </a>
+
+          <i class="fas fa-chevron-right sep"></i>
+
+          <a href="#"> Administración </a>
+
+          <i class="fas fa-chevron-right sep"></i>
+
+          <span class="current"> Configuración del Sistema </span>
+        </div>
+
+        <!-- =========================================================
+     CARD PRINCIPAL
+========================================================= -->
+        <section class="form-card">
+          <!-- HEADER -->
+          <div class="form-card-header">
+            <div class="form-card-header-left">
+              <div class="form-card-icon">
+                <i class="fas fa-sliders"></i>
+              </div>
+
+              <div>
+                <h2 class="form-card-title">Configuración General</h2>
+
+                <p class="form-card-subtitle">
+                  Personalice parámetros, seguridad y preferencias del sistema.
+                </p>
+              </div>
+            </div>
+
+            <p class="required-note">
+              <span>*</span> Configuración administrativa
+            </p>
+          </div>
+
+          <!-- =====================================================
+       BODY
+  ====================================================== -->
+          <div class="form-body">
+            <form action="#" method="POST">
+              <!-- =====================================================
+           INFORMACIÓN EMPRESARIAL
+      ====================================================== -->
+              <div class="form-section">
+                <h4 class="form-section-title">Información Empresarial</h4>
+
+                <div class="form-grid">
+                  <!-- NOMBRE -->
+                  <div class="field">
+                    <label for="empresa">
+                      <i class="fas fa-building field-icon"></i>
+                      Nombre de la Empresa
+                      <span class="req">*</span>
+                    </label>
+
+                    <input
+                      type="text"
+                      id="empresa"
+                      placeholder="Ingrese el nombre de la empresa"
+                      required
+                    />
+                  </div>
+
+                  <!-- CORREO -->
+                  <div class="field">
+                    <label for="correo_empresa">
+                      <i class="fas fa-envelope field-icon"></i>
+                      Correo Empresarial
+                    </label>
+
+                    <input
+                      type="email"
+                      id="correo_empresa"
+                      placeholder="empresa@correo.com"
+                    />
+                  </div>
+
+                  <!-- TELEFONO -->
+                  <div class="field">
+                    <label for="telefono">
+                      <i class="fas fa-phone field-icon"></i>
+                      Teléfono
+                    </label>
+
+                    <input
+                      type="text"
+                      id="telefono"
+                      placeholder="+506 0000-0000"
+                    />
+                  </div>
+
+                  <!-- DIRECCIÓN -->
+                  <div class="field">
+                    <label for="direccion">
+                      <i class="fas fa-location-dot field-icon"></i>
+                      Dirección
+                    </label>
+
+                    <input
+                      type="text"
+                      id="direccion"
+                      placeholder="Dirección de la empresa"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- =====================================================
+           CONFIGURACIÓN REGIONAL
+      ====================================================== -->
+              <div class="form-section">
+                <h4 class="form-section-title">Configuración Regional</h4>
+
+                <div class="form-grid">
+                  <!-- MONEDA -->
+                  <div class="field">
+                    <label for="moneda">
+                      <i class="fas fa-coins field-icon"></i>
+                      Moneda
+                    </label>
+
+                    <select id="moneda">
+                      <option selected>Colones (CRC)</option>
+
+                      <option>Dólares (USD)</option>
+
+                      <option>Euros (EUR)</option>
+                    </select>
+                  </div>
+
+                  <!-- ZONA HORARIA -->
+                  <div class="field">
+                    <label for="zona">
+                      <i class="fas fa-globe field-icon"></i>
+                      Zona Horaria
+                    </label>
+
+                    <select id="zona">
+                      <option selected>América/Costa Rica</option>
+
+                      <option>América/México</option>
+
+                      <option>América/New York</option>
+                    </select>
+                  </div>
+
+                  <!-- FORMATO FECHA -->
+                  <div class="field">
+                    <label for="fecha">
+                      <i class="fas fa-calendar field-icon"></i>
+                      Formato de Fecha
+                    </label>
+
+                    <select id="fecha">
+                      <option selected>DD/MM/YYYY</option>
+
+                      <option>MM/DD/YYYY</option>
+
+                      <option>YYYY/MM/DD</option>
+                    </select>
+                  </div>
+
+                  <!-- IDIOMA -->
+                  <div class="field">
+                    <label for="idioma">
+                      <i class="fas fa-language field-icon"></i>
+                      Idioma del Sistema
+                    </label>
+
+                    <select id="idioma">
+                      <option selected>Español</option>
+
+                      <option>Inglés</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- =====================================================
+           CONFIGURACIÓN DE SEGURIDAD
+      ====================================================== -->
+              <div class="form-section">
+                <h4 class="form-section-title">Seguridad del Sistema</h4>
+
+                <div class="form-grid">
+                  <!-- INTENTOS -->
+                  <div class="field">
+                    <label for="intentos">
+                      <i class="fas fa-shield-halved field-icon"></i>
+                      Máximo de Intentos
+                    </label>
+
+                    <input type="number" id="intentos" placeholder="5" />
+                  </div>
+
+                  <!-- SESION -->
+                  <div class="field">
+                    <label for="sesion">
+                      <i class="fas fa-clock field-icon"></i>
+                      Tiempo de Sesión (minutos)
+                    </label>
+
+                    <input type="number" id="sesion" placeholder="30" />
+                  </div>
+                </div>
+
+                <!-- SWITCHES -->
+                <div class="settings-switches">
+                  <!-- ITEM -->
+                  <div class="switch-item">
+                    <div class="switch-info">
+                      <strong> Autenticación en dos pasos </strong>
+
+                      <span>
+                        Solicitar verificación adicional al iniciar sesión.
+                      </span>
+                    </div>
+
+                    <label class="switch">
+                      <input type="checkbox" checked />
+
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+
+                  <!-- ITEM -->
+                  <div class="switch-item">
+                    <div class="switch-info">
+                      <strong> Notificaciones por correo </strong>
+
+                      <span>
+                        Enviar alertas y cambios importantes vía email.
+                      </span>
+                    </div>
+
+                    <label class="switch">
+                      <input type="checkbox" checked />
+
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+
+                  <!-- ITEM -->
+                  <div class="switch-item">
+                    <div class="switch-info">
+                      <strong> Modo mantenimiento </strong>
+
+                      <span>
+                        Bloquear temporalmente el acceso al sistema.
+                      </span>
+                    </div>
+
+                    <label class="switch">
+                      <input type="checkbox" />
+
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- =====================================================
+           APARIENCIA
+      ====================================================== -->
+              <div class="form-section">
+                <h4 class="form-section-title">Apariencia del Sistema</h4>
+
+                <div class="theme-grid">
+                  <!-- TEMA -->
+                  <div class="theme-card active">
+                    <div class="theme-preview light"></div>
+
+                    <h4>Claro</h4>
+                  </div>
+
+                  <!-- TEMA -->
+                  <div class="theme-card">
+                    <div class="theme-preview dark"></div>
+
+                    <h4>Oscuro</h4>
+                  </div>
+
+                  <!-- TEMA -->
+                  <div class="theme-card">
+                    <div class="theme-preview blue"></div>
+
+                    <h4>Corporativo</h4>
+                  </div>
+                </div>
+              </div>
+
+              <!-- =====================================================
+           RESPALDO
+      ====================================================== -->
+              <div class="form-section">
+                <h4 class="form-section-title">Respaldo y Base de Datos</h4>
+
+                <div class="backup-card">
+                  <div class="backup-info">
+                    <i class="fas fa-database"></i>
+
+                    <div>
+                      <strong> Último respaldo realizado </strong>
+
+                      <span> 20 Julio 2026 - 08:45 PM </span>
+                    </div>
+                  </div>
+
+                  <button class="btn btn-secondary" type="button">
+                    <i class="fas fa-download"></i>
+                    Generar respaldo
+                  </button>
+                </div>
+              </div>
+
+              <!-- =====================================================
+           BOTONES
+      ====================================================== -->
+              <div class="form-footer">
+                <button type="reset" class="btn btn-ghost">
+                  <i class="fas fa-rotate-left"></i>
+                  Restablecer
+                </button>
+
+                <button type="submit" class="btn btn-secondary">
+                  <i class="fas fa-floppy-disk"></i>
+                  Guardar borrador
+                </button>
+
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-check"></i>
+                  Guardar configuración
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+        <!-- /form-card -->
+
+        <!-- Footer -->
+        <footer class="footer">
+          © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>
