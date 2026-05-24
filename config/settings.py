@@ -79,10 +79,12 @@ DATABASES = {
         'NAME': 'DB_Gest_TalenHum',
         'USER': 'sa',
         'PASSWORD': 'BD-K-HYU05',
-        'HOST': 'localhost',
+        'HOST': '127.0.0.1',
         'PORT': '1433',
+
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',
+            'extra_params': 'TrustServerCertificate=yes;',
         },
     }
 }

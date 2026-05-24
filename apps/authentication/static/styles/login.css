@@ -60,22 +60,54 @@ body {
     max-width: 450px;
 }
 
-.logo {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
 /* =========================
    LOGO ROBASA
 ========================= */
 
+.logo {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
 /* Imagen */
-.logo img {
-    width: 100px;
+.logo-img {
+    width: 320px;
+    max-width: 100%;
     height: auto;
+
     display: block;
-    margin: 0 auto 15px;
-    object-fit: contain;
+    margin: 0 auto 25px;
+
+    /* Hace que resalte */
+    padding: 18px;
+
+    border-radius: 22px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    border: 1px solid rgba(255,255,255,0.12);
+
+    backdrop-filter: blur(6px);
+
+    /* Glow */
+    filter:
+        drop-shadow(0 0 10px rgba(255,255,255,0.25))
+        drop-shadow(0 0 25px rgba(255,255,255,0.12))
+        brightness(1.18)
+        contrast(1.15);
+
+    transition: all 0.3s ease;
+}
+
+/* Hover elegante */
+.logo-img:hover {
+    transform: scale(1.03);
+
+    filter:
+        drop-shadow(0 0 16px rgba(255,255,255,0.4))
+        drop-shadow(0 0 32px rgba(255,255,255,0.18))
+        brightness(1.25)
+        contrast(1.2);
 }
 
 /* TITULOS */
@@ -91,15 +123,6 @@ body {
     font-size: 18px;
     letter-spacing: 6px;
     color: #9bc0ff;
-}
-
-/* TITULOS */
-.logo h1 {
-    font-size: 62px;
-    font-weight: 900;
-    color: white;
-    margin-bottom: 8px;
-    letter-spacing: 1px;
 }
 
 .left-content h2 {
