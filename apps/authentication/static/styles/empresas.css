@@ -42,25 +42,56 @@ body {
 }
 
 
+/* =========================
+   LOGO ROBASA
+========================= */
+
 .logo {
-    text-align: center;
-    margin-bottom: 40px;
+  text-align: center;
+  margin-bottom: 35px;
 }
 
-.logo i {
-    font-size: 42px;
-    margin-bottom: 10px;
+/* Imagen */
+.logo-img {
+  width: 320px;
+  max-width: 100%;
+  height: auto;
+
+  display: block;
+  margin: 0 auto 25px;
+
+  /* Hace que resalte */
+  padding: 18px;
+
+  border-radius: 22px;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  backdrop-filter: blur(6px);
+
+  /* Glow */
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25))
+    drop-shadow(0 0 25px rgba(255, 255, 255, 0.12)) brightness(1.18)
+    contrast(1.15);
+
+  transition: all 0.3s ease;
 }
 
-.logo h2 {
-    font-size: 34px;
-    font-weight: 800;
+/* Hover elegante */
+.logo-img:hover {
+  transform: scale(1.03);
+
+  filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))
+    drop-shadow(0 0 32px rgba(255, 255, 255, 0.18)) brightness(1.25)
+    contrast(1.2);
 }
 
 .logo span {
-    font-size: 12px;
-    letter-spacing: 5px;
-    color: #9bc0ff;
+  font-size: 18px;
+  letter-spacing: 6px;
+  color: #9bc0ff;
 }
 
 /* Menú */
@@ -268,7 +299,7 @@ body {
 }
 
 /* =====================================================
-   FORMULARIO DE REGISTRO DE PERSONAS
+   FORMULARIO DE REGISTRO DE EMPRESA
 ===================================================== */
 
 /* ── Breadcrumb ───────────────────────────────────── */
@@ -527,93 +558,6 @@ body {
     box-shadow: 0 6px 18px rgba(232, 96, 10, 0.35);
 }
 
-/* =====================================================
-   RESPONSIVE
-===================================================== */
-
-/* Tablets */
-@media (max-width: 991px) {
-    .form-card-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .form-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-
-    .field-full {
-        grid-column: auto;
-    }
-
-    .form-body {
-        padding: 24px;
-    }
-
-    .form-card-header {
-        padding: 24px;
-    }
-}
-
-/* Móviles */
-@media (max-width: 767px) {
-    .breadcrumb {
-        font-size: 12px;
-    }
-
-    .form-card-title {
-        font-size: 20px;
-    }
-
-    .form-card-subtitle {
-        font-size: 13px;
-    }
-
-    .form-body {
-        padding: 20px;
-    }
-
-    .form-card-header {
-        padding: 20px;
-    }
-
-    .form-footer {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .form-footer .btn {
-        width: 100%;
-        justify-content: center;
-    }
-}
-
-/* Móviles pequeños */
-@media (max-width: 480px) {
-    .form-card-icon {
-        width: 44px;
-        height: 44px;
-        font-size: 18px;
-    }
-
-    .form-card-title {
-        font-size: 18px;
-    }
-
-    .field input,
-    .field select,
-    .field textarea {
-        font-size: 13px;
-        padding: 11px 12px;
-    }
-
-    .btn {
-        font-size: 13px;
-        padding: 10px 16px;
-    }
-}
-
 /* =========================
    FOOTER
 ========================= */
@@ -624,83 +568,6 @@ body {
     font-size: 14px;
 }
 
-/* =========================================================
-   CARGA DE FOTOGRAFÍA
-========================================================= */
-.photo-upload {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    padding: 20px;
-    border: 2px dashed #dde2f0;
-    border-radius: 12px;
-    background: #f8faff;
-}
-
-/* Vista previa circular */
-.photo-preview {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    border: 3px solid #e8600a;
-    background: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    flex-shrink: 0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-/* Imagen dentro del contenedor */
-.photo-preview img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* Si no existe imagen, mostrar ícono centrado */
-.photo-preview::before {
-    content: "\f007";
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
-    font-size: 42px;
-    color: #c3c9dc;
-    position: absolute;
-}
-
-/* Oculta el ícono cuando la imagen sí cargó */
-.photo-preview img[src]:not([src=""]) + .photo-preview::before {
-    display: none;
-}
-
-/* Controles del upload */
-.photo-upload-controls {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-/* Input file */
-.photo-upload-controls input[type="file"] {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1.5px solid #e8600a;
-    border-radius: 10px;
-    background: #ffffff;
-    font-family: inherit;
-    font-size: 14px;
-    color: #1a2042;
-    cursor: pointer;
-}
-
-/* Texto de ayuda */
-.help-text {
-    font-size: 12px;
-    color: #e8600a;
-    line-height: 1.5;
-}
 
 /* ==========================================
    TEXTAREA - DESCRIPCIÓN DE EMPRESA
@@ -718,6 +585,7 @@ body {
     resize: vertical;
     min-height: 130px;
     line-height: 1.6;
+    
     transition: border-color .2s, box-shadow .2s, background .2s;
 }
 
@@ -741,4 +609,284 @@ body {
     font-size: 12px;
     color: #7a8599;
     margin-top: 4px;
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN
+   (MANTENIENDO SIDEBAR A LA IZQUIERDA)
+===================================================== */
+
+
+/* =====================================================
+   PANTALLAS GRANDES
+===================================================== */
+@media screen and (min-width: 1200px) {
+
+    .main-content {
+        padding: 40px;
+    }
+
+    .form-card {
+        max-width: 1400px;
+        margin: 20px auto;
+    }
+
+    .page-title h1 {
+        font-size: 38px;
+    }
+
+    .logo-img {
+        width: 280px;
+    }
+}
+
+
+/* =====================================================
+   LAPTOPS Y TABLETS
+===================================================== */
+@media screen and (max-width: 1199px) {
+
+    /* Sidebar más compacto */
+    .sidebar {
+        width: 230px;
+        padding: 25px 15px;
+    }
+
+    .main-content {
+        margin-left: 230px;
+        padding: 25px;
+    }
+
+    .logo-img {
+        width: 200px;
+    }
+
+    .menu a {
+        font-size: 14px;
+        padding: 12px 14px;
+    }
+
+    .page-title h1 {
+        font-size: 30px;
+    }
+
+    .form-grid {
+        gap: 20px;
+    }
+}
+
+
+/* =====================================================
+   TABLETS
+===================================================== */
+@media screen and (max-width: 991px) {
+
+    /* Sidebar sigue a la izquierda */
+    .sidebar {
+        width: 200px;
+        padding: 20px 12px;
+    }
+
+    .main-content {
+        margin-left: 200px;
+        padding: 20px;
+    }
+
+    .logo-img {
+        width: 160px;
+        padding: 12px;
+    }
+
+    .menu a {
+        font-size: 13px;
+        padding: 11px;
+        gap: 10px;
+    }
+
+    .page-title h1 {
+        font-size: 26px;
+    }
+
+    /* Formulario a 1 columna */
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .field-full {
+        grid-column: auto;
+    }
+
+    .form-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-footer {
+        justify-content: center;
+    }
+}
+
+
+/* =====================================================
+   CELULARES
+===================================================== */
+@media screen and (max-width: 767px) {
+
+    /* Sidebar pequeño pero SIEMPRE visible */
+    .sidebar {
+        width: 85px;
+        padding: 15px 8px;
+        align-items: center;
+    }
+
+    .main-content {
+        margin-left: 85px;
+        padding: 15px;
+    }
+
+    /* Logo */
+    .logo-img {
+        width: 60px;
+        padding: 6px;
+        border-radius: 12px;
+    }
+
+    /* Menú */
+    .menu {
+        width: 100%;
+        align-items: center;
+    }
+
+    .menu a {
+        justify-content: center;
+        padding: 12px;
+        font-size: 0;
+        width: 100%;
+    }
+
+    /* Mostrar solo iconos */
+    .menu a i {
+        font-size: 18px;
+        width: auto;
+        margin: 0;
+    }
+
+    /* Logout */
+    .logout a {
+        justify-content: center;
+        font-size: 0;
+    }
+
+    .logout a i {
+        font-size: 18px;
+    }
+
+    /* Header */
+    .topbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .page-title {
+        min-width: auto;
+    }
+
+    .page-title h1 {
+        font-size: 22px;
+    }
+
+    .page-title p {
+        font-size: 13px;
+    }
+
+    /* Buscador */
+    .search-box {
+        max-width: 100%;
+    }
+
+    /* Usuario */
+    .topbar-actions {
+        width: 100%;
+        justify-content: space-between;
+        margin-left: 0;
+    }
+
+    .user-profile {
+        padding: 8px 12px;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+        font-size: 12px;
+    }
+
+    /* Formulario */
+    .form-card-header {
+        padding: 18px;
+    }
+
+    .form-body {
+        padding: 18px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+        font-size: 14px;
+    }
+
+    /* Botones */
+    .form-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+
+/* =====================================================
+   CELULARES MUY PEQUEÑOS
+===================================================== */
+@media screen and (max-width: 480px) {
+
+    .sidebar {
+        width: 70px;
+    }
+
+    .main-content {
+        margin-left: 70px;
+        padding: 12px;
+    }
+
+    .logo-img {
+        width: 50px;
+    }
+
+    .page-title h1 {
+        font-size: 20px;
+    }
+
+    .form-card-title {
+        font-size: 18px;
+    }
+
+    .user-profile img {
+        width: 36px;
+        height: 36px;
+    }
+
+    .btn {
+        font-size: 13px;
+        padding: 10px 12px;
+    }
 }
