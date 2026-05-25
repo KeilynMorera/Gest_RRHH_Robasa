@@ -6,12 +6,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Compensacion Puesto - Gestión de Talento Humano</title>
+    <title>Postulación de Candidato - Gestión de Talento Humano</title>
 
-    <!-- CSS local -->
     <link rel="stylesheet" href="{% static 'styles/reclut_Vacante.css' %}" />
 
-    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
@@ -19,112 +17,90 @@
   </head>
   <body>
     <div class="dashboard-container">
-      <!-- =========================
-             SIDEBAR
-        ========================== -->
       <aside class="sidebar">
-        <!-- Logo -->
-        <div class="logo">
-          <i class="fas fa-users"></i>
-          <h2>ROBASA</h2>
-          <span>DISTRIBUIDORA</span>
+        <!-- Contenedor del Isotipo de la Distribuidora -->
+        <div class="logo-container">
+          <img
+            src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
+            alt="Logo Robasa"
+            class="logo-img"
+          />
         </div>
 
-        <!-- Menú -->
+
         <nav class="menu">
-          <a href="{% url 'inicio' %}">
-            <i class="fas fa-house"></i>
-            Inicio
-          </a>
+          <a href="{% url 'inicio' %}"> <i class="fas fa-house"></i> Inicio </a>
 
           <a href="{% url 'per_emp' %}">
-            <i class="fas fa-user-group"></i>
-            Personas o Empleados
+            <i class="fas fa-user-group"></i> Personas o Empleados
           </a>
 
           <a href="{% url 'empresas' %}">
-            <i class="fas fa-building"></i>
-            Empresas
+            <i class="fas fa-building"></i> Empresas
           </a>
 
           <a href="{% url 'comple_Empresa' %}">
-            <i class="fas fa-briefcase"></i>
-            Gerencias, Departamentos y Puestos
+            <i class="fas fa-briefcase"></i> Gerencias, Departamentos y Puestos
           </a>
 
           <a href="{% url 'salario' %}">
-            <i class="fas fa-money-bill-wave"></i>
-            Salarios
+            <i class="fas fa-money-bill-wave"></i> Salarios
           </a>
 
           <a href="{% url 'reclutamiento' %}">
-            <i class="fas fa-wallet"></i>
-            Reclutamiento
+            <i class="fas fa-wallet"></i> Reclutamiento
           </a>
 
           <a href="{% url 'vacaciones' %}">
-            <i class="fas fa-umbrella-beach"></i>
-            Vacaciones
+            <i class="fas fa-umbrella-beach"></i> Vacaciones
           </a>
 
           <a href="{% url 'elec_Asistencia' %}">
-            <i class="fas fa-clock"></i>
-            Asistencia y Permiso
+            <i class="fas fa-clock"></i> Asistencia y Permiso
           </a>
 
           <a href="{% url 'evaluaciones' %}">
-            <i class="fas fa-chart-line"></i>
-            Evaluación de Desempeño
+            <i class="fas fa-chart-line"></i> Evaluación de Desempeño
           </a>
 
           <a href="{% url 'elec_KPI' %}">
-            <i class="fas fa-file-lines"></i>
-            KPIs
+            <i class="fas fa-file-lines"></i> KPIs
           </a>
 
           <a href="{% url 'reportes' %}">
-            <i class="fas fa-file-lines"></i>
-            Reportes
+            <i class="fas fa-file-lines"></i> Reportes
           </a>
 
           <a href="{% url 'usuarios' %}">
-            <i class="fas fa-users-cog"></i>
-            Usuarios y Roles
+            <i class="fas fa-users-cog"></i> Usuarios y Roles
           </a>
 
           <a href="{% url 'configuraciones' %}">
-            <i class="fas fa-gear"></i>
-            Configuración
+            <i class="fas fa-gear"></i> Configuración
           </a>
         </nav>
 
-        <!-- Cerrar sesión -->
         <div class="logout">
           <a href="login.html">
-            <i class="fas fa-right-from-bracket"></i>
-            Cerrar sesión
+            <i class="fas fa-right-from-bracket"></i> Cerrar sesión
           </a>
         </div>
       </aside>
 
-      <!-- =========================
-             CONTENIDO PRINCIPAL
-        ========================== -->
       <main class="main-content">
-        <!-- Header -->
         <header class="topbar">
-          <!-- Botón menú -->
           <button class="menu-toggle">
             <i class="fas fa-bars"></i>
           </button>
 
-          <!-- Título -->
           <div class="page-title">
-            <h1>Departamento</h1>
-            <p>Registro de un nuevo departamento</p>
+            <h1>Asignación de Candidato</h1>
+            <p>
+              Asocie un perfil a una vacante activa y controle sus fases de
+              evaluación
+            </p>
           </div>
 
-          <!-- Barra de búsqueda -->
           <div class="search-box">
             <i class="fas fa-search"></i>
             <input
@@ -133,15 +109,12 @@
             />
           </div>
 
-          <!-- Acciones -->
           <div class="topbar-actions">
-            <!-- Notificaciones -->
             <div class="notification">
               <i class="fas fa-bell"></i>
               <span class="badge">3</span>
             </div>
 
-            <!-- Usuario -->
             <div class="user-profile">
               <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
               <div class="user-info">
@@ -153,273 +126,195 @@
           </div>
         </header>
 
-        <!-- =========================
-                 CONTENIDO VISUAL
-            ========================== -->
-
-        <!-- =========================================================
-     REGISTRO DE CANDIDATO A VACANTE
-========================================================= -->
-
-        <!-- Breadcrumb -->
         <div class="breadcrumb">
-          <a href="{% url 'inicio' %}">
-            <i class="fas fa-house"></i>
-            Inicio
-          </a>
-
+          <a href="{% url 'inicio' %}"> <i class="fas fa-house"></i> Inicio </a>
           <i class="fas fa-chevron-right sep"></i>
-
           <a href="{% url 'reclutamiento' %}"> Reclutamiento </a>
-
           <i class="fas fa-chevron-right sep"></i>
-
           <span class="current"> Candidato de Vacante </span>
         </div>
 
-        <!-- =========================================================
-     CARD PRINCIPAL
-========================================================= -->
         <section class="form-card">
-          <!-- Header -->
           <div class="form-card-header">
             <div class="form-card-header-left">
               <div class="form-card-icon">
-                <i class="fas fa-user-check"></i>
+                <i class="fas fa-id-card-clip"></i>
               </div>
-
               <div>
-                <h2 class="form-card-title">Registro de Candidato</h2>
-
+                <h2 class="form-card-title">
+                  Registro de Candidato en Vacante
+                </h2>
                 <p class="form-card-subtitle">
-                  Gestión de candidatos participantes en procesos de
-                  reclutamiento.
+                  Gestión de postulantes, control de fases selectivas y estatus
+                  del reclutamiento.
                 </p>
               </div>
             </div>
-
             <p class="required-note"><span>*</span> Campos obligatorios</p>
           </div>
 
-          <!-- =====================================================
-       BODY
-  ====================================================== -->
           <div class="form-body">
             <form action="#" method="POST">
-              <!-- =====================================================
-           INFORMACIÓN GENERAL
-      ====================================================== -->
               <div class="form-section">
-                <h4 class="form-section-title">Información General</h4>
-
+                <h4 class="form-section-title">
+                  Información General de Postulación
+                </h4>
                 <div class="form-grid">
-                  <!-- Vacante -->
                   <div class="field">
                     <label for="vacante">
-                      <i class="fas fa-briefcase field-icon"></i>
-                      Vacante
-                      <span class="req">*</span>
+                      <i class="fas fa-briefcase field-icon"></i> Vacante a
+                      Aplicar <span class="req">*</span>
                     </label>
-
                     <select id="vacante" name="idVacante" required>
                       <option disabled selected>
-                        Seleccione una vacante...
+                        Seleccione una vacante activa...
                       </option>
-
                       <option>Analista Financiero Senior</option>
-
                       <option>Supervisor Comercial</option>
-
                       <option>Desarrollador Backend</option>
                     </select>
                   </div>
 
-                  <!-- Persona -->
                   <div class="field">
                     <label for="persona">
-                      <i class="fas fa-user field-icon"></i>
-                      Candidato / Persona
+                      <i class="fas fa-user field-icon"></i> Candidato / Persona
                       <span class="req">*</span>
                     </label>
-
                     <select id="persona" name="idPersona" required>
                       <option disabled selected>Seleccione candidato...</option>
-
                       <option>Juan Pérez</option>
-
                       <option>María González</option>
-
                       <option>Carlos Ramírez</option>
                     </select>
                   </div>
 
-                  <!-- Estado -->
                   <div class="field">
                     <label for="estado">
-                      <i class="fas fa-toggle-on field-icon"></i>
-                      Estado
-                      <span class="req">*</span>
+                      <i class="fas fa-toggle-on field-icon"></i> Estado del
+                      Registro <span class="req">*</span>
                     </label>
-
                     <select id="estado" name="idEstado" required>
                       <option disabled selected>Seleccione estado...</option>
-
-                      <option value="1">Activo</option>
-
-                      <option value="2">Inactivo</option>
+                      <option value="1">Activo (En consideración)</option>
+                      <option value="2">Inactivo (Histórico/Pauna)</option>
                     </select>
                   </div>
 
-                  <!-- Fase -->
                   <div class="field">
                     <label for="fase_actual">
-                      <i class="fas fa-layer-group field-icon"></i>
-                      Fase Actual
+                      <i class="fas fa-layer-group field-icon"></i> Fase Actual
                       <span class="req">*</span>
                     </label>
-
                     <select id="fase_actual" name="Fase_Actual" required>
-                      <option disabled selected>Seleccione fase...</option>
-
+                      <option disabled selected>
+                        Seleccione fase actual...
+                      </option>
                       <option value="1">Fase 1 - Preselección</option>
-
                       <option value="2">Fase 2 - Entrevista</option>
-
                       <option value="3">Fase 3 - Evaluación Final</option>
                     </select>
                   </div>
                 </div>
               </div>
 
-              <!-- =====================================================
-           RESULTADO DEL PROCESO
-      ====================================================== -->
               <div class="form-section">
                 <h4 class="form-section-title">Resultado del Proceso</h4>
-
                 <div class="form-grid">
-                  <!-- Resultado -->
                   <div class="field field-full">
                     <label for="resultado">
-                      <i class="fas fa-clipboard-check field-icon"></i>
-                      Resultado
-                      <span class="req">*</span>
+                      <i class="fas fa-clipboard-check field-icon"></i> Dictamen
+                      de Estatus <span class="req">*</span>
                     </label>
-
                     <select id="resultado" name="Resultado" required>
-                      <option disabled selected>Seleccione resultado...</option>
-
-                      <option>Avanzó</option>
-
-                      <option>Descartado</option>
-
-                      <option>Seleccionado</option>
+                      <option disabled selected>
+                        Seleccione resultado o avance...
+                      </option>
+                      <option>Avanzó (Pasa a siguiente fase)</option>
+                      <option>
+                        Descartado (No cumple perfil / Banco de talento)
+                      </option>
+                      <option>Seleccionado (Apto para contratación)</option>
                     </select>
                   </div>
                 </div>
               </div>
 
-              <!-- =====================================================
-           OBSERVACIONES
-      ====================================================== -->
               <div class="form-section">
                 <h4 class="form-section-title">Observaciones del Evaluador</h4>
-
                 <div class="form-grid">
                   <div class="field field-full">
                     <label for="observaciones">
-                      <i class="fas fa-align-left field-icon"></i>
-                      Observaciones
+                      <i class="fas fa-align-left field-icon"></i> Observaciones
+                      y Feedback de Entrevista
                     </label>
-
                     <textarea
                       id="observaciones"
                       name="Observaciones"
                       rows="6"
-                      placeholder="Ingrese notas, comentarios o resultados relevantes sobre el candidato..."
+                      placeholder="Describa el desempeño en la entrevista, pretensión salarial, fortalezas detectadas o motivos de descarte..."
                     ></textarea>
                   </div>
                 </div>
               </div>
 
-              <!-- =====================================================
-           VISTA VISUAL DEL PROGRESO
-      ====================================================== -->
               <div class="form-section">
-                <h4 class="form-section-title">Progreso del Candidato</h4>
-
+                <h4 class="form-section-title">
+                  Progreso del Candidato (Línea de Tiempo)
+                </h4>
                 <div class="candidate-progress">
-                  <!-- PASO -->
                   <div class="progress-step completed">
                     <div class="step-circle">
                       <i class="fas fa-check"></i>
                     </div>
-
                     <div class="step-content">
-                      <strong> Fase 1 </strong>
-
-                      <span> Preselección </span>
+                      <strong>Fase 1</strong>
+                      <span>Preselección</span>
                     </div>
                   </div>
 
-                  <!-- LINE -->
                   <div class="progress-line active"></div>
 
-                  <!-- PASO -->
                   <div class="progress-step active">
                     <div class="step-circle">
                       <i class="fas fa-user-tie"></i>
                     </div>
-
                     <div class="step-content">
-                      <strong> Fase 2 </strong>
-
-                      <span> Entrevista </span>
+                      <strong>Fase 2</strong>
+                      <span>Entrevista</span>
                     </div>
                   </div>
 
-                  <!-- LINE -->
                   <div class="progress-line"></div>
 
-                  <!-- PASO -->
                   <div class="progress-step">
                     <div class="step-circle">
                       <i class="fas fa-award"></i>
                     </div>
-
                     <div class="step-content">
-                      <strong> Fase 3 </strong>
-
-                      <span> Evaluación Final </span>
+                      <strong>Fase 3</strong>
+                      <span>Evaluación Final</span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <!-- =====================================================
-           BOTONES
-      ====================================================== -->
               <div class="form-footer">
                 <button type="reset" class="btn btn-ghost">
-                  <i class="fas fa-rotate-left"></i>
-                  Limpiar
+                  <i class="fas fa-rotate-left"></i> Limpiar Formulario
                 </button>
 
                 <button type="submit" class="btn btn-secondary">
-                  <i class="fas fa-floppy-disk"></i>
-                  Guardar borrador
+                  <i class="fas fa-floppy-disk"></i> Guardar Progreso
                 </button>
 
                 <button type="submit" class="btn btn-primary">
-                  <i class="fas fa-check"></i>
-                  Registrar Candidato
+                  <i class="fas fa-check"></i> Registrar Candidato
                 </button>
               </div>
             </form>
           </div>
         </section>
 
-        <!-- Footer -->
         <footer class="footer">
           © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
         </footer>

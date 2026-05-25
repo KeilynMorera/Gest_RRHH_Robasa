@@ -1,4 +1,4 @@
-<!-- Cargar la librería al inicio del template, para usar archivos estaticos -->
+<!-- Cargar la librería al inicio del template para el uso de archivos estáticos en Django -->
 {% load static %}
 
 <!doctype html>
@@ -6,12 +6,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard - Gestión de Talento Humano</title>
+    <title>Elección de Reclutamiento - Gestión de Talento Humano</title>
 
-    <!-- CSS local -->
+    <!-- CSS local para el diseño cuadriculado de tarjetas -->
     <link rel="stylesheet" href="{% static 'styles/tarjetas.css' %}" />
 
-    <!-- Font Awesome -->
+    <!-- Font Awesome para renderizar la iconografía del dashboard -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
@@ -19,112 +19,96 @@
   </head>
   <body>
     <div class="dashboard-container">
-      <!-- =========================
-             SIDEBAR
-        ========================== -->
+      <!-- =========================================================
+           SIDEBAR (MENÚ DE NAVEGACIÓN LATERAL)
+      ========================================================= -->
       <aside class="sidebar">
-        <!-- Logo -->
-        <div class="logo">
-          <i class="fas fa-users"></i>
-          <h2>ROBASA</h2>
-          <span>DISTRIBUIDORA</span>
+        <!-- Contenedor del Isotipo de la Distribuidora -->
+        <div class="logo-container">
+          <img
+            src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
+            alt="Logo Robasa"
+            class="logo-img"
+          />
         </div>
 
-        <!-- Menú -->
+        <!-- Opciones de Navegación del Ecosistema de Talento Humano -->
         <nav class="menu">
-          <a href="{% url 'inicio' %}">
-            <i class="fas fa-house"></i>
-            Inicio
-          </a>
+          <a href="{% url 'inicio' %}"> <i class="fas fa-house"></i> Inicio </a>
 
           <a href="{% url 'per_emp' %}">
-            <i class="fas fa-user-group"></i>
-            Personas o Empleados
+            <i class="fas fa-user-group"></i> Personas o Empleados
           </a>
 
           <a href="{% url 'empresas' %}">
-            <i class="fas fa-building"></i>
-            Empresas
+            <i class="fas fa-building"></i> Empresas
           </a>
 
           <a href="{% url 'comple_Empresa' %}">
-            <i class="fas fa-briefcase"></i>
-             Gerencias, Departamentos y Puestos
+            <i class="fas fa-briefcase"></i> Gerencias, Departamentos y Puestos
           </a>
 
           <a href="{% url 'salario' %}">
-            <i class="fas fa-money-bill-wave"></i>
-            Salarios
+            <i class="fas fa-money-bill-wave"></i> Salarios
           </a>
 
+          <!-- Enlace activo para el módulo de Reclutamiento -->
           <a href="{% url 'reclutamiento' %}">
-            <i class="fas fa-wallet"></i>
-            Reclutamiento
+            <i class="fas fa-wallet"></i> Reclutamiento
           </a>
 
           <a href="{% url 'vacaciones' %}">
-            <i class="fas fa-umbrella-beach"></i>
-            Vacaciones
+            <i class="fas fa-umbrella-beach"></i> Vacaciones
           </a>
 
           <a href="{% url 'elec_Asistencia' %}">
-            <i class="fas fa-clock"></i>
-            Asistencia y Permiso
+            <i class="fas fa-clock"></i> Asistencia y Permiso
           </a>
 
           <a href="{% url 'evaluaciones' %}">
-            <i class="fas fa-chart-line"></i>
-            Evaluación de Desempeño
+            <i class="fas fa-chart-line"></i> Evaluación de Desempeño
           </a>
 
           <a href="{% url 'elec_KPI' %}">
-            <i class="fas fa-file-lines"></i>
-            KPIs
+            <i class="fas fa-file-lines"></i> KPIs
           </a>
 
           <a href="{% url 'reportes' %}">
-            <i class="fas fa-file-lines"></i>
-            Reportes
+            <i class="fas fa-file-lines"></i> Reportes
           </a>
 
           <a href="{% url 'usuarios' %}">
-            <i class="fas fa-users-cog"></i>
-            Usuarios y Roles
+            <i class="fas fa-users-cog"></i> Usuarios y Roles
           </a>
 
           <a href="{% url 'configuraciones' %}">
-            <i class="fas fa-gear"></i>
-            Configuración
+            <i class="fas fa-gear"></i> Configuración
           </a>
         </nav>
 
-        <!-- Cerrar sesión -->
+        <!-- Bloque de salida del sistema -->
         <div class="logout">
           <a href="login.html">
-            <i class="fas fa-right-from-bracket"></i>
-            Cerrar sesión
+            <i class="fas fa-right-from-bracket"></i> Cerrar sesión
           </a>
         </div>
       </aside>
 
-      <!-- =========================
-             CONTENIDO PRINCIPAL
-        ========================== -->
+      <!-- =========================================================
+           CONTENIDO PRINCIPAL Y RETÍCULA DE ACCIONES
+      ========================================================= -->
       <main class="main-content">
-        <!-- Header -->
+        <!-- Header / Barra Superior de Estado -->
         <header class="topbar">
-          <!-- Botón menú -->
           <button class="menu-toggle">
             <i class="fas fa-bars"></i>
           </button>
 
-          <!-- Título -->
           <div class="page-title">
-            <h1>Compone Empresa</h1>
-            <p>Selecione el tipo de registro que desea agregar</p>
+            <h1>Módulo de Reclutamiento</h1>
+            <p>Seleccione el tipo de registro o proceso que desea gestionar</p>
           </div>
 
-          <!-- Barra de búsqueda -->
           <div class="search-box">
             <i class="fas fa-search"></i>
             <input
@@ -133,71 +117,68 @@
             />
           </div>
 
-          <!-- Acciones -->
           <div class="topbar-actions">
-            <!-- Notificaciones -->
             <div class="notification">
               <i class="fas fa-bell"></i>
               <span class="badge">3</span>
             </div>
 
-            <!-- Usuario -->
             <div class="user-profile">
               <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
-
               <div class="user-info">
                 <strong>María Gómez</strong>
                 <span>Recursos Humanos</span>
               </div>
-
               <i class="fas fa-chevron-down"></i>
             </div>
           </div>
         </header>
 
-        <!-- =========================
-              CONTENIDO VISUAL
-             ========================== -->
-
-        <!-- Tarjetas de acción -->
+        <!-- =========================================================
+             SECCIÓN DE TARJETAS DE SELECCIÓN (CONTENIDO VISUAL)
+        ========================================================= -->
         <section class="action-cards-grid">
-
-          <!-- Tarjeta: Registro de Vacante -->
+          <!-- Tarjeta 1: Apertura de Requerimientos / Vacantes -->
           <div class="action-card">
+            <!-- Icono cambiado a 'briefcase' para asociarlo directamente con un puesto de trabajo/vacante -->
             <div class="action-card-illustration">
-              <i class="fas fa-user-pen"></i>
+              <i class="fas fa-briefcase"></i>
             </div>
             <div class="action-card-body">
               <h3 class="action-card-title">Registrar Nueva Vacante</h3>
               <p class="action-card-desc">
-                Registro de cada proceso de reclutamiento abierto en la empresa.
+                Inicie un nuevo proceso de reclutamiento
+                especificando los requerimientos solicitados por la empresa.
               </p>
               <a href="{% url 'vacante' %}" class="action-card-btn">
-                <i class="fas fa-plus"></i>
-                Registrar Vacante
+                <i class="fas fa-plus"></i> Registrar Vacante
               </a>
             </div>
           </div>
 
-          <!-- Tarjeta: Registrar Ingreso Vacante -->
+          <!-- Tarjeta 2: Seguimiento de Postulantes y Fases de Ingreso -->
           <div class="action-card">
+            <!-- Icono cambiado a 'id-card-clip' para representar la acreditación o perfil del candidato -->
             <div class="action-card-illustration accent">
-              <i class="fas fa-user-tie"></i>
+              <i class="fas fa-id-card-clip"></i>
             </div>
             <div class="action-card-body">
-              <h3 class="action-card-title">Registrar Ingreso Vacante</h3>
+              <h3 class="action-card-title">Registrar Candidato en Vacante</h3>
               <p class="action-card-desc">
-                Registro de cada candidato, que participo en un proceso de
-                reclutamiento, con la fase que alcanzo.
+                Asigne un nuevo participante a una vacante activa y documente el
+                avance o estatus de sus fases de selección.
               </p>
-              <a href="{% url 'reclut_Vacante' %}" class="action-card-btn accent">
-                <i class="fas fa-user-plus"></i>
-                Registro Candidato Vacante
+              <a
+                href="{% url 'reclut_Vacante' %}"
+                class="action-card-btn accent"
+              >
+                <i class="fas fa-user-plus"></i> Registrar Candidato
               </a>
             </div>
           </div>
+        </section>
 
-        <!-- Footer -->
+        <!-- Footer Institucional de la Aplicación -->
         <footer class="footer">
           © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
         </footer>
