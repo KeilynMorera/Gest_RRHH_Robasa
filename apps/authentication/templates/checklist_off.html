@@ -1,0 +1,247 @@
+{% load static %}
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checklist de Offboarding - Talento Humano | Robasa</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="{% static 'styles/checklist_off.css' %}" />
+    
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <aside class="sidebar">
+        <div class="logo-container">
+          <img
+            src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
+            alt="Logo"
+            class="logo-img"
+          />
+        </div>
+        <nav class="menu">
+          <a href="{% url 'inicio' %}"><i class="fas fa-house"></i> Inicio</a>
+          <a href="{% url 'per_emp' %}"
+            ><i class="fas fa-user-group"></i> Personas o Empleados</a
+          >
+          <a href="#" class="active"
+            ><i class="fas fa-door-open"></i> Offboarding / Salidas</a
+          >
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="page-title">
+            <h1>Checklist de Control Operativo</h1>
+            <p>Monitoreo de la desincorporación y resguardo legal</p>
+          </div>
+        </header>
+
+        <div class="breadcrumb">
+          <a href="{% url 'inicio' %}">Inicio</a> <span style="color: #c5cbdf">/</span>
+          <a href="{% url 'registrar_off' %}">Offboarding</a>
+          <span style="color: #c5cbdf">/</span>
+          <span class="current">Checklist Tareas</span>
+        </div>
+
+        <div class="employee-box">
+          <div>
+            <p
+              style="
+                font-size: 12px;
+                color: #7a8599;
+                text-transform: uppercase;
+                font-weight: 700;
+              "
+            >
+              Colaborador en Proceso de Estatus de Salida
+            </p>
+            <strong>Juan Pérez Mendoza</strong> —
+            <span>Puesto: Encargado de Bodega</span>
+          </div>
+          <div>
+            <span style="font-size: 13px; color: #6b7499"
+              ><i class="fas fa-file-contract"></i> Folio Proceso:
+              <strong>#OFF-104</strong></span
+            >
+          </div>
+        </div>
+
+        <form action="#" method="POST">
+          {% csrf_token %}
+
+          <div class="stage-section">
+            <div class="stage-header">
+              <div class="stage-number">1</div>
+              <span>Etapa: Notificación y Legal</span>
+            </div>
+
+            <div class="task-row">
+              <input
+                type="checkbox"
+                class="task-check"
+                name="check_1"
+                id="check_1"
+                checked
+              />
+              <div class="task-desc">
+                Firmar carta de rescisión de contrato o aceptación de renuncia.
+              </div>
+              <div class="task-meta">
+                <select
+                  name="responsable_1"
+                  title="Responsable de la actividad"
+                >
+                  <option value="901" selected>María Gómez (RRHH)</option>
+                  <option value="902">Jorge Arce (TI)</option>
+                </select>
+                <input
+                  type="date"
+                  name="fecha_comp_1"
+                  value="2026-05-24"
+                  title="Fecha de completado"
+                />
+              </div>
+            </div>
+
+            <div class="task-row">
+              <input
+                type="checkbox"
+                class="task-check"
+                name="check_2"
+                id="check_2"
+              />
+              <div class="task-desc">
+                Envío de aviso de baja a la Caja Costarricense de Seguro Social
+                (CCSS).
+              </div>
+              <div class="task-meta">
+                <select
+                  name="responsable_2"
+                  title="Responsable de la actividad"
+                >
+                  <option value="901">María Gómez (RRHH)</option>
+                  <option value="902">Jorge Arce (TI)</option>
+                </select>
+                <input
+                  type="date"
+                  name="fecha_comp_2"
+                  title="Fecha de completado"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="stage-section">
+            <div class="stage-header">
+              <div class="stage-number">2</div>
+              <span>Etapa: Tecnologías de Información (TI)</span>
+            </div>
+
+            <div class="task-row">
+              <input
+                type="checkbox"
+                class="task-check"
+                name="check_3"
+                id="check_3"
+              />
+              <div class="task-desc">
+                Revocación de accesos al ERP, correos corporativos y bases de
+                datos de Robasa.
+              </div>
+              <div class="task-meta">
+                <select
+                  name="responsable_3"
+                  title="Responsable de la actividad"
+                >
+                  <option value="902" selected>Jorge Arce (TI)</option>
+                  <option value="901">María Gómez (RRHH)</option>
+                </select>
+                <input
+                  type="date"
+                  name="fecha_comp_3"
+                  title="Fecha de completado"
+                />
+              </div>
+            </div>
+
+            <div class="task-row">
+              <input
+                type="checkbox"
+                class="task-check"
+                name="check_4"
+                id="check_4"
+              />
+              <div class="task-desc">
+                Devolución física de equipo de cómputo, token de seguridad y
+                teléfonos celulares.
+              </div>
+              <div class="task-meta">
+                <select
+                  name="responsable_4"
+                  title="Responsable de la actividad"
+                >
+                  <option value="902">Jorge Arce (TI)</option>
+                  <option value="901">María Gómez (RRHH)</option>
+                </select>
+                <input
+                  type="date"
+                  name="fecha_comp_4"
+                  title="Fecha de completado"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="stage-section">
+            <div class="stage-header">
+              <div class="stage-number">3</div>
+              <span>Etapa: Liquidación y Cierre Financiero</span>
+            </div>
+
+            <div class="task-row">
+              <input
+                type="checkbox"
+                class="task-check"
+                name="check_5"
+                id="check_5"
+              />
+              <div class="task-desc">
+                Cálculo de prestaciones legales (Preaviso, Cesantía, Vacaciones,
+                Aguinaldo proporcional).
+              </div>
+              <div class="task-meta">
+                <select
+                  name="responsable_5"
+                  title="Responsable de la actividad"
+                >
+                  <option value="903">Contador Externo</option>
+                  <option value="901">María Gómez (RRHH)</option>
+                </select>
+                <input
+                  type="date"
+                  name="fecha_comp_5"
+                  title="Fecha de completado"
+                />
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-save">
+            <i class="fas fa-floppy-disk"></i> Guardar Avance del Checklist
+          </button>
+        </form>
+
+        <footer class="footer">
+          © 2026 Distribuidora Robasa - Gestión de Talento Humano
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

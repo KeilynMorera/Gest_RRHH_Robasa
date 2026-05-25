@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Título que aparece en la pestaña del navegador -->
-    <title>Complemento Empresa - Gestión de Talento Humano</title>
+    <title>Elección de Movimientos - Gestión de Talento Humano</title>
 
     <!-- =========================================================
          ARCHIVO CSS LOCAL
@@ -170,188 +170,94 @@
            CONTENIDO PRINCIPAL
       ========================================================= -->
       <main class="main-content">
-        <!-- =========================================================
-             TOPBAR / BARRA SUPERIOR
-        ========================================================= -->
         <header class="topbar">
-          <!-- Botón para abrir/cerrar menú -->
           <button class="menu-toggle">
             <i class="fas fa-bars"></i>
           </button>
 
-          <!-- =========================================================
-               TÍTULO DE LA PÁGINA
-          ========================================================= -->
           <div class="page-title">
-            <h1>Compone Empresa</h1>
-            <p>Selecione el tipo de registro que desea agregar</p>
+            <h1>Gestión de Egresos y Desincorporación</h1>
+            <p>
+              Seleccione la fase del proceso de desvinculación que desea
+              administrar
+            </p>
           </div>
 
-          <!-- =========================================================
-               BARRA DE BÚSQUEDA
-          ========================================================= -->
           <div class="search-box">
             <i class="fas fa-search"></i>
-
             <input
               type="text"
-              placeholder="Buscar empleado, módulo, reporte..."
+              placeholder="Buscar colaborador egresado, motivos o folios..."
             />
           </div>
 
-          <!-- =========================================================
-               ACCIONES DEL USUARIO
-          ========================================================= -->
           <div class="topbar-actions">
-            <!-- =========================================================
-                 NOTIFICACIONES
-            ========================================================= -->
             <div class="notification">
               <i class="fas fa-bell"></i>
-
-              <!-- Cantidad de notificaciones -->
               <span class="badge">3</span>
             </div>
 
-            <!-- =========================================================
-                 PERFIL DEL USUARIO
-            ========================================================= -->
             <div class="user-profile">
-              <!-- Imagen de perfil -->
               <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
-
-              <!-- Información del usuario -->
               <div class="user-info">
                 <strong>María Gómez</strong>
                 <span>Recursos Humanos</span>
               </div>
-
-              <!-- Flecha desplegable -->
               <i class="fas fa-chevron-down"></i>
             </div>
           </div>
         </header>
 
-        <!-- =========================================================
-              CONTENIDO VISUAL
-        ========================================================= -->
-
-        <!-- =========================================================
-             TARJETAS DE ACCIÓN
-        ========================================================= -->
         <section class="action-cards-grid">
-          <!-- =========================================================
-               TARJETA: INGRESAR GERENCIA
-          ========================================================= -->
           <div class="action-card">
-            <!-- Ícono representativo -->
             <div class="action-card-illustration">
-              <i class="fas fa-sitemap"></i>
+              <i class="fas fa-user-minus"></i>
             </div>
 
-            <!-- Contenido de la tarjeta -->
             <div class="action-card-body">
-              <!-- Título -->
-              <h3 class="action-card-title">Ingresar Gerencia</h3>
-
-              <!-- Descripción -->
+              <h3 class="action-card-title">Registro de Salida y Entrevista</h3>
               <p class="action-card-desc">
-                Registra las gerencias que tiene cada empresa.
+                Inicie formalmente la desvinculación de un colaborador. Permite
+                registrar la fecha efectiva, clasificar las causas legales según
+                el catálogo institucional y documentar los resultados de la
+                entrevista de egreso.
               </p>
 
-              <!-- Botón -->
-              <a href="{% url 'gerencia' %}" class="action-card-btn">
-                <i class="fas fa-plus"></i>
-                Ingresar gerencia
+              <a
+                href="{% url 'registrar_off' %}"
+                class="action-card-btn"
+              >
+                <i class="fas fa-file-invoice"></i>
+                Registrar Salida
               </a>
             </div>
           </div>
 
-          <!-- =========================================================
-               TARJETA: REGISTRAR DEPARTAMENTO
-          ========================================================= -->
           <div class="action-card">
-            <!-- Ícono -->
             <div class="action-card-illustration accent">
-              <i class="fas fa-building-user"></i>
+              <i class="fas fa-list-check"></i>
             </div>
 
-            <!-- Contenido -->
             <div class="action-card-body">
-              <!-- Título -->
-              <h3 class="action-card-title">Registrar Nuevo Departamento</h3>
-
-              <!-- Descripción -->
+              <h3 class="action-card-title">Checklist de Desincorporación</h3>
               <p class="action-card-desc">
-                Asigna un departamento a su respectiva gerencia.
+                Administre y audite el cumplimiento de las tareas operativas de
+                salida. Controle la revocación de accesos de TI, la entrega
+                física de activos, la liquidación financiera y asigne
+                colaboradores responsables por etapa.
               </p>
 
-              <!-- Botón -->
-              <a href="{% url 'departamento' %}" class="action-card-btn accent">
-                <i class="fas fa-plus"></i>
-                Registrar departamento
-              </a>
-            </div>
-          </div>
-
-          <!-- =========================================================
-               TARJETA: REGISTRAR PUESTO
-          ========================================================= -->
-          <div class="action-card">
-            <!-- Ícono -->
-            <div class="action-card-illustration">
-              <i class="fas fa-briefcase"></i>
-            </div>
-
-            <!-- Contenido -->
-            <div class="action-card-body">
-              <!-- Título -->
-              <h3 class="action-card-title">Registrar Puesto</h3>
-
-              <!-- Descripción -->
-              <p class="action-card-desc">
-                Registrar un puesto dentro del departamento.
-              </p>
-
-              <!-- Botón -->
-              <a href="{% url 'puesto' %}" class="action-card-btn">
-                <i class="fas fa-plus"></i>
-                Ingresar puesto
-              </a>
-            </div>
-          </div>
-
-          <!-- =========================================================
-               TARJETA: CONFIGURACIÓN DE PUESTO
-          ========================================================= -->
-          <div class="action-card">
-            <!-- Ícono -->
-            <div class="action-card-illustration accent">
-              <i class="fas fa-sliders"></i>
-            </div>
-
-            <!-- Contenido -->
-            <div class="action-card-body">
-              <!-- Título -->
-              <h3 class="action-card-title">Configuración Puesto</h3>
-
-              <!-- Descripción -->
-              <p class="action-card-desc">
-                Asigna una compensación específica para cada puesto.
-              </p>
-
-              <!-- Botón -->
-              <a href="{% url 'confi_Puesto' %}" class="action-card-btn accent">
-                <i class="fas fa-gear"></i>
-                Configurar puesto
+              <a
+                href="{% url 'checklist_off' %}"
+                class="action-card-btn accent"
+              >
+                <i class="fas fa-list-ol"></i>
+                Gestionar Checklist
               </a>
             </div>
           </div>
         </section>
 
-        <!-- =========================================================
-             FOOTER / PIE DE PÁGINA
-        ========================================================= -->
         <footer class="footer">
           © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
         </footer>

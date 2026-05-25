@@ -1,0 +1,237 @@
+{% load static %}
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro de Offboarding - Talento Humano | Robasa</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="{% static 'styles/registrar_Off.css' %}" />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <aside class="sidebar">
+        <div class="logo-container">
+          <img
+            src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
+            alt="Logo"
+            class="logo-img"
+          />
+        </div>
+        <nav class="menu">
+          <a href="{% url 'inicio' %}"><i class="fas fa-house"></i> Inicio</a>
+          <a href="{% url 'per_emp' %}"
+            ><i class="fas fa-user-group"></i> Personas o Empleados</a
+          >
+          <a href="#" class="active"
+            ><i class="fas fa-door-open"></i> Offboarding / Salidas</a
+          >
+          <a href="{% url 'reportes' %}"
+            ><i class="fas fa-file-lines"></i> Reportes</a
+          >
+        </nav>
+        <div class="logout">
+          <a href="#"><i class="fas fa-right-from-bracket"></i> Salir</a>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="page-title">
+            <h1>Desvinculación y Offboarding</h1>
+            <p>Registro legal de egresos y desincorporación de personal</p>
+          </div>
+          <div class="topbar-actions">
+            <div class="user-profile">
+              <img src="https://i.pravatar.cc/100?img=32" alt="Avatar" />
+              <div class="user-info">
+                <strong>María Gómez</strong><span>Recursos Humanos</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <div class="breadcrumb">
+          <a href="#">Inicio</a> <span style="color: #c5cbdf">/</span>
+          <span class="current">Registrar Offboarding</span>
+        </div>
+
+        <section class="form-card">
+          <div class="form-card-header">
+            <div class="form-card-header-left">
+              <div class="form-card-icon">
+                <i class="fas fa-user-minus"></i>
+              </div>
+              <div>
+                <h2 class="form-card-title">
+                  Formulario de Baja de Colaborador
+                </h2>
+              </div>
+            </div>
+          </div>
+          <div class="form-body">
+            <form action="#" method="POST">
+              {% csrf_token %}
+              <div class="form-grid">
+                <div class="field">
+                  <label for="idEmpleado"
+                    ><i class="fas fa-user-tie"></i> Colaborador Egresante
+                    <span>*</span></label
+                  >
+                  <select id="idEmpleado" name="idEmpleado" required>
+                    <option value="" disabled selected>
+                      Seleccione el empleado...
+                    </option>
+                    <option value="1">Juan Pérez - Almacén</option>
+                    <option value="2">Sofía Castro - Contabilidad</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="idCausa"
+                    ><i class="fas fa-gavel"></i> Causa de Salida (Catálogo)
+                    <span>*</span></label
+                  >
+                  <select id="idCausa" name="idCausa" required>
+                    <option value="" disabled selected>
+                      Seleccione la causa legal...
+                    </option>
+                    <optgroup label="Voluntaria">
+                      <option value="10">Renuncia Voluntaria</option>
+                      <option value="11">Jubilación</option>
+                    </optgroup>
+                    <optgroup label="Involuntaria">
+                      <option value="20">
+                        Despido con Responsabilidad Patronal
+                      </option>
+                      <option value="21">
+                        Despido sin Responsabilidad Patronal
+                      </option>
+                      <option value="22">
+                        Fin de Contrato por Tiempo Determinado
+                      </option>
+                    </optgroup>
+                    <optgroup label="Casos Fuerza Mayor">
+                      <option value="30">Defunción</option>
+                    </optgroup>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="Fecha_Salida"
+                    ><i class="fas fa-calendar-day"></i> Fecha Efectiva de
+                    Salida <span>*</span></label
+                  >
+                  <input
+                    type="date"
+                    id="Fecha_Salida"
+                    name="Fecha_Salida"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="field" style="margin-bottom: 24px">
+                <label for="Descrip_Causa"
+                  ><i class="fas fa-comment-alt-file"></i> Observaciones y
+                  Detalles de la Entrevista de Salida</label
+                >
+                <textarea
+                  id="Descrip_Causa"
+                  name="Descrip_Causa"
+                  rows="4"
+                  placeholder="Redacte minuciosamente los acuerdos, comentarios de la entrevista de egreso o motivos de despido..."
+                ></textarea>
+              </div>
+
+              <div class="form-footer">
+                <button type="reset" class="btn btn-ghost">Limpiar</button>
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-arrow-right-to-bracket"></i> Iniciar Proceso
+                  de Salida
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <h3
+          style="
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #26317a;
+          "
+        >
+          <i class="fas fa-history"></i> Procesos de Salida en Ejecución
+        </h3>
+        <div class="table-container">
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th>ID Offboarding</th>
+                <th>Colaborador</th>
+                <th>Categoría / Causa</th>
+                <th>Fecha Salida</th>
+                <th>Checklist Operativo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>#OFF-104</strong></td>
+                <td>Juan Pérez</td>
+                <td>
+                  <span class="badge-category bg-voluntaria">Voluntaria</span> -
+                  Renuncia
+                </td>
+                <td>30/05/2026</td>
+                <td>
+                  <a
+                    href="{% url 'checklist_off' %}"
+                    class="btn btn-primary"
+                    style="padding: 4px 10px; font-size: 11px"
+                    ><i class="fas fa-list-check"></i> Ir al Checklist</a
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><strong>#OFF-103</strong></td>
+                <td>Sofía Castro</td>
+                <td>
+                  <span class="badge-category bg-involuntaria"
+                    >Involuntaria</span
+                  >
+                  - Fin Contrato
+                </td>
+                <td>15/05/2026</td>
+                <td>
+                  <a
+                    href="{% url 'checklist_off' %}"
+                    class="btn btn-ghost"
+                    style="
+                      padding: 4px 10px;
+                      font-size: 11px;
+                      background: #e8ecf6;
+                      border: none;
+                    "
+                    ><i class="fas fa-check-double"></i> Completado</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <footer class="footer">
+          © 2026 Distribuidora Robasa - Gestión de Talento Humano
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

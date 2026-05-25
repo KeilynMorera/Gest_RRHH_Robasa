@@ -157,3 +157,15 @@ def accion_Personal_view(request):
 #Pagina de Rotaciones de Personal
 def rotacion_Personal_view(request):
     return render(request, 'rotacion_Personal.html')
+
+#Pagina de Elección de Offboarding
+def elec_Offboarding_view(request):
+    return render(request, 'elec_Offboarding.html')
+
+#Pagina de Registrar Offboarding
+def registrar_off_view(request):
+    return render(request, 'registrar_off.html')
+
+#Pagina de Checklist de Offboarding
+def checklist_off_view(request):
+    return render(request, 'checklist_off.html')
