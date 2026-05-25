@@ -78,5 +78,9 @@ urlpatterns = [
     path('kpi.html/', views.kpi_view, name='kpi'),
     # Ruta para el dashboard (pantalla de onboarding)
     path('onboarding.html/', views.onboarding_view, name='onboarding'),
+    # Ruta para el dashboard (pantalla de acción o rotación de personal)
+    path('accion_rotacion.html/', views.accion_rotacion_view, name='accion_rotacion'),
+    # Ruta para el dashboard (pantalla de acción de personal)
+    path('accion_Personal.html/', views.accion_Personal_view, name='accion_Personal'),
 ]
 

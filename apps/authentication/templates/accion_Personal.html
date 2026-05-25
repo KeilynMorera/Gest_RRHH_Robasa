@@ -1,0 +1,330 @@
+{% load static %}
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Acciones de Personal - Talento Humano | Robasa</title>
+
+    <link rel="stylesheet" href="{% static 'styles/accion_Personal.css' %}" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      
+      <aside class="sidebar">
+        <div class="logo-container">
+          <img
+            src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
+            alt="Logo Robasa"
+            class="logo-img"
+          />
+        </div>
+
+        <nav class="menu">
+          <a href="{% url 'inicio' %}"> <i class="fas fa-house"></i> Inicio </a>
+
+          <a href="{% url 'per_emp' %}">
+            <i class="fas fa-user-group"></i> Personas o Empleados
+          </a>
+
+          <!-- Opción Onboarding -->
+          <a href="{% url 'onboarding' %}">
+            <i class="fas fa-clipboard-list"></i>
+            Onboarding
+          </a>
+
+          <a href="{% url 'empresas' %}">
+            <i class="fas fa-building"></i> Empresas
+          </a>
+
+          <a href="{% url 'comple_Empresa' %}">
+            <i class="fas fa-briefcase"></i> Gerencias, Departamentos y Puestos
+          </a>
+
+          <a href="{% url 'salario' %}">
+            <i class="fas fa-money-bill-wave"></i> Salarios
+          </a>
+
+          <a href="{% url 'reclutamiento' %}">
+            <i class="fas fa-wallet"></i> Reclutamiento
+          </a>
+
+          <a href="{% url 'vacaciones' %}">
+            <i class="fas fa-umbrella-beach"></i> Vacaciones
+          </a>
+
+          <a href="{% url 'elec_Asistencia' %}" class="active">
+            <i class="fas fa-clock"></i> Asistencia y Permiso
+          </a>
+
+          <!-- Acción o Rotación de Personal -->
+          <a href="{% url 'accion_rotacion' %}">
+            <i class="fas fa-clipboard-list"></i>
+            Acciones o Rotaciones del Personal
+          </a>
+
+          <a href="{% url 'evaluaciones' %}">
+            <i class="fas fa-chart-line"></i> Evaluación de Desempeño
+          </a>
+
+          <a href="{% url 'elec_KPI' %}">
+            <i class="fas fa-file-lines"></i> KPIs
+          </a>
+
+          <a href="{% url 'reportes' %}">
+            <i class="fas fa-file-lines"></i> Reportes
+          </a>
+
+          <a href="{% url 'usuarios' %}">
+            <i class="fas fa-users-cog"></i> Usuarios y Roles
+          </a>
+
+          <a href="{% url 'configuraciones' %}">
+            <i class="fas fa-gear"></i> Configuración
+          </a>
+        </nav>
+
+        <div class="logout">
+          <a href="login.html">
+            <i class="fas fa-right-from-bracket"></i> Cerrar sesión
+          </a>
+        </div>
+        </nav>
+
+        <div class="logout">
+          <a href="login.html"> <i class="fas fa-right-from-bracket"></i> Cerrar sesión </a>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        
+        <header class="topbar">
+          <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+          <div class="page-title">
+            <h1>Acciones de Personal</h1>
+            <p>Historial y registro legal de movimientos, licencias y ajustes salariales</p>
+          </div>
+
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Buscar historial por colaborador..." />
+          </div>
+
+          <div class="topbar-actions">
+            <div class="notification">
+              <i class="fas fa-bell"></i>
+              <span class="badge">3</span>
+            </div>
+            <div class="user-profile">
+              <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
+              <div class="user-info">
+                <strong>María Gómez</strong>
+                <span>Recursos Humanos</span>
+              </div>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+          </div>
+        </header>
+
+        <div class="breadcrumb">
+          <a href="{% url 'inicio' %}"><i class="fas fa-home"></i> Inicio</a>
+          <span class="sep">/</span>
+          <span class="current">Gestión de Acciones de Personal</span>
+        </div>
+
+        <section class="form-card">
+          <div class="form-card-header">
+            <div class="form-card-header-left">
+              <div class="form-card-icon">
+                <i class="fas fa-gavel"></i>
+              </div>
+              <div>
+                <h2 class="form-card-title">Registro de Movimientos Administrativos</h2>
+                <p class="form-card-subtitle">Genere los justificantes legales de ascensos, amonestaciones, licencias o incrementos de sueldo.</p>
+              </div>
+            </div>
+            <p class="required-note">Los campos con <span>*</span> son obligatorios</p>
+          </div>
+
+          <div class="form-body">
+            <form action="#" method="POST">
+              {% csrf_token %}
+
+              <div class="form-section">
+                <h4 class="form-section-title">
+                  <i class="fas fa-file-invoice"></i> 1. Cabecera del Registro Mensual
+                </h4>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="idAccion">
+                      <i class="fas fa-id-card field-icon"></i> ID Acción (Folio)
+                    </label>
+                    <input type="number" id="idAccion" placeholder="Automático (Sistema)" readonly />
+                  </div>
+
+                  <div class="field">
+                    <label for="idEmpleado">
+                      <i class="fas fa-user-tie field-icon"></i> Colaborador Implicado <span class="req">*</span>
+                    </label>
+                    <select id="idEmpleado" required>
+                      <option value="" disabled selected>Seleccione el empleado...</option>
+                      <option value="201">Carlos Mendoza Vega - TI</option>
+                      <option value="202">Elena Rostova Ruiz - Ventas</option>
+                      <option value="203">Josué Alvarado Quirós - Operaciones</option>
+                    </select>
+                  </div>
+
+                  <div class="field">
+                    <label for="Fecha">
+                      <i class="fas fa-calendar-check field-icon"></i> Fecha de Aplicación <span class="req">*</span>
+                    </label>
+                    <input type="date" id="Fecha" required />
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h4 class="form-section-title">
+                  <i class="fas fa-layer-group"></i> 2. Tipo y Especificación del Movimiento
+                </h4>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="Tipo_Accion">
+                      <i class="fas fa-sliders field-icon"></i> Tipo de Acción <span class="req">*</span>
+                    </label>
+                    <select id="Tipo_Accion" required onchange="toggleSalario(this.value)">
+                      <option value="" disabled selected>Seleccione la naturaleza de la acción...</option>
+                      <option value="Ajuste Salarial">Ajuste Salarial (Aumento/Corrección)</option>
+                      <option value="Ascenso">Ascenso de Puesto</option>
+                      <option value="Traslado">Traslado de Sucursal / Departamento</option>
+                      <option value="Acción Disciplinaria">Acción Disciplinaria (Amonestación)</option>
+                      <option value="Licencia">Licencia / Permiso Especial</option>
+                      <option value="Premio">Premio / Reconocimiento Especial</option>
+                      <option value="Plan de Mejora">Plan de Mejora (Rendimiento)</option>
+                    </select>
+                  </div>
+
+                  <div class="field" id="contenedorSalario">
+                    <label for="idSalario">
+                      <i class="fas fa-money-check-dollar field-icon"></i> Vincular Nuevo Estructura Salarial
+                    </label>
+                    <select id="idSalario">
+                      <option value="" selected>No aplica (Dejar en blanco / NULL)</option>
+                      <option value="401">Estructura Base - ₡450,000 (Junior)</option>
+                      <option value="402">Estructura Senior A - ₡850,000</option>
+                      <option value="403">Estructura Jefatura B - ₡1,200,000</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="field" style="margin-top: 20px;">
+                  <label for="Detalle">
+                    <i class="fas fa-file-lines field-icon"></i> Descripción Detallada del Movimiento <span class="req">*</span>
+                  </label>
+                  <textarea id="Detalle" rows="3" placeholder="Redacte minuciosamente el motivo del movimiento, números de oficio de respaldo, justificaciones legales o aclaraciones pertinentes para auditoría..." required></textarea>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h4 class="form-section-title">
+                  <i class="fas fa-chart-bar"></i> Resumen de Movimientos del Mes
+                </h4>
+                <div class="summary-grid">
+                  <div class="summary-card">
+                    <span>Acciones del Colaborador (Año)</span>
+                    <strong>2 Registradas</strong>
+                  </div>
+                  <div class="summary-card">
+                    <span>Nivel de Riesgo Legal</span>
+                    <strong>Bajo (Sin faltas)</strong>
+                  </div>
+                  <div class="summary-card">
+                    <span>Último Cambio Económico</span>
+                    <strong>15/01/2026</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h4 class="form-section-title">
+                  <i class="fas fa-clock-rotate-left"></i> Historial Reciente de Acciones de Personal
+                </h4>
+                <div class="table-container">
+                  <table class="results-table">
+                    <thead>
+                      <tr>
+                        <th>Fecha</th>
+                        <th>Colaborador</th>
+                        <th>Tipo de Acción</th>
+                        <th>ID Salario Relacionado</th>
+                        <th>Detalle Ejecutado</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>25/05/2026</td>
+                        <td><strong>Carlos Mendoza Vega</strong></td>
+                        <td><span style="color: #0c45ca; font-weight: bold;"><i class="fas fa-turn-up"></i> Ascenso</span></td>
+                        <td>-- (NULL)</td>
+                        <td>Promoción de Desarrollador Junior a Líder Técnico de Canales Digitales.</td>
+                      </tr>
+                      <tr>
+                        <td>12/05/2026</td>
+                        <td><strong>Elena Rostova Ruiz</strong></td>
+                        <td><span style="color: #e65100; font-weight: bold;"><i class="fas fa-money-bill-trend-up"></i> Ajuste Salarial</span></td>
+                        <td>ID: 402 (₡850,000)</td>
+                        <td>Ajuste por equiparación de mercado tras evaluación excelente de desempeño.</td>
+                      </tr>
+                      <tr>
+                        <td>02/05/2026</td>
+                        <td><strong>Josué Alvarado Quirós</strong></td>
+                        <td><span style="color: #c62828; font-weight: bold;"><i class="fas fa-triangle-exclamation"></i> Disciplinaria</span></td>
+                        <td>-- (NULL)</td>
+                        <td>Amonestación escrita por acumulación de tres llegadas tardías injustificadas.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="form-footer">
+                <button type="reset" class="btn btn-ghost">
+                  <i class="fas fa-cancel"></i> Limpiar Campos
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-shield-halved"></i> Aplicar y Sellar Acción
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <footer class="footer">
+          © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
+        </footer>
+      </main>
+    </div>
+
+    <script>
+      function toggleSalario(tipo) {
+        const contenedor = document.getElementById('contenedorSalario');
+        const selectSalario = document.getElementById('idSalario');
+        if (tipo === 'Ajuste Salarial') {
+          contenedor.style.opacity = '1';
+          selectSalario.style.borderColor = '#e8600a';
+          selectSalario.required = true;
+        } else {
+          contenedor.style.opacity = '0.7';
+          selectSalario.style.borderColor = '#dde2f0';
+          selectSalario.required = false;
+        }
+      }
+    </script>
+  </body>
+</html>

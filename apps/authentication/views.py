@@ -146,3 +146,11 @@ def kpi_view(request):
 def onboarding_view(request):
     return render(request, 'onboarding.html')
 
+#Pagina de Acciones o Rotaciones Personal
+def accion_rotacion_view(request):
+    return render(request, 'accion_rotacion.html')
+
+#Pagina de Acciones de Personal
+def accion_Personal_view(request):
+    return render(request, 'accion_Personal.html')
+
