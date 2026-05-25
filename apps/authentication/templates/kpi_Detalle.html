@@ -23,11 +23,16 @@
              SIDEBAR
         ========================== -->
       <aside class="sidebar">
-        <!-- Logo -->
-        <div class="logo">
-          <i class="fas fa-users"></i>
-          <h2>ROBASA</h2>
-          <span>DISTRIBUIDORA</span>
+        <!-- =========================================================
+             LOGO DE LA EMPRESA
+        ========================================================= -->
+        <div class="logo-container">
+          <!-- Imagen cargada desde archivos estáticos -->
+          <img
+            src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
+            alt="Logo Robasa"
+            class="logo-img"
+          />
         </div>
 
         <!-- Menú -->
@@ -111,20 +116,16 @@
              CONTENIDO PRINCIPAL
         ========================== -->
       <main class="main-content">
-        <!-- Header -->
         <header class="topbar">
-          <!-- Botón menú -->
           <button class="menu-toggle">
             <i class="fas fa-bars"></i>
           </button>
 
-          <!-- Título -->
           <div class="page-title">
-            <h1>Departamento</h1>
-            <p>Registro de un nuevo departamento</p>
+            <h1>Módulo de KPIs</h1>
+            <p>Evaluación y asignación de incentivos mensuales</p>
           </div>
 
-          <!-- Barra de búsqueda -->
           <div class="search-box">
             <i class="fas fa-search"></i>
             <input
@@ -133,15 +134,11 @@
             />
           </div>
 
-          <!-- Acciones -->
           <div class="topbar-actions">
-            <!-- Notificaciones -->
             <div class="notification">
               <i class="fas fa-bell"></i>
               <span class="badge">3</span>
             </div>
-
-            <!-- Usuario -->
             <div class="user-profile">
               <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
               <div class="user-info">
@@ -153,155 +150,246 @@
           </div>
         </header>
 
-        <!-- =========================
-                 CONTENIDO VISUAL
-            ========================== -->
+        <div class="breadcrumb">
+          <a href="{% url 'inicio' %}"><i class="fas fa-house"></i> Inicio</a>
+          <i class="fas fa-chevron-right sep"></i>
+          <a href="{% url 'elec_KPI' %}">KPIs</a>
+          <i class="fas fa-chevron-right sep"></i>
+          <span class="current">Módulo de KPIs</span>
+        </div>
 
-        <!-- =====================================================
-     KPI DETALLE
-===================================================== -->
-        <div class="form-section">
-          <h4 class="form-section-title">Detalle de Indicadores KPI</h4>
-
-          <div class="kpi-details-grid">
-            <!-- =================================================
-         ITEM KPI DETALLE
-    ================================================== -->
-            <div class="kpi-detail-card">
-              <!-- HEADER -->
-              <div class="kpi-detail-header">
-                <div class="kpi-detail-icon performance">
-                  <i class="fas fa-chart-line"></i>
-                </div>
-
-                <div>
-                  <h3>KPI Detalle #001</h3>
-
-                  <span> Registro individual del indicador </span>
-                </div>
+        <section class="form-card">
+          <div class="form-card-header">
+            <div class="form-card-header-left">
+              <div class="form-card-icon">
+                <i class="fas fa-star-half-alt"></i>
               </div>
-
-              <!-- GRID -->
-              <div class="form-grid">
-                <!-- ID KPI DETALLE -->
-                <div class="field">
-                  <label for="id_kpi_detalle">
-                    <i class="fas fa-hashtag field-icon"></i>
-                    ID KPI Detalle
-                  </label>
-
-                  <input
-                    type="number"
-                    id="id_kpi_detalle"
-                    placeholder="1"
-                    readonly
-                  />
-                </div>
-
-                <!-- ID KPI -->
-                <div class="field">
-                  <label for="id_kpi">
-                    <i class="fas fa-link field-icon"></i>
-                    ID KPI Cabecera
-                    <span class="req">*</span>
-                  </label>
-
-                  <select id="id_kpi" required>
-                    <option disabled selected>Seleccione un KPI...</option>
-
-                    <option>KPI Julio 2026 - Carlos Méndez</option>
-
-                    <option>KPI Julio 2026 - Ana Rodríguez</option>
-                  </select>
-                </div>
-
-                <!-- COMPONENTE SALARIO -->
-                <div class="field">
-                  <label for="id_componente_salario">
-                    <i class="fas fa-money-check-dollar field-icon"></i>
-                    Componente Salarial
-                    <span class="req">*</span>
-                  </label>
-
-                  <select id="id_componente_salario" required>
-                    <option disabled selected>
-                      Seleccione un componente...
-                    </option>
-
-                    <option>Comisión de ventas</option>
-
-                    <option>Bono productividad</option>
-
-                    <option>Incentivo mensual</option>
-                  </select>
-                </div>
-
-                <!-- CATEGORIA -->
-                <div class="field">
-                  <label for="categoria">
-                    <i class="fas fa-layer-group field-icon"></i>
-                    Categoría
-                    <span class="req">*</span>
-                  </label>
-
-                  <select id="categoria" required>
-                    <option disabled selected>
-                      Seleccione una categoría...
-                    </option>
-
-                    <option>Cobro efectividad</option>
-
-                    <option>One monto</option>
-
-                    <option>Comisión</option>
-
-                    <option>Vendedores</option>
-
-                    <option>Evaluación supervisor</option>
-                  </select>
-                </div>
-
-                <!-- PORCENTAJE -->
-                <div class="field">
-                  <label for="pct_alcanzado">
-                    <i class="fas fa-percent field-icon"></i>
-                    % Alcanzado
-                    <span class="req">*</span>
-                  </label>
-
-                  <input
-                    type="number"
-                    id="pct_alcanzado"
-                    placeholder="95.50"
-                    step="0.01"
-                    min="0"
-                    max="100"
-                    required
-                  />
-                </div>
-
-                <!-- MONTO -->
-                <div class="field">
-                  <label for="monto">
-                    <i class="fas fa-colon-sign field-icon"></i>
-                    Monto Generado
-                    <span class="req">*</span>
-                  </label>
-
-                  <input
-                    type="number"
-                    id="monto"
-                    placeholder="150000.00"
-                    step="0.01"
-                    required
-                  />
+              <div>
+                <div class="form-card-title">Formulario de Desempeño</div>
+                <div class="form-card-subtitle">
+                  Ingrese las métricas obtenidas por el colaborador en el
+                  periodo actual.
                 </div>
               </div>
             </div>
+            <div class="required-note">
+              Los campos marcados con <span>*</span> son obligatorios
+            </div>
           </div>
-        </div>
 
-        <!-- Footer -->
+          <form class="form-body" id="formRegistroKPI">
+            <section class="form-section">
+              <div class="form-section-title">
+                <i class="fas fa-user-check"></i> Información General
+              </div>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="empleado"
+                    ><i class="fas fa-id-badge field-icon"></i> Colaborador
+                    <span class="req">*</span></label
+                  >
+                  <select id="empleado" required>
+                    <option value="" disabled selected>
+                      Seleccione un colaborador...
+                    </option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="periodo"
+                    ><i class="fas fa-calendar-alt field-icon"></i> Periodo de
+                    Evaluación <span class="req">*</span></label
+                  >
+                  <select id="periodo" required>
+                    <option value="" disabled selected>
+                      Seleccione el mes...
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </section>
+
+            <section class="form-section">
+              <div class="form-section-title">
+                <i class="fas fa-chart-line"></i> Métricas Obtenidas (Escala 1 -
+                100)
+              </div>
+              <div class="kpi-details-grid">
+                <div class="kpi-detail-card">
+                  <div class="kpi-detail-header">
+                    <div class="kpi-detail-icon performance">
+                      <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div>
+                      <h3>Rendimiento</h3>
+                      <span>Productividad y metas</span>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <input
+                      type="number"
+                      id="kpiPerformance"
+                      min="0"
+                      max="100"
+                      placeholder="0 - 100"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="kpi-detail-card">
+                  <div class="kpi-detail-header">
+                    <div class="kpi-detail-icon potential">
+                      <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div>
+                      <h3>Potencial</h3>
+                      <span>Competencias y proactividad</span>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <input
+                      type="number"
+                      id="kpiPotential"
+                      min="0"
+                      max="100"
+                      placeholder="0 - 100"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="kpi-detail-card">
+                  <div class="kpi-detail-header">
+                    <div class="kpi-detail-icon cliente">
+                      <i class="fas fa-heart"></i>
+                    </div>
+                    <div>
+                      <h3>Satisfacción Cliente</h3>
+                      <span>Evaluación del servicio</span>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <input
+                      type="number"
+                      id="kpiCliente"
+                      min="0"
+                      max="100"
+                      placeholder="0 - 100"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="form-section">
+              <div class="form-section-title">
+                <i class="fas fa-trophy"></i> Incentivos Especiales Sugeridos
+              </div>
+              <div class="awards-grid">
+                <label class="award-option">
+                  <input
+                    type="checkbox"
+                    name="premios"
+                    value="oro"
+                    id="bonusOro"
+                  />
+                  <div class="award-card">
+                    <div class="award-icon gold">
+                      <i class="fas fa-medal"></i>
+                    </div>
+                    <div>
+                      <strong>Bono Excelencia Oro</strong>
+                      <span>+$500.00 USD</span>
+                    </div>
+                  </div>
+                </label>
+
+                <label class="award-option">
+                  <input
+                    type="checkbox"
+                    name="premios"
+                    value="plata"
+                    id="bonusPlata"
+                  />
+                  <div class="award-card">
+                    <div class="award-icon silver">
+                      <i class="fas fa-medal"></i>
+                    </div>
+                    <div>
+                      <strong>Bono Desempeño Plata</strong>
+                      <span>+$250.00 USD</span>
+                    </div>
+                  </div>
+                </label>
+
+                <label class="award-option">
+                  <input
+                    type="checkbox"
+                    name="premios"
+                    value="bronce"
+                    id="bonusBronce"
+                  />
+                  <div class="award-card">
+                    <div class="award-icon bronze">
+                      <i class="fas fa-medal"></i>
+                    </div>
+                    <div>
+                      <strong>Mención Logro Bronce</strong>
+                      <span>+$100.00 USD</span>
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </section>
+
+            <section class="form-section">
+              <div class="form-section-title">
+                <i class="fas fa-calculator"></i> Resumen Estimado de Resultados
+              </div>
+              <div class="summary-grid">
+                <div class="summary-card">
+                  <span>Promedio Global</span>
+                  <strong id="resPromedio">0.0%</strong>
+                </div>
+                <div class="summary-card">
+                  <span>Incentivo Financiero Total</span>
+                  <strong id="resFinanciero">$0.00</strong>
+                </div>
+              </div>
+            </section>
+
+            <section class="form-section">
+              <div class="form-grid">
+                <div class="field field-full">
+                  <label for="observaciones"
+                    ><i class="fas fa-comment-alt field-icon"></i>
+                    Retroalimentación o Comentarios Extra</label
+                  >
+                  <textarea
+                    id="observaciones"
+                    rows="4"
+                    placeholder="Escriba aquí los comentarios sobre el desempeño del mes..."
+                  ></textarea>
+                </div>
+              </div>
+            </section>
+
+            <div class="form-footer">
+              <button type="button" class="btn btn-ghost" id="btnLimpiar">
+                <i class="fas fa-eraser"></i> Limpiar Campos
+              </button>
+              <button type="button" class="btn btn-secondary" id="btnCalcular">
+                <i class="fas fa-sync-alt"></i> Calcular Previsualización
+              </button>
+              <button type="submit" class="btn btn-primary" id="btnGuardar">
+                <i class="fas fa-save"></i> Guardar Registro
+              </button>
+            </div>
+         </div>
+        </section>
+
         <footer class="footer">
           © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
         </footer>
