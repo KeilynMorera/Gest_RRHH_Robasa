@@ -200,82 +200,6 @@
           <div class="form-body">
             <form action="#" method="POST">
               {% csrf_token %}
-              <div class="form-section">
-                <h4 class="form-section-title">
-                  <i class="fas fa-gift"></i> Definición e Información del
-                  Premio
-                </h4>
-
-                <div class="form-grid">
-                  <div class="field">
-                    <label for="idPremio">
-                      <i class="fas fa-hashtag field-icon"></i> ID Premio
-                    </label>
-                    <input
-                      type="number"
-                      id="idPremio"
-                      placeholder="Generado automáticamente"
-                      readonly
-                    />
-                  </div>
-
-                  <div class="field">
-                    <label for="descripcion">
-                      <i class="fas fa-file-signature field-icon"></i>
-                      Descripción <span class="req">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="descripcion"
-                      placeholder="Ej. Bono Excelencia Trimestral"
-                      required
-                    />
-                  </div>
-
-                  <div class="field">
-                    <label for="indicador">
-                      <i class="fas fa-chart-line field-icon"></i> Indicador KPI
-                      Mínimo <span class="req">*</span>
-                    </label>
-                    <select id="indicador" required>
-                      <option value="" disabled selected>
-                        Seleccione un indicador...
-                      </option>
-                      <option value="cobro">Cobro Efectividad</option>
-                      <option value="comision">Comisión</option>
-                      <option value="supervisor">Evaluación Supervisor</option>
-                      <option value="monto">One Monto</option>
-                    </select>
-                  </div>
-
-                  <div class="field">
-                    <label for="alcance">
-                      <i class="fas fa-bullseye field-icon"></i> Alcance
-                      Requerido <span class="req">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="alcance"
-                      placeholder="Ej. >= 95% de la cuota"
-                      required
-                    />
-                  </div>
-
-                  <div class="field">
-                    <label for="monto">
-                      <i class="fas fa-money-bill-wave field-icon"></i> Monto
-                      del Premio (₡) <span class="req">*</span>
-                    </label>
-                    <input
-                      type="number"
-                      id="monto"
-                      placeholder="0.00"
-                      step="0.01"
-                      required
-                    />
-                  </div>
-                </div>
-              </div>
 
               <div class="form-section">
                 <h4 class="form-section-title">
@@ -284,18 +208,6 @@
                 </h4>
 
                 <div class="form-grid">
-                  <div class="field">
-                    <label for="id_kpi_premio">
-                      <i class="fas fa-link field-icon"></i> ID Relación Premio
-                    </label>
-                    <input
-                      type="number"
-                      id="id_kpi_premio"
-                      placeholder="Auto-incrementable"
-                      readonly
-                    />
-                  </div>
-
                   <div class="field">
                     <label for="id_kpi">
                       <i class="fas fa-chart-column field-icon"></i> Registro

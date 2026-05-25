@@ -5,330 +5,302 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Checklist de Offboarding - Talento Humano | Robasa</title>
+    <title>Configuración de Checklist - Talento Humano | Robasa</title>
+    
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
 
     <link rel="stylesheet" href="{% static 'styles/checklist_off.css' %}" />
-    
+
+    <style>
+      /* =========================================================
+         ESTILOS PARA ADMINISTRACIÓN DEL CATÁLOGO (SPLIT VIEW)
+      ========================================================= */
+      .admin-layout {
+        display: grid;
+        grid-template-columns: 350px 1fr;
+        gap: 25px;
+        align-items: start;
+        margin-top: 20px;
+      }
+
+      @media (max-width: 900px) {
+        .admin-layout {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .card-panel {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(30, 42, 94, 0.05);
+        padding: 24px;
+        border: 1px solid #e8ecf6;
+      }
+
+      .panel-header {
+        border-bottom: 2px solid #f0f2fa;
+        padding-bottom: 12px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .panel-header h3 {
+        font-size: 15px;
+        color: #26317a;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .panel-header i {
+        color: #e8600a;
+      }
+
+      .field-block {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 16px;
+      }
+
+      .field-block label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1a2042;
+      }
+
+      .field-block label .req {
+        color: #e8600a;
+      }
+
+      .input-style {
+        width: 100%;
+        border: 1.5px solid #dde2f0;
+        border-radius: 6px;
+        padding: 10px 12px;
+        font-size: 13.5px;
+        background: #f7f8fc;
+        outline: none;
+        font-family: inherit;
+        color: #1a2042;
+        transition: all 0.3s ease;
+      }
+
+      .input-style:focus {
+        border-color: #26317a;
+        background-color: #ffffff;
+      }
+
+      .textarea-style {
+        width: 100%;
+        border: 1.5px solid #dde2f0;
+        border-radius: 6px;
+        padding: 10px 12px;
+        font-size: 13.5px;
+        background: #f7f8fc;
+        outline: none;
+        font-family: inherit;
+        color: #1a2042;
+        resize: vertical;
+        min-height: 80px;
+      }
+
+      .textarea-style:focus {
+        border-color: #26317a;
+        background-color: #ffffff;
+      }
+
+      /* Estilos de Tabla de Datos */
+      .data-table-container {
+        overflow-x: auto;
+      }
+
+      .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+        text-align: left;
+      }
+
+      .custom-table th {
+        background: #f0f2fa;
+        color: #26317a;
+        padding: 12px;
+        font-weight: 700;
+        border-bottom: 2px solid #dde2f0;
+      }
+
+      .custom-table td {
+        padding: 12px;
+        border-bottom: 1px solid #f0f2fa;
+        color: #4a547a;
+        vertical-align: middle;
+      }
+
+      .custom-table tr:hover td {
+        background: #f8f9fd;
+      }
+
+      .badge-num {
+        background: #26317a;
+        color: #ffffff;
+        width: 22px;
+        height: 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 11px;
+        font-weight: bold;
+      }
+
+      .btn-block {
+        width: 100%;
+        background: #e8600a;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 13.5px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .btn-block:hover {
+        background: #cf5204;
+      }
+    </style>
   </head>
   <body>
     <div class="dashboard-container">
+      
       <aside class="sidebar">
         <div class="logo-container">
-          <img
-            src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
-            alt="Logo"
-            class="logo-img"
-          />
+          <img src="{% static 'imagenes/diseno_img/logoRobasa.png' %}" alt="Logo" class="logo-img" />
         </div>
-
-        <!-- ======================================================
-             MENÚ DE NAVEGACIÓN
-        ====================================================== -->
         <nav class="menu">
-          <!-- Opción Inicio -->
-          <a href="{% url 'inicio' %}">
-            <i class="fas fa-house"></i>
-            Inicio
-          </a>
-
-          <!-- Opción Personas o Empleados -->
-          <a href="{% url 'per_emp' %}">
-            <i class="fas fa-user-group"></i>
-            Personas o Empleados
-          </a>
-
-          <!-- Opción Onboarding -->
-          <a href="{% url 'onboarding' %}">
-            <i class="fas fa-rocket"></i>
-            Onboarding / Entradas
-          </a>
-
-          <!-- Opción Empresas -->
-          <a href="{% url 'empresas' %}">
-            <i class="fas fa-building"></i>
-            Empresas
-          </a>
-
-          <!-- Opción Gerencias, Departamentos y Puestos -->
-          <a href="{% url 'comple_Empresa' %}">
-            <i class="fas fa-briefcase"></i>
-            Gerencias, Departamentos y Puestos
-          </a>
-
-          <!-- Opción Salarios -->
-          <a href="{% url 'salario' %}">
-            <i class="fas fa-money-bill-wave"></i>
-            Salarios
-          </a>
-
-          <!-- Opción Reclutamiento -->
-          <a href="{% url 'reclutamiento' %}">
-            <i class="fas fa-wallet"></i>
-            Reclutamiento
-          </a>
-
-          <!-- Opción Vacaciones -->
-          <a href="{% url 'vacaciones' %}">
-            <i class="fas fa-umbrella-beach"></i>
-            Vacaciones
-          </a>
-
-          <!-- Opción Asistencia y Permisos -->
-          <a href="{% url 'elec_Asistencia' %}">
-            <i class="fas fa-clock"></i>
-            Asistencia y Permiso
-          </a>
-
-          <!-- Acción o Rotación de Personal -->
-          <a href="{% url 'accion_rotacion' %}">
-            <i class="fas fa-clipboard-list"></i>
-            Acciones o Rotaciones del Personal
-          </a>
-
-          <!-- Opción Evaluaciones -->
-          <a href="{% url 'evaluaciones' %}">
-            <i class="fas fa-chart-line"></i>
-            Evaluación de Desempeño
-          </a>
-
-          <!-- Opción KPIs -->
-          <a href="{% url 'elec_KPI' %}">
-            <i class="fas fa-file-lines"></i>
-            KPIs
-          </a>
-
-          <!-- Opción Offboarding -->
-          <a href="{% url 'elec_Offboarding' %}">
-            <i class="fas fa-door-open"></i>
-            Offboarding / Salidas
-          </a>
-
-          <!-- Opción Reportes -->
-          <a href="{% url 'reportes' %}">
-            <i class="fas fa-file-lines"></i>
-            Reportes
-          </a>
-
-          <!-- Opción Usuarios y Roles -->
-          <a href="{% url 'usuarios' %}">
-            <i class="fas fa-users-cog"></i>
-            Usuarios y Roles
-          </a>
-
-          <!-- Opción Configuración -->
-          <a href="{% url 'configuraciones' %}">
-            <i class="fas fa-gear"></i>
-            Configuración
-          </a>
+          <a href="{% url 'inicio' %}"><i class="fas fa-house"></i> Inicio</a>
+          <a href="{% url 'per_emp' %}"><i class="fas fa-user-group"></i> Personas</a>
+          <a href="{% url 'onboarding' %}"><i class="fas fa-rocket"></i> Onboarding</a>
+          <a href="#" class="active"><i class="fas fa-gear"></i> Configurar Checklist</a>
         </nav>
       </aside>
 
       <main class="main-content">
         <header class="topbar">
           <div class="page-title">
-            <h1>Checklist de Control Operativo</h1>
-            <p>Monitoreo de la desincorporación y resguardo legal</p>
+            <h1>Estructura del Catálogo Offboarding</h1>
+            <p>Defina las actividades legales y operativas obligatorias para las salidas</p>
           </div>
         </header>
 
         <div class="breadcrumb">
-          <a href="{% url 'inicio' %}">Inicio</a> <span style="color: #c5cbdf">/</span>
-          <a href="{% url 'registrar_off' %}">Offboarding</a>
-          <span style="color: #c5cbdf">/</span>
-          <span class="current">Checklist Tareas</span>
+          <a href="#">Inicio</a> <span style="color: #c5cbdf">/</span>
+          <a href="#">Configuración</a> <span style="color: #c5cbdf">/</span>
+          <span class="current">Mantenimiento de Catálogo</span>
         </div>
 
-        <div class="employee-box">
-          <div>
-            <p
-              style="
-                font-size: 12px;
-                color: #7a8599;
-                text-transform: uppercase;
-                font-weight: 700;
-              "
-            >
-              Colaborador en Proceso de Estatus de Salida
-            </p>
-            <strong>Juan Pérez Mendoza</strong> —
-            <span>Puesto: Encargado de Bodega</span>
+        <div class="admin-layout">
+          
+          <div class="card-panel">
+            <div class="panel-header">
+              <i class="fas fa-plus-circle"></i>
+              <h3>Nueva Actividad</h3>
+            </div>
+
+            <form method="POST" action="#">
+              {% csrf_token %}
+
+              <div class="field-block">
+                <label for="Num_Etapa">Número de Etapa <span class="req">*</span></label>
+                <input 
+                  type="number" 
+                  id="Num_Etapa" 
+                  name="Num_Etapa" 
+                  class="input-style" 
+                  placeholder="Ej: 1" 
+                  min="1" 
+                  max="255" 
+                  required 
+                />
+              </div>
+
+              <div class="field-block">
+                <label for="Etapa">Nombre de la Etapa <span class="req">*</span></label>
+                <input 
+                  type="text" 
+                  id="Etapa" 
+                  name="Etapa" 
+                  class="input-style" 
+                  placeholder="Ej: Tecnologías de Información" 
+                  maxlength="80" 
+                  required 
+                />
+              </div>
+
+              <div class="field-block">
+                <label for="Actividad">Descripción de la Actividad <span class="req">*</span></label>
+                <textarea 
+                  id="Actividad" 
+                  name="Actividad" 
+                  class="textarea-style" 
+                  placeholder="Escriba la acción obligatoria a realizar..." 
+                  maxlength="300" 
+                  required></textarea>
+              </div>
+
+              <button type="submit" class="btn-block">
+                <i class="fas fa-floppy-disk"></i> Guardar en Catálogo
+              </button>
+            </form>
           </div>
-          <div>
-            <span style="font-size: 13px; color: #6b7499"
-              ><i class="fas fa-file-contract"></i> Folio Proceso:
-              <strong>#OFF-104</strong></span
-            >
+
+          <div class="card-panel">
+            <div class="panel-header">
+              <i class="fas fa-folder-open"></i>
+              <h3>Actividades Registradas en el Sistema</h3>
+            </div>
+
+            <div class="data-table-container">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th style="width: 70px; text-align: center;">N° Etapa</th>
+                    <th style="width: 200px;">Etapa</th>
+                    <th>Actividad Operativa</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="text-align: center;"><span class="badge-num">1</span></td>
+                    <td style="font-weight: 600; color: #26317a;">Notificación y Legal</td>
+                    <td>Firmar carta de rescisión de contrato o aceptación de renuncia.</td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center;"><span class="badge-num">1</span></td>
+                    <td style="font-weight: 600; color: #26317a;">Notificación y Legal</td>
+                    <td>Envío de aviso de baja a la Caja Costarricense de Seguro Social (CCSS).</td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center;"><span class="badge-num">2</span></td>
+                    <td style="font-weight: 600; color: #26317a;">Tecnologías de Información</td>
+                    <td>Revocación de accesos al ERP, correos corporativos y bases de datos.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
+
         </div>
-
-        <form action="#" method="POST">
-          {% csrf_token %}
-
-          <div class="stage-section">
-            <div class="stage-header">
-              <div class="stage-number">1</div>
-              <span>Etapa: Notificación y Legal</span>
-            </div>
-
-            <div class="task-row">
-              <input
-                type="checkbox"
-                class="task-check"
-                name="check_1"
-                id="check_1"
-                checked
-              />
-              <div class="task-desc">
-                Firmar carta de rescisión de contrato o aceptación de renuncia.
-              </div>
-              <div class="task-meta">
-                <select
-                  name="responsable_1"
-                  title="Responsable de la actividad"
-                >
-                  <option value="901" selected>María Gómez (RRHH)</option>
-                  <option value="902">Jorge Arce (TI)</option>
-                </select>
-                <input
-                  type="date"
-                  name="fecha_comp_1"
-                  value="2026-05-24"
-                  title="Fecha de completado"
-                />
-              </div>
-            </div>
-
-            <div class="task-row">
-              <input
-                type="checkbox"
-                class="task-check"
-                name="check_2"
-                id="check_2"
-              />
-              <div class="task-desc">
-                Envío de aviso de baja a la Caja Costarricense de Seguro Social
-                (CCSS).
-              </div>
-              <div class="task-meta">
-                <select
-                  name="responsable_2"
-                  title="Responsable de la actividad"
-                >
-                  <option value="901">María Gómez (RRHH)</option>
-                  <option value="902">Jorge Arce (TI)</option>
-                </select>
-                <input
-                  type="date"
-                  name="fecha_comp_2"
-                  title="Fecha de completado"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div class="stage-section">
-            <div class="stage-header">
-              <div class="stage-number">2</div>
-              <span>Etapa: Tecnologías de Información (TI)</span>
-            </div>
-
-            <div class="task-row">
-              <input
-                type="checkbox"
-                class="task-check"
-                name="check_3"
-                id="check_3"
-              />
-              <div class="task-desc">
-                Revocación de accesos al ERP, correos corporativos y bases de
-                datos de Robasa.
-              </div>
-              <div class="task-meta">
-                <select
-                  name="responsable_3"
-                  title="Responsable de la actividad"
-                >
-                  <option value="902" selected>Jorge Arce (TI)</option>
-                  <option value="901">María Gómez (RRHH)</option>
-                </select>
-                <input
-                  type="date"
-                  name="fecha_comp_3"
-                  title="Fecha de completado"
-                />
-              </div>
-            </div>
-
-            <div class="task-row">
-              <input
-                type="checkbox"
-                class="task-check"
-                name="check_4"
-                id="check_4"
-              />
-              <div class="task-desc">
-                Devolución física de equipo de cómputo, token de seguridad y
-                teléfonos celulares.
-              </div>
-              <div class="task-meta">
-                <select
-                  name="responsable_4"
-                  title="Responsable de la actividad"
-                >
-                  <option value="902">Jorge Arce (TI)</option>
-                  <option value="901">María Gómez (RRHH)</option>
-                </select>
-                <input
-                  type="date"
-                  name="fecha_comp_4"
-                  title="Fecha de completado"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div class="stage-section">
-            <div class="stage-header">
-              <div class="stage-number">3</div>
-              <span>Etapa: Liquidación y Cierre Financiero</span>
-            </div>
-
-            <div class="task-row">
-              <input
-                type="checkbox"
-                class="task-check"
-                name="check_5"
-                id="check_5"
-              />
-              <div class="task-desc">
-                Cálculo de prestaciones legales (Preaviso, Cesantía, Vacaciones,
-                Aguinaldo proporcional).
-              </div>
-              <div class="task-meta">
-                <select
-                  name="responsable_5"
-                  title="Responsable de la actividad"
-                >
-                  <option value="903">Contador Externo</option>
-                  <option value="901">María Gómez (RRHH)</option>
-                </select>
-                <input
-                  type="date"
-                  name="fecha_comp_5"
-                  title="Fecha de completado"
-                />
-              </div>
-            </div>
-          </div>
-
-          <button type="submit" class="btn-save">
-            <i class="fas fa-floppy-disk"></i> Guardar Avance del Checklist
-          </button>
-        </form>
 
         <footer class="footer">
           © 2026 Distribuidora Robasa - Gestión de Talento Humano
