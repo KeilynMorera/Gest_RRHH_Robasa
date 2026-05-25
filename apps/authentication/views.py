@@ -154,3 +154,6 @@ def accion_rotacion_view(request):
 def accion_Personal_view(request):
     return render(request, 'accion_Personal.html')
 
+#Pagina de Rotaciones de Personal
+def rotacion_Personal_view(request):
+    return render(request, 'rotacion_Personal.html')

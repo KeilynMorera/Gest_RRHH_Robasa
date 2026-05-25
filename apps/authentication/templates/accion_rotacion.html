@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Título que aparece en la pestaña del navegador -->
-    <title>Complemento Empresa - Gestión de Talento Humano</title>
+    <title>Elección de Movimientos - Gestión de Talento Humano</title>
 
     <!-- =========================================================
          ARCHIVO CSS LOCAL
@@ -164,188 +164,92 @@
            CONTENIDO PRINCIPAL
       ========================================================= -->
       <main class="main-content">
-        <!-- =========================================================
-             TOPBAR / BARRA SUPERIOR
-        ========================================================= -->
         <header class="topbar">
-          <!-- Botón para abrir/cerrar menú -->
           <button class="menu-toggle">
             <i class="fas fa-bars"></i>
           </button>
 
-          <!-- =========================================================
-               TÍTULO DE LA PÁGINA
-          ========================================================= -->
           <div class="page-title">
-            <h1>Compone Empresa</h1>
-            <p>Selecione el tipo de registro que desea agregar</p>
+            <h1>Movimientos y Estabilidad Laboral</h1>
+            <p>
+              Seleccione el módulo administrativo o analítico que desea
+              gestionar
+            </p>
           </div>
 
-          <!-- =========================================================
-               BARRA DE BÚSQUEDA
-          ========================================================= -->
           <div class="search-box">
             <i class="fas fa-search"></i>
-
             <input
               type="text"
-              placeholder="Buscar empleado, módulo, reporte..."
+              placeholder="Buscar historial, colaboradores o tasas IRP..."
             />
           </div>
 
-          <!-- =========================================================
-               ACCIONES DEL USUARIO
-          ========================================================= -->
           <div class="topbar-actions">
-            <!-- =========================================================
-                 NOTIFICACIONES
-            ========================================================= -->
             <div class="notification">
               <i class="fas fa-bell"></i>
-
-              <!-- Cantidad de notificaciones -->
               <span class="badge">3</span>
             </div>
 
-            <!-- =========================================================
-                 PERFIL DEL USUARIO
-            ========================================================= -->
             <div class="user-profile">
-              <!-- Imagen de perfil -->
               <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
-
-              <!-- Información del usuario -->
               <div class="user-info">
                 <strong>María Gómez</strong>
                 <span>Recursos Humanos</span>
               </div>
-
-              <!-- Flecha desplegable -->
               <i class="fas fa-chevron-down"></i>
             </div>
           </div>
         </header>
 
-        <!-- =========================================================
-              CONTENIDO VISUAL
-        ========================================================= -->
-
-        <!-- =========================================================
-             TARJETAS DE ACCIÓN
-        ========================================================= -->
         <section class="action-cards-grid">
-          <!-- =========================================================
-               TARJETA: INGRESAR GERENCIA
-          ========================================================= -->
           <div class="action-card">
-            <!-- Ícono representativo -->
             <div class="action-card-illustration">
-              <i class="fas fa-sitemap"></i>
+              <i class="fas fa-gavel"></i>
             </div>
 
-            <!-- Contenido de la tarjeta -->
             <div class="action-card-body">
-              <!-- Título -->
-              <h3 class="action-card-title">Ingresar Gerencia</h3>
-
-              <!-- Descripción -->
+              <h3 class="action-card-title">Acciones de Personal</h3>
               <p class="action-card-desc">
-                Registra las gerencias que tiene cada empresa.
+                Registra, documenta y sella justificantes legales para ascensos,
+                amonestaciones, licencias especiales o modificaciones en las
+                estructuras salariales de los colaboradores.
               </p>
 
-              <!-- Botón -->
-              <a href="{% url 'gerencia' %}" class="action-card-btn">
-                <i class="fas fa-plus"></i>
-                Ingresar gerencia
+              <a
+                href="{% url 'accion_Personal' %}"
+                class="action-card-btn"
+              >
+                <i class="fas fa-file-signature"></i>
+                Ingresar Acciones
               </a>
             </div>
           </div>
 
-          <!-- =========================================================
-               TARJETA: REGISTRAR DEPARTAMENTO
-          ========================================================= -->
           <div class="action-card">
-            <!-- Ícono -->
             <div class="action-card-illustration accent">
-              <i class="fas fa-building-user"></i>
+              <i class="fas fa-chart-pie"></i>
             </div>
 
-            <!-- Contenido -->
             <div class="action-card-body">
-              <!-- Título -->
-              <h3 class="action-card-title">Registrar Nuevo Departamento</h3>
-
-              <!-- Descripción -->
+              <h3 class="action-card-title">Rotación de Personal (IRP)</h3>
               <p class="action-card-desc">
-                Asigna un departamento a su respectiva gerencia.
+                Consulta el Índice de Rotación de Personal calculado de manera
+                automática por períodos (mensual, trimestral, anual) cruzando
+                ingresos, bajas por offboarding y desvinculaciones.
               </p>
 
-              <!-- Botón -->
-              <a href="{% url 'departamento' %}" class="action-card-btn accent">
-                <i class="fas fa-plus"></i>
-                Registrar departamento
-              </a>
-            </div>
-          </div>
-
-          <!-- =========================================================
-               TARJETA: REGISTRAR PUESTO
-          ========================================================= -->
-          <div class="action-card">
-            <!-- Ícono -->
-            <div class="action-card-illustration">
-              <i class="fas fa-briefcase"></i>
-            </div>
-
-            <!-- Contenido -->
-            <div class="action-card-body">
-              <!-- Título -->
-              <h3 class="action-card-title">Registrar Puesto</h3>
-
-              <!-- Descripción -->
-              <p class="action-card-desc">
-                Registrar un puesto dentro del departamento.
-              </p>
-
-              <!-- Botón -->
-              <a href="{% url 'puesto' %}" class="action-card-btn">
-                <i class="fas fa-plus"></i>
-                Ingresar puesto
-              </a>
-            </div>
-          </div>
-
-          <!-- =========================================================
-               TARJETA: CONFIGURACIÓN DE PUESTO
-          ========================================================= -->
-          <div class="action-card">
-            <!-- Ícono -->
-            <div class="action-card-illustration accent">
-              <i class="fas fa-sliders"></i>
-            </div>
-
-            <!-- Contenido -->
-            <div class="action-card-body">
-              <!-- Título -->
-              <h3 class="action-card-title">Configuración Puesto</h3>
-
-              <!-- Descripción -->
-              <p class="action-card-desc">
-                Asigna una compensación específica para cada puesto.
-              </p>
-
-              <!-- Botón -->
-              <a href="{% url 'confi_Puesto' %}" class="action-card-btn accent">
-                <i class="fas fa-gear"></i>
-                Configurar puesto
+              <a
+                href="{% url 'rotacion_Personal' %}"
+                class="action-card-btn accent"
+              >
+                <i class="fas fa-square-poll-vertical"></i>
+                Analizar Rotación
               </a>
             </div>
           </div>
         </section>
 
-        <!-- =========================================================
-             FOOTER / PIE DE PÁGINA
-        ========================================================= -->
         <footer class="footer">
           © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
         </footer>

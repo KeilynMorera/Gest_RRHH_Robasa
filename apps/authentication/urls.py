@@ -82,5 +82,7 @@ urlpatterns = [
     path('accion_rotacion.html/', views.accion_rotacion_view, name='accion_rotacion'),
     # Ruta para el dashboard (pantalla de acción de personal)
     path('accion_Personal.html/', views.accion_Personal_view, name='accion_Personal'),
+    # Ruta para el dashboard (pantalla de rotación de personal)
+    path('rotacion_Personal.html/', views.rotacion_Personal_view, name='rotacion_Personal'),
 ]
 
