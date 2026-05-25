@@ -6,12 +6,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registro de Empresas - Gestión de Talento Humano</title>
+    <title>Evaluación de Jefatura - Gestión de Talento Humano</title>
 
-    <!-- CSS local -->
     <link rel="stylesheet" href="{% static 'styles/eva_Empleado.css' %}" />
 
-    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
@@ -19,112 +17,89 @@
   </head>
   <body>
     <div class="dashboard-container">
-      <!-- =========================
-             SIDEBAR
-        ========================== -->
       <aside class="sidebar">
-        <!-- Logo -->
-        <div class="logo">
-          <i class="fas fa-users"></i>
-          <h2>ROBASA</h2>
-          <span>DISTRIBUIDORA</span>
+        <!-- =========================================================
+             LOGO DE LA EMPRESA
+        ========================================================= -->
+        <div class="logo-container">
+          <!-- Imagen cargada desde archivos estáticos -->
+          <img
+            src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
+            alt="Logo Robasa"
+            class="logo-img"
+          />
         </div>
 
-        <!-- Menú -->
         <nav class="menu">
-          <a href="{% url 'inicio' %}">
-            <i class="fas fa-house"></i>
-            Inicio
-          </a>
+          <a href="{% url 'inicio' %}"> <i class="fas fa-house"></i> Inicio </a>
 
           <a href="{% url 'per_emp' %}">
-            <i class="fas fa-user-group"></i>
-            Personas o Empleados
+            <i class="fas fa-user-group"></i> Personas o Empleados
           </a>
 
           <a href="{% url 'empresas' %}">
-            <i class="fas fa-building"></i>
-            Empresas
+            <i class="fas fa-building"></i> Empresas
           </a>
 
           <a href="{% url 'comple_Empresa' %}">
-            <i class="fas fa-briefcase"></i>
-            Gerencias, Departamentos y Puestos
+            <i class="fas fa-briefcase"></i> Gerencias, Departamentos y Puestos
           </a>
 
           <a href="{% url 'salario' %}">
-            <i class="fas fa-money-bill-wave"></i>
-            Salarios
+            <i class="fas fa-money-bill-wave"></i> Salarios
           </a>
 
           <a href="{% url 'reclutamiento' %}">
-            <i class="fas fa-wallet"></i>
-            Reclutamiento
+            <i class="fas fa-wallet"></i> Reclutamiento
           </a>
 
           <a href="{% url 'vacaciones' %}">
-            <i class="fas fa-umbrella-beach"></i>
-            Vacaciones
+            <i class="fas fa-umbrella-beach"></i> Vacaciones
           </a>
 
           <a href="{% url 'elec_Asistencia' %}">
-            <i class="fas fa-clock"></i>
-            Asistencia y Permiso
+            <i class="fas fa-clock"></i> Asistencia y Permiso
           </a>
 
-          <a href="{% url 'evaluaciones' %}">
-            <i class="fas fa-chart-line"></i>
-            Evaluación de Desempeño
+          <a href="{% url 'evaluaciones' %}" class="active">
+            <i class="fas fa-chart-line"></i> Evaluación de Desempeño
           </a>
 
           <a href="{% url 'reportes' %}">
-            <i class="fas fa-file-lines"></i>
-            Reportes
+            <i class="fas fa-file-lines"></i> Reportes
           </a>
 
           <a href="{% url 'elec_KPI' %}">
-            <i class="fas fa-file-lines"></i>
-            KPIs
+            <i class="fas fa-file-lines"></i> KPIs
           </a>
 
           <a href="{% url 'usuarios' %}">
-            <i class="fas fa-users-cog"></i>
-            Usuarios y Roles
+            <i class="fas fa-users-cog"></i> Usuarios y Roles
           </a>
 
           <a href="{% url 'configuraciones' %}">
-            <i class="fas fa-gear"></i>
-            Configuración
+            <i class="fas fa-gear"></i> Configuración
           </a>
         </nav>
 
-        <!-- Cerrar sesión -->
         <div class="logout">
           <a href="login.html">
-            <i class="fas fa-right-from-bracket"></i>
-            Cerrar sesión
+            <i class="fas fa-right-from-bracket"></i> Cerrar sesión
           </a>
         </div>
       </aside>
 
-      <!-- =========================
-             CONTENIDO PRINCIPAL
-        ========================== -->
       <main class="main-content">
-        <!-- Header -->
         <header class="topbar">
-          <!-- Botón menú -->
           <button class="menu-toggle">
             <i class="fas fa-bars"></i>
           </button>
 
-          <!-- Título -->
           <div class="page-title">
-            <h1>Empresas</h1>
-            <p>Registro de una nueva empresa</p>
+            <h1>Evaluación de Jefatura</h1>
+            <p>Análisis de competencias directivas y potencial de liderazgo</p>
           </div>
 
-          <!-- Barra de búsqueda -->
           <div class="search-box">
             <i class="fas fa-search"></i>
             <input
@@ -133,15 +108,12 @@
             />
           </div>
 
-          <!-- Acciones -->
           <div class="topbar-actions">
-            <!-- Notificaciones -->
             <div class="notification">
               <i class="fas fa-bell"></i>
               <span class="badge">3</span>
             </div>
 
-            <!-- Usuario -->
             <div class="user-profile">
               <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
               <div class="user-info">
@@ -153,82 +125,49 @@
           </div>
         </header>
 
-        <!-- =========================
-                 CONTENIDO VISUAL
-            ========================== -->
-
-        <!-- =========================================================
-     EVALUACIÓN DE DESEMPEÑO DEL EMPLEADO
-     Unión de:
-     - Evaluacion
-     - Evaluacion_Desempeno
-========================================================= -->
-
-        <!-- Breadcrumb -->
         <div class="breadcrumb">
           <a href="{% url 'inicio' %}"> <i class="fas fa-house"></i> Inicio </a>
-
           <i class="fas fa-chevron-right sep"></i>
-
           <a href="{% url 'evaluaciones' %}"> Evaluaciones </a>
-
           <i class="fas fa-chevron-right sep"></i>
-
-          <span class="current"> Nueva Evaluación </span>
+          <span class="current"> Evaluación Jefatura </span>
         </div>
 
-        <!-- =========================================================
-     TARJETA PRINCIPAL
-========================================================= -->
         <section class="form-card">
-          <!-- Header -->
           <div class="form-card-header">
             <div class="form-card-header-left">
               <div class="form-card-icon">
-                <i class="fas fa-chart-line"></i>
+                <i class="fas fa-user-tie"></i>
               </div>
-
               <div>
-                <h2 class="form-card-title">Evaluación de Desempeño</h2>
-
+                <h2 class="form-card-title">Métricas de Aptitud Directiva</h2>
                 <p class="form-card-subtitle">
-                  Registro de evaluación del desempeño y cumplimiento del
-                  colaborador.
+                  Filtro estratégico para el desarrollo de cuadros de reemplazo,
+                  mandos medios y líderes de área.
                 </p>
               </div>
             </div>
-
             <p class="required-note">
               Los campos marcados con <span>*</span> son obligatorios
             </p>
           </div>
 
-          <!-- =========================================================
-       CUERPO
-  ========================================================= -->
           <div class="form-body">
             <form method="POST" action="">
               {% csrf_token %}
 
-              <!-- =====================================================
-           DATOS GENERALES
-      ====================================================== -->
               <div class="form-section">
                 <h4 class="form-section-title">Información General</h4>
-
                 <div class="form-grid">
-                  <!-- Empleado -->
                   <div class="field">
                     <label for="idEmpleado">
                       <i class="fas fa-user field-icon"></i>
                       Empleado Evaluado <span class="req">*</span>
                     </label>
-
                     <select id="idEmpleado" name="idEmpleado" required>
                       <option value="" disabled selected>
                         Seleccione un empleado...
                       </option>
-
                       {% for empleado in empleados %}
                       <option value="{{ empleado.idEmpleado }}">
                         {{ empleado.Primer_Nombre }} {{ empleado.Primer_Apellido
@@ -238,18 +177,15 @@
                     </select>
                   </div>
 
-                  <!-- Evaluador -->
                   <div class="field">
                     <label for="idEvaluador">
                       <i class="fas fa-user-tie field-icon"></i>
                       Evaluador / Jefatura <span class="req">*</span>
                     </label>
-
                     <select id="idEvaluador" name="idEvaluador" required>
                       <option value="" disabled selected>
                         Seleccione un evaluador...
                       </option>
-
                       {% for jefe in evaluadores %}
                       <option value="{{ jefe.idEmpleado }}">
                         {{ jefe.Primer_Nombre }} {{ jefe.Primer_Apellido }}
@@ -258,13 +194,11 @@
                     </select>
                   </div>
 
-                  <!-- Fecha -->
                   <div class="field">
                     <label for="Fecha_Evaluacion">
                       <i class="fas fa-calendar-day field-icon"></i>
                       Fecha de evaluación <span class="req">*</span>
                     </label>
-
                     <input
                       type="date"
                       id="Fecha_Evaluacion"
@@ -273,34 +207,29 @@
                     />
                   </div>
 
-                  <!-- Periodo -->
                   <div class="field">
                     <label for="Periodo">
                       <i class="fas fa-calendar-alt field-icon"></i>
                       Periodo evaluado <span class="req">*</span>
                     </label>
-
                     <input
                       type="text"
                       id="Periodo"
                       name="Periodo"
-                      placeholder="Ej: Enero 2026"
+                      placeholder="Ej: Año 2026"
                       required
                     />
                   </div>
 
-                  <!-- Tipo Periodo -->
                   <div class="field">
                     <label for="Tipo_Periodo">
                       <i class="fas fa-clock-rotate-left field-icon"></i>
                       Tipo de periodo <span class="req">*</span>
                     </label>
-
                     <select id="Tipo_Periodo" name="Tipo_Periodo" required>
                       <option value="" disabled selected>
                         Seleccione el tipo...
                       </option>
-
                       <option value="Mensual">Mensual</option>
                       <option value="Trimestral">Trimestral</option>
                       <option value="Semestral">Semestral</option>
@@ -310,256 +239,227 @@
                 </div>
               </div>
 
-              <!-- =====================================================
-                    CRITERIOS DE DESEMPEÑO
-                   ====================================================== -->
               <div class="form-section">
-                <h4 class="form-section-title">Evaluación de Jefatura</h4>
-
+                <h4 class="form-section-title">
+                  Evaluación de Competencias de Jefatura
+                </h4>
                 <div class="evaluation-list">
-                  <!-- ITEM -->
                   <div class="evaluation-item">
                     <div class="evaluation-info">
                       <h5>Capacidad de Liderazgo</h5>
                       <p>
-                        Tiene capacidad de liderazgo o podría asumirlo.
+                        Tiene capacidad comprobada para guiar equipos de trabajo
+                        o cuenta con el potencial inmediato para asumirlo.
                       </p>
                     </div>
-
                     <div class="status-group">
                       <div class="status-option">
                         <input
                           type="radio"
-                          id="metas_si"
-                          name="Cumplimiento_Metas_Objetivos"
+                          id="liderazgo_si"
+                          name="Capacidad_Liderazgo"
                           value="1"
                           required
                         />
-                        <label for="metas_si">
-                          <span class="dot"></span>
-                          Sí cumple
-                        </label>
+                        <label for="liderazgo_si"
+                          ><span class="dot"></span> Sí cumple</label
+                        >
                       </div>
-
                       <div class="status-option">
                         <input
                           type="radio"
-                          id="metas_no"
-                          name="Cumplimiento_Metas_Objetivos"
+                          id="liderazgo_no"
+                          name="Capacidad_Liderazgo"
                           value="0"
                         />
-                        <label for="metas_no">
-                          <span class="dot"></span>
-                          No cumple
-                        </label>
+                        <label for="liderazgo_no"
+                          ><span class="dot"></span> No cumple</label
+                        >
                       </div>
                     </div>
                   </div>
 
-                  <!-- ITEM -->
                   <div class="evaluation-item">
                     <div class="evaluation-info">
-                      <h5>Aprendizaje Rapido</h5>
+                      <h5>Aprendizaje Rápido</h5>
                       <p>
-                        Aprende con rapidez y aplica nuevos conocimientos.
+                        Aprende con velocidad y aplica nuevos conocimientos
+                        técnicos o estratégicos con autonomía.
                       </p>
                     </div>
-
                     <div class="status-group">
                       <div class="status-option">
                         <input
                           type="radio"
-                          id="funciones_si"
-                          name="Cumplimiento_FunsionesAsig"
+                          id="aprendizaje_si"
+                          name="Aprendizaje_Rapido"
                           value="1"
                           required
                         />
-                        <label for="funciones_si">
-                          <span class="dot"></span>
-                          Sí cumple
-                        </label>
+                        <label for="aprendizaje_si"
+                          ><span class="dot"></span> Sí cumple</label
+                        >
                       </div>
-
                       <div class="status-option">
                         <input
                           type="radio"
-                          id="funciones_no"
-                          name="Cumplimiento_FunsionesAsig"
+                          id="aprendizaje_no"
+                          name="Aprendizaje_Rapido"
                           value="0"
                         />
-                        <label for="funciones_no">
-                          <span class="dot"></span>
-                          No cumple
-                        </label>
+                        <label for="aprendizaje_no"
+                          ><span class="dot"></span> No cumple</label
+                        >
                       </div>
                     </div>
                   </div>
 
-                  <!-- ITEM -->
                   <div class="evaluation-item">
                     <div class="evaluation-info">
                       <h5>Adaptación al Cambio</h5>
                       <p>
-                        Se adapta bien a cambios y retos organizacionales.
+                        Muestra resiliencia y se acopla de manera constructiva
+                        ante las reestructuraciones y retos de la empresa.
                       </p>
                     </div>
-
                     <div class="status-group">
                       <div class="status-option">
                         <input
                           type="radio"
-                          id="entregables_si"
-                          name="Entregables_Cal_Tiem"
+                          id="adaptacion_si"
+                          name="Adaptacion_Cambio"
                           value="1"
                           required
                         />
-                        <label for="entregables_si">
-                          <span class="dot"></span>
-                          Sí cumple
-                        </label>
+                        <label for="adaptacion_si"
+                          ><span class="dot"></span> Sí cumple</label
+                        >
                       </div>
-
                       <div class="status-option">
                         <input
                           type="radio"
-                          id="entregables_no"
-                          name="Entregables_Cal_Tiem"
+                          id="adaptacion_no"
+                          name="Adaptacion_Cambio"
                           value="0"
                         />
-                        <label for="entregables_no">
-                          <span class="dot"></span>
-                          No cumple
-                        </label>
+                        <label for="adaptacion_no"
+                          ><span class="dot"></span> No cumple</label
+                        >
                       </div>
                     </div>
                   </div>
 
-                  <!-- ITEM -->
                   <div class="evaluation-item">
                     <div class="evaluation-info">
                       <h5>Iniciativa de Mejorar</h5>
-                      <p>Muestra iniciativa para mejorar procesos.</p>
+                      <p>
+                        Propone activamente optimizaciones a los procesos
+                        actuales sin necesidad de supervisión directa.
+                      </p>
                     </div>
-
                     <div class="status-group">
                       <div class="status-option">
                         <input
                           type="radio"
-                          id="asistencia_si"
-                          name="Cumple_Asistencia"
+                          id="iniciativa_si"
+                          name="Iniciativa_Mejora"
                           value="1"
                           required
                         />
-                        <label for="asistencia_si">
-                          <span class="dot"></span>
-                          Sí cumple
-                        </label>
+                        <label for="iniciativa_si"
+                          ><span class="dot"></span> Sí cumple</label
+                        >
                       </div>
-
                       <div class="status-option">
                         <input
                           type="radio"
-                          id="asistencia_no"
-                          name="Cumple_Asistencia"
+                          id="iniciativa_no"
+                          name="Iniciativa_Mejora"
                           value="0"
                         />
-                        <label for="asistencia_no">
-                          <span class="dot"></span>
-                          No cumple
-                        </label>
+                        <label for="iniciativa_no"
+                          ><span class="dot"></span> No cumple</label
+                        >
                       </div>
                     </div>
                   </div>
 
-                  <!-- ITEM -->
                   <div class="evaluation-item">
                     <div class="evaluation-info">
                       <h5>Madurez Emocional</h5>
                       <p>
-                        Muestra madurez emocional y toma decisiones con criterio.
+                        Mantiene la templanza, gestiona la frustración de forma
+                        asertiva y toma decisiones fundamentadas con criterio.
                       </p>
                     </div>
-
                     <div class="status-group">
                       <div class="status-option">
                         <input
                           type="radio"
-                          id="compromiso_si"
-                          name="Muestra_Comp_Colab"
+                          id="madurez_si"
+                          name="Madurez_Emocional"
                           value="1"
                           required
                         />
-                        <label for="compromiso_si">
-                          <span class="dot"></span>
-                          Sí cumple
-                        </label>
+                        <label for="madurez_si"
+                          ><span class="dot"></span> Sí cumple</label
+                        >
                       </div>
-
                       <div class="status-option">
                         <input
                           type="radio"
-                          id="compromiso_no"
-                          name="Muestra_Comp_Colab"
+                          id="madurez_no"
+                          name="Madurez_Emocional"
                           value="0"
                         />
-                        <label for="compromiso_no">
-                          <span class="dot"></span>
-                          No cumple
-                        </label>
+                        <label for="madurez_no"
+                          ><span class="dot"></span> No cumple</label
+                        >
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <!-- =====================================================
-                    OBSERVACIONES
-                   ====================================================== -->
               <div class="form-section">
-                <h4 class="form-section-title">Observaciones Generales</h4>
-
+                <h4 class="form-section-title">
+                  Observaciones y Justificación de Potencial
+                </h4>
                 <div class="form-grid">
                   <div class="field field-full">
                     <label for="observaciones">
                       <i class="fas fa-align-left field-icon"></i>
-                      Comentarios adicionales
+                      Comentarios adicionales, fortalezas observadas y áreas
+                      específicas de desarrollo
                     </label>
-
                     <textarea
                       id="observaciones"
                       name="observaciones"
                       rows="5"
-                      placeholder="Ingrese observaciones o comentarios sobre el desempeño del empleado..."
+                      placeholder="Describa el porqué de la calificación de potencial del colaborador y sus posibles proyecciones..."
                     ></textarea>
                   </div>
                 </div>
               </div>
 
-              <!-- =====================================================
-                    BOTONES
-                   ====================================================== -->
               <div class="form-footer">
                 <a href="{% url 'evaluaciones' %}" class="btn btn-ghost">
-                  <i class="fas fa-arrow-left"></i>
-                  Cancelar
+                  <i class="fas fa-arrow-left"></i> Cancelar
                 </a>
 
                 <button type="reset" class="btn btn-secondary">
-                  <i class="fas fa-rotate-left"></i>
-                  Limpiar
+                  <i class="fas fa-rotate-left"></i> Limpiar Formulario
                 </button>
 
                 <button type="submit" class="btn btn-primary">
-                  <i class="fas fa-floppy-disk"></i>
-                  Guardar evaluación
+                  <i class="fas fa-floppy-disk"></i> Guardar Evaluación de
+                  Jefatura
                 </button>
               </div>
             </form>
           </div>
         </section>
-        <!-- /form-card -->
 
-        <!-- Footer -->
         <footer class="footer">
           © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
         </footer>

@@ -465,26 +465,56 @@ body {
     overflow-x: hidden;
 }
 
+/* =========================
+   LOGO ROBASA
+========================= */
 
 .logo {
-    text-align: center;
-    margin-bottom: 40px;
+  text-align: center;
+  margin-bottom: 35px;
 }
 
-.logo i {
-    font-size: 42px;
-    margin-bottom: 10px;
+/* Imagen */
+.logo-img {
+  width: 320px;
+  max-width: 100%;
+  height: auto;
+
+  display: block;
+  margin: 0 auto 25px;
+
+  /* Hace que resalte */
+  padding: 18px;
+
+  border-radius: 22px;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  backdrop-filter: blur(6px);
+
+  /* Glow */
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25))
+    drop-shadow(0 0 25px rgba(255, 255, 255, 0.12)) brightness(1.18)
+    contrast(1.15);
+
+  transition: all 0.3s ease;
 }
 
-.logo h2 {
-    font-size: 34px;
-    font-weight: 800;
+/* Hover elegante */
+.logo-img:hover {
+  transform: scale(1.03);
+
+  filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))
+    drop-shadow(0 0 32px rgba(255, 255, 255, 0.18)) brightness(1.25)
+    contrast(1.2);
 }
 
 .logo span {
-    font-size: 12px;
-    letter-spacing: 5px;
-    color: #9bc0ff;
+  font-size: 18px;
+  letter-spacing: 6px;
+  color: #9bc0ff;
 }
 
 /* Menú */
