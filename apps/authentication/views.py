@@ -138,8 +138,11 @@ def kpi_Detalle_view(request):
 def kpi_Premio_view(request):
     return render(request, 'kpi_Premio.html')
 
-
-
 #Pagina de Resumen KPIs
 def kpi_view(request):
     return render(request, 'kpi.html')
+
+#Pagina de Oboarding
+def onboarding_view(request):
+    return render(request, 'onboarding.html')
+

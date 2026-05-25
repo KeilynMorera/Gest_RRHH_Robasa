@@ -74,8 +74,9 @@ urlpatterns = [
     path('kpi_Detalle.html/', views.kpi_Detalle_view, name='kpi_Detalle'),
     # Ruta para el dashboard (pantalla de registro de KPI)
     path('kpi_Premio.html/', views.kpi_Premio_view, name='kpi_Premio'),
-
     # Ruta para el dashboard (pantalla de configuraciones del sistema)
     path('kpi.html/', views.kpi_view, name='kpi'),
+    # Ruta para el dashboard (pantalla de onboarding)
+    path('onboarding.html/', views.onboarding_view, name='onboarding'),
 ]
 
