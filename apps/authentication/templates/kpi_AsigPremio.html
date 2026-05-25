@@ -1,0 +1,424 @@
+<!-- Cargar la librería al inicio del template, para usar archivos estaticos -->
+{% load static %}
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Premios KPI - Gestión de Talento Humano | Robasa</title>
+
+    <link rel="stylesheet" href="{% static 'styles/kpi_Premio.css' %}" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <aside class="sidebar">
+        <div class="logo-container">
+          <img
+            src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
+            alt="Logo Robasa"
+            class="logo-img"
+          />
+        </div>
+
+        <!-- ======================================================
+             MENÚ DE NAVEGACIÓN
+        ====================================================== -->
+        <nav class="menu">
+          <!-- Opción Inicio -->
+          <a href="{% url 'inicio' %}">
+            <i class="fas fa-house"></i>
+            Inicio
+          </a>
+
+          <!-- Opción Personas o Empleados -->
+          <a href="{% url 'per_emp' %}">
+            <i class="fas fa-user-group"></i>
+            Personas o Empleados
+          </a>
+
+          <!-- Opción Onboarding -->
+          <a href="{% url 'onboarding' %}">
+            <i class="fas fa-rocket"></i>
+            Onboarding / Entradas
+          </a>
+
+          <!-- Opción Empresas -->
+          <a href="{% url 'empresas' %}">
+            <i class="fas fa-building"></i>
+            Empresas
+          </a>
+
+          <!-- Opción Gerencias, Departamentos y Puestos -->
+          <a href="{% url 'comple_Empresa' %}">
+            <i class="fas fa-briefcase"></i>
+            Gerencias, Departamentos y Puestos
+          </a>
+
+          <!-- Opción Salarios -->
+          <a href="{% url 'salario' %}">
+            <i class="fas fa-money-bill-wave"></i>
+            Salarios
+          </a>
+
+          <!-- Opción Reclutamiento -->
+          <a href="{% url 'reclutamiento' %}">
+            <i class="fas fa-wallet"></i>
+            Reclutamiento
+          </a>
+
+          <!-- Opción Vacaciones -->
+          <a href="{% url 'vacaciones' %}">
+            <i class="fas fa-umbrella-beach"></i>
+            Vacaciones
+          </a>
+
+          <!-- Opción Asistencia y Permisos -->
+          <a href="{% url 'elec_Asistencia' %}">
+            <i class="fas fa-clock"></i>
+            Asistencia y Permiso
+          </a>
+
+          <!-- Acción o Rotación de Personal -->
+          <a href="{% url 'accion_rotacion' %}">
+            <i class="fas fa-clipboard-list"></i>
+            Acciones o Rotaciones del Personal
+          </a>
+
+          <!-- Opción Evaluaciones -->
+          <a href="{% url 'evaluaciones' %}">
+            <i class="fas fa-chart-line"></i>
+            Evaluación de Desempeño
+          </a>
+
+          <!-- Opción KPIs -->
+          <a href="{% url 'elec_KPI' %}">
+            <i class="fas fa-file-lines"></i>
+            KPIs
+          </a>
+
+          <!-- Opción Offboarding -->
+          <a href="{% url 'elec_Offboarding' %}">
+            <i class="fas fa-door-open"></i>
+            Offboarding / Salidas
+          </a>
+
+          <!-- Opción Reportes -->
+          <a href="{% url 'reportes' %}">
+            <i class="fas fa-file-lines"></i>
+            Reportes
+          </a>
+
+          <!-- Opción Usuarios y Roles -->
+          <a href="{% url 'usuarios' %}">
+            <i class="fas fa-users-cog"></i>
+            Usuarios y Roles
+          </a>
+
+          <!-- Opción Configuración -->
+          <a href="{% url 'configuraciones' %}">
+            <i class="fas fa-gear"></i>
+            Configuración
+          </a>
+        </nav>
+
+        <div class="logout">
+          <a href="login.html">
+            <i class="fas fa-right-from-bracket"></i> Cerrar sesión
+          </a>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <button class="menu-toggle">
+            <i class="fas fa-bars"></i>
+          </button>
+
+          <div class="page-title">
+            <h1>Incentivos y Premios</h1>
+            <p>Configuración y asignación de reconocimientos por metas</p>
+          </div>
+
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input
+              type="text"
+              placeholder="Buscar empleado, módulo, reporte..."
+            />
+          </div>
+
+          <div class="topbar-actions">
+            <div class="notification">
+              <i class="fas fa-bell"></i>
+              <span class="badge">3</span>
+            </div>
+
+            <div class="user-profile">
+              <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
+              <div class="user-info">
+                <strong>María Gómez</strong>
+                <span>Recursos Humanos</span>
+              </div>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+          </div>
+        </header>
+
+        <div class="breadcrumb">
+          <a href="{% url 'inicio' %}"><i class="fas fa-home"></i> Inicio</a>
+          <span class="sep">/</span>
+          <a href="{% url 'elec_KPI' %}">Módulo KPIs</a>
+          <span class="sep">/</span>
+          <span class="current">Gestión de Premios</span>
+        </div>
+
+        <section class="form-card">
+          <div class="form-card-header">
+            <div class="form-card-header-left">
+              <div class="form-card-icon">
+                <i class="fas fa-award"></i>
+              </div>
+              <div>
+                <h2 class="form-card-title">Gestión de Premios KPI</h2>
+                <p class="form-card-subtitle">
+                  Administración de incentivos, alcances mínimos y asignaciones
+                  a los colaboradores.
+                </p>
+              </div>
+            </div>
+            <p class="required-note">
+              Los campos con <span>*</span> son obligatorios
+            </p>
+          </div>
+
+          <div class="form-body">
+            <form action="#" method="POST">
+              {% csrf_token %}
+              <div class="form-section">
+                <h4 class="form-section-title">
+                  <i class="fas fa-gift"></i> Definición e Información del
+                  Premio
+                </h4>
+
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="idPremio">
+                      <i class="fas fa-hashtag field-icon"></i> ID Premio
+                    </label>
+                    <input
+                      type="number"
+                      id="idPremio"
+                      placeholder="Generado automáticamente"
+                      readonly
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="descripcion">
+                      <i class="fas fa-file-signature field-icon"></i>
+                      Descripción <span class="req">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="descripcion"
+                      placeholder="Ej. Bono Excelencia Trimestral"
+                      required
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="indicador">
+                      <i class="fas fa-chart-line field-icon"></i> Indicador KPI
+                      Mínimo <span class="req">*</span>
+                    </label>
+                    <select id="indicador" required>
+                      <option value="" disabled selected>
+                        Seleccione un indicador...
+                      </option>
+                      <option value="cobro">Cobro Efectividad</option>
+                      <option value="comision">Comisión</option>
+                      <option value="supervisor">Evaluación Supervisor</option>
+                      <option value="monto">One Monto</option>
+                    </select>
+                  </div>
+
+                  <div class="field">
+                    <label for="alcance">
+                      <i class="fas fa-bullseye field-icon"></i> Alcance
+                      Requerido <span class="req">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="alcance"
+                      placeholder="Ej. >= 95% de la cuota"
+                      required
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="monto">
+                      <i class="fas fa-money-bill-wave field-icon"></i> Monto
+                      del Premio (₡) <span class="req">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      id="monto"
+                      placeholder="0.00"
+                      step="0.01"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h4 class="form-section-title">
+                  <i class="fas fa-user-tag"></i> Asignación del Incentivo
+                  Evaluado
+                </h4>
+
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="id_kpi_premio">
+                      <i class="fas fa-link field-icon"></i> ID Relación Premio
+                    </label>
+                    <input
+                      type="number"
+                      id="id_kpi_premio"
+                      placeholder="Auto-incrementable"
+                      readonly
+                    />
+                  </div>
+
+                  <div class="field">
+                    <label for="id_kpi">
+                      <i class="fas fa-chart-column field-icon"></i> Registro
+                      KPI Evaluado <span class="req">*</span>
+                    </label>
+                    <select id="id_kpi" required>
+                      <option value="" disabled selected>
+                        Seleccione un registro...
+                      </option>
+                      <option value="1">KPI Julio 2026 - Carlos Méndez</option>
+                      <option value="2">KPI Julio 2026 - Ana Rodríguez</option>
+                      <option value="3">KPI Julio 2026 - María López</option>
+                    </select>
+                  </div>
+
+                  <div class="field">
+                    <label for="premio_relacionado">
+                      <i class="fas fa-trophy field-icon"></i> Premio Asociado
+                      <span class="req">*</span>
+                    </label>
+                    <select id="premio_relacionado" required>
+                      <option value="" disabled selected>
+                        Seleccione el incentivo...
+                      </option>
+                      <option value="oro">Bono Oro</option>
+                      <option value="comercial">Incentivo Comercial</option>
+                      <option value="especial">Reconocimiento Especial</option>
+                    </select>
+                  </div>
+
+                  <div class="field">
+                    <label for="fecha_asignacion">
+                      <i class="fas fa-calendar-check field-icon"></i> Fecha de
+                      Aplicación <span class="req">*</span>
+                    </label>
+                    <input type="date" id="fecha_asignacion" required />
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h4 class="form-section-title">
+                  <i class="fas fa-calculator"></i> Vista Previa del Cálculo
+                  Actual
+                </h4>
+
+                <div class="summary-grid">
+                  <div class="summary-card">
+                    <span>Premio Seleccionado</span>
+                    <strong>Bono Oro</strong>
+                  </div>
+                  <div class="summary-card">
+                    <span>Métrica Evaluada</span>
+                    <strong>Cobro Efectividad</strong>
+                  </div>
+                  <div class="summary-card">
+                    <span>Monto Estimado</span>
+                    <strong>₡150,000</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h4 class="form-section-title">
+                  <i class="fas fa-clock-rotate-left"></i> Historial Reciente de
+                  Asignaciones
+                </h4>
+
+                <div class="table-container">
+                  <table class="results-table">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Colaborador</th>
+                        <th>Incentivo Aplicado</th>
+                        <th>KPI de Referencia</th>
+                        <th>Monto Liquidado</th>
+                        <th>Fecha Registro</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>1</td>
+                        <td><strong>Carlos Méndez</strong></td>
+                        <td>Bono Oro</td>
+                        <td>Cobro Efectividad</td>
+                        <td>₡150,000</td>
+                        <td>20/07/2026</td>
+                      </tr>
+                      <tr>
+                        <td>2</td>
+                        <td><strong>Ana Rodríguez</strong></td>
+                        <td>Incentivo Comercial</td>
+                        <td>Comisión</td>
+                        <td>₡85,000</td>
+                        <td>18/07/2026</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="form-footer">
+                <button type="reset" class="btn btn-ghost">
+                  <i class="fas fa-rotate-left"></i> Limpiar Campos
+                </button>
+
+                <button type="button" class="btn btn-secondary">
+                  <i class="fas fa-eye"></i> Simular Montos
+                </button>
+
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-floppy-disk"></i> Guardar Incentivo
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <footer class="footer">
+          © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

@@ -322,8 +322,8 @@
               {% csrf_token %}
 
               <!-- ======================================================
-                   SECCIÓN: INFORMACIÓN PERSONAL
-              ====================================================== -->
+        SECCIÓN: INFORMACIÓN PERSONAL
+    ====================================================== -->
               <div class="form-section">
                 <!-- Título de sección -->
                 <h4 class="form-section-title">Información Personal</h4>
@@ -331,12 +331,11 @@
                 <!-- Grid del formulario -->
                 <div class="form-grid">
                   <!-- ======================================================
-                       FOTO DE PERFIL
-                  ====================================================== -->
+             FOTO DE PERFIL (Campo: Foto)
+        ====================================================== -->
                   <div class="field field-full">
                     <label for="foto">
                       <i class="fas fa-camera field-icon"></i>
-
                       Fotografía del empleado
                     </label>
 
@@ -369,12 +368,11 @@
                   </div>
 
                   <!-- ======================================================
-                       NOMBRE COMPLETO
-                  ====================================================== -->
+             NOMBRE COMPLETO (Campo: Nombre)
+        ====================================================== -->
                   <div class="field field-full">
                     <label for="nombre_completo">
                       <i class="fas fa-user field-icon"></i>
-
                       Nombre completo <span class="req">*</span>
                     </label>
 
@@ -389,12 +387,11 @@
                   </div>
 
                   <!-- ======================================================
-                       CÉDULA
-                  ====================================================== -->
+             CÉDULA (Campo: Cedula)
+        ====================================================== -->
                   <div class="field">
                     <label for="cedula">
                       <i class="fas fa-id-card field-icon"></i>
-
                       Cédula <span class="req">*</span>
                     </label>
 
@@ -409,12 +406,11 @@
                   </div>
 
                   <!-- ======================================================
-                       SEXO
-                  ====================================================== -->
+             SEXO (FK: idSexo)
+        ====================================================== -->
                   <div class="field">
                     <label for="sexo">
                       <i class="fas fa-venus-mars field-icon"></i>
-
                       Sexo <span class="req">*</span>
                     </label>
 
@@ -422,22 +418,19 @@
                       <option value="" disabled selected>
                         Seleccione una opción…
                       </option>
-
-                      <option value="M">Masculino</option>
-
-                      <option value="F">Femenino</option>
-
-                      <option value="O">Otro</option>
+                      <!-- Mapeado directo con los IDs de la tabla PersonaSexo -->
+                      <option value="1">Masculino</option>
+                      <option value="2">Femenino</option>
+                      <option value="3">No Especificado</option>
                     </select>
                   </div>
 
                   <!-- ======================================================
-                       FECHA DE NACIMIENTO
-                  ====================================================== -->
+             FECHA DE NACIMIENTO (Campo: Fecha_Nacimiento)
+        ====================================================== -->
                   <div class="field">
                     <label for="fecha_nacimiento">
                       <i class="fas fa-calendar-day field-icon"></i>
-
                       Fecha de nacimiento <span class="req">*</span>
                     </label>
 
@@ -448,31 +441,115 @@
                       required
                     />
                   </div>
+
+                  <!-- ======================================================
+             TELÉFONO FIJO (Campo: Telefono) -- NUEVO
+        ====================================================== -->
+                  <div class="field">
+                    <label for="telefono">
+                      <i class="fas fa-phone field-icon"></i>
+                      Teléfono Fijo <span class="req">*</span>
+                    </label>
+
+                    <input
+                      type="tel"
+                      id="telefono"
+                      name="telefono"
+                      maxlength="20"
+                      placeholder="Ej: 2222-3333"
+                      required
+                    />
+                  </div>
+
+                  <!-- ======================================================
+             CELULAR (Campo: Celular) -- NUEVO
+        ====================================================== -->
+                  <div class="field">
+                    <label for="celular">
+                      <i class="fas fa-mobile-screen-button field-icon"></i>
+                      Teléfono Celular <span class="req">*</span>
+                    </label>
+
+                    <input
+                      type="tel"
+                      id="celular"
+                      name="celular"
+                      maxlength="20"
+                      placeholder="Ej: 8888-9999"
+                      required
+                    />
+                  </div>
+
+                  <!-- ======================================================
+             CORREO ELECTRÓNICO (Campo: Correo) -- NUEVO
+        ====================================================== -->
+                  <div class="field">
+                    <label for="correo">
+                      <i class="fas fa-envelope field-icon"></i>
+                      Correo Electrónico <span class="req">*</span>
+                    </label>
+
+                    <input
+                      type="email"
+                      id="correo"
+                      name="correo"
+                      maxlength="200"
+                      placeholder="ejemplo@correo.com"
+                      required
+                    />
+                  </div>
+
+                  <!-- ======================================================
+             DIRECCIÓN DE HABITACIÓN (Campo: Direccion) -- NUEVO
+        ====================================================== -->
+                  <div class="field field-full">
+                    <label for="direccion">
+                      <i class="fas fa-location-dot field-icon"></i>
+                      Dirección De Habitación <span class="req">*</span>
+                    </label>
+
+                    <textarea
+                      id="direccion"
+                      name="direccion"
+                      maxlength="400"
+                      rows="3"
+                      placeholder="Provincia, Cantón, Distrito y señas exactas..."
+                      style="
+                        width: 100%;
+                        border: 1.5px solid #dde2f0;
+                        border-radius: 8px;
+                        padding: 12px 14px;
+                        font-size: 14px;
+                        background: #f7f8fc;
+                        outline: none;
+                        font-family: inherit;
+                        resize: vertical;
+                      "
+                      required
+                    ></textarea>
+                  </div>
                 </div>
               </div>
 
               <!-- ======================================================
-                   BOTONES DE ACCIÓN DEL FORMULARIO
-              ====================================================== -->
+        BOTONES DE ACCIÓN DEL FORMULARIO
+    ====================================================== -->
               <div class="form-footer">
                 <!-- Botón cancelar -->
                 <a href="{% url 'per_emp' %}" class="btn btn-ghost">
                   <i class="fas fa-arrow-left"></i>
-
                   Cancelar
                 </a>
 
                 <!-- Botón limpiar -->
                 <button type="reset" class="btn btn-secondary">
                   <i class="fas fa-rotate-left"></i>
-
                   Limpiar
                 </button>
 
                 <!-- Botón guardar -->
                 <button type="submit" class="btn btn-primary">
                   <i class="fas fa-floppy-disk"></i>
-
                   Guardar persona
                 </button>
               </div>

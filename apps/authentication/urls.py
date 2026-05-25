@@ -90,5 +90,7 @@ urlpatterns = [
     path('registrar_off.html/', views.registrar_off_view, name='registrar_off'),
     # Ruta para el dashboard (pantalla de checklist de offboarding)
     path('checklist_off.html/', views.checklist_off_view, name='checklist_off'),
+    # Ruta para el dashboard (pantalla de asignar premios a KPIs)
+    path('kpi_AsigPremio.html/', views.kpi_AsigPremio_view, name='kpi_AsigPremio'),
 ]
 

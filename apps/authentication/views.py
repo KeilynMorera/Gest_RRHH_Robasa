@@ -169,3 +169,7 @@ def registrar_off_view(request):
 #Pagina de Checklist de Offboarding
 def checklist_off_view(request):
     return render(request, 'checklist_off.html')
+
+#Pagina de Asignar Premios a KPIs
+def kpi_AsigPremio_view(request):   
+    return render(request, 'kpi_AsigPremio.html')
