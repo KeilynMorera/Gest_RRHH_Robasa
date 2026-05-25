@@ -1,4 +1,7 @@
 <!-- Cargar la librería al inicio del template, para usar archivos estaticos -->
+<!-- ==========================================================================
+     CARGAR LIBRERÍA DE ARCHIVOS ESTÁTICOS DE DJANGO
+     ========================================================================== -->
 {% load static %}
 
 <!doctype html>
@@ -6,17 +9,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Configuración General - Gestión de Talento Humano</title>
+    <title>Registro de Usuarios del Sistema - Talento Humano | Robasa</title>
 
-    <link rel="stylesheet" href="{% static 'styles/usuarios.css' %}" />
-
+    <!-- Librería Font Awesome para los íconos -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
+
+    <!-- Se hereda el archivo de estilos base del dashboard/formularios -->
+    <link rel="stylesheet" href="{% static 'styles/usuarios.css' %}" />
   </head>
   <body>
     <div class="dashboard-container">
+      <!-- =========================================================
+           SIDEBAR / MENÚ LATERAL
+      ========================================================= -->
       <aside class="sidebar">
         <div class="logo-container">
           <img
@@ -25,7 +33,6 @@
             class="logo-img"
           />
         </div>
-
         <!-- ======================================================
              MENÚ DE NAVEGACIÓN
         ====================================================== -->
@@ -126,289 +133,159 @@
             Configuración
           </a>
         </nav>
-
-        <div class="logout">
-          <a href="login.html">
-            <i class="fas fa-right-from-bracket"></i> Cerrar sesión
-          </a>
-        </div>
       </aside>
 
+      <!-- =========================================================
+           CONTENIDO PRINCIPAL
+      ========================================================= -->
       <main class="main-content">
         <header class="topbar">
-          <button class="menu-toggle">
-            <i class="fas fa-bars"></i>
-          </button>
-
           <div class="page-title">
-            <h1>Configuración General</h1>
+            <h1>Alta de Credenciales y Accesos</h1>
             <p>
-              Ajustes globales, variables de entorno y parámetros operativos
+              Configuración de perfiles autorizados para operar la plataforma
+              corporativa
             </p>
-          </div>
-
-          <div class="search-box">
-            <i class="fas fa-search"></i>
-            <input type="text" placeholder="Buscar parámetro o ajuste..." />
-          </div>
-
-          <div class="topbar-actions">
-            <div class="notification">
-              <i class="fas fa-bell"></i>
-              <span class="badge">3</span>
-            </div>
-
-            <div class="user-profile">
-              <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
-              <div class="user-info">
-                <strong>María Gómez</strong>
-                <span>Administrador</span>
-              </div>
-              <i class="fas fa-chevron-down"></i>
-            </div>
           </div>
         </header>
 
+        <!-- Navegación interna (Breadcrumb) -->
         <div class="breadcrumb">
-          <a href="{% url 'inicio' %}"> <i class="fas fa-house"></i> Inicio </a>
-          <i class="fas fa-chevron-right sep"></i>
-          <span class="current"> Configuración del Sistema </span>
+          <a href="{% url 'inicio' %}">Inicio</a> <span style="color: #c5cbdf">/</span>
+          <a href="{% url 'usuarios' %}">Usuarios y Roles</a>
+          <span style="color: #c5cbdf">/</span>
+          <span class="current">Crear Usuario</span>
         </div>
 
-        <section class="form-card">
-          <div class="form-card-header">
-            <div class="form-card-header-left">
-              <div class="form-card-icon">
-                <i class="fas fa-cogs"></i>
+        <!-- Contenedor del Formulario de Registro -->
+        <div class="form-container">
+          <div class="form-instructions">
+            <i
+              class="fas fa-circle-info"
+              style="color: #26317a; margin-right: 6px"
+            ></i>
+            <strong>Nota de seguridad:</strong> Cada cuenta de acceso debe estar
+            ligada obligatoriamente a un colaborador activo en la base de datos
+            de personal. La contraseña debe cumplir un máximo estricto de 15
+            caracteres según los parámetros del sistema.
+          </div>
+
+          <!-- Formulario hacia la vista de procesamiento de Django -->
+          <form action="#" method="POST">
+            {% csrf_token %}
+
+            <div class="form-grid">
+              <!-- Colaborador Asociado (FK: idEmpleado_Admin) -->
+              <div class="form-group">
+                <label for="idEmpleado_Admin">
+                  <i class="fas fa-user-tie"></i> Colaborador Asociado
+                </label>
+                <select
+                  name="idEmpleado_Admin"
+                  id="idEmpleado_Admin"
+                  class="form-control"
+                  required
+                >
+                  <option value="" disabled selected>
+                    -- Seleccione el empleado --
+                  </option>
+                  <!-- Simulación visual de registros de la tabla Empleado -->
+                  <option value="1">
+                    Gómez María - Recursos Humanos (#EMP-021)
+                  </option>
+                  <option value="2">
+                    Arce Jorge - Tecnologías de Información (#EMP-045)
+                  </option>
+                  <option value="3">
+                    Pérez Juan - Operaciones Bodega (#EMP-104)
+                  </option>
+                </select>
               </div>
-              <div>
-                <h2 class="form-card-title">Parámetros del Sistema</h2>
-                <p class="form-card-subtitle">
-                  Modifique las directivas de comportamiento del backend y
-                  comunicaciones locales.
-                </p>
+
+              <!-- Correo Electrónico (Campo: Correo) -->
+              <div class="form-group">
+                <label for="Correo">
+                  <i class="fas fa-envelope"></i> Correo Electrónico Corporativo
+                </label>
+                <input
+                  type="email"
+                  name="Correo"
+                  id="Correo"
+                  class="form-control"
+                  placeholder="ejemplo@robasa.com"
+                  maxlength="200"
+                  required
+                />
+              </div>
+
+              <!-- Contraseña de Acceso (Campo: Contrasenia) -->
+              <div class="form-group">
+                <label for="Contrasenia">
+                  <i class="fas fa-key"></i> Contraseña de Acceso
+                </label>
+                <input
+                  type="password"
+                  name="Contrasenia"
+                  id="Contrasenia"
+                  class="form-control"
+                  placeholder="Máximo 15 caracteres"
+                  maxlength="15"
+                  required
+                />
+              </div>
+
+              <!-- Rol del Sistema (Campo: Rol) -->
+              <div class="form-group">
+                <label for="Rol">
+                  <i class="fas fa-user-shield"></i> Rol / Perfil de Permisos
+                </label>
+                <select name="Rol" id="Rol" class="form-control" required>
+                  <option value="" disabled selected>
+                    -- Seleccione el rol --
+                  </option>
+                  <option value="Administrador">
+                    Administrador Global (TI)
+                  </option>
+                  <option value="Recursos Humanos">
+                    Gestor de Talento Humano (RRHH)
+                  </option>
+                  <option value="Consulta">Auditor / Solo Lectura</option>
+                </select>
+              </div>
+
+              <!-- Estado del Acceso (FK: idEstadoAdmin) -->
+              <div class="form-group">
+                <label for="idEstadoAdmin">
+                  <i class="fas fa-toggle-on"></i> Estado Inicial del Usuario
+                </label>
+                <select
+                  name="idEstadoAdmin"
+                  id="idEstadoAdmin"
+                  class="form-control"
+                  required
+                >
+                  <!-- Simulación visual de registros de la tabla Estado -->
+                  <option value="1" selected>Activo (Acceso inmediato)</option>
+                  <option value="2">Inactivo (Suspendido temporalmente)</option>
+                </select>
               </div>
             </div>
-            <p class="required-note"><span>*</span> Campos requeridos</p>
-          </div>
 
-          <div class="form-body">
-            <form action="#" method="POST">
-              {% csrf_token %}
+            <!-- Botonera de Acciones -->
+            <div class="btn-container">
+              <a href="{% url 'inicio' %}" class="btn-cancel">
+                <i class="fas fa-xmark"></i> Cancelar
+              </a>
+              <button type="submit" class="btn-save" style="margin: 0">
+                <i class="fas fa-floppy-disk"></i> Otorgar Permisos y Guardar
+              </button>
+            </div>
+          </form>
+        </div>
 
-              <div class="form-section">
-                <h4 class="form-section-title">
-                  Configuración del Servidor de Correo (SMTP)
-                </h4>
-
-                <div class="form-grid">
-                  <div class="field">
-                    <label for="smtp_server">
-                      <i class="fas fa-server field-icon"></i> Servidor SMTP
-                      <span class="req">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="smtp_server"
-                      name="smtpServer"
-                      placeholder="smtp.empresa.com"
-                      required
-                    />
-                  </div>
-
-                  <div class="field">
-                    <label for="smtp_port">
-                      <i class="fas fa-plug field-icon"></i> Puerto SMTP
-                      <span class="req">*</span>
-                    </label>
-                    <input
-                      type="number"
-                      id="smtp_port"
-                      name="smtpPort"
-                      placeholder="587"
-                      required
-                    />
-                  </div>
-
-                  <div class="field">
-                    <label for="email_remitente">
-                      <i class="fas fa-envelope-open-text field-icon"></i>
-                      Correo de Notificaciones <span class="req">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      id="email_remitente"
-                      name="emailRemitente"
-                      placeholder="no-reply@robasa.com"
-                      required
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-section">
-                <h4 class="form-section-title">
-                  Políticas de Seguridad y Autenticación
-                </h4>
-
-                <div class="form-grid">
-                  <div class="field">
-                    <label for="expiracion_clave">
-                      <i class="fas fa-calendar-minus field-icon"></i>
-                      Expiración de Contraseñas (Días)
-                      <span class="req">*</span>
-                    </label>
-                    <select
-                      id="expiracion_clave"
-                      name="expiracionClave"
-                      required
-                    >
-                      <option value="30">30 días</option>
-                      <option value="60">60 días</option>
-                      <option value="90" selected>90 días (Recomendado)</option>
-                      <option value="180">180 días</option>
-                    </select>
-                  </div>
-
-                  <div class="field">
-                    <label for="modo_mantenimiento">
-                      <i class="fas fa-tools field-icon"></i> Modo Mantenimiento
-                      <span class="req">*</span>
-                    </label>
-                    <select
-                      id="modo_mantenimiento"
-                      name="modoMantenimiento"
-                      required
-                    >
-                      <option value="0" selected>
-                        Inactivo (Sistema Disponible)
-                      </option>
-                      <option value="1">
-                        Activo (Bloquear accesos temporales)
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-section">
-                <h4 class="form-section-title">
-                  Estado de Conectividad e Integraciones
-                </h4>
-                <div class="roles-preview">
-                  <div class="role-card admin">
-                    <div class="role-icon"><i class="fas fa-database"></i></div>
-                    <h3>Base de Datos</h3>
-                    <p>
-                      Conexión PostgreSQL activa. Pool de conexiones estable al
-                      100%.
-                    </p>
-                  </div>
-
-                  <div class="role-card rrhh">
-                    <div class="role-icon"><i class="fas fa-cloud"></i></div>
-                    <h3>Media & Statics</h3>
-                    <p>
-                      Repositorio local de archivos y multimedia sincronizado
-                      con Django.
-                    </p>
-                  </div>
-
-                  <div class="role-card manager">
-                    <div class="role-icon">
-                      <i class="fas fa-paper-plane"></i>
-                    </div>
-                    <h3>Microservicio Mail</h3>
-                    <p>
-                      Cola de notificaciones en segundo plano en ejecución
-                      normal.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-section">
-                <h4 class="form-section-title">
-                  Historial de Modificaciones (Auditoría)
-                </h4>
-                <div class="table-container">
-                  <table class="results-table">
-                    <thead>
-                      <tr>
-                        <th>Parámetro Modificado</th>
-                        <th>Valor Anterior</th>
-                        <th>Valor Nuevo</th>
-                        <th>Responsable</th>
-                        <th>Fecha de Cambio</th>
-                        <th>Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Expiración de Contraseñas</td>
-                        <td>60 días</td>
-                        <td>
-                          <span class="status-badge pending">90 días</span>
-                        </td>
-                        <td>María Gómez</td>
-                        <td>Hoy - 10:15 AM</td>
-                        <td>
-                          <div class="table-actions">
-                            <button
-                              type="button"
-                              class="action-btn view"
-                              title="Ver Log Completo"
-                            >
-                              <i class="fas fa-eye"></i>
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Modo Mantenimiento</td>
-                        <td>Activo</td>
-                        <td>
-                          <span class="status-badge success">Inactivo</span>
-                        </td>
-                        <td>Carlos Méndez</td>
-                        <td>14/05/2026</td>
-                        <td>
-                          <div class="table-actions">
-                            <button
-                              type="button"
-                              class="action-btn view"
-                              title="Ver Log Completo"
-                            >
-                              <i class="fas fa-eye"></i>
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <div class="form-footer">
-                <button type="reset" class="btn btn-ghost">
-                  <i class="fas fa-rotate-left"></i> Reestablecer valores
-                </button>
-
-                <button
-                  type="submit"
-                  name="accion"
-                  value="guardar_config"
-                  class="btn btn-primary"
-                >
-                  <i class="fas fa-floppy-disk"></i> Aplicar Parámetros
-                </button>
-              </div>
-            </form>
-          </div>
-        </section>
-
+        <!-- Pie de página corporativo -->
         <footer class="footer">
-          © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
+          © 2026 Distribuidora Robasa - Gestión de Talento Humano
         </footer>
       </main>
     </div>
