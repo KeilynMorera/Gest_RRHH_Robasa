@@ -201,37 +201,58 @@
 
               <div class="form-section">
                 <h4 class="form-section-title">
-                  <i class="fas fa-sliders"></i> 1. Definición del Período bajo
-                  Análisis
+                  <i class="fas fa-users-gear"></i>
+                  2. Registro Técnico de Rotación del Personal
                 </h4>
+
                 <div class="form-grid">
+                  <!-- ID Rotación -->
+                  <div class="field">
+                    <label for="idRotacion">
+                      <i class="fas fa-id-badge field-icon"></i>
+                      ID Rotación
+                    </label>
+
+                    <input
+                      type="number"
+                      id="idRotacion"
+                      placeholder="Generado automáticamente"
+                      readonly
+                    />
+                  </div>
+
+                  <!-- Año -->
                   <div class="field">
                     <label for="Anio">
-                      <i class="fas fa-calendar field-icon"></i> Año Académico /
-                      Fiscal
+                      <i class="fas fa-calendar field-icon"></i>
+                      Año <span class="req">*</span>
                     </label>
+
                     <input
                       type="number"
                       id="Anio"
                       name="Anio"
-                      value="2026"
+                      placeholder="Ej: 2026"
                       min="2020"
                       max="2035"
                       required
                     />
                   </div>
 
+                  <!-- Mes -->
                   <div class="field">
                     <label for="Mes">
-                      <i class="fas fa-calendar-minus field-icon"></i> Mes
-                      Específico
+                      <i class="fas fa-calendar-days field-icon"></i>
+                      Mes
                     </label>
+
                     <select id="Mes" name="Mes">
+                      <option value="" selected>Seleccione el mes...</option>
                       <option value="1">Enero</option>
                       <option value="2">Febrero</option>
                       <option value="3">Marzo</option>
                       <option value="4">Abril</option>
-                      <option value="5" selected>Mayo</option>
+                      <option value="5">Mayo</option>
                       <option value="6">Junio</option>
                       <option value="7">Julio</option>
                       <option value="8">Agosto</option>
@@ -242,183 +263,178 @@
                     </select>
                   </div>
 
+                  <!-- Tipo Periodo -->
                   <div class="field">
                     <label for="Tipo_Periodo">
-                      <i class="fas fa-business-time field-icon"></i> Tipo de
-                      Período
+                      <i class="fas fa-business-time field-icon"></i>
+                      Tipo de Período <span class="req">*</span>
                     </label>
+
                     <select id="Tipo_Periodo" name="Tipo_Periodo" required>
-                      <option value="Mensual" selected>Mensual</option>
+                      <option value="" disabled selected>
+                        Seleccione el período...
+                      </option>
+
+                      <option value="Mensual">Mensual</option>
                       <option value="Trimestral">Trimestral</option>
-                      <option value="Semanal">Semanal</option>
+                      <option value="Semestral">Semestral</option>
                       <option value="Anual">Anual</option>
                     </select>
                   </div>
-                </div>
-              </div>
 
-              <div class="form-section">
-                <h4 class="form-section-title">
-                  <i class="fas fa-calculator"></i> 2. Métricas y Sumatorias del
-                  Período Extraídas
-                </h4>
-                <div class="form-grid">
-                  <div class="field">
-                    <label for="F1_Inicio">
-                      <i class="fas fa-users-ray field-icon"></i> Activos al
-                      Inicio (F1)
-                    </label>
-                    <input type="number" id="F1_Inicio" value="150" readonly />
-                  </div>
-
+                  <!-- Contratados -->
                   <div class="field">
                     <label for="A_Contratados">
-                      <i class="fas fa-user-plus field-icon"></i> Personas
-                      Contratadas (A)
+                      <i class="fas fa-user-plus field-icon"></i>
+                      A. Contratados <span class="req">*</span>
                     </label>
+
                     <input
                       type="number"
                       id="A_Contratados"
-                      value="12"
+                      name="A_Contratados"
+                      placeholder="Total contratados"
+                      required
                       readonly
                     />
                   </div>
 
+                  <!-- Desvinculados -->
                   <div class="field">
                     <label for="D_Desvinculados">
-                      <i class="fas fa-user-minus field-icon"></i> Bajas /
-                      Desvinculaciones (D)
+                      <i class="fas fa-user-minus field-icon"></i>
+                      D. Desvinculados <span class="req">*</span>
                     </label>
+
                     <input
                       type="number"
                       id="D_Desvinculados"
-                      value="4"
+                      name="D_Desvinculados"
+                      placeholder="Total desvinculados"
+                      required
                       readonly
                     />
                   </div>
 
+                  <!-- Jubilaciones -->
                   <div class="field">
-                    <label for="D_jubilaciones_defuncionales">
-                      <i class="fas fa-id-card-clip field-icon"></i>
-                      Jubilaciones / Defunciones
+                    <label for="D_Jubilaciones_Defuncionales">
+                      <i class="fas fa-user-clock field-icon"></i>
+                      Jubilaciones / Defunciones <span class="req">*</span>
                     </label>
+
                     <input
                       type="number"
-                      id="D_jubilaciones_defuncionales"
-                      value="1"
+                      id="D_Jubilaciones_Defuncionales"
+                      name="D_Jubilaciones_Defuncionales"
+                      placeholder="Total jubilaciones"
+                      required
                       readonly
                     />
                   </div>
 
+                  <!-- Total Bajas -->
+                  <div class="field">
+                    <label for="D_Total_Bajas">
+                      <i class="fas fa-arrow-trend-down field-icon"></i>
+                      D. Total Bajas <span class="req">*</span>
+                    </label>
+
+                    <input
+                      type="number"
+                      id="D_Total_Bajas"
+                      name="D_Total_Bajas"
+                      placeholder="Total de bajas"
+                      required
+                      readonly
+                    />
+                  </div>
+
+                  <!-- Inicio -->
+                  <div class="field">
+                    <label for="F1_Inicio">
+                      <i class="fas fa-users field-icon"></i>
+                      F1. Personal Inicial <span class="req">*</span>
+                    </label>
+
+                    <input
+                      type="number"
+                      id="F1_Inicio"
+                      name="F1_Inicio"
+                      placeholder="Inicio del período"
+                      required
+                      readonly
+                    />
+                  </div>
+
+                  <!-- Final -->
                   <div class="field">
                     <label for="F2_Final">
-                      <i class="fas fa-users-viewfinder field-icon"></i> Activos
-                      al Final (F2)
+                      <i class="fas fa-users-viewfinder field-icon"></i>
+                      F2. Personal Final <span class="req">*</span>
                     </label>
-                    <input type="number" id="F2_Final" value="157" readonly />
-                  </div>
-                </div>
-              </div>
 
-              <div class="form-section">
-                <h4 class="form-section-title">
-                  <i class="fas fa-square-poll-vertical"></i> 3. Desglose del
-                  Resultado Técnico IRP
-                </h4>
-                <div class="summary-grid">
-                  <div class="summary-card">
-                    <span>Total Bajas (D_Total_Bajas)</span>
-                    <strong>5 Empleados</strong>
+                    <input
+                      type="number"
+                      id="F2_Final"
+                      name="F2_Final"
+                      placeholder="Final del período"
+                      required
+                      readonly
+                    />
                   </div>
-                  <div class="summary-card">
-                    <span>Límite Mínimo Sugerido</span>
-                    <strong>1.00 %</strong>
-                  </div>
-                  <div class="summary-card">
-                    <span>Límite Máximo Sugerido</span>
-                    <strong>4.00 %</strong>
-                  </div>
-                  <div class="summary-card irp-highlight">
-                    <span>Resultado IRP Calculado</span>
-                    <strong>3.26 %</strong>
-                  </div>
-                </div>
-              </div>
 
-              <div class="form-section">
-                <h4 class="form-section-title">
-                  <i class="fas fa-clock-rotate-left"></i> Histórico Registrado
-                  de Índices de Rotación
-                </h4>
-                <div class="table-container">
-                  <table class="results-table">
-                    <thead>
-                      <tr>
-                        <th>Año / Mes</th>
-                        <th>Período</th>
-                        <th>Nuevos (A)</th>
-                        <th>Bajas (D)</th>
-                        <th>Jubilaciones</th>
-                        <th>Bajas Totales</th>
-                        <th>F1 / F2</th>
-                        <th>IRP Resultante</th>
-                        <th>Estado de Alerta</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><strong>2026 / Mayo</strong></td>
-                        <td>Mensual</td>
-                        <td>12</td>
-                        <td>4</td>
-                        <td>1</td>
-                        <td>5</td>
-                        <td>150 / 157</td>
-                        <td style="color: #e8600a; font-weight: bold">
-                          3.26 %
-                        </td>
-                        <td>
-                          <span class="status-badge status-normal"
-                            >Dentro de Rango</span
-                          >
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><strong>2026 / Abril</strong></td>
-                        <td>Mensual</td>
-                        <td>8</td>
-                        <td>7</td>
-                        <td>0</td>
-                        <td>7</td>
-                        <td>149 / 150</td>
-                        <td style="color: #e8600a; font-weight: bold">
-                          4.68 %
-                        </td>
-                        <td>
-                          <span class="status-badge status-alert"
-                            >Fuera de Límite</span
-                          >
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><strong>2026 / T1</strong></td>
-                        <td>Trimestral</td>
-                        <td>22</td>
-                        <td>11</td>
-                        <td>2</td>
-                        <td>13</td>
-                        <td>138 / 149</td>
-                        <td style="color: #e8600a; font-weight: bold">
-                          9.05 %
-                        </td>
-                        <td>
-                          <span class="status-badge status-normal"
-                            >Esperado Trimestral</span
-                          >
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <!-- IRP -->
+                  <div class="field">
+                    <label for="IRP">
+                      <i class="fas fa-chart-line field-icon"></i>
+                      Índice IRP (%) <span class="req">*</span>
+                    </label>
+
+                    <input
+                      type="number"
+                      step="0.01"
+                      id="IRP"
+                      name="IRP"
+                      placeholder="Resultado IRP"
+                      required
+                      readonly
+                    />
+                  </div>
+
+                  <!-- IRP Min -->
+                  <div class="field">
+                    <label for="IRP_Sugerido_Min">
+                      <i class="fas fa-arrow-down field-icon"></i>
+                      IRP Sugerido Mínimo
+                    </label>
+
+                    <input
+                      type="number"
+                      step="0.01"
+                      id="IRP_Sugerido_Min"
+                      name="IRP_Sugerido_Min"
+                      placeholder="Límite mínimo"
+                      readonly
+                    />
+                  </div>
+
+                  <!-- IRP Max -->
+                  <div class="field">
+                    <label for="IRP_Sugerido_Max">
+                      <i class="fas fa-arrow-up field-icon"></i>
+                      IRP Sugerido Máximo
+                    </label>
+
+                    <input
+                      type="number"
+                      step="0.01"
+                      id="IRP_Sugerido_Max"
+                      name="IRP_Sugerido_Max"
+                      placeholder="Límite máximo"
+                      readonly
+                    />
+                  </div>
                 </div>
               </div>
 
