@@ -4,15 +4,18 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 body {
   font-family: "Segoe UI", sans-serif;
   background: #f4f7fb;
   color: #1a2042;
 }
+
 .dashboard-container {
   display: flex;
   min-height: 100vh;
 }
+
 .sidebar {
   width: 280px;
   background: #26317a;
@@ -25,6 +28,7 @@ body {
   left: 0;
   bottom: 0;
 }
+
 .logo-img {
   width: 100%;
   max-width: 220px;
@@ -35,6 +39,7 @@ body {
   background: rgba(255, 255, 255, 0.08);
   border-radius: 18px;
 }
+
 .menu {
   flex: 1;
   display: flex;
@@ -42,6 +47,7 @@ body {
   gap: 8px;
   margin-top: 30px;
 }
+
 .menu a {
   color: #fefefd;
   text-decoration: none;
@@ -52,9 +58,11 @@ body {
   gap: 12px;
   font-size: 14px;
 }
+
 .menu a.active {
   background: #4567b7;
 }
+
 .main-content {
   flex: 1;
   margin-left: 280px;
@@ -68,10 +76,12 @@ body {
   justify-content: space-between;
   margin-bottom: 30px;
 }
+
 .page-title h1 {
   font-size: 34px;
   color: #1a2042;
 }
+
 .employee-box {
   background: #ffffff;
   border-left: 5px solid #e8600a;

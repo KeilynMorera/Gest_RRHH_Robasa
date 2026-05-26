@@ -439,16 +439,18 @@
               </div>
 
               <div class="form-footer">
-                <button
-                  type="button"
-                  class="btn btn-ghost"
-                  onclick="window.print()"
-                >
-                  <i class="fas fa-print"></i> Exportar Reporte
+                <a href="{% url 'accion_rotacion' %}" class="btn btn-ghost">
+                  <i class="fas fa-arrow-left"></i> Cancelar
+                </a>
+
+                <button type="reset" class="btn btn-secondary">
+                  <i class="fas fa-rotate-left"></i> Limpiar
                 </button>
+
+               
+
                 <button type="submit" class="btn btn-primary">
-                  <i class="fas fa-arrows-rotate"></i> Recalcular y Archivar
-                  Período
+                  <i class="fas fa-floppy-disk"></i> Guardar Asistencia
                 </button>
               </div>
             </form>
