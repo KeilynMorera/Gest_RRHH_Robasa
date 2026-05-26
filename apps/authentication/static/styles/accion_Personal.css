@@ -1,6 +1,6 @@
-/* ==========================================================================
-         RESET Y CONFIGURACIÓN GENERAL
-         ========================================================================== */
+/* =========================
+   RESET
+========================= */
 * {
   margin: 0;
   padding: 0;
@@ -13,17 +13,17 @@ body {
   color: #d35b1a;
 }
 
-/* ==========================================================================
-         LAYOUT GENERAL
-         ========================================================================== */
+/* =========================
+   LAYOUT GENERAL
+========================= */
 .dashboard-container {
   display: flex;
   min-height: 100vh;
 }
 
-/* ==========================================================================
-         SIDEBAR (Fijado a la izquierda)
-         ========================================================================== */
+/* =========================
+   SIDEBAR
+========================= */
 .sidebar {
   width: 280px;
   background: #26317a;
@@ -37,60 +37,67 @@ body {
   bottom: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  z-index: 100;
 }
 
-.sidebar::-webkit-scrollbar {
-  width: 6px;
-}
-.sidebar::-webkit-scrollbar-track {
-  background: transparent;
-}
-.sidebar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.25);
-  border-radius: 10px;
-}
-.sidebar::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.4);
-}
+/* =========================
+   LOGO ROBASA
+========================= */
 
-/* LOGO ROBASA */
-.logo-container {
+.logo {
   text-align: center;
   margin-bottom: 35px;
 }
 
+/* Imagen */
 .logo-img {
-  width: 100%;
-  max-width: 220px;
+  width: 320px;
+  max-width: 100%;
   height: auto;
+
   display: block;
-  margin: 0 auto;
-  padding: 14px;
-  border-radius: 18px;
+  margin: 0 auto 25px;
+
+  /* Hace que resalte */
+  padding: 18px;
+
+  border-radius: 22px;
+
   background: rgba(255, 255, 255, 0.08);
+
   border: 1px solid rgba(255, 255, 255, 0.12);
+
   backdrop-filter: blur(6px);
+
+  /* Glow */
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25))
     drop-shadow(0 0 25px rgba(255, 255, 255, 0.12)) brightness(1.18)
     contrast(1.15);
+
   transition: all 0.3s ease;
 }
 
+/* Hover elegante */
 .logo-img:hover {
   transform: scale(1.03);
+
   filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))
     drop-shadow(0 0 32px rgba(255, 255, 255, 0.18)) brightness(1.25)
     contrast(1.2);
 }
 
-/* Menú de Navegación */
+.logo span {
+  font-size: 18px;
+  letter-spacing: 6px;
+  color: #9bc0ff;
+}
+
+/* Menú */
 .menu {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding-right: 5px;
+  padding-right: 5px; /* evita que el texto se pegue al scroll */
 }
 
 .menu a {
@@ -101,20 +108,35 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 14px;
   transition: 0.3s;
-}
-
-.menu a i {
-  width: 20px;
-  font-size: 16px;
-  text-align: center;
 }
 
 .menu a:hover,
 .menu a.active {
   background: #4567b7;
-  color: #ffffff;
+  color: white;
+}
+
+.menu i {
+  width: 20px;
+}
+
+/* Opcional: personalizar la barra de scroll */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
 }
 
 /* Logout */
@@ -125,24 +147,21 @@ body {
 }
 
 .logout a {
-  color: #ffffff;
+  color: white;
   text-decoration: none;
   display: flex;
-  align-items: center;
   gap: 12px;
   padding: 14px 18px;
   border-radius: 12px;
-  font-size: 14px;
-  transition: background 0.3s;
 }
 
 .logout a:hover {
   background: rgba(255, 255, 255, 0.08);
 }
 
-/* ==========================================================================
-         CONTENIDO PRINCIPAL Y BARRA SUPERIOR
-         ========================================================================== */
+/* =========================
+   CONTENIDO PRINCIPAL
+========================= */
 .main-content {
   flex: 1;
   margin-left: 280px;
@@ -276,16 +295,16 @@ body {
   color: #7a8599;
 }
 
-/* ==========================================================================
-         BREADCRUMB
-         ========================================================================== */
+/* =========================
+   BREADCRUMB
+========================= */
 .breadcrumb {
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 18px 28px 0;
   font-size: 13px;
   color: #6b7499;
-  margin-bottom: 5px;
 }
 
 .breadcrumb a {
@@ -308,22 +327,19 @@ body {
   font-weight: 700;
 }
 
-/* ==========================================================================
-         FORM CARD (Contenedor Principal)
-         ========================================================================== */
+/* =========================
+   FORM CARD
+========================= */
 .form-card {
-  background: #ffffff;
-  border-radius: 14px;
-  box-shadow: 0 2px 14px rgba(30, 42, 94, 0.1);
-  margin-top: 20px;
-  overflow: hidden;
+  max-width: 1100px;
+  margin: 20px auto;
+  border-radius: 12px;
 }
 
 .form-card-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 22px 28px;
+  padding: 18px 22px;
   border-bottom: 1.5px solid #e8ecf6;
   gap: 20px;
   flex-wrap: wrap;
@@ -344,15 +360,12 @@ body {
   align-items: center;
   justify-content: center;
   color: #e8600a;
-  font-size: 18px;
-  flex-shrink: 0;
 }
 
 .form-card-title {
   font-size: 17px;
   font-weight: 700;
   color: #1a2042;
-  margin-bottom: 3px;
 }
 
 .form-card-subtitle {
@@ -362,50 +375,36 @@ body {
 
 .required-note {
   font-size: 12px;
-  color: #6b7499;
-}
-
-.required-note span {
-  color: #e53935;
 }
 
 .form-body {
-  padding: 28px;
+  padding: 20px;
 }
 
-/* ==========================================================================
-         SECCIONES DEL FORMULARIO
-         ========================================================================== */
 .form-section {
   margin-bottom: 32px;
 }
 
-.form-section:last-of-type {
-  margin-bottom: 0;
-}
+/* =========================
+   FORMULARIO MÁS COMPACTO
+========================= */
 
 .form-section-title {
   font-size: 12px;
   font-weight: 700;
   color: #e8600a;
   text-transform: uppercase;
-  letter-spacing: 1.2px;
   margin-bottom: 18px;
   padding-bottom: 8px;
   border-bottom: 1.5px solid #e8ecf6;
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
-/* Malla Inteligente Grid */
 .form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px 28px;
 }
 
-/* Elementos de Entrada */
 .field {
   display: flex;
   flex-direction: column;
@@ -423,18 +422,13 @@ body {
 
 .field-icon {
   color: #6b7499;
-  font-size: 13px;
-  width: 14px;
-  text-align: center;
 }
 
-.field .req {
+.req {
   color: #e53935;
 }
 
-.field input[type="text"],
-.field input[type="number"],
-.field input[type="date"],
+.field input,
 .field select,
 .field textarea {
   width: 100%;
@@ -442,14 +436,8 @@ body {
   border-radius: 8px;
   padding: 10px 14px;
   font-size: 13.5px;
-  font-family: inherit;
-  color: #1a2042;
   background: #f7f8fc;
   outline: none;
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s,
-    background 0.2s;
 }
 
 .field textarea {
@@ -457,32 +445,88 @@ body {
   resize: vertical;
 }
 
-.field input[readonly] {
-  background: #e8ecf6;
-  color: #7a8599;
-  cursor: not-allowed;
-}
-
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
   border-color: #e8600a;
-  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
   background: #ffffff;
 }
 
-.field select {
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7499' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  padding-right: 36px;
-  cursor: pointer;
+/* =========================
+   SUMMARY
+========================= */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
 }
 
-.field input::placeholder,
-.field textarea::placeholder {
-  color: #9aa4b8;
+.summary-card {
+  background: #f7f8fc;
+  border: 1.5px dashed #dde2f0;
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+}
+
+/* =========================
+   TABLA
+========================= */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  border: 1.5px solid #e8ecf6;
+  border-radius: 12px;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.results-table th {
+  background: #f7f8fc;
+  padding: 14px 18px;
+}
+
+.results-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid #e8ecf6;
+}
+
+/* =========================
+   BOTONES
+========================= */
+.form-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 24px;
+  border-top: 1.5px solid #e8ecf6;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1.5px solid #dde2f0;
+  color: #6b7499;
+}
+
+.btn-primary {
+  background: #e8600a;
+  color: #ffffff;
 }
 
 /* ==========================================================================
@@ -617,6 +661,9 @@ body {
   transform: translateY(0);
 }
 
+/* =========================
+   FOOTER
+========================= */
 .footer {
   margin-top: auto;
   padding-top: 30px;
