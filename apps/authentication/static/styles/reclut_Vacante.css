@@ -767,362 +767,252 @@ body {
   }
 }
 
-/* ── PANTALLAS MEDIANAS / MINILAPTOPS (Hasta 1200px) ── */
-@media screen and (max-width: 1200px) {
-  .sidebar {
-    width: 240px;
-    min-width: 240px;
-    max-width: 240px;
-    padding: 24px 16px;
-  }
-  .main-content {
-    margin-left: 240px;
-    width: calc(100% - 240px);
-    padding: 20px;
-  }
-  .topbar {
-    gap: 16px;
-    align-items: flex-start;
-  }
-  .page-title {
-    width: 100%;
-  } /* El título pasa a ocupar toda la línea */
-  .search-box {
-    flex: 1 1 100%;
-    max-width: 100%;
-  } /* Caja de búsqueda salta de línea y abarca el 100% */
-  .topbar-actions {
-    width: 100%;
-    justify-content: flex-end;
-  }
+/* ==========================================================================
+   RESPONSIVE PERSONALIZADO DEL SIDEBAR Y TOPBAR
+   - Sidebar solo con iconos
+   - Sidebar siempre fijo a la izquierda
+   - Títulos y búsqueda centrados
+   ========================================================================== */
 
-  /* Ajuste Dinámico de Rejilla del Formulario */
-  .form-grid {
-    grid-template-columns: repeat(
-      auto-fit,
-      minmax(240px, 1fr)
-    ); /* Auto-acomodo fluido de columnas */
-  }
-
-  /* TRANSFORMACIÓN DEL STEPPER A FORMATO VERTICAL/FILAS */
-  .candidate-progress {
-    display: grid;
-    grid-template-columns: 1fr; /* Cambia de fila a una cuadrícula de una sola columna vertical */
-    gap: 18px;
-    padding: 20px 0;
-  }
-  .progress-step {
-    width: 100%;
-    padding: 14px;
-    border-radius: 14px;
-    background: #f8faff; /* Convierte cada paso en una pequeña tarjeta individualizada */
-    border: 1px solid #e3e9f5;
-  }
-  .progress-line {
-    width: 100%;
-    min-width: 100%;
-    height: 4px;
-  }
-  .step-circle {
-    width: 54px;
-    height: 54px;
-    font-size: 19px;
-  }
-}
-
-/* ── TABLETS EN VERTICAL (Hasta 992px) ── */
+/* ─────────────────────────────────────────────────────────────
+   TABLETS Y PANTALLAS MEDIANAS (Hasta 992px)
+   ───────────────────────────────────────────────────────────── */
 @media screen and (max-width: 992px) {
+  /* ==========================================================
+     SIDEBAR COMPACTO SOLO ICONOS
+     ========================================================== */
   .sidebar {
-    width: 220px;
-    min-width: 220px;
-    max-width: 220px;
-    padding: 20px 14px;
+    width: 85px;
+    min-width: 85px;
+    max-width: 85px;
+    padding: 18px 10px;
+    align-items: center;
   }
+
+  /* Ajuste del contenido principal */
   .main-content {
-    margin-left: 220px;
-    width: calc(100% - 220px);
+    margin-left: 85px;
+    width: calc(100% - 85px);
     padding: 18px;
   }
+
+  /* Logo más compacto */
   .logo-img {
-    max-width: 170px;
-    padding: 12px;
+    max-width: 55px;
+    padding: 6px;
   }
+
+  /* Menú centrado */
+  .menu {
+    width: 100%;
+    align-items: center;
+  }
+
+  /* Links solo con icono */
   .menu a {
-    font-size: 13px;
-    padding: 12px;
-    gap: 10px;
+    justify-content: center;
+    padding: 14px 10px;
+    width: 100%;
+    border-radius: 12px;
+    gap: 0;
+    font-size: 0;
   }
+
+  /* Iconos visibles */
+  .menu a i {
+    font-size: 18px;
+    width: auto;
+  }
+
+  /* Logout compacto */
+  .logout {
+    width: 100%;
+  }
+
+  .logout a {
+    justify-content: center;
+    font-size: 0;
+    gap: 0;
+    padding: 14px 10px;
+  }
+
+  .logout a i {
+    font-size: 18px;
+  }
+
+  /* ==========================================================
+     TOPBAR CENTRADO
+     ========================================================== */
   .topbar {
-    display: flex;
     flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 18px;
   }
-  .search-box {
+
+  /* Contenedor del título */
+  .page-title {
     width: 100%;
-    max-width: 100%;
+    text-align: center;
   }
-  .topbar-actions {
-    width: 100%;
-    justify-content: space-between;
-  }
+
   .page-title h1 {
     font-size: 28px;
   }
-  .page-title p {
-    font-size: 13px;
-  }
-  .form-card {
-    margin: 18px 0;
-  } /* Elimina los márgenes laterales de la tarjeta */
-  .form-card-header {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 18px;
-  }
-  .form-body {
-    padding: 18px;
-  }
-  .form-grid {
-    grid-template-columns: 1fr;
-  } /* Colapso total del formulario a una sola columna */
 
-  .candidate-progress {
-    gap: 14px;
+  .page-title p {
+    font-size: 14px;
   }
-  .progress-step {
-    align-items: center;
-    gap: 12px;
-    padding: 12px;
+
+  /* Barra de búsqueda centrada */
+  .search-box {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
   }
-  .step-circle {
-    width: 50px;
-    height: 50px;
-    font-size: 18px;
-  }
-  .step-content strong {
-    font-size: 13px;
-  }
-  .step-content span {
-    font-size: 11px;
-  }
-  .progress-line {
-    height: 4px;
+
+  /* Acciones superiores centradas */
+  .topbar-actions {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
   }
 }
 
-/* ── SMARTPHONES GRANDES (Hasta 768px) ── */
+/* ─────────────────────────────────────────────────────────────
+   SMARTPHONES Y PANTALLAS PEQUEÑAS (Hasta 768px)
+   ───────────────────────────────────────────────────────────── */
 @media screen and (max-width: 768px) {
+  /* Sidebar ultracompacto */
   .sidebar {
-    width: 190px;
-    min-width: 190px;
-    max-width: 190px;
-    padding: 16px 10px;
-  }
-  .main-content {
-    margin-left: 190px;
-    width: calc(100% - 190px);
-    padding: 15px;
-  }
-  .logo-img {
-    max-width: 140px;
-    padding: 10px;
-  }
-  .menu a {
-    font-size: 12px;
-    padding: 10px;
-  }
-  .menu i {
-    width: 16px;
+    width: 75px;
+    min-width: 75px;
+    max-width: 75px;
+    padding: 14px 8px;
   }
 
-  .user-info {
-    display: none;
-  } /* Oculta textos del perfil para economizar espacio en pantalla móvil */
-  .user-profile {
-    padding: 6px 8px;
-    border-radius: 14px;
+  .main-content {
+    margin-left: 75px;
+    width: calc(100% - 75px);
+    padding: 15px;
   }
-  .user-profile img {
-    width: 36px;
-    height: 36px;
+
+  /* Logo reducido */
+  .logo-img {
+    max-width: 48px;
+    padding: 4px;
+  }
+
+  /* Links solo iconos */
+  .menu a {
+    padding: 12px 8px;
+  }
+
+  .menu a i {
+    font-size: 17px;
+  }
+
+  .logout a {
+    padding: 12px 8px;
+  }
+
+  .logout a i {
+    font-size: 17px;
+  }
+
+  /* Topbar totalmente centrado */
+  .topbar {
+    text-align: center;
+    gap: 16px;
+  }
+
+  .page-title {
+    text-align: center;
   }
 
   .page-title h1 {
     font-size: 24px;
+    line-height: 1.2;
   }
+
   .page-title p {
-    font-size: 12px;
-  }
-  .search-box input {
     font-size: 13px;
-    padding: 12px 14px 12px 40px;
-  }
-  .search-box i {
-    left: 14px;
-  }
-  .breadcrumb {
-    padding: 12px 0 0;
-    font-size: 11px;
-    flex-wrap: wrap;
-  }
-  .form-card-header {
-    padding: 16px;
-  }
-  .form-body {
-    padding: 16px;
-  }
-  .form-card-title {
-    font-size: 15px;
-  }
-  .form-card-subtitle {
-    font-size: 11px;
-  }
-  .field input,
-  .field select,
-  .field textarea {
-    font-size: 13px;
-    padding: 10px 12px;
   }
 
-  .candidate-progress {
-    padding: 10px 0;
-  }
-  .progress-step {
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
-    border-radius: 12px;
-  }
-  .step-circle {
-    width: 46px;
-    height: 46px;
-    font-size: 16px;
-  }
-  .step-content {
-    gap: 2px;
-  }
-  .step-content strong {
-    font-size: 12px;
-  }
-  .step-content span {
-    font-size: 10px;
-  }
-  .progress-line {
-    min-width: 100%;
-    height: 3px;
-  }
-
-  /* Ajuste de Botones en Bloque para Móvil */
-  .btn {
+  /* Barra de búsqueda responsive */
+  .search-box {
     width: 100%;
+    max-width: 100%;
+  }
+
+  .search-box input {
+    text-align: center;
+    font-size: 13px;
+  }
+
+  /* Centrar icono de búsqueda */
+  .search-box i {
+    left: 16px;
+  }
+
+  /* Acciones superiores */
+  .topbar-actions {
     justify-content: center;
-  } /* Botones a lo ancho total de pantalla */
-  .form-footer {
-    flex-direction: column;
-  } /* Apilamiento vertical de botones */
+    gap: 16px;
+  }
+
+  /* Ocultar texto del perfil */
+  .user-info {
+    display: none;
+  }
 }
 
-/* ── SMARTPHONES PEQUEÑOS (Hasta 576px) ── */
+/* ─────────────────────────────────────────────────────────────
+   SMARTPHONES PEQUEÑOS (Hasta 576px)
+   ───────────────────────────────────────────────────────────── */
 @media screen and (max-width: 576px) {
   .sidebar {
-    width: 170px;
-    min-width: 170px;
-    max-width: 170px;
-    padding: 14px 8px;
+    width: 68px;
+    min-width: 68px;
+    max-width: 68px;
+    padding: 12px 6px;
   }
+
   .main-content {
-    margin-left: 170px;
-    width: calc(100% - 170px);
+    margin-left: 68px;
+    width: calc(100% - 68px);
     padding: 12px;
   }
+
   .logo-img {
-    max-width: 115px;
-    padding: 8px;
+    max-width: 42px;
   }
-  .menu {
-    gap: 6px;
-  }
-  .menu a {
-    font-size: 11px;
-    padding: 9px 8px;
-    border-radius: 10px;
-  }
-  .logout a {
-    font-size: 11px;
-    padding: 9px 8px;
+
+  .menu a i,
+  .logout a i {
+    font-size: 16px;
   }
 
   .page-title h1 {
     font-size: 20px;
   }
+
   .page-title p {
-    font-size: 11px;
-  }
-  .topbar {
-    gap: 10px;
-  }
-  .topbar-actions {
-    justify-content: space-between;
-  }
-  .search-box input {
     font-size: 12px;
-  }
-  .form-card {
-    border-radius: 12px;
-  }
-  .form-card-header {
-    padding: 14px;
-  }
-  .form-body {
-    padding: 14px;
-  }
-  .form-card-icon {
-    width: 38px;
-    height: 38px;
-    font-size: 15px;
-  }
-  .form-card-title {
-    font-size: 14px;
-  }
-  .required-note {
-    font-size: 11px;
-  }
-  .form-section-title {
-    font-size: 11px;
-  }
-  .field > label {
-    font-size: 12px;
-  }
-  .field input,
-  .field select,
-  .field textarea {
-    font-size: 12px;
-    padding: 9px 10px;
   }
 
-  .candidate-progress {
+  .search-box input {
+    padding: 11px 12px 11px 38px;
+    font-size: 12px;
+  }
+
+  .topbar-actions {
     gap: 12px;
   }
-  .progress-step {
-    padding: 10px 8px;
-  }
-  .step-circle {
-    width: 40px;
-    height: 40px;
-    font-size: 14px;
-  }
-  .step-content strong {
-    font-size: 11px;
-  }
-  .step-content span {
-    font-size: 9px;
-  }
-  .progress-line {
-    height: 3px;
-  }
-  .footer {
-    font-size: 11px;
+
+  .user-profile img {
+    width: 34px;
+    height: 34px;
   }
 }

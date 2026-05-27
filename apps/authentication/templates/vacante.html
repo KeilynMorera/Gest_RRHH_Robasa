@@ -1,25 +1,88 @@
-<!-- Cargar la librería al inicio del template, para usar archivos estaticos -->
+<!-- ==========================================================================
+     CARGA DE LIBRERÍAS DJANGO
+     ========================================================================== -->
+
+<!-- 
+  Se carga la librería static de Django.
+  Permite utilizar archivos estáticos como:
+  - CSS
+  - JavaScript
+  - Imágenes
+  - Fuentes
+-->
 {% load static %}
 
+<!-- ==========================================================================
+     DOCUMENTO HTML
+     ========================================================================== -->
 <!doctype html>
+
+<!-- Idioma principal del documento -->
 <html lang="es">
   <head>
+    <!-- ==========================================================================
+         CONFIGURACIÓN GENERAL DEL DOCUMENTO
+         ========================================================================== -->
+
+    <!-- Codificación UTF-8 para soportar caracteres especiales -->
     <meta charset="UTF-8" />
+
+    <!-- Hace que el sitio sea responsive en dispositivos móviles -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Título que aparece en la pestaña del navegador -->
     <title>Registro de Vacante - Gestión de Talento Humano</title>
 
+    <!-- ==========================================================================
+         HOJA DE ESTILOS LOCAL
+         ========================================================================== -->
+
+    <!-- 
+      Carga el archivo CSS personalizado del módulo de vacantes.
+      El archivo se encuentra en:
+      static/styles/confi_Puesto.css
+    -->
     <link rel="stylesheet" href="{% static 'styles/confi_Puesto.css' %}" />
 
+    <!-- ==========================================================================
+         LIBRERÍA DE ICONOS FONT AWESOME
+         ========================================================================== -->
+
+    <!-- 
+      Librería externa para utilizar iconos visuales:
+      Ejemplo:
+      - Casas
+      - Usuarios
+      - Carpetas
+      - Reportes
+      - Configuración
+    -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
   </head>
+
+  <!-- ==========================================================================
+       CUERPO PRINCIPAL DEL SISTEMA
+       ========================================================================== -->
   <body>
+    <!-- Contenedor general del dashboard -->
     <div class="dashboard-container">
+      <!-- ==========================================================================
+           SIDEBAR / MENÚ LATERAL
+           ========================================================================== -->
       <aside class="sidebar">
-        <!-- Contenedor del Isotipo de la Distribuidora -->
+        <!-- ==========================================================================
+             LOGO CORPORATIVO
+             ========================================================================== -->
+
+        <!-- Contenedor del logo institucional -->
         <div class="logo-container">
+          <!-- 
+            Imagen del logo de la empresa.
+            Se obtiene desde archivos estáticos de Django.
+          -->
           <img
             src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
             alt="Logo Robasa"
@@ -27,185 +90,262 @@
           />
         </div>
 
-<!-- ======================================================
-             MENÚ DE NAVEGACIÓN
-        ====================================================== -->
+        <!-- ==========================================================================
+             MENÚ DE NAVEGACIÓN PRINCIPAL
+             ========================================================================== -->
         <nav class="menu">
-          <!-- Opción Inicio -->
+          <!-- ===================== INICIO ===================== -->
           <a href="{% url 'inicio' %}">
             <i class="fas fa-house"></i>
             Inicio
           </a>
 
-          <!-- Opción Personas o Empleados -->
+          <!-- ===================== EMPLEADOS ===================== -->
           <a href="{% url 'per_emp' %}">
             <i class="fas fa-user-group"></i>
             Personas o Empleados
           </a>
 
-          <!-- Opción Onboarding -->
+          <!-- ===================== ONBOARDING ===================== -->
           <a href="{% url 'onboarding' %}">
             <i class="fas fa-rocket"></i>
             Onboarding / Entradas
           </a>
 
-          <!-- Opción Empresas -->
+          <!-- ===================== EMPRESAS ===================== -->
           <a href="{% url 'empresas' %}">
             <i class="fas fa-building"></i>
             Empresas
           </a>
 
-          <!-- Opción Gerencias, Departamentos y Puestos -->
+          <!-- ===================== ESTRUCTURA EMPRESARIAL ===================== -->
           <a href="{% url 'comple_Empresa' %}">
             <i class="fas fa-briefcase"></i>
             Gerencias, Departamentos y Puestos
           </a>
 
-          <!-- Opción Salarios -->
+          <!-- ===================== SALARIOS ===================== -->
           <a href="{% url 'salario' %}">
             <i class="fas fa-money-bill-wave"></i>
             Salarios
           </a>
 
-          <!-- Opción Reclutamiento -->
+          <!-- ===================== RECLUTAMIENTO ===================== -->
           <a href="{% url 'reclutamiento' %}">
             <i class="fas fa-wallet"></i>
             Reclutamiento
           </a>
 
-          <!-- Opción Vacaciones -->
+          <!-- ===================== VACACIONES ===================== -->
           <a href="{% url 'vacaciones' %}">
             <i class="fas fa-umbrella-beach"></i>
             Vacaciones
           </a>
 
-          <!-- Opción Asistencia y Permisos -->
+          <!-- ===================== ASISTENCIA ===================== -->
           <a href="{% url 'elec_Asistencia' %}">
             <i class="fas fa-clock"></i>
             Asistencia y Permiso
           </a>
 
-          <!-- Acción o Rotación de Personal -->
+          <!-- ===================== ACCIONES / ROTACIONES ===================== -->
           <a href="{% url 'accion_rotacion' %}">
             <i class="fas fa-clipboard-list"></i>
             Acciones o Rotaciones del Personal
           </a>
 
-          <!-- Opción Evaluaciones -->
+          <!-- ===================== EVALUACIONES ===================== -->
           <a href="{% url 'evaluaciones' %}">
             <i class="fas fa-chart-line"></i>
             Evaluación de Desempeño
           </a>
 
-          <!-- Opción KPIs -->
+          <!-- ===================== KPI ===================== -->
           <a href="{% url 'elec_KPI' %}">
             <i class="fas fa-file-lines"></i>
             KPIs
           </a>
 
-          <!-- Opción Offboarding -->
+          <!-- ===================== OFFBOARDING ===================== -->
           <a href="{% url 'elec_Offboarding' %}">
             <i class="fas fa-door-open"></i>
             Offboarding / Salidas
           </a>
 
-          <!-- Opción Reportes -->
+          <!-- ===================== REPORTES ===================== -->
           <a href="{% url 'reportes' %}">
             <i class="fas fa-file-lines"></i>
             Reportes
           </a>
 
-          <!-- Opción Usuarios y Roles -->
+          <!-- ===================== USUARIOS ===================== -->
           <a href="{% url 'usuarios' %}">
             <i class="fas fa-users-cog"></i>
             Usuarios y Roles
           </a>
 
-          <!-- Opción Configuración -->
+          <!-- ===================== CONFIGURACIONES ===================== -->
           <a href="{% url 'configuraciones' %}">
             <i class="fas fa-gear"></i>
             Configuración
           </a>
         </nav>
 
+        <!-- ==========================================================================
+             CERRAR SESIÓN
+             ========================================================================== -->
         <div class="logout">
+          <!-- Enlace de salida del sistema -->
           <a href="login.html">
-            <i class="fas fa-right-from-bracket"></i> Cerrar sesión
+            <i class="fas fa-right-from-bracket"></i>
+            Cerrar sesión
           </a>
         </div>
       </aside>
 
+      <!-- ==========================================================================
+           CONTENIDO PRINCIPAL DEL SISTEMA
+           ========================================================================== -->
       <main class="main-content">
+        <!-- ==========================================================================
+             BARRA SUPERIOR
+             ========================================================================== -->
         <header class="topbar">
-          <button class="menu-toggle">
-            <i class="fas fa-bars"></i>
-          </button>
-
+          <!-- ==========================================================================
+               TÍTULO DEL MÓDULO
+               ========================================================================== -->
           <div class="page-title">
+            <!-- Nombre principal del formulario -->
             <h1>Apertura de Vacante</h1>
+
+            <!-- Descripción breve -->
             <p>Formulario de alta para un nuevo requerimiento de personal</p>
           </div>
 
+          <!-- ==========================================================================
+               BARRA DE BÚSQUEDA
+               ========================================================================== -->
           <div class="search-box">
+            <!-- Ícono de búsqueda -->
             <i class="fas fa-search"></i>
+
+            <!-- Campo de búsqueda -->
             <input
               type="text"
               placeholder="Buscar empleado, módulo, reporte..."
             />
           </div>
 
+          <!-- ==========================================================================
+               ACCIONES SUPERIORES
+               ========================================================================== -->
           <div class="topbar-actions">
+            <!-- ===================== NOTIFICACIONES ===================== -->
             <div class="notification">
+              <!-- Ícono de campana -->
               <i class="fas fa-bell"></i>
+
+              <!-- Contador de notificaciones -->
               <span class="badge">3</span>
             </div>
 
+            <!-- ===================== PERFIL DE USUARIO ===================== -->
             <div class="user-profile">
+              <!-- Imagen del usuario -->
               <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
+
+              <!-- Información textual del usuario -->
               <div class="user-info">
                 <strong>María Gómez</strong>
                 <span>Recursos Humanos</span>
               </div>
-              <i class="fas fa-chevron-down"></i>
             </div>
           </div>
         </header>
 
+        <!-- ==========================================================================
+             BREADCRUMB / MIGAS DE PAN
+             ========================================================================== -->
         <div class="breadcrumb">
-          <a href="{% url 'inicio' %}"> <i class="fas fa-house"></i> Inicio </a>
+          <!-- Ruta hacia inicio -->
+          <a href="{% url 'inicio' %}">
+            <i class="fas fa-house"></i>
+            Inicio
+          </a>
+
+          <!-- Separador -->
           <i class="fas fa-chevron-right sep"></i>
+
+          <!-- Ruta hacia reclutamiento -->
           <a href="{% url 'reclutamiento' %}"> Reclutamiento </a>
+
+          <!-- Separador -->
           <i class="fas fa-chevron-right sep"></i>
+
+          <!-- Página actual -->
           <span class="current"> Registro de Vacante </span>
         </div>
 
+        <!-- ==========================================================================
+             TARJETA PRINCIPAL DEL FORMULARIO
+             ========================================================================== -->
         <section class="form-card">
+          <!-- ==========================================================================
+               ENCABEZADO DE LA TARJETA
+               ========================================================================== -->
           <div class="form-card-header">
+            <!-- Bloque izquierdo -->
             <div class="form-card-header-left">
+              <!-- Ícono del formulario -->
               <div class="form-card-icon">
                 <i class="fas fa-briefcase"></i>
               </div>
+
+              <!-- Título y subtítulo -->
               <div>
+                <!-- Título -->
                 <h2 class="form-card-title">Nueva Vacante</h2>
+
+                <!-- Descripción -->
                 <p class="form-card-subtitle">
                   Especifique las condiciones, responsables y requerimientos del
                   puesto a reclutar.
                 </p>
               </div>
             </div>
-            <p class="required-note"><span>*</span> Campos obligatorios</p>
+
+            <!-- Nota de campos obligatorios -->
+            <p class="required-note">
+              <span>*</span>
+              Campos obligatorios
+            </p>
           </div>
 
+          <!-- ==========================================================================
+               CUERPO DEL FORMULARIO
+               ========================================================================== -->
           <div class="form-body">
+            <!-- ==========================================================================
+                 FORMULARIO HTML
+                 ========================================================================== -->
             <form action="#" method="POST">
+              <!-- ==========================================================================
+                   SECCIÓN: INFORMACIÓN GENERAL
+                   ========================================================================== -->
               <div class="form-section">
+                <!-- Título de sección -->
                 <h4 class="form-section-title">Información General</h4>
+
+                <!-- Grid organizador -->
                 <div class="form-grid">
+                  <!-- ===================== FECHA DE REGISTRO ===================== -->
                   <div class="field">
                     <label for="fecha_registro">
-                      <i class="fas fa-calendar field-icon"></i> Fecha de
-                      Registro <span class="req">*</span>
+                      <i class="fas fa-calendar field-icon"></i>
+                      Fecha de Registro
+                      <span class="req">*</span>
                     </label>
+
                     <input
                       type="date"
                       id="fecha_registro"
@@ -214,13 +354,17 @@
                     />
                   </div>
 
+                  <!-- ===================== ESTATUS ===================== -->
                   <div class="field">
                     <label for="estatus">
-                      <i class="fas fa-circle-check field-icon"></i> Estatus
+                      <i class="fas fa-circle-check field-icon"></i>
+                      Estatus
                       <span class="req">*</span>
                     </label>
+
                     <select id="estatus" name="Estatus" required>
                       <option disabled selected>Seleccione estado...</option>
+
                       <option>Abierta</option>
                       <option>En proceso</option>
                       <option>Cerrada</option>
@@ -228,11 +372,14 @@
                     </select>
                   </div>
 
+                  <!-- ===================== TÍTULO PUBLICACIÓN ===================== -->
                   <div class="field field-full">
                     <label for="titulo_publicacion">
-                      <i class="fas fa-heading field-icon"></i> Título de la
-                      Publicación <span class="req">*</span>
+                      <i class="fas fa-heading field-icon"></i>
+                      Título de la Publicación
+                      <span class="req">*</span>
                     </label>
+
                     <input
                       type="text"
                       id="titulo_publicacion"
@@ -242,11 +389,14 @@
                     />
                   </div>
 
+                  <!-- ===================== MOTIVO ===================== -->
                   <div class="field field-full">
                     <label for="motivo">
-                      <i class="fas fa-comment-dots field-icon"></i> Motivo de
-                      la Vacante <span class="req">*</span>
+                      <i class="fas fa-comment-dots field-icon"></i>
+                      Motivo de la Vacante
+                      <span class="req">*</span>
                     </label>
+
                     <input
                       type="text"
                       id="motivo"
@@ -258,44 +408,164 @@
                 </div>
               </div>
 
+              <!-- ==========================================================================
+                   SECCIÓN: INFORMACIÓN DE PUESTO Y COMPENSACIÓN
+                   ========================================================================== -->
               <div class="form-section">
-                <h4 class="form-section-title">Responsables y Relación</h4>
+                <!-- Título de sección -->
+                <h4 class="form-section-title">
+                  Información de Puesto y Compensación
+                </h4>
+
+                <!-- Grid organizador -->
                 <div class="form-grid">
+                  <!-- ===================== PUESTO ===================== -->
                   <div class="field">
-                    <label for="empleado_aut">
-                      <i class="fas fa-user-shield field-icon"></i> Autorizado
-                      por <span class="req">*</span>
+                    <label for="puesto">
+                      <i class="fas fa-briefcase field-icon"></i>
+                      Puesto de la Vacante
+                      <span class="req">*</span>
                     </label>
-                    <select id="empleado_aut" name="idEmpleado_Aut" required>
-                      <option disabled selected>Seleccione empleado...</option>
-                      <option>Carlos Méndez</option>
-                      <option>Ana Rodríguez</option>
+
+                    <select id="puesto" name="idPuesto" required>
+                      <option disabled selected>Seleccione el puesto...</option>
+
+                      <!-- Estos datos normalmente vienen desde Django -->
+                      <option value="1">Analista Financiero</option>
+                      <option value="2">Supervisor Comercial</option>
+                      <option value="3">Asistente Administrativo</option>
+                      <option value="4">Encargado de Bodega</option>
                     </select>
                   </div>
 
+                  <!-- ===================== COMPENSACIÓN / SALDO ===================== -->
+                  <div class="field">
+                    <label for="compensacion">
+                      <i class="fas fa-wallet field-icon"></i>
+                      Saldo / Compensación del Puesto
+                      <span class="req">*</span>
+                    </label>
+
+                    <select id="compensacion" name="idCompensacion" required>
+                      <option disabled selected>
+                        Seleccione compensación asignada...
+                      </option>
+
+                      <!-- Ejemplos -->
+                      <option value="1">
+                        Analista Financiero - ₡1,200,000
+                      </option>
+
+                      <option value="2">
+                        Supervisor Comercial - ₡1,500,000
+                      </option>
+
+                      <option value="3">
+                        Asistente Administrativo - ₡850,000
+                      </option>
+                    </select>
+                  </div>
+
+                  <!-- ===================== SALARIO AUTORIZADO ===================== -->
+                  <div class="field">
+                    <label for="salario_autorizado">
+                      <i class="fas fa-money-bill-wave field-icon"></i>
+                      Salario Autorizado para la Vacante
+                    </label>
+
+                    <input
+                      type="number"
+                      step="0.01"
+                      id="salario_autorizado"
+                      name="Salario_Autorizado"
+                      placeholder="Ej: 1250000.00"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- ==========================================================================
+                   SECCIÓN: EXPERIENCIA Y REQUERIMIENTOS
+                   ========================================================================== -->
+              <div class="form-section">
+                <!-- Título de sección -->
+                <h4 class="form-section-title">Experiencia y Requerimientos</h4>
+
+                <!-- Grid organizador -->
+                <div class="form-grid">
+                  <!-- ===================== EXPERIENCIA REQUERIDA ===================== -->
+                  <div class="field field-full">
+                    <label for="experiencia">
+                      <i class="fas fa-user-clock field-icon"></i>
+                      Experiencia Requerida
+                      <span class="req">*</span>
+                    </label>
+
+                    <textarea
+                      id="experiencia"
+                      name="Expe_Requerida"
+                      rows="4"
+                      placeholder="Ej: 3 años en análisis financiero y manejo de ERP"
+                      required
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ==========================================================================
+                    SECCIÓN: RESPONSABLES Y RELACIONES
+              ========================================================================== -->
+              <div class="form-section">
+                <h4 class="form-section-title">
+                  Responsables y Relaciones de la Vacante
+                </h4>
+
+                <div class="form-grid">
+                  <!-- ===================== EMPLEADO AUTORIZADOR ===================== -->
+                  <div class="field">
+                    <label for="empleado_aut">
+                      <i class="fas fa-user-shield field-icon"></i>
+                      Autorizado por
+                      <span class="req">*</span>
+                    </label>
+
+                    <select id="empleado_aut" name="idEmpleado_Aut" required>
+                      <option disabled selected>Seleccione empleado...</option>
+
+                      <option value="1">Carlos Méndez</option>
+                      <option value="2">Ana Rodríguez</option>
+                      <option value="3">María Gómez</option>
+                    </select>
+                  </div>
+
+                  <!-- ===================== EVALUADOR ===================== -->
                   <div class="field">
                     <label for="empleado_eval">
-                      <i class="fas fa-user-check field-icon"></i> Evaluador /
-                      Entrevistador <span class="req">*</span>
+                      <i class="fas fa-user-check field-icon"></i>
+                      Evaluador / Reclutador
+                      <span class="req">*</span>
                     </label>
+
                     <select
                       id="empleado_eval"
                       name="idEmpleado_Rel_Ev"
                       required
                     >
-                      <option disabled selected>
-                        Seleccione reclutador...
-                      </option>
-                      <option>María López</option>
-                      <option>José Ramírez</option>
+                      <option disabled selected>Seleccione evaluador...</option>
+
+                      <option value="4">José Ramírez</option>
+                      <option value="5">Laura Fernández</option>
                     </select>
                   </div>
 
+                  <!-- ===================== JEFE DIRECTO ===================== -->
                   <div class="field">
                     <label for="empleado_jefe">
-                      <i class="fas fa-user-tie field-icon"></i> Jefe Directo
+                      <i class="fas fa-user-tie field-icon"></i>
+                      Jefe Directo del Puesto
                       <span class="req">*</span>
                     </label>
+
                     <select
                       id="empleado_jefe"
                       name="idEmpleado_Jef_Puest"
@@ -304,137 +574,60 @@
                       <option disabled selected>
                         Seleccione jefe directo...
                       </option>
-                      <option>Laura Fernández</option>
+
+                      <option value="6">Andrés Solano</option>
+                      <option value="7">Patricia Vargas</option>
                     </select>
                   </div>
 
+                  <!-- ===================== EMPLEADO A RELEVAR ===================== -->
                   <div class="field">
                     <label for="empleado_sus">
-                      <i class="fas fa-user-minus field-icon"></i> Sustituye a
+                      <i class="fas fa-user-minus field-icon"></i>
+                      Empleado al que se releva
                     </label>
+
                     <select id="empleado_sus" name="idEmpleado_Sus">
-                      <option selected>No aplica</option>
-                      <option>Pedro Gómez</option>
-                    </select>
-                  </div>
+                      <option selected value="">No aplica</option>
 
-                  <div class="field field-full">
-                    <label for="empleado_contratado">
-                      <i class="fas fa-user-plus field-icon"></i> Empleado
-                      Contratado (Resolución final)
-                    </label>
-                    <select
-                      id="empleado_contratado"
-                      name="idEmpleado_Contratado"
-                    >
-                      <option selected>
-                        Pendiente de contratación (Proceso abierto)
-                      </option>
-                      <option>Juan Pérez</option>
+                      <option value="8">Pedro Gómez</option>
+                      <option value="9">Luis Araya</option>
                     </select>
                   </div>
                 </div>
               </div>
-
-              <div class="form-section">
-                <h4 class="form-section-title">Compensación y Salario</h4>
-                <div class="form-grid">
-                  <div class="field">
-                    <label for="compensacion">
-                      <i class="fas fa-money-bill-wave field-icon"></i>
-                      Compensación Estándar <span class="req">*</span>
-                    </label>
-                    <select id="compensacion" name="idCompensacion" required>
-                      <option disabled selected>Seleccione tabulador...</option>
-                      <option>Analista Financiero - ₡1,200,000</option>
-                      <option>Supervisor Comercial - ₡1,500,000</option>
-                    </select>
-                  </div>
-
-                  <div class="field">
-                    <label for="salario_autorizado">
-                      <i class="fas fa-coins field-icon"></i> Salario Autorizado
-                      Ofertado
-                    </label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      id="salario_autorizado"
-                      name="Salario_Autorizado"
-                      placeholder="Ej: 1450000.00"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-section">
-                <h4 class="form-section-title">Perfil y Requisitos</h4>
-                <div class="form-grid">
-                  <div class="field field-full">
-                    <label for="experiencia">
-                      <i class="fas fa-briefcase field-icon"></i> Experiencia
-                      Requerida <span class="req">*</span>
-                    </label>
-                    <textarea
-                      id="experiencia"
-                      name="Experiencia_Requerida"
-                      rows="4"
-                      placeholder="Ej: Mínimo 3 años en puestos similares dentro del sector comercial..."
-                      required
-                    ></textarea>
-                  </div>
-
-                  <div class="field field-full">
-                    <label for="habilidades">
-                      <i class="fas fa-lightbulb field-icon"></i> Habilidades y
-                      Conocimientos <span class="req">*</span>
-                    </label>
-                    <textarea
-                      id="habilidades"
-                      name="Habilidades"
-                      rows="5"
-                      placeholder="Ej: Manejo de Excel avanzado, PowerBI, proactividad y liderazgo de células operativas..."
-                      required
-                    ></textarea>
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-section">
-                <h4 class="form-section-title">Cierre del Proceso</h4>
-                <div class="form-grid">
-                  <div class="field">
-                    <label for="cierre_proceso">
-                      <i class="fas fa-calendar-check field-icon"></i> Fecha
-                      Límite de Aplicación
-                    </label>
-                    <input
-                      type="date"
-                      id="cierre_proceso"
-                      name="Cierre_Proceso"
-                    />
-                  </div>
-                </div>
-              </div>
-
+              
+              <!-- ==========================================================================
+                   FOOTER DEL FORMULARIO
+                   ========================================================================== -->
               <div class="form-footer">
+                <!-- Botón reset -->
                 <button type="reset" class="btn btn-ghost">
-                  <i class="fas fa-rotate-left"></i> Limpiar Campos
+                  <i class="fas fa-rotate-left"></i>
+                  Limpiar Campos
                 </button>
 
+                <!-- Guardar borrador -->
                 <button type="submit" class="btn btn-secondary">
-                  <i class="fas fa-floppy-disk"></i> Guardar Borrador
+                  <i class="fas fa-floppy-disk"></i>
+                  Guardar Borrador
                 </button>
 
+                <!-- Publicar vacante -->
                 <button type="submit" class="btn btn-primary">
-                  <i class="fas fa-check"></i> Publicar Vacante
+                  <i class="fas fa-check"></i>
+                  Publicar Vacante
                 </button>
               </div>
             </form>
           </div>
         </section>
 
+        <!-- ==========================================================================
+             PIE DE PÁGINA
+             ========================================================================== -->
         <footer class="footer">
+          <!-- Derechos reservados -->
           © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
         </footer>
       </main>
