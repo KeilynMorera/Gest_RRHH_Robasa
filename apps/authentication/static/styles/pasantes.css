@@ -914,16 +914,9 @@ body {
     justify-content: space-between;
   }
 
-  .user-profile {
-    padding: 8px 10px;
-  }
-
-  .user-info strong {
-    font-size: 13px;
-  }
-
-  .user-info span {
-    font-size: 11px;
+  /* Oculta texto del usuario */
+  .user-info {
+    display: none;
   }
 
   .breadcrumb {
