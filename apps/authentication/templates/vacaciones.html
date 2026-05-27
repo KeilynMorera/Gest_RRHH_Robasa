@@ -1,27 +1,86 @@
-<!-- Cargar la librería al inicio del template, para usar archivos estaticos -->
+<!-- ==========================================================================
+     CARGA DE LIBRERÍAS DJANGO
+     ========================================================================== -->
+
+<!-- 
+  Se carga la librería static de Django.
+  Permite utilizar archivos estáticos como:
+  - CSS
+  - Imágenes
+  - JavaScript
+  - Fuentes
+-->
 {% load static %}
+
+<!-- ==========================================================================
+     DECLARACIÓN DEL DOCUMENTO HTML5
+     ========================================================================== -->
 <!doctype html>
+
+<!-- Idioma principal del sistema -->
 <html lang="es">
   <head>
+    <!-- ==========================================================================
+         CONFIGURACIÓN GENERAL DEL DOCUMENTO
+         ========================================================================== -->
+
+    <!-- Codificación UTF-8 -->
     <meta charset="UTF-8" />
+
+    <!-- Configuración responsive para móviles -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Título mostrado en la pestaña del navegador -->
     <title>Solicitud de Vacaciones - Gestión de Talento Humano</title>
 
+    <!-- ==========================================================================
+         HOJA DE ESTILOS PERSONALIZADA
+         ========================================================================== -->
+
+    <!-- 
+      Archivo CSS principal para las tarjetas del módulo.
+      Ubicación:
+      static/styles/tarjetas.css
+    -->
     <link rel="stylesheet" href="{% static 'styles/tarjetas.css' %}" />
 
+    <!-- ==========================================================================
+         LIBRERÍA FONT AWESOME
+         ========================================================================== -->
+
+    <!-- 
+      Librería externa de iconos visuales.
+      Utilizada para:
+      - Usuarios
+      - Reportes
+      - Vacaciones
+      - Configuración
+      - Etc.
+    -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
   </head>
+
+  <!-- ==========================================================================
+       CUERPO PRINCIPAL DEL SISTEMA
+       ========================================================================== -->
   <body>
+    <!-- Contenedor principal del dashboard -->
     <div class="dashboard-container">
+      <!-- ==========================================================================
+           SIDEBAR / MENÚ LATERAL
+           ========================================================================== -->
       <aside class="sidebar">
-        <!-- =========================================================
-             LOGO DE LA EMPRESA
-        ========================================================= -->
+        <!-- ==========================================================================
+             LOGO CORPORATIVO
+             ========================================================================== -->
         <div class="logo-container">
-          <!-- Imagen cargada desde archivos estáticos -->
+          <!-- 
+            Imagen del logo institucional.
+            Se obtiene desde archivos estáticos de Django.
+          -->
           <img
             src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
             alt="Logo Robasa"
@@ -29,137 +88,171 @@
           />
         </div>
 
-        <!-- ======================================================
-             MENÚ DE NAVEGACIÓN
-        ====================================================== -->
+        <!-- ==========================================================================
+             MENÚ DE NAVEGACIÓN PRINCIPAL
+             ========================================================================== -->
         <nav class="menu">
-          <!-- Opción Inicio -->
+          <!-- ===================== INICIO ===================== -->
           <a href="{% url 'inicio' %}">
             <i class="fas fa-house"></i>
             Inicio
           </a>
 
-          <!-- Opción Personas o Empleados -->
+          <!-- ===================== EMPLEADOS ===================== -->
           <a href="{% url 'per_emp' %}">
             <i class="fas fa-user-group"></i>
             Personas o Empleados
           </a>
 
-          <!-- Opción Onboarding -->
+          <!-- ===================== ONBOARDING ===================== -->
           <a href="{% url 'onboarding' %}">
             <i class="fas fa-rocket"></i>
             Onboarding / Entradas
           </a>
 
-          <!-- Opción Empresas -->
+          <!-- ===================== EMPRESAS ===================== -->
           <a href="{% url 'empresas' %}">
             <i class="fas fa-building"></i>
             Empresas
           </a>
 
-          <!-- Opción Gerencias, Departamentos y Puestos -->
+          <!-- ===================== ESTRUCTURA EMPRESARIAL ===================== -->
           <a href="{% url 'comple_Empresa' %}">
             <i class="fas fa-briefcase"></i>
             Gerencias, Departamentos y Puestos
           </a>
 
-          <!-- Opción Salarios -->
+          <!-- ===================== SALARIOS ===================== -->
           <a href="{% url 'salario' %}">
             <i class="fas fa-money-bill-wave"></i>
             Salarios
           </a>
 
-          <!-- Opción Reclutamiento -->
+          <!-- ===================== RECLUTAMIENTO ===================== -->
           <a href="{% url 'reclutamiento' %}">
             <i class="fas fa-wallet"></i>
             Reclutamiento
           </a>
 
-          <!-- Opción Vacaciones -->
+          <!-- ===================== VACACIONES ===================== -->
           <a href="{% url 'vacaciones' %}">
             <i class="fas fa-umbrella-beach"></i>
             Vacaciones
           </a>
 
-          <!-- Opción Asistencia y Permisos -->
+          <!-- ===================== ASISTENCIA ===================== -->
           <a href="{% url 'elec_Asistencia' %}">
             <i class="fas fa-clock"></i>
             Asistencia y Permiso
           </a>
 
-          <!-- Acción o Rotación de Personal -->
+          <!-- ===================== ROTACIONES ===================== -->
           <a href="{% url 'accion_rotacion' %}">
             <i class="fas fa-clipboard-list"></i>
             Acciones o Rotaciones del Personal
           </a>
 
-          <!-- Opción Evaluaciones -->
+          <!-- ===================== EVALUACIONES ===================== -->
           <a href="{% url 'evaluaciones' %}">
             <i class="fas fa-chart-line"></i>
             Evaluación de Desempeño
           </a>
 
-          <!-- Opción KPIs -->
+          <!-- ===================== KPI ===================== -->
           <a href="{% url 'elec_KPI' %}">
             <i class="fas fa-file-lines"></i>
             KPIs
           </a>
 
-          <!-- Opción Offboarding -->
+          <!-- ===================== OFFBOARDING ===================== -->
           <a href="{% url 'elec_Offboarding' %}">
             <i class="fas fa-door-open"></i>
             Offboarding / Salidas
           </a>
 
-          <!-- Opción Reportes -->
+          <!-- ===================== REPORTES ===================== -->
           <a href="{% url 'reportes' %}">
             <i class="fas fa-file-lines"></i>
             Reportes
           </a>
 
-          <!-- Opción Usuarios y Roles -->
+          <!-- ===================== USUARIOS ===================== -->
           <a href="{% url 'usuarios' %}">
             <i class="fas fa-users-cog"></i>
             Usuarios y Roles
           </a>
 
-          <!-- Opción Configuración -->
+          <!-- ===================== CONFIGURACIONES ===================== -->
           <a href="{% url 'configuraciones' %}">
             <i class="fas fa-gear"></i>
             Configuración
           </a>
         </nav>
 
+        <!-- ==========================================================================
+             BOTÓN CERRAR SESIÓN
+             ========================================================================== -->
         <div class="logout">
+          <!-- Redirección al login -->
           <a href="login.html">
-            <i class="fas fa-right-from-bracket"></i> Cerrar sesión
+            <i class="fas fa-right-from-bracket"></i>
+            Cerrar sesión
           </a>
         </div>
       </aside>
 
+      <!-- ==========================================================================
+           CONTENIDO PRINCIPAL DEL MÓDULO
+           ========================================================================== -->
       <main class="main-content">
+        <!-- ==========================================================================
+             BARRA SUPERIOR
+             ========================================================================== -->
         <header class="topbar">
+          <!-- ==========================================================================
+               TÍTULO DEL MÓDULO
+               ========================================================================== -->
           <div class="page-title">
+            <!-- Nombre principal del módulo -->
             <h1>Módulo de Vacaciones</h1>
+
+            <!-- Descripción del módulo -->
             <p>Seleccione el tipo de registro o consulta que desea gestionar</p>
           </div>
 
+          <!-- ==========================================================================
+               BARRA DE BÚSQUEDA
+               ========================================================================== -->
           <div class="search-box">
+            <!-- Ícono de búsqueda -->
             <i class="fas fa-search"></i>
+
+            <!-- Campo de texto para búsquedas -->
             <input
               type="text"
               placeholder="Buscar empleado, módulo, reporte..."
             />
           </div>
 
+          <!-- ==========================================================================
+               ACCIONES SUPERIORES
+               ========================================================================== -->
           <div class="topbar-actions">
+            <!-- ===================== NOTIFICACIONES ===================== -->
             <div class="notification">
+              <!-- Ícono de campana -->
               <i class="fas fa-bell"></i>
+
+              <!-- Número de notificaciones -->
               <span class="badge">3</span>
             </div>
 
+            <!-- ===================== PERFIL DE USUARIO ===================== -->
             <div class="user-profile">
+              <!-- Imagen del usuario -->
               <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
+
+              <!-- Información textual del usuario -->
               <div class="user-info">
                 <strong>María Gómez</strong>
                 <span>Recursos Humanos</span>
@@ -168,41 +261,78 @@
           </div>
         </header>
 
+        <!-- ==========================================================================
+             TARJETAS DE ACCIONES DEL MÓDULO
+             ========================================================================== -->
         <section class="action-cards-grid">
+          <!-- ==========================================================================
+               TARJETA: SOLICITUD DE VACACIONES
+               ========================================================================== -->
           <div class="action-card">
+            <!-- Ícono visual principal -->
             <div class="action-card-illustration">
               <i class="fas fa-calendar-plus"></i>
             </div>
+
+            <!-- Contenido textual -->
             <div class="action-card-body">
+              <!-- Título de la tarjeta -->
               <h3 class="action-card-title">Solicitud de Vacaciones</h3>
+
+              <!-- Descripción -->
               <p class="action-card-desc">
                 Inicie, valide o compute las solicitudes de días libres
                 programados por los colaboradores.
               </p>
+
+              <!-- Botón de navegación -->
               <a href="{% url 'sol_Vacacion' %}" class="action-card-btn">
-                <i class="fas fa-plus"></i> Gestionar Solicitudes
+                <!-- Ícono -->
+                <i class="fas fa-plus"></i>
+
+                <!-- Texto -->
+                Gestionar Solicitudes
               </a>
             </div>
           </div>
 
+          <!-- ==========================================================================
+               TARJETA: BOLSA Y SALDO DE VACACIONES
+               ========================================================================== -->
           <div class="action-card">
+            <!-- Ícono principal -->
             <div class="action-card-illustration accent">
               <i class="fas fa-scale-balanced"></i>
             </div>
+
+            <!-- Contenido textual -->
             <div class="action-card-body">
+              <!-- Título -->
               <h3 class="action-card-title">Bolsa y Saldo de Vacaciones</h3>
+
+              <!-- Descripción -->
               <p class="action-card-desc">
                 Audite el historial, asigne los días correspondientes por
                 antigüedad y controle los saldos pendientes.
               </p>
+
+              <!-- Botón de acceso -->
               <a href="{% url 'con_Vacacion' %}" class="action-card-btn accent">
-                <i class="fas fa-eye"></i> Consultar Saldos Anuales
+                <!-- Ícono -->
+                <i class="fas fa-eye"></i>
+
+                <!-- Texto -->
+                Consultar Saldos Anuales
               </a>
             </div>
           </div>
         </section>
 
+        <!-- ==========================================================================
+             PIE DE PÁGINA
+             ========================================================================== -->
         <footer class="footer">
+          <!-- Texto institucional -->
           © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
         </footer>
       </main>
