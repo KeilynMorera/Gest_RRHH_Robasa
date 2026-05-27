@@ -187,15 +187,6 @@ body {
   flex-wrap: wrap;         /* Permite que los elementos bajen de fila si no hay suficiente espacio */
 }
 
-/* Botón Hamburguesa para móviles (oculto visualmente si no hay JS, preparado para diseño dinámico) */
-.menu-toggle {
-  border: none;
-  background: none;
-  font-size: 26px;
-  cursor: pointer;
-  color: #293477;
-}
-
 /* Contenedor de Título de Página */
 .page-title {
   min-width: 260px;        /* Evita que se colapse demasiado en pantallas medianas */

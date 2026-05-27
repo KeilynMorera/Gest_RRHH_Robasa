@@ -168,11 +168,6 @@
              BARRA SUPERIOR
         ====================================================== -->
         <header class="topbar">
-          <!-- Botón para mostrar/ocultar menú -->
-          <button class="menu-toggle">
-            <i class="fas fa-bars"></i>
-          </button>
-
           <!-- Título de la página -->
           <div class="page-title">
             <h1>Pasantes</h1>
@@ -207,9 +202,6 @@
                 <strong>María Gómez</strong>
                 <span>Recursos Humanos</span>
               </div>
-
-              <!-- Icono desplegable -->
-              <i class="fas fa-chevron-down"></i>
             </div>
           </div>
         </header>
@@ -228,7 +220,7 @@
           <i class="fas fa-chevron-right sep"></i>
 
           <!-- Sección -->
-          <a href="{% url 'per_emp' %}"> Personas o Empleados </a>
+          <a href="{% url 'per_emp' %}"> Registro Personal </a>
 
           <!-- Separador -->
           <i class="fas fa-chevron-right sep"></i>
@@ -255,7 +247,6 @@
               <!-- Título y descripción -->
               <div>
                 <h2 class="form-card-title">Registro de un nuevo Pasante</h2>
-
                 <p class="form-card-subtitle">
                   Complete los campos requeridos para crear el perfil del
                   pasante
