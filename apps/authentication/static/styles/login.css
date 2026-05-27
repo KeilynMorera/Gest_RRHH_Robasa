@@ -1,245 +1,258 @@
-/* Reset */
+/* ==========================================================================
+   RESET, TIPOGRAFÍA Y CONFIGURACIÓN BASE
+   ========================================================================== */
+
+/* Selector universal para estandarizar el modelo de caja y remover márgenes nativos */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    margin: 0;              /* Elimina el espaciado externo por defecto de los navegadores */
+    padding: 0;             /* Elimina el espaciado interno por defecto de los navegadores */
+    box-sizing: border-box; /* Incluye padding y bordes dentro de la anchura y altura total del elemento */
 }
 
+/* Configuraciones del cuerpo del documento */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f4f7fb;
-    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Pila de fuentes sans-serif optimizada para legibilidad */
+    background: #f4f7fb;    /* Fondo gris claro para dar contraste si el contenedor no ocupa toda la pantalla */
+    min-height: 100vh;      /* Asegura que el body mida, como mínimo, el 100% del alto de la ventana (Viewport) */
 }
 
-/* Contenedor Principal */
+/* Contenedor Principal: Estructura dividida en dos pantallas (Split-screen layout) */
 .login-container {
-    display: flex;
-    min-height: 100vh;
+    display: flex;          /* Activa el módulo Flexbox para alinear los paneles izquierdo y derecho en paralelo */
+    min-height: 100vh;      /* Fuerza a la interfaz de login a ocupar todo el alto disponible de la pantalla */
 }
 
-/* =========================
-   PANEL IZQUIERDO
-========================= */
+/* ==========================================================================
+   PANEL IZQUIERDO: SECCIÓN DE IDENTIDAD Y MARCA (Desktop)
+   ========================================================================== */
 .left-panel {
-    width: 45%;
-    background: linear-gradient(135deg, #293477, #0a3478);
-    color: white;
-    position: relative;
+    width: 45%;             /* Ocupa el 45% del ancho horizontal en resoluciones de escritorio */
+    background: linear-gradient(135deg, #293477, #0a3478); /* Degradado diagonal institucional */
+    color: white;           /* Aplica color blanco por defecto a los textos internos */
+    position: relative;     /* Contexto de posicionamiento para anclar los círculos abstractos decorativos */
     display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 60px;
-    overflow: hidden;
+    align-items: center;    /* Centra el bloque de contenido verticalmente */
+    justify-content: center;/* Centra el bloque de contenido horizontalmente */
+    padding: 60px;          
+    overflow: hidden;       /* Recorta y esconde las partes de los círculos decorativos que sobresalen del panel */
 }
 
+/* ── Elementos Abstractos de Fondo (Círculos decorativos usando pseudoelementos) ── */
 .left-panel::before,
 .left-panel::after {
-    content: "";
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.05);
+    content: "";            /* Obligatorio para que el pseudoelemento se renderice en el DOM */
+    position: absolute;     /* Posicionamiento libre e independiente de la capa de texto */
+    border-radius: 50%;     /* Transforma la caja en una circunferencia perfecta */
+    background: rgba(255, 255, 255, 0.05); /* Color blanco translúcido ultra tenue al 5% */
 }
 
+/* Círculo superior derecho */
 .left-panel::before {
     width: 300px;
     height: 300px;
     top: -100px;
-    right: -100px;
+    right: -100px;          /* Valores negativos para empujarlo parcialmente fuera del panel */
 }
 
+/* Círculo inferior izquierdo */
 .left-panel::after {
     width: 250px;
     height: 250px;
     bottom: -80px;
-    left: -80px;
+    left: -80px;            /* Valores negativos para empujarlo parcialmente fuera del panel */
 }
 
+/* Contenedor del contenido textual de la izquierda */
 .left-content {
-    position: relative;
-    z-index: 2;
-    max-width: 450px;
+    position: relative;     
+    z-index: 2;             /* Eleva el texto por encima de los círculos decorativos (que están en z-index inferior) */
+    max-width: 450px;       /* Previene que las líneas de texto se extiendan demasiado, rompiendo la lectura */
 }
 
-/* =========================
-   LOGO ROBASA
-========================= */
+/* ==========================================================================
+   LOGO CORPORATIVO (Efecto Glassmorphism y Glow)
+   ========================================================================== */
 
 .logo {
-    text-align: center;
-    margin-bottom: 35px;
+    text-align: center;     
+    margin-bottom: 35px;    
 }
 
-/* Imagen */
+/* Estilización avanzada del contenedor de la imagen del logo */
 .logo-img {
     width: 320px;
-    max-width: 100%;
-    height: auto;
-
+    max-width: 100%;        /* Evita desbordamientos si el espacio se comprime */
+    height: auto;           /* Mantiene la proporción original de aspecto */
     display: block;
-    margin: 0 auto 25px;
+    margin: 0 auto 25px;    /* Centrado horizontal automático y separación inferior */
+    padding: 18px;          
+    border-radius: 22px;    
+    background: rgba(255, 255, 255, 0.08);       /* Capa de fondo estilo cristal blanco ultra-translúcido */
+    border: 1px solid rgba(255, 255, 255, 0.12); /* Borde sutil que simula el reflejo del vidrio */
+    backdrop-filter: blur(6px);                  /* Efecto Glassmorphism: desenfoca el degradado que pasa por detrás */
 
-    /* Hace que resalte */
-    padding: 18px;
-
-    border-radius: 22px;
-
-    background: rgba(255, 255, 255, 0.08);
-
-    border: 1px solid rgba(255,255,255,0.12);
-
-    backdrop-filter: blur(6px);
-
-    /* Glow */
+    /* Filtros gráficos encadenados aplicados por GPU para lograr un brillo de luz blanca (Neon Glow) */
     filter:
-        drop-shadow(0 0 10px rgba(255,255,255,0.25))
-        drop-shadow(0 0 25px rgba(255,255,255,0.12))
+        drop-shadow(0 0 10px rgba(255, 255, 255, 0.25))
+        drop-shadow(0 0 25px rgba(255, 255, 255, 0.12))
         brightness(1.18)
         contrast(1.15);
 
-    transition: all 0.3s ease;
+    transition: all 0.3s ease; /* Suaviza la transición de los filtros y escalas durante el hover */
 }
 
-/* Hover elegante */
+/* Comportamiento interactivo del logo al pasar el cursor */
 .logo-img:hover {
-    transform: scale(1.03);
-
+    transform: scale(1.03); /* Efecto microscópico de acercamiento (3%) */
+    /* Intensificación de los filtros lumínicos */
     filter:
-        drop-shadow(0 0 16px rgba(255,255,255,0.4))
-        drop-shadow(0 0 32px rgba(255,255,255,0.18))
+        drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))
+        drop-shadow(0 0 32px rgba(255, 255, 255, 0.18))
         brightness(1.25)
         contrast(1.2);
 }
 
+/* Subtexto de marca (Acompañamiento del logo) */
 .logo span {
     font-size: 18px;
-    letter-spacing: 6px;
-    color: #9bc0ff;
+    letter-spacing: 6px;    /* Tracking ancho para otorgar un aspecto minimalista y sofisticado */
+    color: #9bc0ff;         /* Tono azul pastel brillante para destacar sobre el fondo oscuro */
 }
 
+/* Título de bienvenida */
 .left-content h2 {
     font-size: 40px;
-    line-height: 1.3;
+    line-height: 1.3;       /* Ajuste del interlineado para evitar colisiones tipográficas */
     margin-bottom: 20px;
 }
 
 .left-content h2 span {
-    color: #9bc0ff;
+    color: #9bc0ff;         
 }
 
+/* Párrafo descriptivo del panel de marca */
 .left-content p {
     font-size: 20px;
-    line-height: 1.7;
-    color: #d9e4ff;
+    line-height: 1.7;       
+    color: #d9e4ff;         
     margin-bottom: 40px;
 }
 
+/* Contenedor para el icono o ilustración de soporte */
 .illustration {
     text-align: center;
     margin: 40px 0;
 }
 
+/* Estilo para el icono decorativo gigante de fondo */
 .illustration i {
     font-size: 130px;
-    color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.2); /* Opacidad al 20% para que actúe como marca de agua */
 }
 
+/* Cita o nota institucional de confianza en la parte inferior */
 blockquote {
     margin-top: 30px;
     font-style: italic;
     color: #c8d7ff;
-    border-left: 4px solid #66a6ff;
+    border-left: 4px solid #66a6ff; /* Línea de acento azul brillante a la izquierda */
     padding-left: 15px;
     line-height: 1.6;
 }
 
-.subtitulo-login {
-    text-align: center;
-}
-
+/* Clases utilitarias por si se requiere centrar subtítulos auxiliares */
+.subtitulo-login,
 .intro-login {
     text-align: center;
 }
 
-/* =========================
-   PANEL DERECHO
-========================= */
+/* ==========================================================================
+   PANEL DERECHO: FORMULARIO DE ACCESO (LOGIN)
+   ========================================================================== */
 .right-panel {
-    width: 55%;
-    background: #ffffff;
+    width: 55%;             /* Ocupa el 55% restante del ancho horizontal */
+    background: #ffffff;    /* Fondo blanco puro para centrar la atención del usuario */
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: center;/* Centra la caja de login horizontalmente */
+    align-items: center;    /* Centra la caja de login verticalmente */
     padding: 40px;
 }
 
+/* Bloque estructural del formulario */
 .login-box {
     width: 100%;
-    max-width: 500px;
+    max-width: 500px;       /* Limita el estiramiento del formulario en monitores ultra-wide */
 }
 
 .login-box h2 {
     font-size: 42px;
-    color: #0a1f44;
+    color: #0a1f44;         /* Azul marino muy profundo para máxima legibilidad y sobriedad */
     margin-bottom: 10px;
 }
 
 .login-box > p {
-    color: #7a8599;
+    color: #7a8599;         
     margin-bottom: 40px;
     font-size: 18px;
 }
 
-/* Inputs */
+/* ── Estructura de Campos de Entrada (Inputs) ── */
 .input-group {
-    margin-bottom: 25px;
+    margin-bottom: 25px;    /* Separación uniforme entre bloques de campos */
 }
 
 .input-group label {
-    display: block;
+    display: block;         /* Fuerza a la etiqueta a posicionarse arriba del input */
     margin-bottom: 8px;
-    font-weight: 600;
+    font-weight: 600;       /* Texto semibold para identificar rápidamente el campo */
     color: #1b2b4b;
 }
 
+/* Contenedor relativo que permite incrustar iconos dentro de la caja de texto */
 .input-wrapper {
     position: relative;
 }
 
+/* Regla común para posicionar y centrar de forma absoluta los iconos internos */
 .input-wrapper i {
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-50%); /* Centrado vertical exacto independientemente del alto */
     color: #8a94a6;
 }
 
+/* Icono inicial (Lado izquierdo, ej. Usuario/Candado) */
 .input-wrapper i:first-child {
     left: 18px;
 }
 
+/* Icono final (Lado derecho, ej. Mostrar/Ocultar contraseña) */
 .input-wrapper i:last-child {
     right: 18px;
-    cursor: pointer;
+    cursor: pointer;        /* Cambia el cursor a mano interactiva para indicar que es cliqueable */
 }
 
+/* Elemento input de texto nativo */
 .input-wrapper input {
     width: 100%;
-    padding: 16px 50px;
+    padding: 16px 50px;     /* Padding horizontal ancho (50px) para evitar que el texto colisione con los iconos */
     border: 1px solid #d9e1ec;
     border-radius: 12px;
     font-size: 16px;
-    outline: none;
+    outline: none;          /* Remueve el anillo de enfoque por defecto de los navegadores */
     transition: 0.3s;
 }
 
+/* Efecto visual de foco interactivo */
 .input-wrapper input:focus {
-    border-color: #1f64ff;
-    box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1);
+    border-color: #1f64ff;  /* Cambia el borde a un azul vibrante moderno */
+    box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1); /* Aura difuminada alrededor del campo */
 }
 
-/* Links */
+/* Enlace de recuperación de contraseña */
 .forgot-password {
     display: block;
-    text-align: right;
+    text-align: right;      /* Alineado estratégicamente al extremo derecho superior del botón */
     margin-bottom: 25px;
     color: #1f64ff;
     text-decoration: none;
@@ -247,13 +260,13 @@ blockquote {
 }
 
 .forgot-password:hover {
-    text-decoration: underline;
+    text-decoration: underline; /* Feedback visual estándar de navegación web */
 }
 
-/* Botón Login */
+/* Botón de envío principal (Login) */
 .btn-login {
     width: 100%;
-    background: linear-gradient(90deg, #3b74f8, #293477);
+    background: linear-gradient(90deg, #3b74f8, #293477); /* Degradado horizontal enérgico */
     color: white;
     border: none;
     padding: 16px;
@@ -265,47 +278,44 @@ blockquote {
 }
 
 .btn-login i {
-    margin-right: 8px;
+    margin-right: 8px;      /* Separación entre el icono interno y el texto "Iniciar Sesión" */
 }
 
 .btn-login:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(31, 100, 255, 0.25);
+    transform: translateY(-2px); /* Pequeña elevación física simulada */
+    box-shadow: 0 10px 25px rgba(31, 100, 255, 0.25); /* Sombra paralela en color de acento */
 }
 
-/* Divider */
+/* ── Divisor de métodos de Login (Líneas horizontales con texto "O") ── */
 .divider {
     text-align: center;
     margin: 30px 0;
-    position: relative;
+    position: relative;     /* Contexto de posicionamiento para las líneas laterales */
 }
 
+/* Pseudoelementos para dibujar las líneas izquierda y derecha de forma automatizada */
 .divider::before,
 .divider::after {
     content: "";
     position: absolute;
-    top: 50%;
-    width: 38%;
+    top: 50%;               /* Alinea las líneas verticalmente en el centro del texto */
+    width: 38%;             /* Cada línea toma el 38% del ancho total del bloque */
     height: 1px;
-    background: #d9e1ec;
+    background: #d9e1ec;    /* Color gris claro sutil */
 }
 
-.divider::before {
-    left: 0;
-}
+.divider::before { left: 0; }
+.divider::after { right: 0; }
 
-.divider::after {
-    right: 0;
-}
-
+/* El texto central (usualmente la letra "O") */
 .divider span {
-    background: white;
-    padding: 0 15px;
+    background: white;      /* Truco visual: fondo blanco para tapar la línea contínua que pasa por detrás */
+    padding: 0 15px;        /* Espaciado a los lados para que las líneas no toquen la letra */
     color: #8a94a6;
     font-size: 14px;
 }
 
-/* Google Button */
+/* Botón de Autenticación de Terceros (Google OAuth) */
 .btn-google {
     width: 100%;
     padding: 15px;
@@ -318,15 +328,15 @@ blockquote {
 }
 
 .btn-google i {
-    color: #db4437;
+    color: #db4437;         /* Rojo corporativo oficial de la marca Google */
     margin-right: 10px;
 }
 
 .btn-google:hover {
-    background: #f8faff;
+    background: #f8faff;    /* Feedback visual: cambio de fondo a un tono azulado extremadamente claro */
 }
 
-/* Contact Admin */
+/* Pie del formulario (Contacto con el soporte) */
 .contact-admin {
     text-align: center;
     margin-top: 25px;
@@ -335,7 +345,7 @@ blockquote {
 }
 
 .contact-admin a {
-    color: #d15513;
+    color: #d15513;         /* Color naranja oscuro distintivo para llamados a la acción secundarios */
     text-decoration: none;
     font-weight: 600;
 }
@@ -344,21 +354,23 @@ blockquote {
     text-decoration: underline;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
+/* ==========================================================================
+   SISTEMA DE DISEÑO RESPONSIVO (MEDIA QUERIES)
+   ========================================================================== */
+
+/* Bloque legacy / duplicado de seguridad para pantallas medianas-pequeñas */
 @media (max-width: 992px) {
     .left-panel {
-        display: none;
+        display: none;      /* Destruye el panel izquierdo para priorizar espacio en pantallas limitadas */
     }
 
     .right-panel {
-        width: 100%;
+        width: 100%;        /* El formulario toma la totalidad del ancho horizontal */
     }
 
     .login-box h2 {
-        font-size: 34px;
-        text-align: center;
+        font-size: 34px;    
+        text-align: center; /* Centrado semántico para pantallas móviles */
     }
 
     .login-box > p {
@@ -366,54 +378,30 @@ blockquote {
     }
 }
 
-/* =====================================================
-   RESPONSIVE DESIGN
-   ===================================================== */
+/* ==========================================================================
+   ARQUITECTURA DE RESPONSIVIDAD DETALLADA POR DISPOSITIVO
+   ========================================================================== */
 
-/* -----------------------------------------------------
-   Pantallas grandes (Desktop y monitores grandes)
-   Resolución: 1200px en adelante
------------------------------------------------------ */
+/* --------------------------------------------------------------------------
+   Pantallas grandes (Desktop y monitores de alta resolución): >= 1200px
+-------------------------------------------------------------------------- */
 @media (min-width: 1200px) {
-    .login-container {
-        display: flex;
-    }
-
-    .left-panel {
-        width: 45%;
-        padding: 60px;
-    }
-
-    .right-panel {
-        width: 55%;
-        padding: 40px;
-    }
-
-    .login-box {
-        max-width: 500px;
-    }
-
-    .logo h1 {
-        font-size: 58px;
-    }
-
-    .left-content h2 {
-        font-size: 40px;
-    }
-
-    .login-box h2 {
-        font-size: 42px;
-    }
+    .login-container { display: flex; }
+    .left-panel { width: 45%; padding: 60px; }
+    .right-panel { width: 55%; padding: 40px; }
+    .login-box { max-width: 500px; }
+    .logo h1 { font-size: 58px; }
+    .left-content h2 { font-size: 40px; }
+    .login-box h2 { font-size: 42px; }
 }
 
-/* -----------------------------------------------------
-   Pantallas medianas (Laptops y tablets horizontales)
-   Resolución: 992px a 1199px
------------------------------------------------------ */
+/* --------------------------------------------------------------------------
+   Pantallas medianas (Laptops y tablets en orientación horizontal): 992px a 1199px
+-------------------------------------------------------------------------- */
 @media (max-width: 1199px) and (min-width: 992px) {
     .left-panel {
         width: 45%;
-        padding: 40px;
+        padding: 40px;      /* Reducción de espacios internos para evitar desbordamiento vertical */
     }
 
     .right-panel {
@@ -422,54 +410,33 @@ blockquote {
     }
 
     .login-box {
-        max-width: 450px;
+        max-width: 450px;   /* Se reduce el ancho máximo para balancear el diseño compactado */
     }
 
-    .logo h1 {
-        font-size: 46px;
-    }
-
-    .logo i {
-        font-size: 50px;
-    }
-
-    .left-content h2 {
-        font-size: 32px;
-    }
-
-    .left-content p {
-        font-size: 18px;
-    }
-
-    .illustration i {
-        font-size: 100px;
-    }
-
-    .login-box h2 {
-        font-size: 36px;
-    }
-
-    .login-box > p {
-        font-size: 16px;
-    }
+    .logo h1 { font-size: 46px; }
+    .logo i { font-size: 50px; }
+    .left-content h2 { font-size: 32px; }
+    .left-content p { font-size: 18px; }
+    .illustration i { font-size: 100px; } /* Encogimiento proporcional de la marca de agua */
+    .login-box h2 { font-size: 36px; }
+    .login-box > p { font-size: 16px; }
 }
 
-/* -----------------------------------------------------
-   Tablets verticales
-   Resolución: 768px a 991px
------------------------------------------------------ */
+/* --------------------------------------------------------------------------
+   Tablets en orientación vertical: 768px a 991px
+-------------------------------------------------------------------------- */
 @media (max-width: 991px) and (min-width: 768px) {
     .left-panel {
-        display: none;
+        display: none;      /* Se oculta por completo la gráfica decorativa */
     }
 
     .right-panel {
-        width: 100%;
+        width: 100%;        /* El formulario se adueña de todo el Viewport */
         padding: 40px;
     }
 
     .login-box {
-        max-width: 500px;
+        max-width: 500px;   /* Mantiene dimensiones cómodas de lectura en pantallas tipo iPad */
     }
 
     .login-box h2 {
@@ -483,17 +450,16 @@ blockquote {
     }
 }
 
-/* -----------------------------------------------------
-   Pantallas pequeñas (Móviles)
-   Resolución: hasta 767px
------------------------------------------------------ */
+/* --------------------------------------------------------------------------
+   Pantallas pequeñas (Smartphones estándar): hasta 767px
+-------------------------------------------------------------------------- */
 @media (max-width: 767px) {
     body {
-        background: #ffffff;
+        background: #ffffff;/* Se fuerza fondo blanco plano en lugar del gris para mimetizarse con el panel */
     }
 
     .login-container {
-        flex-direction: column;
+        flex-direction: column; /* Cambia la dirección de Flexbox a vertical (aunque el panel izquierdo no se renderice) */
     }
 
     .left-panel {
@@ -502,7 +468,7 @@ blockquote {
 
     .right-panel {
         width: 100%;
-        padding: 20px;
+        padding: 20px;      /* Reducción drástica del espacio periférico para maximizar el área de tipeo táctil */
         min-height: 100vh;
     }
 
@@ -511,7 +477,7 @@ blockquote {
     }
 
     .login-box h2 {
-        font-size: 28px;
+        font-size: 28px;    /* Tipografía compacta para evitar saltos de línea huérfanos */
         text-align: center;
     }
 
@@ -521,56 +487,46 @@ blockquote {
         margin-bottom: 30px;
     }
 
+    /* Optimización ergonómica táctil: Se reduce ligeramente el padding para dar comodidad en móviles */
     .input-wrapper input {
         padding: 14px 45px;
         font-size: 15px;
     }
 
+    /* Botones más gruesos y cómodos para pulsaciones con el dedo pulgar */
     .btn-login,
     .btn-google {
         padding: 14px;
         font-size: 15px;
     }
 
+    /* Reducción proporcional del tamaño de las líneas del divisor en dispositivos angostos */
     .divider::before,
     .divider::after {
         width: 30%;
     }
 
-    .forgot-password {
-        font-size: 13px;
-    }
-
-    .contact-admin {
-        font-size: 13px;
-    }
+    .forgot-password { font-size: 13px; }
+    .contact-admin { font-size: 13px; }
 }
 
-/* -----------------------------------------------------
-   Pantallas muy pequeñas
-   Resolución: hasta 480px
------------------------------------------------------ */
+/* --------------------------------------------------------------------------
+   Pantallas ultra pequeñas (Smartphones antiguos o de baja gama): hasta 480px
+-------------------------------------------------------------------------- */
 @media (max-width: 480px) {
     .right-panel {
-        padding: 15px;
+        padding: 15px;      /* Aprovechamiento absoluto de los bordes del dispositivo */
     }
 
-    .login-box h2 {
-        font-size: 24px;
-    }
+    .login-box h2 { font-size: 24px; }
+    .login-box > p { font-size: 14px; }
+    .input-group label { font-size: 14px; }
 
-    .login-box > p {
-        font-size: 14px;
-    }
-
-    .input-group label {
-        font-size: 14px;
-    }
-
+    /* Compactación total del control de inputs */
     .input-wrapper input {
         padding: 12px 42px;
         font-size: 14px;
-        border-radius: 10px;
+        border-radius: 10px;/* Esquinas un poco menos pronunciadas para cajas pequeñas */
     }
 
     .btn-login,
@@ -580,12 +536,6 @@ blockquote {
         border-radius: 10px;
     }
 
-    .divider span {
-        font-size: 12px;
-    }
-
-    .contact-admin {
-        font-size: 12px;
-    }
+    .divider span { font-size: 12px; }
+    .contact-admin { font-size: 12px; }
 }
-

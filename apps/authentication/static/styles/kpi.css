@@ -816,91 +816,510 @@ body {
 }
 
 /* ==========================================================================
-   FOOTER GENERAL
+   FOOTER GENERAL DEL PORTAL
    ========================================================================== */
+
 .footer {
-  margin-top: 30px;
+  margin-top: auto;       /* Técnica flexbox para empujar el pie de página siempre al fondo del contenedor */
+  padding-top: 20px;
   text-align: center;
   color: #7a8599;
   font-size: 13.5px;
 }
 
-/* ==========================================================================
-   DISEÑO RESPONSIVO (Media Queries Integrados)
+/* ==========================================================================  
+   RESPONSIVE DESIGN - DASHBOARD ROBASA
+   Adaptado completamente a tu estructura CSS
    ========================================================================== */
 
-/* Laptops y Pantallas Medianas */
-@media screen and (max-width: 1199px) {
-  .sidebar {
-    width: 230px;
-    padding: 25px 15px;
-  }
+/* ==========================================================================
+   PANTALLAS GRANDES / LAPTOPS (Hasta 1400px)
+   ========================================================================== */
+@media screen and (max-width: 1400px) {
+
   .main-content {
-    margin-left: 230px;
-    padding: 25px;
+    padding: 24px;
   }
-  .logo-img { max-width: 170px; }
-  .menu a { font-size: 13px; padding: 10px 12px; }
-  .page-title h1 { font-size: 24px; }
+
+  .topbar {
+    gap: 18px;
+  }
+
+  .search-box {
+    max-width: 380px;
+  }
+
+  .results-layout {
+    gap: 20px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .results-table {
+    min-width: 850px;
+  }
 }
 
-/* Tablets */
-@media screen and (max-width: 991px) {
+/* ==========================================================================
+   LAPTOPS MEDIANAS / DESKTOPS PEQUEÑAS (Hasta 1200px)
+   ========================================================================== */
+@media screen and (max-width: 1200px) {
+
+  /* Sidebar más compacto */
   .sidebar {
-    width: 200px;
-    padding: 20px 12px;
+    width: 250px;
+    min-width: 250px;
+    max-width: 250px;
+    padding: 24px 16px;
   }
+
+  /* Ajuste del contenido */
   .main-content {
-    margin-left: 200px;
-    padding: 20px;
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    padding: 22px;
   }
-  .logo-img { max-width: 140px; padding: 10px; }
+
+  /* Topbar adaptable */
+  .topbar {
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .page-title {
+    width: 100%;
+  }
+
+  .search-box {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  .topbar-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  /* Layout de resultados */
   .results-layout {
-    grid-template-columns: 1fr; /* Colapsa paneles en una sola columna */
+    grid-template-columns: 1fr;
   }
+
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .filter-bar {
+    gap: 16px;
+  }
+
+  .filter-field {
+    min-width: 180px;
+  }
+}
+
+/* ==========================================================================
+   TABLETS / PANTALLAS MEDIANAS (Hasta 992px)
+   ========================================================================== */
+@media screen and (max-width: 992px) {
+
+  /* Sidebar reducido */
+  .sidebar {
+    width: 220px;
+    min-width: 220px;
+    max-width: 220px;
+    padding: 20px 14px;
+  }
+
+  .main-content {
+    margin-left: 220px;
+    width: calc(100% - 220px);
+    padding: 18px;
+  }
+
+  /* Logo */
+  .logo-img {
+    max-width: 170px;
+  }
+
+  /* Menú */
+  .menu a,
+  .logout a {
+    font-size: 13px;
+    padding: 11px 12px;
+    gap: 10px;
+  }
+
+  /* Topbar en columna */
+  .topbar {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    align-items: stretch;
+  }
+
+  .page-title h1 {
+    font-size: 28px;
+  }
+
+  .search-box {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .topbar-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  /* Header tarjeta */
+  .form-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Filtros */
   .filter-bar {
     flex-direction: column;
     align-items: stretch;
   }
-  .btn { width: 100%; }
+
+  .filter-field {
+    width: 100%;
+  }
+
+  /* Tarjetas estadísticas */
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  /* Tabla */
+  .results-table {
+    min-width: 760px;
+  }
 }
 
-/* Celulares (Cambio de Sidebar permanente a modo íconos compactos) */
-@media screen and (max-width: 767px) {
+/* ==========================================================================
+   CELULARES GRANDES / MÓVILES (Hasta 768px)
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+
+  /* Sidebar compacto */
   .sidebar {
-    width: 80px;
-    padding: 15px 8px;
-    align-items: center;
+    width: 190px;
+    min-width: 190px;
+    max-width: 190px;
+    padding: 16px 10px;
   }
+
   .main-content {
-    margin-left: 80px;
+    margin-left: 190px;
+    width: calc(100% - 190px);
     padding: 15px;
   }
-  .logo-container { margin-bottom: 20px; }
-  .logo-img { width: 50px; padding: 6px; border-radius: 10px; }
-  
-  /* Ocultar texto del menú dejando sólo íconos legibles */
-  .menu a { font-size: 0; padding: 14px; justify-content: center; width: 100%; }
-  .menu a i { font-size: 18px; margin: 0; width: auto; }
-  
-  .logout a { font-size: 0; padding: 14px; justify-content: center; }
-  .logout a i { font-size: 18px; }
 
-  .topbar { flex-direction: column; align-items: stretch; gap: 12px; }
-  .menu-toggle { display: none !important; } /* Innecesario por sidebar adaptivo */
-  .search-box { max-width: 100%; }
-  .topbar-actions { width: 100%; justify-content: space-between; margin-left: 0; }
-  .user-info { display: none !important; } /* Ocultar rol en móvil */
-  
-  .form-card-header { padding: 16px 20px; flex-direction: column; align-items: flex-start; gap: 12px; }
-  .form-body { padding: 20px; }
+  /* Logo */
+  .logo-img {
+    max-width: 140px;
+    padding: 10px;
+  }
+
+  /* Menú */
+  .menu {
+    gap: 6px;
+  }
+
+  .menu a,
+  .logout a {
+    font-size: 12px;
+    padding: 10px;
+  }
+
+  .menu a i {
+    width: 16px;
+    font-size: 14px;
+  }
+
+  /* Títulos */
+  .page-title h1 {
+    font-size: 22px;
+  }
+
+  .page-title p {
+    font-size: 12px;
+  }
+
+  /* Buscador */
+  .search-box input {
+    padding: 12px 14px 12px 40px;
+    font-size: 13px;
+  }
+
+  .search-box i {
+    left: 14px;
+  }
+
+  /* Usuario */
+  .user-info {
+    display: none;
+  }
+
+  .user-profile {
+    padding: 6px 8px;
+    border-radius: 14px;
+  }
+
+  .user-profile img {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Breadcrumb */
+  .breadcrumb {
+    font-size: 12px;
+    flex-wrap: wrap;
+  }
+
+  /* Form Card */
+  .form-card {
+    border-radius: 12px;
+  }
+
+  .form-card-header {
+    padding: 18px;
+  }
+
+  .form-body {
+    padding: 18px;
+  }
+
+  .form-card-title {
+    font-size: 16px;
+  }
+
+  .form-card-subtitle {
+    font-size: 12px;
+  }
+
+  /* Filtros */
+  .filter-bar {
+    padding: 16px;
+  }
+
+  /* Inputs */
+  .field input,
+  .field select {
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+
+  /* Botones */
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* KPIs */
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Rankings */
+  .ranking-item {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .ranking-score {
+    width: 100%;
+    text-align: right;
+  }
+
+  /* Tabla */
+  .results-table {
+    min-width: 700px;
+  }
 }
 
-/* Celulares muy pequeños */
-@media screen and (max-width: 480px) {
-  .sidebar { width: 65px; }
-  .main-content { margin-left: 65px; padding: 10px; }
-  .logo-img { width: 40px; }
-  .menu a i, .logout a i { font-size: 16px; }
-  .page-title h1 { font-size: 20px; }
+/* ==========================================================================
+   CELULARES PEQUEÑOS (Hasta 576px)
+   ========================================================================== */
+@media screen and (max-width: 576px) {
+
+  /* Sidebar ultra compacto */
+  .sidebar {
+    width: 170px;
+    min-width: 170px;
+    max-width: 170px;
+    padding: 14px 8px;
+  }
+
+  .main-content {
+    margin-left: 170px;
+    width: calc(100% - 170px);
+    padding: 12px;
+  }
+
+  /* Logo */
+  .logo-img {
+    max-width: 120px;
+  }
+
+  /* Menú */
+  .menu a,
+  .logout a {
+    font-size: 11px;
+    padding: 9px 8px;
+    border-radius: 10px;
+  }
+
+  /* Títulos */
+  .page-title h1 {
+    font-size: 18px;
+  }
+
+  .page-title p {
+    font-size: 11px;
+  }
+
+  /* Buscador */
+  .search-box input {
+    font-size: 12px;
+  }
+
+  /* Tarjetas */
+  .form-card-header-left {
+    gap: 10px;
+  }
+
+  .form-card-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 15px;
+  }
+
+  .form-card-title {
+    font-size: 14px;
+  }
+
+  .form-card-subtitle {
+    font-size: 11px;
+  }
+
+  .dashboard-period {
+    font-size: 11px;
+    padding: 6px 10px;
+  }
+
+  /* Secciones */
+  .form-section-title {
+    font-size: 11px;
+  }
+
+  /* Inputs */
+  .field label {
+    font-size: 12px;
+  }
+
+  .field input,
+  .field select {
+    font-size: 12px;
+    padding: 9px 10px;
+  }
+
+  /* KPIs */
+  .stat-card {
+    padding: 16px;
+  }
+
+  .stat-card h2 {
+    font-size: 22px;
+  }
+
+  /* Paneles */
+  .result-panel {
+    padding: 16px;
+  }
+
+  .panel-header h3 {
+    font-size: 13px;
+  }
+
+  /* Rankings */
+  .ranking-user strong {
+    font-size: 12px;
+  }
+
+  .ranking-user span {
+    font-size: 10px;
+  }
+
+  /* Tabla */
+  .results-table {
+    min-width: 650px;
+    font-size: 12px;
+  }
+
+  .results-table th,
+  .results-table td {
+    padding: 12px 14px;
+  }
+}
+
+/* ==========================================================================
+   EXTRA SMALL DEVICES (Hasta 420px)
+   ========================================================================== */
+@media screen and (max-width: 420px) {
+
+  .sidebar {
+    width: 155px;
+    min-width: 155px;
+    max-width: 155px;
+  }
+
+  .main-content {
+    margin-left: 155px;
+    width: calc(100% - 155px);
+    padding: 10px;
+  }
+
+  .logo-img {
+    max-width: 100px;
+  }
+
+  .menu a,
+  .logout a {
+    font-size: 10px;
+    gap: 6px;
+    padding: 8px 6px;
+  }
+
+  .page-title h1 {
+    font-size: 16px;
+  }
+
+  .topbar-actions {
+    gap: 12px;
+  }
+
+  .notification {
+    font-size: 18px;
+  }
+
+  .user-profile img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .form-card-header,
+  .form-body {
+    padding: 14px;
+  }
+
+  .btn {
+    font-size: 12px;
+    padding: 10px;
+  }
 }
