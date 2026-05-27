@@ -1,45 +1,158 @@
-/* Se reutiliza la base visual del sistema Robasa */
+/* ==========================================================================
+   RESET & BASE - Limpieza de estilos del navegador y variables raíz
+   ========================================================================== */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  margin: 0;            /* Elimina márgenes por defecto */
+  padding: 0;           /* Elimina rellenos por defecto */
+  box-sizing: border-box; /* Incluye el padding y bordes en el cálculo del ancho/alto total */
 }
 
 body {
-  font-family: "Segoe UI", sans-serif;
-  background: #f4f7fb;
-  color: #1a2042;
+  font-family: "Segoe UI", sans-serif; /* Tipografía limpia para aplicaciones web corporativas */
+  background: #f4f7fb;                 /* Fondo gris-azulado claro para descansar la vista */
+  color: #1a2042;                      /* Color del texto base (Azul marino muy oscuro) */
 }
 
+/* Contenedor padre que divide la pantalla en dos columnas principales */
 .dashboard-container {
-  display: flex;
-  min-height: 100vh;
+  display: flex;       /* Activa Flexbox para alinear la barra lateral y el contenido */
+  min-height: 100vh;   /* Asegura que ocupe todo el alto de la ventana del navegador */
 }
 
+/* Barral lateral de navegación (Modo Desktop) */
 .sidebar {
-  width: 280px;
-  background: #26317a;
-  color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  padding: 30px 20px;
+  width: 280px;        /* Ancho fijo inicial */
+  background: #26317a; /* Color de identidad corporativa (Azul Rey Oscuro) */
+  color: #ffffff;      /* Contenido y texto en blanco */
+  display: flex;       
+  flex-direction: column; /* Organiza los hijos (Logo, Menú, Logout) en forma vertical */
+  padding: 30px 20px;  /* Espaciado interno generoso */
+  
+  /* Posicionamiento fijo para que la barra no se mueva al hacer scroll en el contenido */
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
 }
 
-.logo-img {
-  width: 100%;
-  max-width: 220px;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-  padding: 14px;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 18px;
+/* ==========================================================================
+   LOGO ROBASA - Contenedor y efectos del escudo/marca
+   ========================================================================== */
+.logo {
+  text-align: center;  /* Centra el texto y la imagen del logotipo */
+  margin-bottom: 35px; /* Distancia hacia el primer elemento del menú */
 }
 
+/* Imagen del logotipo con técnicas avanzadas de Glassmorphism y Glow */
+.logo-img {
+  width: 320px;
+  max-width: 100%;     /* Evita que desborde si el contenedor es más pequeño */
+  height: auto;        /* Mantiene la proporción de aspecto */
+  display: block;
+  margin: 0 auto 25px; /* Centrado horizontal y margen inferior */
+  padding: 18px;       
+  border-radius: 22px; 
+  background: rgba(255, 255, 255, 0.08); /* Fondo blanco traslúcido (8% de opacidad) */
+  border: 1px solid rgba(255, 255, 255, 0.12); /* Borde sutil semi-transparente */
+  backdrop-filter: blur(6px); /* Efecto esmerilado/desenfocado de fondo */
+
+  /* Combinación de filtros para generar un brillo sutil, realzar iluminación y contraste */
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25))
+    drop-shadow(0 0 25px rgba(255, 255, 255, 0.12)) brightness(1.18)
+    contrast(1.15);
+
+  transition: all 0.3s ease; /* Transición suave de 300ms para cualquier cambio físico o de filtro */
+}
+
+/* Efecto Hover interactivo para la imagen del logo */
+.logo-img:hover {
+  transform: scale(1.03); /* Crece un 3% suavemente */
+
+  /* Intensifica el brillo blanco de fondo y el contraste al posicionar el cursor */
+  filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))
+    drop-shadow(0 0 32px rgba(255, 255, 255, 0.18)) brightness(1.25)
+    contrast(1.2);
+}
+
+/* Texto secundario o siglas ubicadas bajo el logotipo */
+.logo span {
+  font-size: 18px;
+  letter-spacing: 6px; /* Separación de caracteres estilo premium/moderno */
+  color: #9bc0ff;      /* Tonalidad azul clara complementaria */
+}
+
+/* ==========================================================================
+   MENÚ DE NAVEGACIÓN - Enlaces del Sidebar
+   ========================================================================== */
+.menu {
+  flex: 1;              /* Empuja dinámicamente al botón de Logout hacia la parte inferior */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;             /* Separación fija de 8px entre enlaces */
+  padding-right: 5px;   /* Pequeño colchón para que el texto no choque con barras de scroll */
+}
+
+/* Enlaces individuales del menú */
+.menu a {
+  color: #fefefd;        /* Blanco hueso suave */
+  text-decoration: none; /* Elimina la línea inferior nativa de los enlaces */
+  padding: 14px 18px;    
+  border-radius: 12px;   
+  display: flex;         /* Activa flexbox para alinear horizontalmente icono + texto */
+  align-items: center;   /* Centrado vertical perfecto del icono con su texto */
+  gap: 12px;             /* Separación entre el icono y el texto */
+  transition: 0.3s;      /* Suavizado para cambios de color de fondo */
+}
+
+/* Estados interactivos del menú (Hover y pestaña activa) */
+.menu a:hover,
+.menu a.active {
+  background: #4567b7;   /* Fondo azul intermedio */
+  color: white;
+}
+
+/* Forzado de ancho en iconos para asegurar simetría y alineación vertical del texto */
+.menu i {
+  width: 20px;
+}
+
+/* Personalización estética del scroll nativo del Sidebar (Solo motores Webkit/Blink) */
+.sidebar::-webkit-scrollbar {
+  width: 6px;            /* Grosor del scroll vertical */
+}
+.sidebar::-webkit-scrollbar-track {
+  background: transparent; /* Fondo del riel invisible */
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25); /* Color de la barra con opacidad baja */
+  border-radius: 10px;
+}
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);  /* Resalta un poco más la barra al pasar el mouse */
+}
+
+/* Bloque contenedor del botón de Cerrar Sesión */
+.logout {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15); /* Línea sutil divisoria */
+}
+
+.logout a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 12px;
+}
+
+.logout a:hover {
+  background: rgba(255, 255, 255, 0.08); /* Destello sutil al pasar el mouse por encima */
+}
+
+/* Nota: Este bloque ".menu" duplica propiedades previas agregando un margin-top. 
+   Es recomendable unificarlo en producción para mantener limpio el código */
 .menu {
   flex: 1;
   display: flex;
@@ -63,103 +176,125 @@ body {
   background: #4567b7;
 }
 
+/* ==========================================================================
+   MAIN CONTENT - Espacio de trabajo del Dashboard (Derecha)
+   ========================================================================== */
 .main-content {
-  flex: 1;
-  margin-left: 280px;
-  padding: 30px;
+  flex: 1;              /* Absorbe el resto del ancho de la pantalla */
+  margin-left: 280px;   /* Desplazamiento obligatorio idéntico al ancho del Sidebar fijo */
+  padding: 30px;        /* Espacio de separación interno general */
 }
 
-/* TOPBAR & INFO CARD */
+/* Header superior del área de trabajo */
 .topbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-between; /* Título a la izquierda, información o acciones a la derecha */
   margin-bottom: 30px;
 }
 
 .page-title h1 {
   font-size: 34px;
-  color: #d35b1a;
+  color: #d35b1a;       /* Título principal en naranja brillante corporativo */
 }
 
+/* Tarjeta informativa del empleado sujeto al proceso (Ficha de datos rápidos) */
 .employee-box {
   background: #ffffff;
-  border-left: 5px solid #e8600a;
+  border-left: 5px solid #e8600a; /* Línea de acento naranja gruesa a la izquierda */
   border-radius: 8px;
   padding: 16px 24px;
   margin-bottom: 25px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Sombra perimetral muy suave */
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .employee-box strong {
-  color: #26317a;
+  color: #26317a;       /* Resalta los nombres en color azul oscuro */
   font-size: 16px;
 }
 
-/* CHECKLIST STYLES */
+/* ==========================================================================
+   CHECKLIST STYLES - Módulos de etapas y tareas (Offboarding)
+   ========================================================================== */
+
+/* Bloque contenedor que agrupa tareas de una misma fase */
 .stage-section {
   background: white;
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(30, 42, 94, 0.05);
   margin-bottom: 20px;
-  overflow: hidden;
+  overflow: hidden;     /* Conserva las esquinas redondeadas tapando las esquinas de los hijos */
   border: 1px solid #e8ecf6;
 }
+
+/* Encabezado o barra superior de la etapa */
 .stage-header {
-  background: #f7f8fc;
+  background: #f7f8fc;  /* Fondo gris claro para diferenciarlo de las filas de tareas */
   padding: 14px 20px;
-  font-weight: 700;
+  font-weight: 700;     /* Texto en negrita */
   color: #1a2042;
   border-bottom: 1.5px solid #e8ecf6;
   display: flex;
   align-items: center;
   gap: 10px;
 }
+
+/* Círculo indicador del número de la etapa (ej. 1, 2, 3...) */
 .stage-number {
   background: #26317a;
   color: white;
   width: 24px;
   height: 24px;
-  border-radius: 50%;
+  border-radius: 50%;   /* Convierte la caja en un círculo perfecto */
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; /* Centrado absoluto interno del número */
   font-size: 12px;
 }
 
+/* Fila individual que representa una tarea específica */
 .task-row {
   display: flex;
   align-items: center;
   padding: 16px 20px;
-  border-bottom: 1px solid #e8ecf6;
+  border-bottom: 1px solid #e8ecf6; /* Línea separadora horizontal */
   gap: 20px;
-  flex-wrap: wrap;
+  flex-wrap: wrap;      /* Permite que los inputs bajen si no caben en la misma línea */
 }
+
+/* Elimina la línea divisoria inferior de la última tarea del bloque */
 .task-row:last-child {
   border-bottom: none;
 }
+
+/* Caja de verificación (Checkbox) de la tarea */
 .task-check {
   width: 20px;
   height: 20px;
-  accent-color: #e8600a;
+  accent-color: #e8600a; /* Cambia el color nativo del "check" del navegador a Naranja */
   cursor: pointer;
 }
+
+/* Texto de descripción de la tarea */
 .task-desc {
-  flex: 1;
+  flex: 1;              /* Hace que la descripción ocupe todo el espacio central sobrante */
   font-size: 14px;
-  color: #4f5774;
-  min-width: 200px;
+  color: #4f5774;       /* Tono grisáceo intermedio para lectura cómoda */
+  min-width: 200px;     /* Ancho mínimo para evitar que el texto colapse excesivamente */
 }
 
-/* Responsables y Fechas (Campos de la tabla OFFBOARDING_CHECKLIST) */
+/* Bloque contenedor de selectores de responsables y fechas (Metadatos) */
 .task-meta {
   display: flex;
   gap: 15px;
   align-items: center;
   flex-wrap: wrap;
 }
+
+/* Campos de entrada internos del área meta (Selectores e Inputs de tipo Fecha) */
 .task-meta select,
 .task-meta input {
   border: 1px solid #dde2f0;
@@ -167,13 +302,16 @@ body {
   font-size: 12px;
   border-radius: 6px;
   background: #f7f8fc;
-  outline: none;
-}
-.task-meta select:focus,
-.task-meta input:focus {
-  border-color: #e8600a;
+  outline: none;        /* Elimina el contorno azul por defecto del sistema operativo */
 }
 
+/* Efecto focus cuando el usuario interactúa con la fecha o el responsable */
+.task-meta select:focus,
+.task-meta input:focus {
+  border-color: #e8600a; /* Destaca el borde en color naranja */
+}
+
+/* Botón flotante para guardar los cambios del formulario */
 .btn-save {
   background: #e8600a;
   color: white;
@@ -181,15 +319,18 @@ body {
   padding: 12px 28px;
   border-radius: 8px;
   font-weight: 700;
-  font-family: inherit;
+  font-family: inherit; /* Hereda la fuente 'Segoe UI' configurada en el body */
   cursor: pointer;
   display: block;
-  margin-left: auto;
-  box-shadow: 0 4px 14px rgba(232, 96, 10, 0.3);
+  margin-left: auto;    /* Truco flex/block para empujar magnéticamente el botón a la derecha */
+  box-shadow: 0 4px 14px rgba(232, 96, 10, 0.3); /* Sombra difuminada naranja */
 }
+
 .btn-save:hover {
-  background: #f07530;
+  background: #f07530;  /* Aclara levemente el color naranja al pasar el mouse */
 }
+
+/* Ruta de navegación (Breadcrumb) */
 .breadcrumb {
   display: flex;
   align-items: center;
@@ -198,7 +339,186 @@ body {
   color: #6b7499;
   margin-bottom: 20px;
 }
+
 .breadcrumb a {
   color: #6b7499;
   text-decoration: none;
+}
+
+/* ==========================================================================
+   FOOTER - Pie de página de la interfaz
+   ========================================================================== */
+.footer {
+  margin-top: 30px;
+  text-align: center;
+  color: #7a8599;
+  font-size: 14px;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN - MEDIA QUERIES (ADAPTABILIDAD DE PANTALLAS)
+   ========================================================================== */
+
+/* =========================================================
+   PANTALLAS GRANDES O ULTRA-ANCHAR (1400px o más)
+   ========================================================= */
+@media screen and (min-width: 1400px) {
+  .main-content {
+    padding: 40px 50px; /* Incrementa los espacios para evitar que el diseño se vea vacío */
+  }
+  .page-title h1 { font-size: 40px; }
+  .employee-box { padding: 20px 28px; }
+  .task-row { padding: 18px 24px; }
+  .task-desc { font-size: 15px; }
+}
+
+/* =========================================================
+   LAPTOPS Y PANTALLAS MEDIANAS (Hasta 1200px)
+   ========================================================= */
+@media screen and (max-width: 1200px) {
+  .sidebar {
+    width: 240px;        /* Reduce el ancho del menú para dar más espacio al contenido */
+    padding: 25px 16px;
+  }
+  .main-content {
+    margin-left: 240px;  /* Sincronizado con el nuevo tamaño de la barra lateral */
+    padding: 24px;
+  }
+  .logo-img { max-width: 190px; }
+  .menu a { padding: 12px 14px; font-size: 13px; }
+  .page-title h1 { font-size: 30px; }
+  .employee-box { gap: 15px; flex-wrap: wrap; }
+  .task-row { gap: 16px; }
+  .task-meta { width: 100%; } /* Fuerza a que las fechas/responsables tomen toda la línea abajo */
+}
+
+/* =========================================================
+   TABLETS (Hasta 992px)
+   Estrategia: El Sidebar pasa a modo Ultra-Compacto (Solo iconos visibles)
+   ========================================================= */
+@media screen and (max-width: 992px) {
+  .sidebar {
+    width: 90px;         /* Barra lateral drásticamente delgada */
+    padding: 20px 10px;
+    align-items: center; /* Centra los iconos verticalmente */
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .logo-img {
+    max-width: 58px;     /* Transforma el logo grande en una miniatura compacta */
+    padding: 8px;
+    border-radius: 12px;
+  }
+
+  .menu {
+    width: 100%;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .menu a {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 10px;
+    font-size: 0;        /* TRUCO: Esconde completamente el texto eliminando su tamaño */
+    gap: 0;
+  }
+
+  .menu a i {
+    font-size: 20px;     /* Agranda el icono para que sea el protagonista táctil del botón */
+  }
+
+  /* Reajuste del contenedor principal debido al achicamiento del Sidebar */
+  .main-content {
+    margin-left: 90px;
+    width: calc(100% - 90px);
+    padding: 20px;
+  }
+
+  /* Cambios de alineación en cascada de los elementos a bloques verticales individuales */
+  .topbar { flex-direction: column; align-items: flex-start; gap: 15px; margin-bottom: 20px; }
+  .page-title { width: 100%; }
+  .page-title h1 { font-size: 28px; line-height: 1.2; }
+
+  .employee-box { flex-direction: column; align-items: flex-start; gap: 12px; padding: 16px 18px; }
+
+  .task-row { flex-direction: column; align-items: flex-start; gap: 14px; padding: 16px; }
+  .task-desc { width: 100%; min-width: unset; }
+
+  /* Los metadatos de las tareas se organizan en una cuadrícula simétrica de 2 columnas */
+  .task-meta {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .task-meta select, .task-meta input { width: 100%; }
+
+  .btn-save { width: 100%; text-align: center; margin-top: 20px; }
+}
+
+/* =========================================================
+   CELULARES (Hasta 576px)
+   ========================================================= */
+@media screen and (max-width: 576px) {
+  body, .dashboard-container {
+    overflow-x: hidden;  /* Medida de seguridad estricta contra desbordes horizontales accidentales */
+    width: 100%;
+  }
+
+  .sidebar {
+    width: 74px;         /* Ajuste milimétrico final de la barra lateral de iconos */
+    padding: 14px 8px;
+  }
+
+  .logo-img { max-width: 50px; padding: 6px; border-radius: 10px; }
+  .menu { margin-top: 18px; gap: 8px; }
+  .menu a { padding: 12px 6px; border-radius: 10px; }
+  .menu a i { font-size: 18px; }
+
+  .main-content {
+    margin-left: 74px;
+    width: calc(100% - 74px);
+    padding: 14px;       /* Minimiza el padding al límite para aprovechar pantallas delgadas */
+  }
+
+  .topbar { margin-bottom: 14px; gap: 10px; }
+  .page-title h1 { font-size: 22px; }
+  .breadcrumb { flex-wrap: wrap; gap: 5px; font-size: 12px; margin-bottom: 14px; }
+  .employee-box { padding: 14px; border-left-width: 4px; margin-bottom: 18px; }
+  .employee-box strong { font-size: 14px; }
+
+  .stage-section { border-radius: 10px; margin-bottom: 16px; }
+  .stage-header { padding: 12px 14px; font-size: 13px; line-height: 1.4; }
+  .stage-number { width: 22px; height: 22px; font-size: 11px; flex-shrink: 0; }
+
+  .task-row { padding: 14px; gap: 12px; }
+  .task-desc { font-size: 13px; line-height: 1.5; }
+
+  /* En celulares, los metadatos colapsan en una sola columna vertical pura */
+  .task-meta { grid-template-columns: 1fr; gap: 10px; }
+  .task-meta select, .task-meta input { width: 100%; font-size: 12px; padding: 9px 10px; }
+
+  .task-check { width: 18px; height: 18px; }
+  .btn-save { width: 100%; padding: 12px; font-size: 13px; border-radius: 10px; }
+}
+
+/* =========================================================
+   CELULARES ULTRA PEQUEÑOS (Hasta 400px)
+   Ajustes minuciosos de tipografía para evitar desbordes en dispositivos viejos/pequeños
+   ========================================================= */
+@media screen and (max-width: 400px) {
+  .sidebar { width: 68px; padding: 12px 6px; }
+  .main-content { margin-left: 68px; width: calc(100% - 68px); padding: 12px; }
+  .logo-img { max-width: 44px; }
+  .menu a i { font-size: 16px; }
+  .page-title h1 { font-size: 19px; }
+  .employee-box { padding: 12px; }
+  .employee-box strong { font-size: 13px; }
+  .stage-header { padding: 10px 12px; font-size: 12px; }
+  .task-row { padding: 12px; }
+  .task-desc { font-size: 12px; }
+  .task-meta select, .task-meta input { font-size: 11px; }
+  .btn-save { font-size: 12px; padding: 11px; }
 }

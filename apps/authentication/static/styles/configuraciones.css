@@ -1,88 +1,86 @@
-/* =========================
-   RESET
-========================= */
+/* ==========================================================================
+   RESET - Limpieza y normalización de estilos del navegador
+   ========================================================================== */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    margin: 0;         /* Elimina los márgenes heredados por defecto */
+    padding: 0;        /* Elimina los rellenos externos por defecto */
+    box-sizing: border-box; /* Incluye el padding y bordes dentro del tamaño total del elemento */
 }
 
 body {
-  font-family: "Segoe UI", sans-serif;
-  background: #f4f7fb;
-  color: #d35b1a;
+  font-family: "Segoe UI", sans-serif; /* Tipografía limpia de estilo corporativo */
+  background: #f4f7fb;                 /* Color de fondo gris azulado claro */
+  color: #d35b1a;                      /* Naranja óxido para textos genéricos */
 }
 
-
-/* =========================
-   LAYOUT GENERAL
-========================= */
+/* ==========================================================================
+   LAYOUT GENERAL - Organización de la pantalla en dos columnas principales
+   ========================================================================== */
 .dashboard-container {
-    display: flex;
-    min-height: 100vh;
+    display: flex;     /* Activa Flexbox para posicionar el Sidebar y Main-Content en fila */
+    min-height: 100vh; /* Fuerza al contenedor a ocupar como mínimo el 100% de la altura de la pantalla */
 }
 
-/* =========================
-   SIDEBAR
-========================= */
+/* ==========================================================================
+   SIDEBAR - Menú de navegación lateral fijo
+   ========================================================================== */
 .sidebar {
-    width: 280px;
-    background: #26317a;
-    color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    padding: 30px 20px;
+    width: 280px;         /* Ancho fijo de la barra en pantallas de computadora */
+    background: #26317a;  /* Azul rey oscuro corporativo */
+    color: #ffffff;       /* Color de texto blanco para contrastar */
+    display: flex;        /* Activa Flexbox interno */
+    flex-direction: column; /* Apila los bloques (Logo, Menú, Logout) verticalmente */
+    padding: 30px 20px;   
+    
+    /* Posicionamiento fijo inamovible en la parte izquierda */
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
+    
+    overflow-y: auto;     /* Activa scroll vertical si el contenido del menú excede la pantalla */
+    overflow-x: hidden;   /* Oculta cualquier desborde horizontal para evitar fallos visuales */
 }
 
-/* =========================
-   LOGO ROBASA
-========================= */
-
+/* ==========================================================================
+   LOGO ROBASA - Contenedor e imagen de marca con efectos de iluminación
+   ========================================================================== */
 .logo {
-    text-align: center;
-    margin-bottom: 35px;
+    text-align: center;   /* Centra la imagen y el texto inferior */
+    margin-bottom: 35px;  /* Espacio de separación con las opciones de menú */
 }
 
-/* Imagen */
+/* Imagen del logotipo (Técnica avanzada de Glassmorphism + Glow) */
 .logo-img {
     width: 320px;
-    max-width: 100%;
-    height: auto;
+    max-width: 100%;      /* Evita que la imagen se desborde si el contenedor se achica */
+    height: auto;         /* Mantiene la proporción original de la imagen */
+    display: block;       /* Permite aplicar los márgenes automáticos correctamente */
+    margin: 0 auto 25px;  /* Centra la imagen horizontalmente y le da margen inferior */
+    padding: 18px;        
 
-    display: block;
-    margin: 0 auto 25px;
+    border-radius: 22px;  /* Bordes notablemente redondeados */
 
-    /* Hace que resalte */
-    padding: 18px;
+    /* Vidrio translúcido (Glassmorphism) */
+    background: rgba(255, 255, 255, 0.08); /* Fondo blanco con 8% de opacidad */
+    border: 1px solid rgba(255,255,255,0.12); /* Borde sutil semi-transparente */
+    backdrop-filter: blur(6px); /* Desenfoca el fondo detrás de la imagen */
 
-    border-radius: 22px;
-
-    background: rgba(255, 255, 255, 0.08);
-
-    border: 1px solid rgba(255,255,255,0.12);
-
-    backdrop-filter: blur(6px);
-
-    /* Glow */
+    /* Efectos de sombras acumulativas y realce de color (Glow) */
     filter:
-        drop-shadow(0 0 10px rgba(255,255,255,0.25))
-        drop-shadow(0 0 25px rgba(255,255,255,0.12))
-        brightness(1.18)
-        contrast(1.15);
+        drop-shadow(0 0 10px rgba(255,255,255,0.25)) /* Sutil brillo blanco cercano */
+        drop-shadow(0 0 25px rgba(255,255,255,0.12)) /* Brillo blanco expandido */
+        brightness(1.18) /* Aumenta la luminosidad un 18% */
+        contrast(1.15);  /* Incrementa el contraste un 15% */
 
-    transition: all 0.3s ease;
+    transition: all 0.3s ease; /* Suaviza los cambios físicos y de filtros durante 300ms */
 }
 
-/* Hover elegante */
+/* Efecto hover interactivo sobre el logotipo */
 .logo-img:hover {
-    transform: scale(1.03);
+    transform: scale(1.03); /* Agranda la imagen un 3% mediante una transformación física */
 
+    /* Intensifica la luz de fondo y los colores del logo al pasar el ratón */
     filter:
         drop-shadow(0 0 16px rgba(255,255,255,0.4))
         drop-shadow(0 0 32px rgba(255,255,255,0.18))
@@ -90,65 +88,66 @@ body {
         contrast(1.2);
 }
 
+/* Texto complementario debajo del logo principal */
 .logo span {
     font-size: 18px;
-    letter-spacing: 6px;
-    color: #9bc0ff;
+    letter-spacing: 6px; /* Distribuye las letras de manera muy separada (estilo elegante) */
+    color: #9bc0ff;      /* Azul claro brillante */
 }
 
-/* Menú */
+/* Contenedor del listado de enlaces */
 .menu {
-    flex: 1;
+    flex: 1;              /* Absorbe el espacio disponible empujando el botón Logout hacia abajo */
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    padding-right: 5px;
+    gap: 8px;             /* Separa las opciones del menú uniformemente */
+    padding-right: 5px;   
 }
 
+/* Enlaces individuales del menú */
 .menu a {
     color: #fefefd;
-    text-decoration: none;
-    padding: 14px 18px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    transition: 0.3s;
+    text-decoration: none; /* Elimina la línea inferior estándar de los enlaces html */
+    padding: 14px 18px;    
+    border-radius: 12px;   
+    display: flex;         /* Distribuye en línea los iconos y textos internos */
+    align-items: center;   /* Centra los iconos con el texto verticalmente */
+    gap: 12px;             /* Distancia fija entre el icono y la palabra */
+    transition: 0.3s;      /* Animación para el cambio de fondo */
 }
 
+/* Estados de selección y enfoque */
 .menu a:hover,
 .menu a.active {
-    background: #4567b7;
+    background: #4567b7;   /* Resalta con un azul más claro */
     color: #ffffff;
 }
 
+/* Tamaño fijo para prevenir que iconos de diferentes anchuras descuadren el texto */
 .menu i {
     width: 20px;
 }
 
-/* Scroll del sidebar */
+/* Personalización estética de la barra de desplazamiento interna del Sidebar (Navegadores WebKit) */
 .sidebar::-webkit-scrollbar {
     width: 6px;
 }
-
 .sidebar::-webkit-scrollbar-track {
     background: transparent;
 }
-
 .sidebar::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.25);
     border-radius: 10px;
 }
-
 .sidebar::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.4);
 }
 
-/* Logout */
+/* Sección de salida del sistema (Cerrar sesión) */
 .logout {
     margin-top: 20px;
     padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-top: 1px solid rgba(255, 255, 255, 0.15); /* Fina línea separadora */
 }
 
 .logout a {
@@ -161,38 +160,30 @@ body {
 }
 
 .logout a:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.08); /* Brillo grisáceo tenue de fondo */
 }
 
-/* =========================
-   CONTENIDO PRINCIPAL
-========================= */
+/* ==========================================================================
+   CONTENIDO PRINCIPAL - Lienzo general de trabajo de la derecha
+   ========================================================================== */
 .main-content {
-  flex: 1;
-  margin-left: 280px;
-  padding: 30px;
+  flex: 1;              /* Rellena el ancho sobrante de la pantalla */
+  margin-left: 280px;   /* Evita que el contenido se meta debajo de la barra lateral fija */
+  padding: 30px;        /* Cojín general de separación interna */
 }
 
-/* =========================
-   CONTENIDO PRINCIPAL
-========================= */
-.main-content {
-  flex: 1;
-  margin-left: 280px;
-  padding: 30px;
-}
-
-/* =========================
-   TOPBAR
-========================= */
+/* ==========================================================================
+   TOPBAR - Barra superior del Dashboard
+   ========================================================================== */
 .topbar {
   display: flex;
   align-items: center;
   gap: 20px;
   margin-bottom: 30px;
-  flex-wrap: wrap;
+  flex-wrap: wrap;      /* Permite a los elementos saltar de línea si se satura el espacio */
 }
 
+/* Botón para menús móviles */
 .menu-toggle {
   border: none;
   background: none;
@@ -202,98 +193,103 @@ body {
 }
 
 .page-title {
-  min-width: 260px;
+  min-width: 260px;     /* Bloqueo de anchura mínima para que el título no colapse bruscamente */
 }
 
 .page-title h1 {
   font-size: 34px;
   margin-bottom: 5px;
-  color: #1a2042;
+  color: #1a2042;       /* Azul marino profundo */
 }
 
 .page-title p {
-  color: #7a8599;
+  color: #7a8599;       /* Gris apagado para descripciones secundarias */
   font-size: 15px;
 }
 
-/* Buscador */
+/* Cuadro contenedor del motor de búsqueda */
 .search-box {
-  flex: 1;
-  max-width: 420px;
-  position: relative;
+  flex: 1;              /* Crece elásticamente para ocupar el centro de la barra */
+  max-width: 420px;     /* Impide que se estire demasiado en pantallas gigantes */
+  position: relative;   /* Permite posicionar el icono de lupa de forma absoluta dentro de él */
 }
 
+/* Posicionamiento del icono de lupa */
 .search-box i {
   position: absolute;
   top: 50%;
   left: 18px;
-  transform: translateY(-50%);
+  transform: translateY(-50%); /* Centrado vertical exacto */
   color: #8a94a6;
 }
 
+/* Campo de entrada de texto del buscador */
 .search-box input {
   width: 100%;
-  padding: 14px 18px 14px 48px;
+  padding: 14px 18px 14px 48px; /* Padding izquierdo ancho para no encimar el texto sobre la lupa */
   border: 1px solid #dbe2ef;
   border-radius: 12px;
   font-size: 15px;
-  outline: none;
+  outline: none;        /* Quita el borde por defecto de los navegadores */
 }
 
+/* Estado activo del input */
 .search-box input:focus {
   border-color: #0c45ca;
-  box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1);
+  box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1); /* Anillo de luz azul translúcido */
 }
 
-/* Acciones */
+/* Bloque derecho de la barra (Alertas y usuario) */
 .topbar-actions {
-  margin-left: auto;
+  margin-left: auto;     /* Imán automático: empuja este bloque al extremo derecho */
   display: flex;
   align-items: center;
   gap: 25px;
 }
 
-/* Notificaciones */
+/* Campanita de alertas */
 .notification {
-  position: relative;
+  position: relative;    /* Obligatorio para referenciar la posición absoluta del globo rojo */
   font-size: 22px;
   cursor: pointer;
   color: #1b2b4b;
 }
 
+/* Globo indicador numérico rojo sobre la campana */
 .badge {
   position: absolute;
   top: -8px;
   right: -10px;
-  background: #ff4d4f;
+  background: #ff4d4f;   /* Rojo de urgencia */
   color: white;
   font-size: 11px;
   font-weight: bold;
   width: 20px;
   height: 20px;
-  border-radius: 50%;
+  border-radius: 50%;    /* Círculo perfecto */
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; /* Centra perfectamente el número */
 }
 
-/* Usuario */
+/* Perfil resumido de usuario */
 .user-profile {
   display: flex;
   align-items: center;
   gap: 12px;
   background: white;
   padding: 8px 14px;
-  border-radius: 50px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  border-radius: 50px;   /* Estilo pastilla o píldora circular */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Sombra muy sutil */
   cursor: pointer;
 }
 
+/* Foto redonda del usuario */
 .user-profile img {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  object-fit: cover;
+  object-fit: cover;     /* Recorta y acomoda la foto simétricamente sin deformarla */
 }
 
 .user-info {
@@ -310,9 +306,9 @@ body {
   color: #7a8599;
 }
 
-/* =========================
-   BREADCRUMB
-========================= */
+/* ==========================================================================
+   BREADCRUMB - Indicador de ruta de navegación actual
+   ========================================================================== */
 .breadcrumb {
     display: flex;
     align-items: center;
@@ -329,37 +325,39 @@ body {
 }
 
 .breadcrumb a:hover {
-    color: #e8600a;
+    color: #e8600a;       /* Naranja corporativo vibrante */
 }
 
+/* Carácter separador (ej: ">" o "/") */
 .breadcrumb .sep {
     font-size: 10px;
     color: #c5cbdf;
 }
 
+/* Texto final de la página donde se encuentra parado el usuario */
 .breadcrumb .current {
     color: #e8600a;
     font-weight: 700;
 }
 
-/* =========================
-   FORM CARD
-========================= */
+/* ==========================================================================
+   FORM CARD - Tarjeta blanca base para albergar formularios
+   ========================================================================== */
 .form-card {
     background: #ffffff;
     border-radius: 14px;
     box-shadow: 0 2px 14px rgba(30, 42, 94, 0.10);
     margin: 20px 28px 28px;
-    overflow: hidden;
+    overflow: hidden;      /* Corta excesos internos respetando los bordes redondeados */
 }
 
-/* Encabezado */
+/* Cabecera de la tarjeta del formulario */
 .form-card-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-between; /* Distribuye títulos a la izquierda y notas a la derecha */
     padding: 22px 28px;
-    border-bottom: 1.5px solid #e8ecf6;
+    border-bottom: 1.5px solid #e8ecf6; /* Línea divisoria inferior */
     gap: 20px;
     flex-wrap: wrap;
 }
@@ -370,17 +368,18 @@ body {
     gap: 14px;
 }
 
+/* Caja contenedora para el icono del formulario */
 .form-card-icon {
     width: 44px;
     height: 44px;
-    background: rgba(232, 96, 10, 0.12);
+    background: rgba(232, 96, 10, 0.12); /* Fondo naranja al 12% de transparencia */
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #e8600a;
     font-size: 18px;
-    flex-shrink: 0;
+    flex-shrink: 0;        /* Impide que el cuadro colapse si el título se expande demasiado */
 }
 
 .form-card-title {
@@ -395,61 +394,65 @@ body {
     color: #6b7499;
 }
 
+/* Mensajes tipo (* Campos obligatorios) */
 .required-note {
     font-size: 12px;
     color: #6b7499;
 }
 
 .required-note span {
-    color: #e53935;
+    color: #e53935;        /* Rojo de error o campo crítico */
 }
 
-/* Cuerpo */
+/* Contenedor del cuerpo interno */
 .form-body {
     padding: 28px;
 }
 
-/* =========================
-   SECCIONES
-========================= */
+/* ==========================================================================
+   SECCIONES - Separadores internos de los bloques del formulario
+   ========================================================================== */
 .form-section {
     margin-bottom: 32px;
 }
 
+/* Elimina el margen a la última sección para no generar dobles espacios con el footer */
 .form-section:last-of-type {
     margin-bottom: 0;
 }
 
+/* Títulos de las subsecciones del formulario */
 .form-section-title {
     font-size: 12px;
     font-weight: 700;
     color: #e8600a;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
+    text-transform: uppercase; /* Fuerza el texto a mayúsculas sostenidas */
+    letter-spacing: 1.2px;     /* Aumenta el aire de separación entre letras */
     margin-bottom: 18px;
     padding-bottom: 8px;
     border-bottom: 1.5px solid #e8ecf6;
 }
 
-/* =========================
-   GRID DE CAMPOS
-========================= */
+/* ==========================================================================
+   GRID DE CAMPOS - Distribución responsiva nativa en rejilla
+   ========================================================================== */
 .form-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px 28px;
+    grid-template-columns: repeat(2, 1fr); /* Crea dos columnas idénticas de igual tamaño */
+    gap: 20px 28px;                        /* 20px de separación horizontal, 28px vertical */
 }
 
+/* Clase utilitaria para campos extendidos (ej: Observaciones) */
 .field-full {
-    grid-column: 1 / -1;
+    grid-column: 1 / -1;   /* Fuerza al campo a ocupar toda la fila de la cuadrícula */
 }
 
-/* =========================
-   CAMPOS
-========================= */
+/* ==========================================================================
+   CAMPOS DE ENTRADA (FIELDS) - Diseño individual de inputs
+   ========================================================================== */
 .field {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Coloca la etiqueta arriba y el cuadro de escritura abajo */
     gap: 7px;
 }
 
@@ -462,6 +465,7 @@ body {
     gap: 7px;
 }
 
+/* Iconos decorativos pequeños junto al label */
 .field-icon {
     color: #6b7499;
     font-size: 13px;
@@ -469,11 +473,12 @@ body {
     text-align: center;
 }
 
+/* Asterisco rojo indicador de requerimiento */
 .field .req {
     color: #e53935;
 }
 
-/* Inputs */
+/* Unificación de los estilos visuales para cajas de datos */
 .field input[type="text"],
 .field input[type="number"],
 .field input[type="date"],
@@ -486,47 +491,48 @@ body {
     font-size: 13.5px;
     font-family: inherit;
     color: #1a2042;
-    background: #f7f8fc;
+    background: #f7f8fc;   /* Color sutilmente gris para denotar área interactiva */
     outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s; /* Efectos rápidos */
 }
 
 .field textarea {
     min-height: 110px;
-    resize: vertical;
+    resize: vertical;      /* Permite al usuario estirarlo verticalmente pero bloquea lo horizontal */
 }
 
+/* Cambios estéticos detallados cuando el usuario hace clic dentro de un control */
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-    border-color: #e8600a;
-    box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
-    background: #ffffff;
+    border-color: #e8600a; /* Vira hacia el color de acento */
+    box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12); /* Halo luminoso periférico */
+    background: #ffffff;   /* Cambia el fondo a blanco puro */
 }
 
-/* Select personalizado */
+/* Reemplazo estético de la flecha del elemento Select nativo */
 .field select {
-    appearance: none;
+    appearance: none;      /* Oculta la flecha rústica por defecto de Windows/Mac/Linux */
+    /* Inyección de una flecha vectorial limpia mediante código SVG */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7499' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 14px center;
-    padding-right: 36px;
+    background-position: right 14px center; /* Centra verticalmente el SVG al lado derecho */
+    padding-right: 36px;   /* Protege la zona para que el texto largo de una opción no pise el SVG */
     cursor: pointer;
 }
 
-/* Placeholder */
 .field input::placeholder,
 .field textarea::placeholder {
-    color: #9aa4b8;
+    color: #9aa4b8;        /* Color tenue para el texto guía interno */
 }
 
-/* =========================
-   FOOTER DEL FORMULARIO
-========================= */
+/* ==========================================================================
+   FOOTER DEL FORMULARIO - Barra de botones inferior
+   ========================================================================== */
 .form-footer {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: flex-end; /* Alinea los botones de confirmación a la derecha */
     gap: 12px;
     padding-top: 24px;
     border-top: 1.5px solid #e8ecf6;
@@ -534,12 +540,12 @@ body {
     flex-wrap: wrap;
 }
 
-/* =========================
-   BOTONES
-========================= */
+/* ==========================================================================
+   BOTONES - Biblioteca de botones modulares
+   ========================================================================== */
 .btn {
     display: inline-flex;
-    align-items: center;
+    align-items: center;   /* Centra textos e iconos adjuntos internamente */
     gap: 8px;
     padding: 10px 22px;
     border-radius: 8px;
@@ -552,6 +558,7 @@ body {
     transition: all 0.2s ease;
 }
 
+/* Botón fantasma / Cancelar */
 .btn-ghost {
     background: transparent;
     border: 1.5px solid #dde2f0;
@@ -564,6 +571,7 @@ body {
     background: #f0f2f8;
 }
 
+/* Botón secundario */
 .btn-secondary {
     background: #1e2a5e;
     color: #ffffff;
@@ -573,25 +581,24 @@ body {
     background: #2e3f8f;
 }
 
+/* Botón primario de guardado con efectos tridimensionales */
 .btn-primary {
     background: #e8600a;
     color: #ffffff;
-    box-shadow: 0 4px 14px rgba(232, 96, 10, 0.30);
+    box-shadow: 0 4px 14px rgba(232, 96, 10, 0.30); /* Sombra difuminada naranja */
 }
 
 .btn-primary:hover {
     background: #f07530;
     box-shadow: 0 6px 18px rgba(232, 96, 10, 0.38);
-    transform: translateY(-1px);
+    transform: translateY(-1px); /* Flota milimétricamente hacia arriba */
 }
 
 .btn-primary:active {
-    transform: translateY(0);
+    transform: translateY(0);    /* Regresa a su nivel original al hacer clic físico */
 }
 
-/* =========================
-   FOOTER
-========================= */
+/* Firma o Derechos de autor del sistema */
 .footer {
     margin-top: 30px;
     text-align: center;
@@ -599,385 +606,480 @@ body {
     font-size: 14px;
 }
 
-/* =========================================================
-   CONFIGURACIÓN GENERAL DEL SISTEMA
-========================================================= */
+/* ==========================================================================
+   CONFIGURACIÓN GENERAL DEL SISTEMA - Segunda Sección Funcional
+   ========================================================================== */
 
-/* =========================================================
-   SETTINGS SWITCHES
-========================================================= */
-.settings-switches{
+/* ==========================================================================
+   SETTINGS SWITCHES - Contenedores de opciones ON/OFF
+   ========================================================================== */
+.settings-switches {
   display: flex;
   flex-direction: column;
   gap: 18px;
   margin-top: 12px;
 }
 
-.switch-item{
+/* Fila contenedora de un control de ajuste */
+.switch-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-between; /* Texto explicativo a la izquierda, Switch a la derecha */
   gap: 20px;
-
   padding: 18px 22px;
-
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 18px;
-
   transition: all .25s ease;
 }
 
-.switch-item:hover{
+.switch-item:hover {
   border-color: #cbd5e1;
-  transform: translateY(-2px);
+  transform: translateY(-2px); /* Pequeña animación flotante */
   box-shadow: 0 8px 20px rgba(15, 23, 42, .06);
 }
 
-.switch-info{
+.switch-info {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.switch-info strong{
+.switch-info strong {
   font-size: .96rem;
-  color: #0f172a;
+  color: #0f172a;        /* Azul oscuro pizarra */
 }
 
-.switch-info span{
+.switch-info span {
   font-size: .88rem;
   color: #64748b;
   line-height: 1.5;
 }
 
-/* =========================================================
-   SWITCH
-========================================================= */
-.switch{
+/* ==========================================================================
+   SWITCH - Estructura física del control deslizable
+   ========================================================================== */
+.switch {
   position: relative;
   display: inline-block;
   width: 60px;
   height: 32px;
-  flex-shrink: 0;
+  flex-shrink: 0;        /* Impide que el círculo se aplaste */
 }
 
-.switch input{
+/* Esconde el checkbox nativo pero conserva su lógica operativa detrás */
+.switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-.slider{
+/* Riel o canal sobre el que se desliza el botón del switch */
+.slider {
   position: absolute;
-  inset: 0;
-
+  inset: 0;              /* Cubre el 100% de la caja .switch (top:0, left:0, bottom:0, right:0) */
   cursor: pointer;
   border-radius: 50px;
-
-  background: #cbd5e1;
+  background: #cbd5e1;   /* Color gris por defecto (Inactivo) */
   transition: .3s ease;
 }
 
-.slider::before{
-  content: "";
-
+/* Botón o perla circular interna del switch */
+.slider::before {
+  content: "";           /* Necesario para inyectar un pseudo-elemento vacío */
   position: absolute;
   height: 24px;
   width: 24px;
-
   left: 4px;
   top: 4px;
-
   border-radius: 50%;
   background: #fff;
-
-  transition: .3s ease;
+  transition: .3s ease;  /* Movimiento suave horizontal */
   box-shadow: 0 2px 10px rgba(0,0,0,.15);
 }
 
-.switch input:checked + .slider{
-  background: linear-gradient(
-    135deg,
-    #2563eb,
-    #1d4ed8
-  );
+/* Activación: Cambia el fondo del riel a un degradado azul si el input está 'checked' */
+.switch input:checked + .slider {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
 }
 
-.switch input:checked + .slider::before{
+/* Activación: Desplaza horizontalmente el círculo blanco mediante traslación matemática X */
+.switch input:checked + .slider::before {
   transform: translateX(28px);
 }
 
-/* =========================================================
-   THEMES
-========================================================= */
-.theme-grid{
+/* ==========================================================================
+   THEMES - Tarjetas de selección de apariencias visuales
+   ========================================================================== */
+.theme-grid {
   display: grid;
+  /* Auto-fit calcula automáticamente cuántas columnas entran según un mínimo de 180px */
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 20px;
 }
 
-.theme-card{
+.theme-card {
   position: relative;
-
   background: #fff;
   border: 2px solid #e2e8f0;
   border-radius: 20px;
-
   padding: 18px;
-
   text-align: center;
   cursor: pointer;
-
   transition: all .25s ease;
 }
 
-.theme-card:hover{
+.theme-card:hover {
   transform: translateY(-4px);
   border-color: #2563eb;
   box-shadow: 0 12px 24px rgba(37, 99, 235, .10);
 }
 
-.theme-card.active{
+/* Estado de tarjeta seleccionada */
+.theme-card.active {
   border-color: #2563eb;
-  background: #eff6ff;
+  background: #eff6ff;   /* Fondo teñido de azul claro */
 }
 
-.theme-card h4{
+.theme-card h4 {
   margin-top: 14px;
   font-size: .95rem;
   font-weight: 700;
   color: #1e293b;
 }
 
-/* Preview */
-.theme-preview{
+/* Miniaturas simuladas del tema visual */
+.theme-preview {
   width: 100%;
   height: 90px;
-
   border-radius: 14px;
   border: 1px solid #e2e8f0;
-
   position: relative;
   overflow: hidden;
 }
 
-/* Claro */
-.theme-preview.light{
-  background:
-    linear-gradient(to bottom,
-      #ffffff 0%,
-      #f8fafc 100%);
+/* Variaciones cromáticas para las previsualizaciones */
+.theme-preview.light {
+  background: linear-gradient(to bottom, #ffffff 0%, #f8fafc 100%);
+}
+.theme-preview.dark {
+  background: linear-gradient(to bottom, #1e293b 0%, #0f172a 100%);
+}
+.theme-preview.blue {
+  background: linear-gradient(135deg, #1d4ed8, #2563eb, #3b82f6);
 }
 
-/* Oscuro */
-.theme-preview.dark{
-  background:
-    linear-gradient(to bottom,
-      #1e293b 0%,
-      #0f172a 100%);
-}
-
-/* Corporativo */
-.theme-preview.blue{
-  background:
-    linear-gradient(
-      135deg,
-      #1d4ed8,
-      #2563eb,
-      #3b82f6
-    );
-}
-
-/* =========================================================
-   BACKUP CARD
-========================================================= */
-.backup-card{
+/* ==========================================================================
+   BACKUP CARD - Módulo de copias de seguridad de datos
+   ========================================================================== */
+.backup-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-
   padding: 24px;
-
   border-radius: 22px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #eff6ff,
-      #f8fafc
-    );
-
+  background: linear-gradient(135deg, #eff6ff, #f8fafc);
   border: 1px solid #dbeafe;
 }
 
-.backup-info{
+.backup-info {
   display: flex;
   align-items: center;
   gap: 18px;
 }
 
-.backup-info i{
+/* Cuadrado contenedor para el icono de la nube de respaldo */
+.backup-info i {
   width: 58px;
   height: 58px;
-
   border-radius: 16px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
-  background:
-    linear-gradient(
-      135deg,
-      #2563eb,
-      #1d4ed8
-    );
-
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
   color: #fff;
   font-size: 1.4rem;
-
   box-shadow: 0 10px 20px rgba(37, 99, 235, .25);
 }
 
-.backup-info strong{
+.backup-info strong {
   display: block;
   margin-bottom: 4px;
-
   font-size: 1rem;
   color: #0f172a;
 }
 
-.backup-info span{
+.backup-info span {
   font-size: .88rem;
   color: #64748b;
 }
 
-/* =========================================================
-   INPUTS Y SELECTS
-========================================================= */
+/* ==========================================================================
+   INPUTS Y SELECTS - Segunda declaración refinada (Sobreescritura moderna)
+   ========================================================================== */
 .field input,
 .field select,
-.field textarea{
+.field textarea {
   width: 100%;
-
   padding: 14px 16px;
-
   border-radius: 14px;
   border: 1px solid #dbe2ea;
-
   background: #fff;
-
   font-size: .94rem;
   color: #0f172a;
-
   transition: all .25s ease;
 }
 
 .field input:focus,
 .field select:focus,
-.field textarea:focus{
+.field textarea:focus {
   outline: none;
-
-  border-color: #2563eb;
-
-  box-shadow:
-    0 0 0 4px rgba(37, 99, 235, .10);
+  border-color: #2563eb;   /* Azul eléctrico moderno */
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, .10); /* Anillo ensanchado a 4px */
 }
 
-/* =========================================================
-   FORM GRID
-========================================================= */
-.form-grid{
+/* ==========================================================================
+   RE-ESTRUCTURACIONES ADAPTATIVAS (Sobreescritura complementaria)
+   ========================================================================== */
+.form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Optimiza la distribución fluida */
   gap: 22px;
 }
 
-/* =========================================================
-   FORM SECTION
-========================================================= */
-.form-section{
+.form-section {
   margin-bottom: 32px;
 }
 
-.form-section-title{
+/* Título de sección optimizado para admitir pequeños iconos */
+.form-section-title {
   display: flex;
   align-items: center;
   gap: 10px;
-
   margin-bottom: 22px;
   padding-bottom: 12px;
-
   font-size: 1rem;
   font-weight: 700;
   color: #0f172a;
-
   border-bottom: 1px solid #e2e8f0;
 }
 
-/* =========================================================
-   BOTONES
-========================================================= */
-.form-footer{
+/* Footer expandible de botones */
+.form-footer {
   display: flex;
   justify-content: flex-end;
   gap: 14px;
-
   margin-top: 35px;
   flex-wrap: wrap;
 }
 
-.btn{
+/* Re-estilización universal de botones con animaciones cinéticas de elevación */
+.btn {
   border: none;
   cursor: pointer;
-
   display: inline-flex;
   align-items: center;
   gap: 10px;
-
   padding: 14px 22px;
-
   border-radius: 14px;
-
   font-size: .92rem;
   font-weight: 600;
-
   transition: all .25s ease;
 }
 
-.btn:hover{
-  transform: translateY(-2px);
+.btn:hover {
+  transform: translateY(-2px); /* Efecto levitación */
 }
 
-.btn-primary{
+.btn-primary {
   color: #fff;
-
-  background:
-    linear-gradient(
-      135deg,
-      #2563eb,
-      #1d4ed8
-    );
-
-  box-shadow:
-    0 12px 24px rgba(37, 99, 235, .25);
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  box-shadow: 0 12px 24px rgba(37, 99, 235, .25);
 }
 
-.btn-secondary{
+.btn-secondary {
   color: #fff;
-
-  background:
-    linear-gradient(
-      135deg,
-      #0f766e,
-      #0d9488
-    );
+  background: linear-gradient(135deg, #0f766e, #0d9488); /* Degradado verde azulado */
 }
 
-.btn-ghost{
+.btn-ghost {
   background: #f1f5f9;
   color: #334155;
 }
 
+/* ==========================================================================
+   DISEÑO RESPONSIVO - MEDIA QUERIES (ESTRATEGIA MOBILE-LAST)
+   ========================================================================== */
+
+/* ==========================================
+   PANTALLAS GIGANTES (1400px o superior)
+   ========================================== */
+@media (min-width: 1400px) {
+  .sidebar { width: 300px; padding: 32px 22px; } /* Agranda el menú */
+  .main-content { margin-left: 300px; padding: 40px; } /* Ajusta el margen proporcionalmente */
+  .page-title h1 { font-size: 38px; }
+  .search-box { max-width: 520px; }
+  .form-card { margin: 24px 32px 32px; }
+  .form-body { padding: 32px; }
+  .form-grid { grid-template-columns: repeat(2, 1fr); gap: 24px 30px; }
+}
+
+/* ==========================================
+   LAPTOPS Y ESCRITORIOS ESTÁNDAR (1200px a 1399px)
+   ========================================== */
+@media (max-width: 1399px){
+  .sidebar { width: 260px; }
+  .main-content { margin-left: 260px; padding: 28px; }
+  .page-title h1 { font-size: 32px; }
+  .search-box { max-width: 400px; }
+  .form-card { margin: 20px; }
+}
+
+/* ==========================================
+   TABLETS GRANDES EN HORIZONTAL (992px a 1199px)
+   ========================================== */
+@media (max-width: 1199px){
+  .sidebar { width: 230px; padding: 24px 16px; }
+  .main-content { margin-left: 230px; padding: 24px; }
+  .logo-img { width: 100%; max-width: 180px; }
+  .menu a { font-size: 13px; padding: 12px 14px; }
+  .topbar { gap: 16px; align-items: flex-start; }
+  .page-title { width: 100%; } /* Fuerza al título a bajar al buscador */
+  .page-title h1 { font-size: 28px; }
+  .topbar-actions { margin-left: 0; width: 100%; justify-content: flex-end; }
+  .search-box { width: 100%; max-width: 100%; }
+  .form-grid { grid-template-columns: 1fr 1fr; gap: 18px; }
+  .theme-grid { grid-template-columns: repeat(2, 1fr); }
+  .backup-card { flex-direction: column; align-items: flex-start; } /* Apila verticalmente el contenido del backup */
+}
+
+/* ==========================================
+   TABLETS EN VERTICAL (768px a 991px)
+   Estrategia Clave: El menú se colapsa transformándose en barra de iconos compacta
+   ========================================== */
+@media (max-width: 991px){
+  .sidebar {
+    width: 90px;         /* Compacta severamente el panel */
+    padding: 20px 10px;
+    align-items: center;
+  }
+  .logo-img { max-width: 65px; padding: 10px; margin-bottom: 20px; }
+  .menu { width: 100%; align-items: center; }
+
+  /* Hack de Ocultación de Texto: Deja únicamente visibles los iconos del menú */
+  .menu a {
+    width: 60px;
+    height: 60px;
+    justify-content: center;
+    padding: 0;
+    border-radius: 14px;
+    font-size: 0;       /* Elimina el tamaño del texto ocultándolo visualmente */
+  }
+  .menu a i { font-size: 20px; width: auto; }
+
+  /* Cierre de sesión colapsado */
+  .logout { width: 100%; }
+  .logout a { justify-content: center; padding: 14px 0; font-size: 0; }
+  .logout a i { font-size: 20px; }
+
+  /* Reacomodo de márgenes del área de trabajo derecha */
+  .main-content { margin-left: 90px; padding: 20px; }
+  .topbar { flex-direction: column; align-items: stretch; gap: 16px; margin-bottom: 20px; }
+  .menu-toggle { display: none; } /* Oculta la hamburguesa porque la barra siempre permanece visible */
+  .page-title { min-width: 100%; }
+  .page-title h1 { font-size: 26px; }
+  .page-title p { font-size: 14px; }
+  .search-box { width: 100%; max-width: 100%; order: 3; } /* Envía el buscador al final de la cabecera */
+  .topbar-actions { width: 100%; justify-content: space-between; margin-left: 0; gap: 14px; }
+  .user-profile { flex: 1; justify-content: center; }
+  .breadcrumb { padding: 0; margin-bottom: 16px; flex-wrap: wrap; }
+  
+  /* Ajustes del Formulario en Tablets */
+  .form-card { margin: 0; border-radius: 12px; }
+  .form-card-header { padding: 20px; flex-direction: column; align-items: flex-start; }
+  .form-body { padding: 20px; }
+  .form-grid { grid-template-columns: 1fr; gap: 16px; } /* Pasa toda la estructura a 1 columna vertical */
+  .field-full { grid-column: auto; }
+  .theme-grid { grid-template-columns: 1fr; }
+  .settings-switches { gap: 14px; }
+  .switch-item { flex-direction: column; align-items: flex-start; }
+  .backup-card { padding: 20px; }
+  .backup-info { flex-direction: column; align-items: flex-start; }
+  .form-footer { justify-content: stretch; }
+  .btn { width: 100%; justify-content: center; } /* Los botones ocupan el 100% de la anchura */
+}
+
+/* ==========================================
+   CELULARES (576px a 767px)
+   Reducción sistemática de espaciados y tipografías para pantallas móviles
+   ========================================== */
+@media (max-width: 767px){
+  .sidebar { width: 78px; padding: 16px 8px; }
+  .main-content { margin-left: 78px; padding: 16px; }
+  .logo-img { max-width: 55px; padding: 8px; }
+  .menu a { width: 52px; height: 52px; }
+  .menu a i { font-size: 18px; }
+  .page-title h1 { font-size: 22px; line-height: 1.2; }
+  .page-title p { font-size: 13px; line-height: 1.5; }
+  .search-box input { padding: 12px 14px 12px 42px; font-size: 14px; }
+  .topbar-actions { flex-direction: row; align-items: center; }
+  .user-profile { padding: 8px 10px; gap: 10px; }
+  .user-profile img { width: 38px; height: 38px; }
+  .user-info strong { font-size: 13px; }
+  .user-info span { font-size: 11px; }
+  .notification { font-size: 20px; }
+  .form-card-header { padding: 18px; }
+  .form-body { padding: 18px; }
+  .form-card-title { font-size: 15px; }
+  .form-card-subtitle { font-size: 11px; line-height: 1.5; }
+  .form-section-title { font-size: 11px; line-height: 1.4; }
+  .field > label { font-size: 12px; }
+  .field input, .field select, .field textarea { font-size: 13px; padding: 12px; }
+  .switch-item { padding: 16px; }
+  .theme-card { padding: 16px; }
+  .backup-card { gap: 16px; }
+  .backup-info i { width: 50px; height: 50px; font-size: 1.1rem; }
+  .footer { font-size: 12px; margin-top: 24px; }
+}
+
+/* ==========================================
+   CELULARES PEQUEÑOS (0px a 575px)
+   Ajustes críticos y extremos para pantallas diminutas (Ej: iPhone SE antiguo)
+   ========================================== */
+@media (max-width: 575px){
+  .sidebar { width: 70px; padding: 14px 6px; }
+  .main-content { margin-left: 70px; padding: 14px; }
+  .logo-img { max-width: 48px; padding: 6px; border-radius: 12px; }
+  .menu { gap: 10px; }
+  .menu a { width: 48px; height: 48px; border-radius: 12px; }
+  .menu a i { font-size: 17px; }
+  .logout a i { font-size: 18px; }
+  .topbar { gap: 14px; margin-bottom: 18px; }
+  .page-title h1 { font-size: 20px; }
+  .page-title p { font-size: 12px; }
+  .search-box input { height: 44px; font-size: 13px; }
+  .search-box i { left: 14px; font-size: 13px; }
+  .topbar-actions { flex-direction: column; align-items: stretch; gap: 12px; }
+  .user-profile { width: 100%; justify-content: center; }
+  .notification { align-self: flex-start; }
+  .breadcrumb { font-size: 12px; gap: 5px; }
+  .form-card { border-radius: 10px; }
+  .form-card-header { padding: 16px; gap: 14px; }
+  .form-body { padding: 16px; }
+  .form-card-icon { width: 40px; height: 40px; font-size: 16px; }
+  .form-card-title { font-size: 14px; }
+  .required-note { font-size: 11px; }
+  .form-section { margin-bottom: 24px; }
+  .form-section-title { font-size: 10px; }
+  .field input, .field select, .field textarea { padding: 11px; border-radius: 10px; }
+  .btn { padding: 12px 16px; font-size: 13px; border-radius: 12px; }
+  .theme-preview { height: 75px; }
+  
+  /* Ajuste de escala para los switches ON/OFF en pantallas muy estrechas */
+  .switch { width: 52px; height: 28px; }
+  .slider::before { width: 20px; height: 20px; }
+  .switch input:checked + .slider::before { transform: translateX(24px); } /* Desplazamiento reducido adaptado al ancho menor */
+  
+  .footer { font-size: 11px; line-height: 1.5; }
+}

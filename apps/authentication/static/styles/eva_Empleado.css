@@ -1,88 +1,90 @@
-/* =====================================================
-   LISTA DE EVALUACIÓN
-====================================================== */
+/* ==========================================================================
+   LISTA DE EVALUACIÓN (Contenedor Principal)
+   ========================================================================== */
 .evaluation-list {
   display: flex;
-  flex-direction: column;
-  gap: 18px;
+  flex-direction: column; /* Alinea los ítems de evaluación en una lista vertical */
+  gap: 18px;              /* Separación uniforme entre cada fila/criterio */
 }
 
-/* =====================================================
-   TARJETA DE CRITERIO
-====================================================== */
+/* ==========================================================================
+   TARJETA DE CRITERIO INDIVIDUAL
+   ========================================================================== */
 .evaluation-item {
   background: #ffffff;
   border: 1.5px solid #e7ebf5;
   border-radius: 14px;
   padding: 20px 22px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: center;          /* Centra verticalmente la información frente a los botones */
+  justify-content: space-between; /* Envía el texto a la izquierda y las opciones a la derecha */
   gap: 22px;
-  transition: all 0.25s ease;
-  box-shadow: 0 2px 10px rgba(30, 42, 94, 0.04);
+  transition: all 0.25s ease;    /* Transición suave para el efecto hover */
+  box-shadow: 0 2px 10px rgba(30, 42, 94, 0.04); /* Sombra base muy sutil */
 }
 
+/* Efecto de elevación e iluminación al pasar el cursor */
 .evaluation-item:hover {
-  border-color: rgba(232, 96, 10, 0.35);
-  box-shadow: 0 6px 18px rgba(30, 42, 94, 0.08);
-  transform: translateY(-1px);
+  border-color: rgba(232, 96, 10, 0.35); /* Borde naranja translúcido */
+  box-shadow: 0 6px 18px rgba(30, 42, 94, 0.08); /* Sombra más pronunciada */
+  transform: translateY(-1px);          /* Pequeño salto hacia arriba (efecto flotante) */
 }
 
-/* =====================================================
-   INFORMACIÓN DEL CRITERIO
-====================================================== */
+/* ==========================================================================
+   INFORMACIÓN DEL CRITERIO (Zona de Texto)
+   ========================================================================== */
 .evaluation-info {
-  flex: 1;
+  flex: 1; /* Absorbe todo el espacio sobrante horizontal izquierdo */
 }
 
 .evaluation-info h5 {
   font-size: 15px;
   font-weight: 700;
-  color: #1a2042;
+  color: #1a2042; /* Azul marino oscuro institucional */
   margin-bottom: 6px;
 }
 
 .evaluation-info p {
   font-size: 13px;
   line-height: 1.5;
-  color: #6b7499;
+  color: #6b7499; /* Gris azulado secundario */
 }
 
-/* =====================================================
-   STATUS GROUP
-====================================================== */
+/* ==========================================================================
+   GRUPO DE ESTADOS / BOTONES DE EVALUACIÓN
+   ========================================================================== */
 .evaluation-item .status-group {
   display: flex;
   align-items: center;
   gap: 12px;
-  min-width: 280px;
-  justify-content: flex-end;
+  min-width: 280px;         /* Espacio mínimo reservado para evitar que los botones se achiquen */
+  justify-content: flex-end; /* Alinea los botones de radio hacia la derecha */
 }
 
-/* =====================================================
-   OPCIÓN
-====================================================== */
+/* ==========================================================================
+   OPCIÓN DE RADIO (Contenedor Relativo)
+   ========================================================================== */
 .evaluation-item .status-option {
-  position: relative;
-  flex: 1;
+  position: relative; /* Base de posicionamiento para los inputs nativos ocultos */
+  flex: 1;            /* Distribuye el ancho equitativamente entre los botones del grupo */
 }
 
+/* Ocultado estructural del Input Radio nativo */
 .evaluation-item .status-option input[type="radio"] {
   position: absolute;
-  opacity: 0;
+  opacity: 0;         /* Lo vuelve invisible pero mantiene la accesibilidad del teclado */
   width: 0;
-  height: 0;
+  height: 0;          /* Retira el elemento del flujo visual */
 }
 
-/* =====================================================
-   LABEL
-====================================================== */
+/* ==========================================================================
+   LABEL (El botón visual personalizado)
+   ========================================================================== */
 .evaluation-item .status-option label {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; /* Centra el texto e icono dentro del botón */
   gap: 8px;
   padding: 12px 16px;
   border-radius: 10px;
@@ -95,46 +97,47 @@
   transition: all 0.2s ease;
 }
 
-/* Hover */
+/* Efecto Hover sobre el botón falso */
 .evaluation-item .status-option label:hover {
-  border-color: #e8600a;
-  background: rgba(232, 96, 10, 0.05);
+  border-color: #e8600a;                 /* Cambia al color naranja de la marca */
+  background: rgba(232, 96, 10, 0.05);   /* Fondo sutilmente anaranjado */
   color: #e8600a;
 }
 
-/* =====================================================
-   RADIO ACTIVO
-====================================================== */
+/* ==========================================================================
+   ESTADO SELECCIONADO (Selector de hermano adyacente '+')
+   ========================================================================== */
+/* Cuando el radio nativo oculto está :checked, modifica visualmente al label que le sigue */
 .evaluation-item .status-option input:checked + label {
   border-color: #e8600a;
-  background: rgba(232, 96, 10, 0.1);
+  background: rgba(232, 96, 10, 0.1);    /* Fondo naranja un poco más intenso */
   color: #e8600a;
-  box-shadow: 0 4px 12px rgba(232, 96, 10, 0.14);
+  box-shadow: 0 4px 12px rgba(232, 96, 10, 0.14); /* Brillo de confirmación */
 }
 
-/* =====================================================
-   DOT
-====================================================== */
+/* ==========================================================================
+   DOT (Indicador de color dinámico)
+   ========================================================================== */
 .evaluation-item .status-option .dot {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: currentColor;
-  flex-shrink: 0;
+  background: currentColor; /* Hereda el color de texto activo (.menu a, label:hover, etc.) automáticamente */
+  flex-shrink: 0;           /* Evita que el círculo se deforme */
 }
 
-/* =====================================================
-   TEXTAREA OBSERVACIONES
-====================================================== */
+/* ==========================================================================
+   TEXTAREA OBSERVACIONES (Configuración inicial)
+   ========================================================================== */
 textarea {
-  resize: vertical;
+  resize: vertical;    /* Permite estirar hacia abajo el cuadro pero no hacia los lados */
   min-height: 130px;
   line-height: 1.5;
 }
 
-/* =========================
-   RESET
-========================= */
+/* ==========================================================================
+   RESET & CONFIGURACIONES BASE
+   ========================================================================== */
 * {
   margin: 0;
   padding: 0;
@@ -147,17 +150,13 @@ body {
   color: #d35b1a;
 }
 
-/* =========================
-   LAYOUT GENERAL
-========================= */
+/* Layout de la aplicación principal */
 .dashboard-container {
   display: flex;
   min-height: 100vh;
 }
 
-/* =========================
-   SIDEBAR
-========================= */
+/* Barra Lateral Estática */
 .sidebar {
   width: 280px;
   background: #26317a;
@@ -169,53 +168,40 @@ body {
   top: 0;
   left: 0;
   bottom: 0;
-
-  /* Permite que el contenido haga scroll vertical */
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow-y: auto;    /* Habilita scroll si los módulos colapsan el alto */
+  overflow-x: hidden;  /* Protege contra desbordes laterales */
 }
 
-/* =========================
-   LOGO ROBASA
-========================= */
-
+/* ==========================================================================
+   BRANDING / LOGO ROBASA
+   ========================================================================== */
 .logo {
   text-align: center;
   margin-bottom: 35px;
 }
 
-/* Imagen */
+/* Contenedor de la Imagen con Glassmorphic Glow */
 .logo-img {
   width: 320px;
   max-width: 100%;
   height: auto;
-
   display: block;
   margin: 0 auto 25px;
-
-  /* Hace que resalte */
   padding: 18px;
-
   border-radius: 22px;
-
   background: rgba(255, 255, 255, 0.08);
-
   border: 1px solid rgba(255, 255, 255, 0.12);
-
   backdrop-filter: blur(6px);
 
-  /* Glow */
+  /* Filtro de iluminación acumulativo */
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25))
     drop-shadow(0 0 25px rgba(255, 255, 255, 0.12)) brightness(1.18)
     contrast(1.15);
-
   transition: all 0.3s ease;
 }
 
-/* Hover elegante */
 .logo-img:hover {
   transform: scale(1.03);
-
   filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))
     drop-shadow(0 0 32px rgba(255, 255, 255, 0.18)) brightness(1.25)
     contrast(1.2);
@@ -227,13 +213,13 @@ body {
   color: #9bc0ff;
 }
 
-/* Menú */
+/* Módulos de Navegación */
 .menu {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding-right: 5px; /* evita que el texto se pegue al scroll */
+  padding-right: 5px;
 }
 
 .menu a {
@@ -257,7 +243,7 @@ body {
   width: 20px;
 }
 
-/* Opcional: personalizar la barra de scroll */
+/* Scroll Engine del Sidebar */
 .sidebar::-webkit-scrollbar {
   width: 6px;
 }
@@ -275,7 +261,7 @@ body {
   background: rgba(255, 255, 255, 0.4);
 }
 
-/* Logout */
+/* Módulo de Cierre de Sesión */
 .logout {
   margin-top: 20px;
   padding-top: 20px;
@@ -295,18 +281,15 @@ body {
   background: rgba(255, 255, 255, 0.08);
 }
 
-/* =========================
-   CONTENIDO PRINCIPAL
-========================= */
+/* ==========================================================================
+   CONTENIDO PRINCIPAL & NAVBAR SUPERIOR (Topbar)
+   ========================================================================== */
 .main-content {
   flex: 1;
-  margin-left: 280px;
+  margin-left: 280px; /* Margen idéntico al ancho del Sidebar fijo */
   padding: 30px;
 }
 
-/* =========================
-   TOPBAR
-========================= */
 .topbar {
   display: flex;
   align-items: center;
@@ -338,7 +321,7 @@ body {
   font-size: 15px;
 }
 
-/* Buscador */
+/* Buscador de la plataforma */
 .search-box {
   flex: 1;
   max-width: 420px;
@@ -355,7 +338,7 @@ body {
 
 .search-box input {
   width: 100%;
-  padding: 14px 18px 14px 48px;
+  padding: 14px 18px 14px 48px; /* sangría izquierda para proteger el icono */
   border: 1px solid #dbe2ef;
   border-radius: 12px;
   font-size: 15px;
@@ -367,7 +350,6 @@ body {
   box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1);
 }
 
-/* Acciones */
 .topbar-actions {
   margin-left: auto;
   display: flex;
@@ -375,7 +357,7 @@ body {
   gap: 25px;
 }
 
-/* Notificaciones */
+/* Burbuja de Notificaciones */
 .notification {
   position: relative;
   font-size: 22px;
@@ -399,7 +381,7 @@ body {
   justify-content: center;
 }
 
-/* Usuario */
+/* Perfil de Usuario Redondeado */
 .user-profile {
   display: flex;
   align-items: center;
@@ -432,11 +414,11 @@ body {
   color: #7a8599;
 }
 
-/* =====================================================
+/* ==========================================================================
    FORMULARIO DE REGISTRO DE PERSONAS
-===================================================== */
+   ========================================================================== */
 
-/* ── Breadcrumb ───────────────────────────────────── */
+/* Migas de pan (Navegación estructural) */
 .breadcrumb {
   display: flex;
   align-items: center;
@@ -467,7 +449,7 @@ body {
   font-weight: 700;
 }
 
-/* ── Tarjeta principal del formulario ─────────────── */
+/* Tarjeta contenedora de inputs */
 .form-card {
   background: #ffffff;
   border-radius: 16px;
@@ -476,7 +458,6 @@ body {
   margin-top: 20px;
 }
 
-/* ── Encabezado de la tarjeta ─────────────────────── */
 .form-card-header {
   display: flex;
   justify-content: space-between;
@@ -529,12 +510,10 @@ body {
   font-weight: bold;
 }
 
-/* ── Cuerpo del formulario ────────────────────────── */
 .form-body {
   padding: 30px;
 }
 
-/* ── Secciones internas ───────────────────────────── */
 .form-section {
   margin-bottom: 35px;
 }
@@ -550,19 +529,18 @@ body {
   border-bottom: 1px solid #e8ecf6;
 }
 
-/* ── Grid del formulario ──────────────────────────── */
+/* Rejilla de Formulario Estándar (Por defecto 2 columnas) */
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 22px 28px;
 }
 
-/* Campo que ocupa todo el ancho */
 .field-full {
-  grid-column: 1 / -1;
+  grid-column: 1 / -1; /* Rompe las columnas y toma todo el ancho del grid */
 }
 
-/* ── Campos individuales ─────────────────────────── */
+/* Envoltorio de Campo Estructural */
 .field {
   display: flex;
   flex-direction: column;
@@ -585,10 +563,10 @@ body {
 }
 
 .req {
-  color: #e53935;
+  color: #e53935; /* Asteriscos rojos */
 }
 
-/* ── Inputs, Select y Textarea ────────────────────── */
+/* Inputs, Selectores y Textareas generales */
 .field input,
 .field select,
 .field textarea {
@@ -609,6 +587,7 @@ body {
   min-height: 100px;
 }
 
+/* Focus reactivo */
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
@@ -617,13 +596,12 @@ body {
   box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
 }
 
-/* Placeholder */
 .field input::placeholder,
 .field textarea::placeholder {
   color: #9aa3b8;
 }
 
-/* Select personalizado */
+/* Select con flecha codificada en SVG nativo */
 .field select {
   appearance: none;
   cursor: pointer;
@@ -633,7 +611,7 @@ body {
   background-position: right 14px center;
 }
 
-/* ── Footer del formulario ───────────────────────── */
+/* Botonera de Envío */
 .form-footer {
   display: flex;
   justify-content: flex-end;
@@ -644,7 +622,7 @@ body {
   border-top: 1px solid #e8ecf6;
 }
 
-/* ── Botones ─────────────────────────────────────── */
+/* Botones Atómicos */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -692,96 +670,51 @@ body {
   box-shadow: 0 6px 18px rgba(232, 96, 10, 0.35);
 }
 
-/* =====================================================
-   RESPONSIVE
-===================================================== */
-
-/* Tablets */
+/* ==========================================================================
+   MIGAS DE PAN & FORMULARIOS RESPONSIVOS COMPACTOS (Heredados)
+   ========================================================================== */
 @media (max-width: 991px) {
   .form-card-header {
     flex-direction: column;
     align-items: flex-start;
   }
-
   .form-grid {
     grid-template-columns: 1fr;
     gap: 20px;
   }
-
   .field-full {
     grid-column: auto;
   }
-
-  .form-body {
-    padding: 24px;
-  }
-
-  .form-card-header {
+  .form-body, .form-card-header {
     padding: 24px;
   }
 }
 
-/* Móviles */
 @media (max-width: 767px) {
-  .breadcrumb {
-    font-size: 12px;
-  }
-
-  .form-card-title {
-    font-size: 20px;
-  }
-
-  .form-card-subtitle {
-    font-size: 13px;
-  }
-
-  .form-body {
-    padding: 20px;
-  }
-
-  .form-card-header {
-    padding: 20px;
-  }
-
+  .breadcrumb { font-size: 12px; }
+  .form-card-title { font-size: 20px; }
+  .form-card-subtitle { font-size: 13px; }
+  .form-body, .form-card-header { padding: 20px; }
   .form-footer {
     flex-direction: column;
     align-items: stretch;
   }
-
   .form-footer .btn {
     width: 100%;
     justify-content: center;
   }
 }
 
-/* Móviles pequeños */
 @media (max-width: 480px) {
-  .form-card-icon {
-    width: 44px;
-    height: 44px;
-    font-size: 18px;
-  }
-
-  .form-card-title {
-    font-size: 18px;
-  }
-
-  .field input,
-  .field select,
-  .field textarea {
+  .form-card-icon { width: 44px; height: 44px; font-size: 18px; }
+  .form-card-title { font-size: 18px; }
+  .field input, .field select, .field textarea {
     font-size: 13px;
     padding: 11px 12px;
   }
-
-  .btn {
-    font-size: 13px;
-    padding: 10px 16px;
-  }
+  .btn { font-size: 13px; padding: 10px 16px; }
 }
 
-/* =========================
-   FOOTER
-========================= */
 .footer {
   margin-top: 30px;
   text-align: center;
@@ -789,20 +722,20 @@ body {
   font-size: 14px;
 }
 
-/* =========================================================
-   CARGA DE FOTOGRAFÍA
-========================================================= */
+/* ==========================================================================
+   CARGA DE FOTOGRAFÍA (Widget Avanzado de Entrada de Archivos)
+   ========================================================================== */
 .photo-upload {
   display: flex;
   align-items: center;
   gap: 24px;
   padding: 20px;
-  border: 2px dashed #dde2f0;
+  border: 2px dashed #dde2f0; /* Borde discontinuo indicativo de zona Dropzone */
   border-radius: 12px;
   background: #f8faff;
 }
 
-/* Vista previa circular */
+/* Contenedor de la Vista Previa Circular */
 .photo-preview {
   width: 120px;
   height: 120px;
@@ -812,34 +745,33 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  position: relative; /* Necesario para contener de manera absoluta el pseudo-ícono inferior */
+  overflow: hidden;   /* Recorta la imagen cuadrada para volverla un círculo perfecto */
   flex-shrink: 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* Imagen dentro del contenedor */
 .photo-preview img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* Centra y escala el rostro del usuario sin deformaciones */
 }
 
-/* Si no existe imagen, mostrar ícono centrado */
+/* Inyección de Icono de Usuario con FontAwesome si no hay foto */
 .photo-preview::before {
-  content: "\f007";
+  content: "\f007";                    /* Código Unicode para el ícono de 'user' de FontAwesome */
   font-family: "Font Awesome 6 Free";
   font-weight: 900;
   font-size: 42px;
   color: #c3c9dc;
-  position: absolute;
+  position: absolute;                  /* Posicionamiento en el centro exacto */
 }
 
-/* Oculta el ícono cuando la imagen sí cargó */
+/* Lógica condicional CSS pura: Si la etiqueta img posee atributo src cargado, esconde el pseudo-icono anterior */
 .photo-preview img[src]:not([src=""]) + .photo-preview::before {
   display: none;
 }
 
-/* Controles del upload */
 .photo-upload-controls {
   flex: 1;
   display: flex;
@@ -847,7 +779,7 @@ body {
   gap: 10px;
 }
 
-/* Input file */
+/* Estilo para el botón de exploración nativo de ficheros */
 .photo-upload-controls input[type="file"] {
   width: 100%;
   padding: 12px 14px;
@@ -860,16 +792,15 @@ body {
   cursor: pointer;
 }
 
-/* Texto de ayuda */
 .help-text {
   font-size: 12px;
   color: #e8600a;
   line-height: 1.5;
 }
 
-/* ==========================================
-   TEXTAREA - DESCRIPCIÓN DE EMPRESA
-========================================== */
+/* ==========================================================================
+   AMPLIACIÓN REPETIDA / ESPECÍFICA DE TEXTAREA
+   ========================================================================== */
 .field textarea {
   width: 100%;
   border: 1.5px solid #dde2f0;
@@ -883,10 +814,7 @@ body {
   resize: vertical;
   min-height: 130px;
   line-height: 1.6;
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s,
-    background 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
 .field textarea:focus {
@@ -899,14 +827,163 @@ body {
   color: #9aa4bd;
 }
 
-/* Campo que ocupa todo el ancho */
-.field-full {
-  grid-column: 1 / -1;
-}
-
-/* Texto de ayuda */
 .field-help {
   font-size: 12px;
   color: #7a8599;
   margin-top: 4px;
+}
+
+/* ==========================================================================
+   SISTEMA DE RESPONSIVIDAD GLOBAL (MEDIA QUERIES INTEGRADOS)
+   ========================================================================== */
+html, body, .dashboard-container {
+  width: 100%;
+  overflow-x: hidden; /* Corta rígidamente todo desborde lateral en pantallas móviles */
+}
+
+/* Cálculo de ancho dinámico restando la barra fija lateral */
+.main-content {
+  width: calc(100% - 280px);
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; height: auto; }
+input, select, textarea, button { max-width: 100%; }
+
+/* ── MEDIAS GRANDES (Hasta 1400px) ── */
+@media screen and (max-width: 1400px) {
+  .main-content { padding: 24px; }
+  .topbar { gap: 18px; }
+  .search-box { max-width: 380px; }
+  .form-grid { gap: 20px 24px; }
+  .evaluation-item { gap: 18px; }
+  .evaluation-item .status-group { min-width: 250px; }
+}
+
+/* ── LAPTOPS (Hasta 1200px) ── */
+@media screen and (max-width: 1200px) {
+  .sidebar { width: 250px; min-width: 250px; max-width: 250px; }
+  .main-content {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    padding: 22px;
+  }
+  .topbar { align-items: flex-start; gap: 18px; }
+  .page-title { width: 100%; }
+  .search-box { flex: 1 1 100%; max-width: 100%; }
+  .topbar-actions { width: 100%; justify-content: flex-end; }
+  
+  /* Ajuste de Grid Fluido mediante Auto-Fit */
+  .form-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  
+  /* Los criterios de evaluación se adaptan envolviéndose en bloque si no caben */
+  .evaluation-item { flex-wrap: wrap; }
+  .evaluation-item .status-group { width: 100%; justify-content: flex-start; }
+}
+
+/* ── TABLETS (Hasta 992px) ── */
+@media screen and (max-width: 992px) {
+  .sidebar { width: 220px; min-width: 220px; max-width: 220px; padding: 18px 14px; }
+  .main-content { margin-left: 220px; width: calc(100% - 220px); padding: 18px; }
+  .logo-img { max-width: 180px; padding: 12px; }
+  .menu a, .logout a { font-size: 13px; padding: 12px; }
+  .menu a { gap: 10px; }
+  
+  .topbar { display: grid; grid-template-columns: 1fr; gap: 14px; align-items: stretch; }
+  .page-title h1 { font-size: 28px; }
+  .page-title p { font-size: 13px; }
+  .search-box { width: 100%; max-width: 100%; }
+  .topbar-actions { width: 100%; justify-content: flex-end; }
+  .user-profile { padding: 7px 10px; }
+  
+  .form-card-header { flex-direction: column; align-items: flex-start; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-body { padding: 22px; }
+  
+  /* Los bloques de evaluación rompen el flujo y se apilan de forma vertical */
+  .evaluation-item { flex-direction: column; align-items: flex-start; }
+  .evaluation-item .status-group { width: 100%; min-width: 100%; }
+  
+  /* El cargador de imágenes se transforma en formato apilado centrado */
+  .photo-upload { flex-direction: column; align-items: center; text-align: center; }
+  .photo-upload-controls { width: 100%; }
+}
+
+/* ── SMARTPHONES GRANDES (Hasta 768px) ── */
+@media screen and (max-width: 768px) {
+  .sidebar { width: 190px; min-width: 190px; max-width: 190px; padding: 16px 10px; }
+  .main-content { margin-left: 190px; width: calc(100% - 190px); padding: 15px; }
+  .logo-img { max-width: 140px; padding: 10px; }
+  .logo span { font-size: 14px; letter-spacing: 3px; }
+  .menu { gap: 6px; }
+  .menu a, .logout a { font-size: 12px; padding: 11px 10px; }
+  .menu a { gap: 8px; }
+  .menu i { width: 16px; }
+  
+  .topbar { gap: 12px; }
+  .page-title h1 { font-size: 22px; }
+  .page-title p { font-size: 12px; }
+  .search-box input { padding: 12px 14px 12px 40px; font-size: 13px; }
+  .search-box i { left: 14px; }
+  .topbar-actions { justify-content: space-between; }
+  
+  .user-info { display: none; } /* Esconde los textos informativos de perfil para ahorrar espacio */
+  .user-profile { border-radius: 14px; padding: 6px 8px; }
+  .user-profile img { width: 36px; height: 36px; }
+  
+  .breadcrumb { font-size: 12px; gap: 6px; }
+  .form-card { border-radius: 14px; }
+  .form-body, .form-card-header { padding: 18px; }
+  .form-card-title { font-size: 18px; }
+  .form-card-subtitle { font-size: 12px; }
+  .field input, .field select, .field textarea { font-size: 13px; padding: 11px 12px; }
+  
+  /* Los custom radio buttons toman el 100% de la extensión horizontal de la pantalla */
+  .evaluation-item { padding: 18px; gap: 16px; }
+  .evaluation-item .status-group { flex-direction: column; gap: 10px; }
+  .evaluation-item .status-option, .evaluation-item .status-option label { width: 100%; }
+  
+  .form-footer { flex-direction: column; }
+  .btn { width: 100%; justify-content: center; }
+}
+
+/* ── MÓVILES REGULARES (Hasta 576px) ── */
+@media screen and (max-width: 576px) {
+  .sidebar { width: 170px; min-width: 170px; max-width: 170px; padding: 14px 8px; }
+  .main-content { margin-left: 170px; width: calc(100% - 170px); padding: 12px; }
+  .logo-img { max-width: 120px; }
+  .menu a, .logout a { font-size: 11px; padding: 10px 8px; border-radius: 10px; }
+  
+  .page-title h1 { font-size: 20px; margin-bottom: 2px; }
+  .page-title p { font-size: 11px; }
+  .search-box input { font-size: 12px; }
+  .breadcrumb { font-size: 11px; }
+  
+  .form-card-header-left { gap: 10px; }
+  .form-card-icon { width: 42px; height: 42px; font-size: 18px; }
+  .form-card-title { font-size: 16px; }
+  .required-note, .form-section-title { font-size: 11px; }
+  .field label { font-size: 12px; }
+  .field input, .field select, .field textarea { font-size: 12px; padding: 10px 11px; }
+  
+  .evaluation-info h5 { font-size: 13px; }
+  .evaluation-info p { font-size: 12px; }
+  .evaluation-item .status-option label { font-size: 12px; padding: 10px; }
+  
+  .photo-preview { width: 95px; height: 95px; }
+  .btn { font-size: 12px; padding: 10px 14px; }
+  .footer { font-size: 11px; }
+}
+
+/* ── SMARTPHONES MINIMALISTAS (Hasta 400px) ── */
+@media screen and (max-width: 400px) {
+  .sidebar { width: 155px; min-width: 155px; max-width: 155px; }
+  .main-content { margin-left: 155px; width: calc(100% - 155px); padding: 10px; }
+  .logo-img { max-width: 100px; }
+  .page-title h1 { font-size: 18px; }
+  .form-card-title { font-size: 15px; }
+  .evaluation-item { padding: 14px; }
+  .field input, .field select, .field textarea { font-size: 11px; }
+  .btn { font-size: 11px; padding: 9px 12px; }
 }

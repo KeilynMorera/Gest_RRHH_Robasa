@@ -1,149 +1,148 @@
-/* =========================
-   RESET
-========================= */
+/* ==========================================================================
+   RESET & BASE - Normalización de estilos globales
+   ========================================================================== */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  margin: 0;             /* Remueve los márgenes por defecto del navegador */
+  padding: 0;            /* Remueve rellenos por defecto */
+  box-sizing: border-box; /* Incluye rellenos y bordes en el cálculo de dimensiones físicas */
 }
 
 body {
-  font-family: "Segoe UI", sans-serif;
-  background: #f4f7fb;
-  color: #d35b1a;
+  font-family: "Segoe UI", sans-serif; /* Tipografía moderna y corporativa */
+  background: #f4f7fb;                 /* Tono gris-azulado sutil de fondo */
+  color: #d35b1a;                      /* Naranja brillante por defecto (Nota: Considera cambiar a un tono oscuro para lectura larga) */
 }
 
-/* =========================
-   LAYOUT GENERAL
-========================= */
+/* ==========================================================================
+   LAYOUT GENERAL - Estructura principal del Dashboard
+   ========================================================================== */
 .dashboard-container {
-  display: flex;
-  min-height: 100vh;
+  display: flex;       /* Divide la pantalla en dos columnas mediante flexbox (Sidebar y Contenido) */
+  min-height: 100vh;   /* Forza al contenedor a medir como mínimo el alto total de la pantalla */
 }
 
-/* =========================
-   SIDEBAR
-========================= */
+/* ==========================================================================
+   SIDEBAR - Panel estático de control izquierdo
+   ========================================================================== */
 .sidebar {
-  width: 280px;
-  background: #26317a;
-  color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  padding: 30px 20px;
+  width: 280px;         /* Ancho base inicial en ordenadores */
+  background: #26317a;  /* Azul oscuro principal */
+  color: #ffffff;       
+  display: flex;        
+  flex-direction: column; /* Alineación vertical de sus bloques hijos */
+  padding: 30px 20px;   
+  
+  /* Posicionamiento flotante e inamovible a la izquierda */
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
+  
+  overflow-y: auto;     /* Activa un scroll vertical si hay demasiadas opciones en el menú */
+  overflow-x: hidden;   /* Oculta desbordes horizontales no deseados */
 }
 
-/* =========================
-   LOGO ROBASA
-========================= */
-
+/* ==========================================================================
+   LOGO ROBASA - Efectos especiales y animaciones de marca
+   ========================================================================== */
 .logo {
-  text-align: center;
-  margin-bottom: 35px;
+  text-align: center;   /* Centra la imagen y el texto inferior */
+  margin-bottom: 35px;  
 }
 
-/* Imagen */
+/* Estilo avanzado para la imagen del imagotipo usando Glassmorphism y Glow */
 .logo-img {
   width: 320px;
-  max-width: 100%;
-  height: auto;
-
+  max-width: 100%;      /* Ajusta dinámicamente si el contenedor disminuye */
+  height: auto;         
   display: block;
-  margin: 0 auto 25px;
+  margin: 0 auto 25px;  /* Centrado en bloque y margen hacia abajo */
+  padding: 18px;        
+  border-radius: 22px;  
 
-  /* Hace que resalte */
-  padding: 18px;
+  /* Efecto Esmerilado de Fondo (Glassmorphism) */
+  background: rgba(255, 255, 255, 0.08); /* Blanco translúcido */
+  border: 1px solid rgba(255, 255, 255, 0.12); /* Borde sutil */
+  backdrop-filter: blur(6px); /* Desenfoque de lo que se sitúe por detrás */
 
-  border-radius: 22px;
-
-  background: rgba(255, 255, 255, 0.08);
-
-  border: 1px solid rgba(255, 255, 255, 0.12);
-
-  backdrop-filter: blur(6px);
-
-  /* Glow */
+  /* Combinación avanzada de sombras paralelas, brillo y contraste artificial */
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25))
     drop-shadow(0 0 25px rgba(255, 255, 255, 0.12)) brightness(1.18)
     contrast(1.15);
 
-  transition: all 0.3s ease;
+  transition: all 0.3s ease; /* Transición suave de 300 milisegundos para cualquier cambio */
 }
 
-/* Hover elegante */
+/* Hover elegante del logotipo al pasar el puntero */
 .logo-img:hover {
-  transform: scale(1.03);
+  transform: scale(1.03); /* Efecto zoom de un 3% */
 
+  /* Intensificación lumínica radical para dar sensación de encendido */
   filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))
     drop-shadow(0 0 32px rgba(255, 255, 255, 0.18)) brightness(1.25)
     contrast(1.2);
 }
 
+/* Eslogan o letras debajo de la marca principal */
 .logo span {
   font-size: 18px;
-  letter-spacing: 6px;
-  color: #9bc0ff;
+  letter-spacing: 6px;  /* Espaciado ancho de caracteres (estilo moderno) */
+  color: #9bc0ff;       /* Azul claro sutil */
 }
 
-/* Menú */
+/* Menú de opciones */
 .menu {
-  flex: 1;
+  flex: 1;              /* Empuja automáticamente los elementos inferiores (Logout) al final */
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding-right: 5px;
+  gap: 8px;             /* Separación de 8px entre enlaces */
+  padding-right: 5px;   /* Cojín para que el texto no toque la barra de desplazamiento */
 }
 
+/* Enlaces individuales del menú */
 .menu a {
   color: #fefefd;
-  text-decoration: none;
-  padding: 14px 18px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  transition: 0.3s;
+  text-decoration: none; /* Elimina el subrayado por defecto */
+  padding: 14px 18px;    
+  border-radius: 12px;   
+  display: flex;         
+  align-items: center;   /* Centra verticalmente el icono e icono de texto */
+  gap: 12px;             /* Separación entre icono de librería y la palabra */
+  transition: 0.3s;      
 }
 
+/* Estado activo o seleccionado y Hover al deslizar */
 .menu a:hover,
 .menu a.active {
-  background: #4567b7;
+  background: #4567b7;   /* Resalte azul intermedio */
   color: #ffffff;
 }
 
+/* Espacio reservado para los iconos (Evita descuadres si varían sus geometrías) */
 .menu i {
   width: 20px;
 }
 
-/* Scroll del sidebar */
+/* Estilización estética de barra de scroll interna del Sidebar (Webkit) */
 .sidebar::-webkit-scrollbar {
   width: 6px;
 }
-
 .sidebar::-webkit-scrollbar-track {
   background: transparent;
 }
-
 .sidebar::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.25);
   border-radius: 10px;
 }
-
 .sidebar::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.4);
 }
 
-/* Logout */
+/* Módulo de desconexión / salida */
 .logout {
   margin-top: 20px;
   padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.15); /* Línea divisoria semiopaca */
 }
 
 .logout a {
@@ -156,29 +155,30 @@ body {
 }
 
 .logout a:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.08); /* Brillo suave gris de fondo */
 }
 
-/* =========================
-   CONTENIDO PRINCIPAL
-========================= */
+/* ==========================================================================
+   CONTENIDO PRINCIPAL - Lienzo del lado derecho
+   ========================================================================== */
 .main-content {
-  flex: 1;
-  margin-left: 280px;
-  padding: 30px;
+  flex: 1;              /* Ocupa el 100% de la anchura disponible restante */
+  margin-left: 280px;   /* Desplazamiento simétrico para no colisionar con la barra fija izquierda */
+  padding: 30px;        
 }
 
-/* =========================
-   TOPBAR
-========================= */
+/* ==========================================================================
+   TOPBAR - Cabecera de acciones y datos de usuario
+   ========================================================================== */
 .topbar {
   display: flex;
   align-items: center;
   gap: 20px;
   margin-bottom: 30px;
-  flex-wrap: wrap;
+  flex-wrap: wrap;      /* Permite el quiebre de línea si la pantalla se comprime */
 }
 
+/* Botón opcional para ocultar barra de navegación (Deshabilitado nativamente en tu CSS móvil) */
 .menu-toggle {
   border: none;
   background: none;
@@ -188,70 +188,74 @@ body {
 }
 
 .page-title {
-  min-width: 260px;
+  min-width: 260px;     /* Ancho de resguardo para que el título no colapse apresuradamente */
 }
 
 .page-title h1 {
   font-size: 34px;
   margin-bottom: 5px;
-  color: #1a2042;
+  color: #1a2042;       /* Tonalidad azul corporativa oscura */
 }
 
 .page-title p {
-  color: #7a8599;
+  color: #7a8599;       /* Gris neutro para aclaraciones o descripciones secundarias */
   font-size: 15px;
 }
 
-/* Buscador */
+/* Cuadro de búsqueda */
 .search-box {
-  flex: 1;
-  max-width: 420px;
-  position: relative;
+  flex: 1;              /* Se expande para llenar los huecos libres */
+  max-width: 420px;     /* Límite para que no se extienda excesivamente */
+  position: relative;   /* Permite anclar de manera absoluta el icono interno */
 }
 
+/* Posicionamiento del icono de lupa dentro del input */
 .search-box i {
   position: absolute;
   top: 50%;
   left: 18px;
-  transform: translateY(-50%);
+  transform: translateY(-50%); /* Centrado matemático vertical */
   color: #8a94a6;
 }
 
+/* Input del buscador general */
 .search-box input {
   width: 100%;
-  padding: 14px 18px 14px 48px;
+  padding: 14px 18px 14px 48px; /* Padding izquierdo extra de 48px para no superponer texto al icono */
   border: 1px solid #dbe2ef;
   border-radius: 12px;
   font-size: 15px;
   outline: none;
 }
 
+/* Enfoque / Focus del buscador */
 .search-box input:focus {
   border-color: #0c45ca;
-  box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1);
+  box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1); /* Anillo translúcido de enfoque */
 }
 
-/* Acciones */
+/* Zona derecha de la cabecera (Perfil y alertas) */
 .topbar-actions {
-  margin-left: auto;
+  margin-left: auto;     /* Empuja magnéticamente este bloque al extremo derecho */
   display: flex;
   align-items: center;
   gap: 25px;
 }
 
-/* Notificaciones */
+/* Campanita de Notificaciones */
 .notification {
-  position: relative;
+  position: relative;    /* Obligatorio para anclar el globo del badge rojo */
   font-size: 22px;
   cursor: pointer;
   color: #1b2b4b;
 }
 
+/* Globo indicador numérico de alertas pendientes */
 .badge {
   position: absolute;
   top: -8px;
   right: -10px;
-  background: #ff4d4f;
+  background: #ff4d4f;   /* Rojo de alerta vibrante */
   color: white;
   font-size: 11px;
   font-weight: bold;
@@ -260,26 +264,27 @@ body {
   border-radius: 50%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; /* Centrado perfecto del número */
 }
 
-/* Usuario */
+/* Tarjeta Perfil del usuario activo */
 .user-profile {
   display: flex;
   align-items: center;
   gap: 12px;
   background: white;
   padding: 8px 14px;
-  border-radius: 50px;
+  border-radius: 50px;   /* Extremos completamente curvos (estilo píldora) */
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   cursor: pointer;
 }
 
+/* Imagen circular de avatar */
 .user-profile img {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  object-fit: cover;
+  object-fit: cover;     /* Recorta proporcionalmente la foto previniendo distorsiones */
 }
 
 .user-info {
@@ -296,9 +301,9 @@ body {
   color: #7a8599;
 }
 
-/* =========================
-   BREADCRUMB
-========================= */
+/* ==========================================================================
+   BREADCRUMB - Hilo de Ariadna / Ruta de navegación
+   ========================================================================== */
 .breadcrumb {
   display: flex;
   align-items: center;
@@ -318,28 +323,30 @@ body {
   color: #e8600a;
 }
 
+/* Separadores (ej. / o >) */
 .breadcrumb .sep {
   font-size: 10px;
   color: #c5cbdf;
 }
 
+/* Página actual activa del mapa de sitio */
 .breadcrumb .current {
   color: #e8600a;
   font-weight: 700;
 }
 
-/* =========================
-   FORM CARD
-========================= */
+/* ==========================================================================
+   FORM CARD - Tarjeta contenedor del formulario dinámico
+   ========================================================================== */
 .form-card {
   background: #ffffff;
   border-radius: 14px;
   box-shadow: 0 2px 14px rgba(30, 42, 94, 0.1);
   margin: 20px 28px 28px;
-  overflow: hidden;
+  overflow: hidden;      /* Mantiene esquinas redondeadas encapsulando cabeceras */
 }
 
-/* Encabezado */
+/* Cabecera del formulario */
 .form-card-header {
   display: flex;
   align-items: center;
@@ -356,17 +363,18 @@ body {
   gap: 14px;
 }
 
+/* Cuadrado decorativo del icono del formulario */
 .form-card-icon {
   width: 44px;
   height: 44px;
-  background: rgba(232, 96, 10, 0.12);
+  background: rgba(232, 96, 10, 0.12); /* 12% del color corporativo */
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #e8600a;
   font-size: 18px;
-  flex-shrink: 0;
+  flex-shrink: 0;        /* Evita deformaciones si el título es muy extenso */
 }
 
 .form-card-title {
@@ -381,62 +389,66 @@ body {
   color: #6b7499;
 }
 
+/* Nota aclaratoria para campos obligatorios */
 .required-note {
   font-size: 12px;
   color: #6b7499;
 }
 
 .required-note span {
-  color: #e53935;
+  color: #e53935;        /* Rojo estándar de advertencia */
 }
 
-/* Cuerpo */
+/* Cuerpo interno del contenedor */
 .form-body {
   padding: 28px;
 }
 
-/* =========================
-   SECCIONES
-========================= */
+/* ==========================================================================
+   SECCIONES INTERNAS DEL FORMULARIO
+   ========================================================================== */
 .form-section {
   margin-bottom: 32px;
 }
 
+/* Quita el margen excesivo a la última sección para no alterar el footer */
 .form-section:last-of-type {
   margin-bottom: 0;
 }
 
+/* Subtítulos divisores de grupos de datos */
 .form-section-title {
   font-size: 12px;
   font-weight: 700;
   color: #e8600a;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
+  text-transform: uppercase; /* Forzado a mayúsculas */
+  letter-spacing: 1.2px;     /* Tracking expandido */
   margin-bottom: 18px;
   padding-bottom: 8px;
   border-bottom: 1.5px solid #e8ecf6;
 }
 
-/* =========================
-   GRID DE CAMPOS
-========================= */
+/* ==========================================================================
+   GRID DE CAMPOS - Distribución de inputs a dos columnas nativas
+   ========================================================================== */
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px 28px;
+  grid-template-columns: repeat(2, 1fr); /* 2 Columnas idénticas del 50% de ancho */
+  gap: 20px 28px;                        /* 20px de separación horizontal, 28px vertical */
 }
 
+/* Clase de utilidad para obligar a un input a expandirse por completo (100%) */
 .field-full {
-  grid-column: 1 / -1;
+  grid-column: 1 / -1;   /* Abarca desde la primera línea hasta el final */
 }
 
-/* =========================
-   CAMPOS
-========================= */
+/* ==========================================================================
+   ESTILOS DE CAMPOS DE ENTRADA (FIELDS)
+   ========================================================================== */
 .field {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 7px;              /* Espaciado controlado entre el Label y su Input */
 }
 
 .field > label {
@@ -448,6 +460,7 @@ body {
   gap: 7px;
 }
 
+/* Pequeño icono descriptivo al costado de las etiquetas */
 .field-icon {
   color: #6b7499;
   font-size: 13px;
@@ -455,11 +468,12 @@ body {
   text-align: center;
 }
 
+/* Asterisco de obligatoriedad */
 .field .req {
   color: #e53935;
 }
 
-/* Inputs */
+/* Estandarización de controles del formulario */
 .field input[type="text"],
 .field input[type="number"],
 .field input[type="date"],
@@ -472,7 +486,7 @@ body {
   font-size: 13.5px;
   font-family: inherit;
   color: #1a2042;
-  background: #f7f8fc;
+  background: #f7f8fc;   /* Tono opaco para diferenciar campos listos de vacíos */
   outline: none;
   transition:
     border-color 0.2s,
@@ -482,40 +496,40 @@ body {
 
 .field textarea {
   min-height: 110px;
-  resize: vertical;
+  resize: vertical;      /* Permite al usuario estirar el campo solo de arriba a abajo */
 }
 
+/* Estado de interacción / Focus del formulario */
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-  border-color: #e8600a;
-  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
-  background: #ffffff;
+  border-color: #e8600a; /* Cambia a color de acento */
+  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12); /* Brillo perimetral */
+  background: #ffffff;   /* Cambia a fondo blanco nítido */
 }
 
-/* Select personalizado */
+/* Select de despliegue personalizado mediante SVG inyectado en código */
 .field select {
-  appearance: none;
+  appearance: none;      /* Elimina la flecha nativa tosca de los sistemas operativos */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7499' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 14px center;
-  padding-right: 36px;
+  background-position: right 14px center; /* Posiciona la flecha SVG vectorizada a la derecha */
+  padding-right: 36px;   /* Margen seguro para que el texto no se monte sobre el SVG */
   cursor: pointer;
 }
 
-/* Placeholder */
 .field input::placeholder,
 .field textarea::placeholder {
-  color: #9aa4b8;
+  color: #9aa4b8;        /* Color atenuado para textos de ejemplo */
 }
 
-/* =========================
-   FOOTER DEL FORMULARIO
-========================= */
+/* ==========================================================================
+   FOOTER DEL FORMULARIO & BOTONERA
+   ========================================================================== */
 .form-footer {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-end; /* Alinea los botones a la extrema derecha */
   gap: 12px;
   padding-top: 24px;
   border-top: 1.5px solid #e8ecf6;
@@ -523,12 +537,10 @@ body {
   flex-wrap: wrap;
 }
 
-/* =========================
-   BOTONES
-========================= */
+/* Botón base universal */
 .btn {
   display: inline-flex;
-  align-items: center;
+  align-items: center;   /* Centrado de texto e icono interior */
   gap: 8px;
   padding: 10px 22px;
   border-radius: 8px;
@@ -541,46 +553,42 @@ body {
   transition: all 0.2s ease;
 }
 
+/* Variante: Botón neutro / cancelar */
 .btn-ghost {
   background: transparent;
   border: 1.5px solid #dde2f0;
   color: #6b7499;
 }
-
 .btn-ghost:hover {
   border-color: #1e2a5e;
   color: #1e2a5e;
   background: #f0f2f8;
 }
 
+/* Variante: Botón secundario */
 .btn-secondary {
   background: #1e2a5e;
   color: #ffffff;
 }
-
 .btn-secondary:hover {
   background: #2e3f8f;
 }
 
+/* Variante: Botón principal / guardar */
 .btn-primary {
   background: #e8600a;
   color: #ffffff;
-  box-shadow: 0 4px 14px rgba(232, 96, 10, 0.3);
+  box-shadow: 0 4px 14px rgba(232, 96, 10, 0.3); /* Sombra naranja */
 }
-
 .btn-primary:hover {
   background: #f07530;
   box-shadow: 0 6px 18px rgba(232, 96, 10, 0.38);
-  transform: translateY(-1px);
+  transform: translateY(-1px); /* Sutil desplazamiento flotante hacia arriba */
 }
-
 .btn-primary:active {
-  transform: translateY(0);
+  transform: translateY(0);    /* Vuelve a su posición original al dar click */
 }
 
-/* =========================
-   FOOTER
-========================= */
 .footer {
   margin-top: 30px;
   text-align: center;
@@ -588,311 +596,120 @@ body {
   font-size: 14px;
 }
 
-/* =====================================================
-   RESPONSIVE DESIGN
-   (MANTENIENDO SIDEBAR A LA IZQUIERDA)
-===================================================== */
+/* ==========================================================================
+   RESPONSIVE DESIGN - MEDIA QUERIES (ADAPTABILIDAD)
+   ========================================================================== */
 
 /* =====================================================
-   PANTALLAS GRANDES
-===================================================== */
+   PANTALLAS GRANDES (Escritorios Pro o de Alta Resolución)
+   ===================================================== */
 @media screen and (min-width: 1200px) {
-  .main-content {
-    padding: 40px;
-  }
-
-  .form-card {
-    max-width: 1400px;
-    margin: 20px auto;
-  }
-
-  .page-title h1 {
-    font-size: 38px;
-  }
-
-  .logo-img {
-    width: 280px;
-  }
+  .main-content { padding: 40px; }
+  .form-card { max-width: 1400px; margin: 20px auto; } /* Centra el formulario limitando su estiramiento */
+  .page-title h1 { font-size: 38px; }
+  .logo-img { width: 280px; }
 }
 
 /* =====================================================
-   LAPTOPS Y TABLETS
-===================================================== */
+   LAPTOPS Y MINI DESKTOPS (Hasta 1199px)
+   ===================================================== */
 @media screen and (max-width: 1199px) {
-  /* Sidebar más compacto */
-  .sidebar {
-    width: 230px;
-    padding: 25px 15px;
-  }
-
-  .main-content {
-    margin-left: 230px;
-    padding: 25px;
-  }
-
-  .logo-img {
-    width: 200px;
-  }
-
-  .menu a {
-    font-size: 14px;
-    padding: 12px 14px;
-  }
-
-  .page-title h1 {
-    font-size: 30px;
-  }
-
-  .form-grid {
-    gap: 20px;
-  }
+  .sidebar { width: 230px; padding: 25px 15px; } /* Reduce la anchura del sidebar */
+  .main-content { margin-left: 230px; padding: 25px; } /* Ajusta el margen al nuevo tamaño de la barra */
+  .logo-img { width: 200px; }
+  .menu a { font-size: 14px; padding: 12px 14px; }
+  .page-title h1 { font-size: 30px; }
+  .form-grid { gap: 20px; }
 }
 
 /* =====================================================
-   TABLETS
-===================================================== */
+   TABLETS EN MODO VERTICAL (Hasta 991px)
+   ===================================================== */
 @media screen and (max-width: 991px) {
-  /* Sidebar sigue a la izquierda */
-  .sidebar {
-    width: 200px;
-    padding: 20px 12px;
-  }
+  .sidebar { width: 200px; padding: 20px 12px; }
+  .main-content { margin-left: 200px; padding: 20px; }
+  .logo-img { width: 160px; padding: 12px; }
+  .menu a { font-size: 13px; padding: 11px; gap: 10px; }
+  .page-title h1 { font-size: 26px; }
 
-  .main-content {
-    margin-left: 200px;
-    padding: 20px;
-  }
-
-  .logo-img {
-    width: 160px;
-    padding: 12px;
-  }
-
-  .menu a {
-    font-size: 13px;
-    padding: 11px;
-    gap: 10px;
-  }
-
-  .page-title h1 {
-    font-size: 26px;
-  }
-
-  /* Formulario a 1 columna */
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .field-full {
-    grid-column: auto;
-  }
-
-  .form-card-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .form-footer {
-    justify-content: center;
-  }
+  /* Transformación radical del layout: Pasa de 2 columnas a 1 columna vertical pura */
+  .form-grid { grid-template-columns: 1fr; }
+  .field-full { grid-column: auto; }
+  .form-card-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .form-footer { justify-content: center; } /* Centra los botones */
 }
 
 /* =====================================================
-   CELULARES
-===================================================== */
+   CELULARES (Hasta 767px)
+   Estrategia: El menú lateral se vuelve una barra minimalista permanente de iconos
+   ===================================================== */
 @media screen and (max-width: 767px) {
-  /* Sidebar pequeño pero SIEMPRE visible a la izquierda */
   .sidebar {
-    width: 85px;
+    width: 85px;         /* Anchura ultra-compacta */
     padding: 15px 8px;
-    align-items: center;
+    align-items: center; /* Centra los componentes internamente */
   }
 
   .main-content {
-    margin-left: 85px;
+    margin-left: 85px;   /* Ajuste simétrico para el canvas derecho */
     padding: 15px;
   }
 
-  /* Ocultar el contenedor de logo sobrante en móviles */
-  .logo-container {
-    margin-bottom: 20px;
-  }
+  .logo-container { margin-bottom: 20px; }
+  .logo-img { width: 60px; padding: 6px; border-radius: 12px; margin-bottom: 0; }
+  .menu { width: 100%; align-items: center; }
 
-  /* Logo adaptable */
-  .logo-img {
-    width: 60px;
-    padding: 6px;
-    border-radius: 12px;
-    margin-bottom: 0;
-  }
-
-  /* Menú */
-  .menu {
-    width: 100%;
-    align-items: center;
-  }
-
-  /* Ocultar el texto de los enlaces del menú dejando solo el icono */
+  /* Ocultación táctica del texto de navegación */
   .menu a {
     justify-content: center;
     padding: 14px;
-    font-size: 0;
+    font-size: 0;       /* Oculta los strings de texto eliminando sus dimensiones */
     width: 100%;
   }
+  .menu a i { font-size: 20px; width: auto; margin: 0; } /* Resalta los iconos independientes */
 
-  /* Mostrar solo iconos en tamaño legible */
-  .menu a i {
-    font-size: 20px;
-    width: auto;
-    margin: 0;
-  }
+  /* Salida/Cierre compactado */
+  .logout { width: 100%; margin-top: auto; padding-top: 15px; }
+  .logout a { justify-content: center; font-size: 0; padding: 14px; }
+  .logout a i { font-size: 20px; }
 
-  /* Logout colapsado */
-  .logout {
-    width: 100%;
-    margin-top: auto; /* Empuja el botón de salida hacia abajo */
-    padding-top: 15px;
-  }
+  /* Reorganización de elementos superiores */
+  .topbar { flex-direction: column; align-items: stretch; gap: 15px; }
+  .menu-toggle { display: none !important; } /* Oculta la hamburguesa innecesaria */
+  
+  .page-title { min-width: auto; text-align: center; }
+  .page-title h1 { font-size: 22px; }
+  .page-title p { font-size: 13px; }
+  
+  .search-box { max-width: 100%; }
+  .topbar-actions { width: 100%; justify-content: space-between; margin-left: 0; gap: 15px; }
+  .user-info { display: none !important; } /* Remueve el nombre/rol del usuario para salvar espacio horizontal */
+  .user-profile { padding: 6px 10px; }
 
-  .logout a {
-    justify-content: center;
-    font-size: 0;
-    padding: 14px;
-  }
+  /* Reducción de márgenes y espaciados generales en el formulario móvil */
+  .breadcrumb { padding: 10px 15px 0; font-size: 12px; flex-wrap: wrap; }
+  .form-card { margin: 15px 5px; }
+  .form-card-header { padding: 18px; }
+  .form-body { padding: 18px; }
+  .form-grid { grid-template-columns: 1fr; gap: 18px; }
+  .field input, .field select, .field textarea { font-size: 14px; }
 
-  .logout a i {
-    font-size: 20px;
-  }
-
-  /* Header superior en móviles */
-  .topbar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 15px;
-  }
-
-  /* Ocultamos el botón de hamburguesa ya que el menú es permanentemente visible */
-  .menu-toggle {
-    display: none !important;
-  }
-
-  .page-title {
-    min-width: auto;
-    text-align: center;
-  }
-
-  .page-title h1 {
-    font-size: 22px;
-  }
-
-  .page-title p {
-    font-size: 13px;
-  }
-
-  /* Buscador */
-  .search-box {
-    max-width: 100%;
-  }
-
-  /* Acciones del perfil y notificaciones */
-  .topbar-actions {
-    width: 100%;
-    justify-content: space-between;
-    margin-left: 0;
-    gap: 15px;
-  }
-
-  /* Ocultamos el texto del rol del usuario en la barra superior */
-  .user-info {
-    display: none !important;
-  }
-
-  .user-profile {
-    padding: 6px 10px;
-  }
-
-  /* Breadcrumb */
-  .breadcrumb {
-    padding: 10px 15px 0;
-    font-size: 12px;
-    flex-wrap: wrap;
-  }
-
-  /* Formulario */
-  .form-card {
-    margin: 15px 5px;
-  }
-
-  .form-card-header {
-    padding: 18px;
-  }
-
-  .form-body {
-    padding: 18px;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-
-  .field input,
-  .field select,
-  .field textarea {
-    font-size: 14px;
-  }
-
-  /* Botones apilados verticalmente en orden lógico de acción */
-  .form-footer {
-    flex-direction: column-reverse;
-    align-items: stretch;
-    gap: 10px;
-  }
-
-  .btn {
-    width: 100%;
-    justify-content: center;
-  }
+  /* Apilamiento vertical e invertido de botones de acción (Cancelar abajo, Guardar arriba) */
+  .form-footer { flex-direction: column-reverse; align-items: stretch; gap: 10px; }
+  .btn { width: 100%; justify-content: center; }
 }
 
 /* =====================================================
-   CELULARES MUY PEQUEÑOS
-===================================================== */
+   CELULARES ULTRA PEQUEÑOS (Hasta 480px)
+   Ajustes micrométricos para pantallas de baja resolución (ej. iPhone SE)
+   ===================================================== */
 @media screen and (max-width: 480px) {
-  .sidebar {
-    width: 70px;
-  }
-
-  .main-content {
-    margin-left: 70px;
-    padding: 12px;
-  }
-
-  .logo-img {
-    width: 50px;
-  }
-
-  .menu a i,
-  .logout a i {
-    font-size: 18px;
-  }
-
-  .page-title h1 {
-    font-size: 20px;
-  }
-
-  .form-card-title {
-    font-size: 18px;
-  }
-
-  .user-profile img {
-    width: 36px;
-    height: 36px;
-  }
-
-  .btn {
-    font-size: 13px;
-    padding: 10px 12px;
-  }
+  .sidebar { width: 70px; }
+  .main-content { margin-left: 70px; padding: 12px; }
+  .logo-img { width: 50px; }
+  .menu a i, .logout a i { font-size: 18px; }
+  .page-title h1 { font-size: 20px; }
+  .form-card-title { font-size: 18px; }
+  .user-profile img { width: 36px; height: 36px; }
+  .btn { font-size: 13px; padding: 10px 12px; }
 }
