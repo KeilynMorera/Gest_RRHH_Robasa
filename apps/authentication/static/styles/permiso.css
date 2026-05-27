@@ -1,89 +1,95 @@
-/* =========================================================
-   RADIO BUTTONS - APROBACIÓN DE PERMISO
-========================================================= */
+/* ==========================================================================
+   RADIO BUTTONS - APROBACIÓN DE PERMISO (Componente de Selección Avanzado)
+   ========================================================================== */
+
+/* Contenedor del grupo de opciones de estado */
 .status-group {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
+  display: flex; /* Alinea los botones de radio adaptados horizontalmente */
+  gap: 12px; /* Separación entre cada botón de opción */
+  flex-wrap: wrap; /* Permite que las opciones bajen de línea si no tienen espacio */
 }
 
+/* Envoltorio individual para cada radio + label */
 .status-option {
-    flex: 1;
-    position: relative;
-    min-width: 180px;
+  flex: 1; /* Distribuye el ancho de forma equitativa entre las opciones */
+  position: relative; /* Define un eje de coordenadas para posicionar elementos internos si fuera necesario */
+  min-width: 180px; /* Evita que los botones se encojan demasiado antes de saltar de línea */
 }
 
+/* Ocultación del input nativo de tipo radio */
 .status-option input[type="radio"] {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
+  position: absolute; /* Lo saca del flujo de renderizado */
+  opacity: 0; /* Lo vuelve completamente invisible */
+  width: 0; /* Elimina su ancho */
+  height: 0; /* Elimina su alto para que no interfiera en clics accidentales */
 }
 
+/* Estilización de la etiqueta que actuará como el "botón" visual */
 .status-option label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 12px 16px;
-    border: 1.5px solid #dde2f0;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #6b7499;
-    background: #f7f8fc;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    user-select: none;
+  display: flex; /* Permite alinear el texto y el punto indicador de forma interna */
+  align-items: center; /* Centrado vertical interno */
+  justify-content: center; /* Centrado horizontal interno */
+  gap: 8px; /* Espacio entre el punto indicador y el texto */
+  padding: 12px 16px;
+  border: 1.5px solid #dde2f0;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7499;
+  background: #f7f8fc;
+  cursor: pointer; /* Cambia el puntero a mano indicando que es clickeable */
+  transition: all 0.2s ease; /* Transición suave para todos sus estados (hover, focus) */
+  user-select: none; /* Evita que el texto de la opción se sombree azul al hacer doble clic */
 }
 
-/* Hover */
+/* Estado Hover (Al pasar el mouse por encima) */
 .status-option label:hover {
-    border-color: #e8600a;
-    background: #fffaf6;
-    color: #e8600a;
+  border-color: #e8600a;
+  background: #fffaf6;
+  color: #e8600a;
 }
 
-/* Radio seleccionado */
+/* Estado de Radio Seleccionado en variante general (Naranja) */
+/* Usa el selector de hermano adyacente (+) para modificar el label cuando el input previo está en :checked */
 .status-option input:checked + label {
-    border-color: #e8600a;
-    background: rgba(232, 96, 10, 0.08);
-    color: #e8600a;
-    box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
+  border-color: #e8600a;
+  background: rgba(232, 96, 10, 0.08); /* Fondo naranja al 8% de opacidad */
+  color: #e8600a;
+  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12); /* Efecto halo de enfoque exterior */
 }
 
-/* Punto indicador */
+/* Punto indicador circular dentro de la opción */
 .status-option .dot {
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: currentColor;
-    flex-shrink: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%; /* Hace el contenedor perfectamente redondo */
+  background: currentColor; /* Hereda de forma dinámica el valor de la propiedad 'color' del label parent */
+  flex-shrink: 0; /* Previene que el círculo se deforme si el texto es muy largo */
 }
 
-/* Variante especial para "Aprobado" */
+/* Variante especial cuando se selecciona la opción específica de "Aprobado" (Verde) */
 .status-option input#aprobado_si:checked + label {
-    border-color: #22a06b;
-    background: rgba(34, 160, 107, 0.10);
-    color: #22a06b;
-    box-shadow: 0 0 0 3px rgba(34, 160, 107, 0.12);
+  border-color: #22a06b;
+  background: rgba(34, 160, 107, 0.1);
+  color: #22a06b;
+  box-shadow: 0 0 0 3px rgba(34, 160, 107, 0.12);
 }
 
-/* Variante especial para "No aprobado" */
+/* Variante especial cuando se selecciona la opción específica de "No aprobado" (Rojo) */
 .status-option input#aprobado_no:checked + label {
-    border-color: #e53935;
-    background: rgba(229, 57, 53, 0.08);
-    color: #e53935;
-    box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.10);
+  border-color: #e53935;
+  background: rgba(229, 57, 53, 0.08);
+  color: #e53935;
+  box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.1);
 }
 
-/* =========================
-   RESET
-========================= */
+/* ==========================================================================
+   RESET GENERAL Y COMPORTAMIENTO GLOBAL
+   ========================================================================== */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Fuerza que el cálculo de dimensiones incluya rellenos y bordes */
 }
 
 body {
@@ -92,91 +98,84 @@ body {
   color: #d35b1a;
 }
 
-/* =========================
+/* ==========================================================================
    LAYOUT GENERAL
-========================= */
+   ========================================================================== */
 .dashboard-container {
-    display: flex;
-    min-height: 100vh;
+  display: flex; /* Coloca la barra lateral y el contenido principal en una fila */
+  min-height: 100vh; /* Asegura que cubra la altura completa de la pantalla */
 }
 
-/* =========================
-   SIDEBAR
-========================= */
+/* ==========================================================================
+   SIDEBAR (Panel de navegación izquierdo fijo)
+   ========================================================================== */
 .sidebar {
-    width: 280px;
-    background: #26317a;
-    color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    padding: 30px 20px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
+  width: 280px;
+  background: #26317a;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column; /* Organiza logo, menú y logout en un eje vertical */
+  padding: 30px 20px;
+  position: fixed; /* Lo ancla a la pantalla impidiendo que se mueva con el scroll */
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow-y: auto; /* Habilita scroll vertical interno si el contenido supera el tamaño de pantalla */
+  overflow-x: hidden; /* Oculta desbordamientos horizontales erróneos */
 }
 
-/* =========================
+/* ==========================================================================
    LOGO ROBASA
-========================= */
-
+   ========================================================================== */
 .logo {
   text-align: center;
   margin-bottom: 35px;
 }
 
-/* Imagen */
+/* Estilos de la imagen del logo corporativo */
 .logo-img {
   width: 320px;
   max-width: 100%;
   height: auto;
-
   display: block;
   margin: 0 auto 25px;
-
-  /* Hace que resalte */
   padding: 18px;
-
   border-radius: 22px;
-
   background: rgba(255, 255, 255, 0.08);
-
   border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(
+    6px
+  ); /* Efecto cristal semitransparente (Glassmorphism) */
 
-  backdrop-filter: blur(6px);
-
-  /* Glow */
+  /* Capas de sombras y filtros avanzados para generar efecto de resplandor (Glow) */
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25))
     drop-shadow(0 0 25px rgba(255, 255, 255, 0.12)) brightness(1.18)
     contrast(1.15);
-
   transition: all 0.3s ease;
 }
 
-/* Hover elegante */
+/* Efecto hover interactivo en el logo */
 .logo-img:hover {
-  transform: scale(1.03);
-
+  transform: scale(1.03); /* Escalado sutil de tamaño */
   filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))
     drop-shadow(0 0 32px rgba(255, 255, 255, 0.18)) brightness(1.25)
-    contrast(1.2);
+    contrast(1.2); /* Intensifica el resplandor */
 }
 
+/* Texto secundario debajo del logo */
 .logo span {
   font-size: 18px;
-  letter-spacing: 6px;
+  letter-spacing: 6px; /* Espaciado premium entre caracteres */
   color: #9bc0ff;
 }
 
-/* Menú */
+/* ── Menú de Navegación del Sidebar ── */
 .menu {
-  flex: 1;
+  flex: 1; /* Absorbe todo el espacio restante empujando el botón logout hacia el fondo */
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding-right: 5px; /* evita que el texto se pegue al scroll */
+  padding-right: 5px; /* Espacio de seguridad para evitar que colisione con el scrollbar */
 }
 
 .menu a {
@@ -190,6 +189,7 @@ body {
   transition: 0.3s;
 }
 
+/* Estados de interacción y página activa del menú */
 .menu a:hover,
 .menu a.active {
   background: #4567b7;
@@ -197,10 +197,10 @@ body {
 }
 
 .menu i {
-  width: 20px;
+  width: 20px; /* Tamaño de caja simétrica fijada para que los iconos queden alineados en vertical */
 }
 
-/* Opcional: personalizar la barra de scroll */
+/* ── Personalización de la barra de scroll nativa del Sidebar (Webkit) ── */
 .sidebar::-webkit-scrollbar {
   width: 6px;
 }
@@ -218,11 +218,11 @@ body {
   background: rgba(255, 255, 255, 0.4);
 }
 
-/* Logout */
+/* ── Módulo de Cierre de Sesión (Logout) ── */
 .logout {
   margin-top: 20px;
   padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.15); /* Separador sutil */
 }
 
 .logout a {
@@ -238,18 +238,18 @@ body {
   background: rgba(255, 255, 255, 0.08);
 }
 
-/* =========================
-   CONTENIDO PRINCIPAL
-========================= */
+/* ==========================================================================
+   CONTENIDO PRINCIPAL (Panel de Trabajo Derecho)
+   ========================================================================== */
 .main-content {
   flex: 1;
-  margin-left: 280px;
+  margin-left: 280px; /* Evita que el contenido quede oculto debajo del sidebar fijo de 280px */
   padding: 30px;
 }
 
-/* =========================
-   TOPBAR
-========================= */
+/* ==========================================================================
+   TOPBAR (Barra Superior de Herramientas y Datos de Usuario)
+   ========================================================================== */
 .topbar {
   display: flex;
   align-items: center;
@@ -281,24 +281,24 @@ body {
   font-size: 15px;
 }
 
-/* Buscador */
+/* ── Caja de Búsqueda ── */
 .search-box {
   flex: 1;
   max-width: 420px;
-  position: relative;
+  position: relative; /* Necesario para anclar el icono de la lupa internamente */
 }
 
 .search-box i {
   position: absolute;
   top: 50%;
   left: 18px;
-  transform: translateY(-50%);
+  transform: translateY(-50%); /* Centrado vertical absoluto exacto */
   color: #8a94a6;
 }
 
 .search-box input {
   width: 100%;
-  padding: 14px 18px 14px 48px;
+  padding: 14px 18px 14px 48px; /* Margen izquierdo amplio para no pisar el icono con el texto */
   border: 1px solid #dbe2ef;
   border-radius: 12px;
   font-size: 15px;
@@ -310,15 +310,15 @@ body {
   box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1);
 }
 
-/* Acciones */
+/* ── Contenedor de Acciones de Usuario ── */
 .topbar-actions {
-  margin-left: auto;
+  margin-left: auto; /* Empuja todo el bloque de usuario hacia el borde derecho */
   display: flex;
   align-items: center;
   gap: 25px;
 }
 
-/* Notificaciones */
+/* Icono de Notificaciones y Globo Alerta */
 .notification {
   position: relative;
   font-size: 22px;
@@ -339,17 +339,17 @@ body {
   border-radius: 50%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; /* Centra perfectamente el número de alertas */
 }
 
-/* Usuario */
+/* Bloque del perfil de usuario */
 .user-profile {
   display: flex;
   align-items: center;
   gap: 12px;
   background: white;
   padding: 8px 14px;
-  border-radius: 50px;
+  border-radius: 50px; /* Diseño en forma de píldora redondeada */
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   cursor: pointer;
 }
@@ -358,7 +358,7 @@ body {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  object-fit: cover;
+  object-fit: cover; /* Protege el ratio de aspecto de la foto de usuario previniendo distorsiones */
 }
 
 .user-info {
@@ -375,291 +375,745 @@ body {
   color: #7a8599;
 }
 
-/* =========================
-   BREADCRUMB
-========================= */
+/* ==========================================================================
+   BREADCRUMB (Rutas de Navegación Estilo Miga de Pan)
+   ========================================================================== */
 .breadcrumb {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 18px 28px 0;
-    font-size: 13px;
-    color: #6b7499;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 28px 0;
+  font-size: 13px;
+  color: #6b7499;
 }
 
 .breadcrumb a {
-    color: #6b7499;
-    text-decoration: none;
-    transition: color 0.15s;
+  color: #6b7499;
+  text-decoration: none;
+  transition: color 0.15s;
 }
 
 .breadcrumb a:hover {
-    color: #e8600a;
+  color: #e8600a;
 }
 
 .breadcrumb .sep {
-    font-size: 10px;
-    color: #c5cbdf;
+  font-size: 10px;
+  color: #c5cbdf;
 }
 
 .breadcrumb .current {
-    color: #e8600a;
-    font-weight: 700;
+  color: #e8600a;
+  font-weight: 700;
 }
 
-/* =========================
-   FORM CARD
-========================= */
+/* ==========================================================================
+   FORM CARD (Estructura base de la tarjeta del formulario)
+   ========================================================================== */
 .form-card {
-    background: #ffffff;
-    border-radius: 14px;
-    box-shadow: 0 2px 14px rgba(30, 42, 94, 0.10);
-    margin: 20px 28px 28px;
-    overflow: hidden;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 2px 14px rgba(30, 42, 94, 0.1);
+  margin: 20px 28px 28px;
+  overflow: hidden; /* Recorta bordes angulares de componentes internos superiores o inferiores */
 }
 
-/* Encabezado */
+/* Cabecera de la Tarjeta */
 .form-card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 22px 28px;
-    border-bottom: 1.5px solid #e8ecf6;
-    gap: 20px;
-    flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 28px;
+  border-bottom: 1.5px solid #e8ecf6;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
 .form-card-header-left {
-    display: flex;
-    align-items: center;
-    gap: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
 .form-card-icon {
-    width: 44px;
-    height: 44px;
-    background: rgba(232, 96, 10, 0.12);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #e8600a;
-    font-size: 18px;
-    flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  background: rgba(232, 96, 10, 0.12);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e8600a;
+  font-size: 18px;
+  flex-shrink: 0; /* Garantiza que el icono mantenga su tamaño fijo sin aplastarse */
 }
 
 .form-card-title {
-    font-size: 17px;
-    font-weight: 700;
-    color: #1a2042;
-    margin-bottom: 3px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #1a2042;
+  margin-bottom: 3px;
 }
 
 .form-card-subtitle {
-    font-size: 12px;
-    color: #6b7499;
+  font-size: 12px;
+  color: #6b7499;
 }
 
 .required-note {
-    font-size: 12px;
-    color: #6b7499;
+  font-size: 12px;
+  color: #6b7499;
 }
 
 .required-note span {
-    color: #e53935;
+  color: #e53935;
 }
 
-/* Cuerpo */
+/* Contenedor del Cuerpo de Datos */
 .form-body {
-    padding: 28px;
+  padding: 28px;
 }
 
-/* =========================
-   SECCIONES
-========================= */
+/* ==========================================================================
+   SECCIONES INTERNAS
+   ========================================================================== */
 .form-section {
-    margin-bottom: 32px;
+  margin-bottom: 32px;
 }
 
 .form-section:last-of-type {
-    margin-bottom: 0;
+  margin-bottom: 0; /* Evita un margen inferior huérfano e innecesario en la última sección */
 }
 
 .form-section-title {
-    font-size: 12px;
-    font-weight: 700;
-    color: #e8600a;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    margin-bottom: 18px;
-    padding-bottom: 8px;
-    border-bottom: 1.5px solid #e8ecf6;
+  font-size: 12px;
+  font-weight: 700;
+  color: #e8600a;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 18px;
+  padding-bottom: 8px;
+  border-bottom: 1.5px solid #e8ecf6;
 }
 
-/* =========================
-   GRID DE CAMPOS
-========================= */
+/* ==========================================================================
+   GRID DE CAMPOS (Maquetación en dos columnas nativas)
+   ========================================================================== */
 .form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px 28px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Divide en 2 columnas iguales */
+  gap: 20px 28px; /* Espaciado de fila y columna respectivamente */
 }
 
+/* Utilidad para forzar a un campo a abarcar todo el ancho de la rejilla */
 .field-full {
-    grid-column: 1 / -1;
+  grid-column: 1 / -1; /* Se extiende desde la línea 1 hasta el final de la matriz */
 }
 
-/* =========================
-   CAMPOS
-========================= */
+/* ==========================================================================
+   CAMPOS DE ENTRADA (Inputs, Selects, Textareas)
+   ========================================================================== */
 .field {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
 }
 
 .field > label {
-    font-size: 13px;
-    font-weight: 600;
-    color: #1a2042;
-    display: flex;
-    align-items: center;
-    gap: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a2042;
+  display: flex;
+  align-items: center;
+  gap: 7px;
 }
 
 .field-icon {
-    color: #6b7499;
-    font-size: 13px;
-    width: 14px;
-    text-align: center;
+  color: #6b7499;
+  font-size: 13px;
+  width: 14px;
+  text-align: center;
 }
 
 .field .req {
-    color: #e53935;
+  color: #e53935; /* Marcador de asterisco requerido */
 }
 
-/* Inputs */
+/* Normalización y estilización unificada de elementos de formulario */
 .field input[type="text"],
 .field input[type="number"],
 .field input[type="date"],
 .field select,
 .field textarea {
-    width: 100%;
-    border: 1.5px solid #dde2f0;
-    border-radius: 8px;
-    padding: 10px 14px;
-    font-size: 13.5px;
-    font-family: inherit;
-    color: #1a2042;
-    background: #f7f8fc;
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  width: 100%;
+  border: 1.5px solid #dde2f0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13.5px;
+  font-family: inherit;
+  color: #1a2042;
+  background: #f7f8fc;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background 0.2s;
 }
 
 .field textarea {
-    min-height: 110px;
-    resize: vertical;
+  min-height: 110px;
+  resize: vertical; /* Restringe el redimensionamiento del usuario únicamente hacia abajo */
 }
 
+/* Estilos dinámicos enfocados (Focus) */
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-    border-color: #e8600a;
-    box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
-    background: #ffffff;
+  border-color: #e8600a;
+  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
+  background: #ffffff;
 }
 
-/* Select personalizado */
+/* Modificación avanzada del desplegable select (Inyección SVG personalizado) */
 .field select {
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7499' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    padding-right: 36px;
-    cursor: pointer;
+  appearance: none; /* Resetea la flecha por defecto impuesta por los navegadores */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7499' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+  cursor: pointer;
 }
 
-/* Placeholder */
 .field input::placeholder,
 .field textarea::placeholder {
-    color: #9aa4b8;
+  color: #9aa4b8;
 }
 
-/* =========================
-   FOOTER DEL FORMULARIO
-========================= */
+/* ==========================================================================
+   FOOTER DEL FORMULARIO (Sección inferior para acciones y botones)
+   ========================================================================== */
 .form-footer {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 12px;
-    padding-top: 24px;
-    border-top: 1.5px solid #e8ecf6;
-    margin-top: 10px;
-    flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Alinea los botones de confirmación a la derecha */
+  gap: 12px;
+  padding-top: 24px;
+  border-top: 1.5px solid #e8ecf6;
+  margin-top: 10px;
+  flex-wrap: wrap;
 }
 
-/* =========================
-   BOTONES
-========================= */
+/* ==========================================================================
+   BOTONES COMPONENTIZADOS
+   ========================================================================== */
 .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 22px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 700;
-    font-family: inherit;
-    cursor: pointer;
-    border: none;
-    text-decoration: none;
-    transition: all 0.2s ease;
+  display: inline-flex; /* Facilita el centrado de iconos vectoriales e hilos de texto */
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: all 0.2s ease;
 }
 
+/* Botón estilo neutral / cancelaciones */
 .btn-ghost {
-    background: transparent;
-    border: 1.5px solid #dde2f0;
-    color: #6b7499;
+  background: transparent;
+  border: 1.5px solid #dde2f0;
+  color: #6b7499;
 }
 
 .btn-ghost:hover {
-    border-color: #1e2a5e;
-    color: #1e2a5e;
-    background: #f0f2f8;
+  border-color: #1e2a5e;
+  color: #1e2a5e;
+  background: #f0f2f8;
 }
 
+/* Botón secundario (Azul Marino Corporativo) */
 .btn-secondary {
-    background: #1e2a5e;
-    color: #ffffff;
+  background: #1e2a5e;
+  color: #ffffff;
 }
 
 .btn-secondary:hover {
-    background: #2e3f8f;
+  background: #2e3f8f;
 }
 
+/* Botón principal de acción (Naranja Robasa con sombra paralela) */
 .btn-primary {
-    background: #e8600a;
-    color: #ffffff;
-    box-shadow: 0 4px 14px rgba(232, 96, 10, 0.30);
+  background: #e8600a;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(232, 96, 10, 0.3);
 }
 
 .btn-primary:hover {
-    background: #f07530;
-    box-shadow: 0 6px 18px rgba(232, 96, 10, 0.38);
-    transform: translateY(-1px);
+  background: #f07530;
+  box-shadow: 0 6px 18px rgba(232, 96, 10, 0.38);
+  transform: translateY(-1px); /* Sutil efecto flotante de elevación */
 }
 
 .btn-primary:active {
-    transform: translateY(0);
+  transform: translateY(0); /* Retorna a la posición inicial al presionarlo */
 }
 
-/* =========================
-   FOOTER
-========================= */
+/* Pie de página informativo global */
 .footer {
-    margin-top: 30px;
-    text-align: center;
-    color: #7a8599;
+  margin-top: 30px;
+  text-align: center;
+  color: #7a8599;
+  font-size: 14px;
+}
+
+/* ==========================================================================
+   DISEÑO RESPONSIVO (RESPONSIVE DESIGN)
+   ========================================================================== */
+
+/* ── PANTALLAS GRANDES (Hasta 1400px) ── */
+@media screen and (max-width: 1400px) {
+  .sidebar {
+    width: 255px;
+    min-width: 255px;
+    max-width: 255px;
+  }
+  .main-content {
+    margin-left: 255px;
+    width: calc(100% - 255px); /* Calcula dinámicamente el espacio restante */
+    padding: 24px;
+  }
+  .topbar {
+    gap: 16px;
+  }
+  .search-box {
+    max-width: 360px;
+  }
+  .form-card {
+    margin: 18px 22px 24px;
+  }
+  .form-grid {
+    gap: 18px 22px;
+  }
+  .status-option {
+    min-width: 160px;
+  }
+}
+
+/* ── PANTALLAS MEDIANAS (Hasta 1200px) ── */
+@media screen and (max-width: 1200px) {
+  .sidebar {
+    width: 235px;
+    min-width: 235px;
+    max-width: 235px;
+    padding: 24px 16px;
+  }
+  .main-content {
+    margin-left: 235px;
+    width: calc(100% - 235px);
+    padding: 20px;
+  }
+  .logo-img {
+    max-width: 200px;
+    padding: 14px;
+  }
+  .menu a {
+    font-size: 13px;
+    padding: 12px 14px;
+  }
+
+  /* Descomposición estructural de la barra superior */
+  .topbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .page-title {
+    width: 100%;
+  }
+  .search-box {
+    flex: 1 1 100%;
+    max-width: 100%;
+  } /* El buscador ocupa toda la fila intermedia */
+  .topbar-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+  .form-card {
+    margin: 16px 18px 22px;
+  }
+  .form-card-header {
+    padding: 20px;
+  }
+  .form-body {
+    padding: 22px;
+  }
+
+  /* Modificación adaptativa de columnas automáticas */
+  .form-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+  }
+  .status-group {
+    gap: 10px;
+  }
+  .status-option {
+    min-width: 140px;
+  }
+}
+
+/* ── TABLETS (Hasta 992px) ── */
+@media screen and (max-width: 992px) {
+  .sidebar {
+    width: 210px;
+    min-width: 210px;
+    max-width: 210px;
+    padding: 18px 12px;
+  }
+  .main-content {
+    margin-left: 210px;
+    width: calc(100% - 210px);
+    padding: 18px;
+  }
+  .logo-img {
+    max-width: 160px;
+    padding: 12px;
+  }
+  .menu {
+    gap: 6px;
+  }
+  .menu a {
+    font-size: 12px;
+    padding: 11px 12px;
+    gap: 10px;
+  }
+  .menu i {
+    width: 16px;
+  }
+  .logout a {
+    font-size: 12px;
+    padding: 11px 12px;
+  }
+
+  /* Cambio drástico del Topbar a formato grilla mono-columna */
+  .topbar {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .page-title h1 {
+    font-size: 28px;
+  }
+  .page-title p {
+    font-size: 13px;
+  }
+  .search-box {
+    width: 100%;
+    max-width: 100%;
+  }
+  .topbar-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .user-profile {
+    padding: 6px 10px;
+  }
+  .form-card {
+    margin: 14px 14px 20px;
+    border-radius: 12px;
+  }
+  .form-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .form-body {
+    padding: 18px;
+  }
+
+  /* El formulario colapsa estrictamente a 1 columna */
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .field-full {
+    grid-column: auto;
+  } /* Resetea el ancho completo a herencia fluida */
+  .status-group {
+    flex-direction: column;
+  } /* Grupo de radios pasa a apilamiento vertical */
+  .status-option {
+    width: 100%;
+    min-width: 100%;
+  }
+  .form-footer {
+    justify-content: stretch;
+  }
+  .btn {
+    flex: 1;
+    justify-content: center;
+  } /* Los botones se distribuyen al ancho total */
+}
+
+/* ── CELULARES GRANDES (Hasta 768px) ── */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 185px;
+    min-width: 185px;
+    max-width: 185px;
+    padding: 16px 10px;
+  }
+  .main-content {
+    margin-left: 185px;
+    width: calc(100% - 185px);
+    padding: 14px;
+  }
+  .logo {
+    margin-bottom: 24px;
+  }
+  .logo-img {
+    max-width: 135px;
+    padding: 10px;
+    border-radius: 16px;
+  }
+  .logo span {
+    font-size: 12px;
+    letter-spacing: 3px;
+  }
+  .menu a {
+    font-size: 11px;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  .menu i {
+    width: 14px;
+    font-size: 12px;
+  }
+  .logout a {
+    font-size: 11px;
+    padding: 10px;
+  }
+  .page-title {
+    min-width: 100%;
+  }
+  .page-title h1 {
+    font-size: 22px;
+  }
+  .page-title p {
+    font-size: 12px;
+  }
+  .search-box input {
+    padding: 11px 12px 11px 38px;
+    font-size: 13px;
+  }
+  .search-box i {
+    left: 12px;
+  }
+  .topbar-actions {
+    gap: 12px;
+  }
+  .user-info {
+    display: none;
+  } /* Oculta textos del perfil de usuario por falta de espacio horizontal */
+  .user-profile {
+    border-radius: 14px;
+    padding: 6px 8px;
+  }
+  .user-profile img {
+    width: 36px;
+    height: 36px;
+  }
+  .breadcrumb {
+    padding: 14px 14px 0;
+    font-size: 11px;
+    flex-wrap: wrap;
+  }
+  .form-card {
+    margin: 12px;
+  }
+  .form-card-header {
+    padding: 16px;
+  }
+  .form-card-title {
+    font-size: 15px;
+  }
+  .form-card-subtitle {
+    font-size: 11px;
+  }
+  .required-note {
+    font-size: 11px;
+  }
+  .form-body {
+    padding: 16px;
+  }
+  .form-section-title {
+    font-size: 11px;
+  }
+  .field > label {
+    font-size: 12px;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 12px;
+    padding: 10px 12px;
+  }
+  .status-option label {
+    font-size: 12px;
+    padding: 11px 12px;
+  }
+  .form-footer {
+    flex-direction: column;
+    gap: 10px;
+  } /* Botones apilados individualmente */
+  .btn {
+    width: 100%;
+  }
+  .footer {
+    font-size: 12px;
+  }
+}
+
+/* ── CELULARES PEQUEÑOS (Hasta 576px) ── */
+@media screen and (max-width: 576px) {
+  /* Optimización extrema de áreas compactas */
+  .sidebar {
+    width: 165px;
+    min-width: 165px;
+    max-width: 165px;
+    padding: 14px 8px;
+  }
+  .main-content {
+    margin-left: 165px;
+    width: calc(100% - 165px);
+    padding: 10px;
+  }
+  .logo-img {
+    max-width: 110px;
+    padding: 8px;
+  }
+  .logo span {
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+  .menu {
+    gap: 4px;
+  }
+  .menu a {
+    font-size: 10px;
+    padding: 9px 8px;
+    gap: 8px;
+  }
+  .logout {
+    margin-top: 14px;
+    padding-top: 14px;
+  }
+  .logout a {
+    font-size: 10px;
+    padding: 9px 8px;
+  }
+  .page-title h1 {
+    font-size: 18px;
+  }
+  .page-title p {
+    font-size: 11px;
+  }
+  .topbar {
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .search-box input {
+    font-size: 12px;
+  }
+  .notification {
+    font-size: 18px;
+  }
+  .badge {
+    width: 17px;
+    height: 17px;
+    font-size: 9px;
+  }
+  .user-profile img {
+    width: 32px;
+    height: 32px;
+  }
+  .breadcrumb {
+    gap: 5px;
+    font-size: 10px;
+    padding: 10px 10px 0;
+  }
+  .form-card {
+    margin: 10px;
+    border-radius: 10px;
+  }
+  .form-card-header {
+    padding: 14px;
+  }
+  .form-card-header-left {
+    gap: 10px;
+  }
+  .form-card-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 15px;
+  }
+  .form-card-title {
     font-size: 14px;
+  }
+  .form-card-subtitle,
+  .required-note {
+    font-size: 10px;
+  }
+  .form-body {
+    padding: 14px;
+  }
+  .form-section {
+    margin-bottom: 22px;
+  }
+  .form-section-title {
+    font-size: 10px;
+  }
+  .field {
+    gap: 6px;
+  }
+  .field > label {
+    font-size: 11px;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 11px;
+    padding: 9px 10px;
+    border-radius: 7px;
+  }
+  .field textarea {
+    min-height: 90px;
+  }
+  .status-group {
+    gap: 8px;
+  }
+  .status-option label {
+    font-size: 11px;
+    padding: 10px;
+    border-radius: 7px;
+  }
+  .status-option .dot {
+    width: 8px;
+    height: 8px;
+  }
+  .form-footer {
+    padding-top: 18px;
+  }
+  .btn {
+    font-size: 12px;
+    padding: 10px;
+    border-radius: 7px;
+  }
+  .footer {
+    margin-top: 20px;
+    font-size: 11px;
+  }
 }

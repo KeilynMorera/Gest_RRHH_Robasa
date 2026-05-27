@@ -1,61 +1,61 @@
 /* ==========================================================================
-   RESET GENERAL
-========================================================================== */
+   RESET GENERAL Y COMPORTAMIENTO GLOBAL
+   ========================================================================== */
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  box-sizing: border-box; /* Incluye rellenos y bordes en el cálculo de las dimensiones elementales */
 }
 
 html,
 body {
   width: 100%;
-  overflow-x: hidden;
+  overflow-x: hidden; /* Previene scroll horizontal accidental por elementos desbordados */
 }
 
 body {
   font-family: "Segoe UI", sans-serif;
   background: #f4f7fb;
-  color: #1a2042;
+  color: #1a2042; /* Azul marino oscuro para un contraste legible y profesional */
 }
 
 /* ==========================================================================
-   CONTENEDOR PRINCIPAL
-========================================================================== */
+   CONTENEDOR PRINCIPAL (LAYOUT MAESTRO)
+   ========================================================================== */
 .dashboard-container {
-  display: flex;
+  display: flex; /* Activa Flexbox bidimensional para alinear el Sidebar y el Main Content en paralelo */
   width: 100%;
-  min-height: 100vh;
+  min-height: 100vh; /* Asegura que el contenedor cubra al menos el 100% de la altura de la pantalla */
 }
 
 /* ==========================================================================
-   SIDEBAR
-========================================================================== */
+   SIDEBAR (COLUMNA DE NAVEGACIÓN FIJA)
+   ========================================================================== */
 .sidebar {
   width: 250px;
   min-width: 250px;
-  max-width: 250px;
+  max-width: 250px; /* Fuerza un ancho estricto e inmutable en pantallas de escritorio */
 
   background: #26317a;
   color: white;
 
-  position: fixed;
+  position: fixed; /* Fija el contenedor a la pantalla; no se mueve con el scroll general */
   top: 0;
   left: 0;
   bottom: 0;
 
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Organiza el contenido en un eje vertical (Logo -> Menú -> Logout) */
 
   padding: 20px 15px;
 
-  overflow-y: auto;
+  overflow-y: auto; /* Permite scroll interno si las opciones del menú exceden la pantalla */
   overflow-x: hidden;
 
-  z-index: 1000;
+  z-index: 1000; /* Asegura que la navegación se posicione por encima de las tarjetas y tablas */
 }
 
-/* Scroll */
+/* Personalización estética de la barra de desplazamiento interna (Webkit) */
 .sidebar::-webkit-scrollbar {
   width: 5px;
 }
@@ -65,16 +65,12 @@ body {
   border-radius: 10px;
 }
 
-/* =========================
-   LOGO ROBASA
-========================= */
-
+/* ── LOGO ROBASA ────────────────────────────────────────────────────────── */
 .logo {
   text-align: center;
   margin-bottom: 35px;
 }
 
-/* Imagen */
 .logo-img {
   width: 320px;
   max-width: 100%;
@@ -82,19 +78,15 @@ body {
 
   display: block;
   margin: 0 auto 25px;
-
-  /* Hace que resalte */
   padding: 18px;
 
   border-radius: 22px;
-
   background: rgba(255, 255, 255, 0.08);
-
   border: 1px solid rgba(255, 255, 255, 0.12);
 
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px); /* Efecto cristal (Glassmorphism) traslúcido */
 
-  /* Glow */
+  /* Capas combinadas de sombreado y optimización de hardware para el brillo */
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25))
     drop-shadow(0 0 25px rgba(255, 255, 255, 0.12)) brightness(1.18)
     contrast(1.15);
@@ -102,9 +94,9 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Hover elegante */
+/* Microinteracción al pasar el puntero */
 .logo-img:hover {
-  transform: scale(1.03);
+  transform: scale(1.03); /* Escalado sutil */
 
   filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))
     drop-shadow(0 0 32px rgba(255, 255, 255, 0.18)) brightness(1.25)
@@ -113,19 +105,19 @@ body {
 
 .logo span {
   font-size: 18px;
-  letter-spacing: 6px;
+  letter-spacing: 6px; /* Tracking ancho para dar un aspecto refinado/corporativo */
   color: #9bc0ff;
 }
 
 /* ==========================================================================
-   MENU
-========================================================================== */
+   MENU DE ENLACES
+   ========================================================================== */
 .menu {
   display: flex;
   flex-direction: column;
   gap: 8px;
 
-  flex: 1;
+  flex: 1; /* Absorbe el espacio libre y empuja el módulo de Logout hacia la base */
 }
 
 .menu a {
@@ -133,34 +125,34 @@ body {
   color: white;
 
   display: flex;
-  align-items: center;
+  align-items: center; /* Alineación perfecta del icono y el texto en el eje central */
   gap: 12px;
 
   padding: 13px 15px;
-
   border-radius: 10px;
 
   transition: 0.3s;
 }
 
+/* Estado activo o seleccionado */
 .menu a:hover,
 .menu a.active {
   background: #4567b7;
 }
 
 .menu a i {
-  width: 20px;
+  width: 20px; /* Ancho fijo para estandarizar el alineamiento del texto subsecuente */
   text-align: center;
 }
 
 /* ==========================================================================
-   LOGOUT
-========================================================================== */
+   MÓDULO DE LOGOUT (CIERRE DE SESIÓN)
+   ========================================================================== */
 .logout {
   margin-top: 20px;
   padding-top: 20px;
 
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.15); /* Línea sutil divisoria */
 }
 
 .logout a {
@@ -174,7 +166,6 @@ body {
   color: white;
 
   border-radius: 10px;
-
   transition: 0.3s;
 }
 
@@ -183,46 +174,46 @@ body {
 }
 
 /* ==========================================================================
-   CONTENIDO PRINCIPAL
-========================================================================== */
+   CONTENIDO PRINCIPAL (ESPACIO DE TRABAJO DOCK)
+   ========================================================================== */
 .main-content {
-  margin-left: 250px;
+  margin-left: 250px; /* Compensación idéntica al ancho del Sidebar fijo */
 
-  width: calc(100% - 250px);
+  width: calc(
+    100% - 250px
+  ); /* Ocupa dinámicamente el resto de la pantalla neta */
 
   padding: 20px;
-
   overflow-x: hidden;
 }
 
 /* ==========================================================================
-   TOPBAR
-========================================================================== */
+   TOPBAR (BARRA DE HERRAMIENTAS Y CONTROL SUPERIOR)
+   ========================================================================== */
 .topbar {
   width: 100%;
 
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* Permite que los elementos se reacomoden verticalmente si el espacio colapsa */
 
   align-items: flex-start;
   justify-content: space-between;
 
   gap: 15px;
-
   margin-bottom: 20px;
 }
 
 .menu-toggle {
-  display: none;
+  display: none; /* Oculto en escritorio; reservado para lógica de menú hamburguesa móvil */
 }
 
 .page-title {
-  flex: 1 1 100%;
+  flex: 1 1 100%; /* Obliga al título a abarcar toda la fila en la parte superior del Flexbox */
 }
 
 .page-title h1 {
   font-size: 30px;
-  color: #d35b1a;
+  color: #d35b1a; /* Color corporativo de énfasis naranja */
 
   margin-bottom: 5px;
 }
@@ -232,16 +223,14 @@ body {
   font-size: 14px;
 }
 
-/* ==========================================================================
-   SEARCH BOX
-========================================================================== */
+/* ── SEARCH BOX (MOTOR DE BÚSQUEDA) ────────────────────────────────────── */
 .search-box {
-  position: relative;
+  position: relative; /* Contexto de posicionamiento absoluto para el icono interno */
 
-  flex: 1 1 320px;
+  flex: 1 1 320px; /* Crecimiento flexible con base mínima de seguridad de 320px */
 
   max-width: 420px;
-  min-width: 0;
+  min-width: 0; /* Corrige fallas de desbordamiento de texto dentro de flex items */
 }
 
 .search-box i {
@@ -250,7 +239,7 @@ body {
   top: 50%;
   left: 15px;
 
-  transform: translateY(-50%);
+  transform: translateY(-50%); /* Centrado vertical exacto del icono de lupa */
 
   color: #8a94a6;
 }
@@ -258,7 +247,7 @@ body {
 .search-box input {
   width: 100%;
 
-  padding: 12px 15px 12px 42px;
+  padding: 12px 15px 12px 42px; /* Margen izquierdo amplio (42px) para evitar colisión con el icono */
 
   border-radius: 10px;
   border: 1px solid #dbe2ef;
@@ -270,9 +259,7 @@ body {
   border-color: #0c45ca;
 }
 
-/* ==========================================================================
-   TOPBAR ACTIONS
-========================================================================== */
+/* ── TOPBAR ACTIONS (NOTIFICACIONES & PERFIL) ─────────────────────────── */
 .topbar-actions {
   display: flex;
   align-items: center;
@@ -281,9 +268,7 @@ body {
   flex-wrap: wrap;
 }
 
-/* ==========================================================================
-   NOTIFICACIONES
-========================================================================== */
+/* Notificaciones */
 .notification {
   position: relative;
 
@@ -291,6 +276,7 @@ body {
   color: #1b2b4b;
 }
 
+/* Globo indicador de alertas (Badge numérico) */
 .badge {
   position: absolute;
 
@@ -309,23 +295,19 @@ body {
 
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; /* Centrado absoluto del número de alertas */
 }
 
-/* ==========================================================================
-   USER PROFILE
-========================================================================== */
+/* Perfil de Usuario */
 .user-profile {
   display: flex;
   align-items: center;
   gap: 10px;
 
   background: white;
-
   padding: 8px 12px;
 
-  border-radius: 50px;
-
+  border-radius: 50px; /* Estilo píldora */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
@@ -351,15 +333,14 @@ body {
 }
 
 /* ==========================================================================
-   BREADCRUMB
-========================================================================== */
+   BREADCRUMB (HILO DE ARIADNA)
+   ========================================================================== */
 .breadcrumb {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 
   margin-bottom: 20px;
-
   font-size: 13px;
 }
 
@@ -374,34 +355,28 @@ body {
 }
 
 /* ==========================================================================
-   FORM CARD
-========================================================================== */
+   CONTENEDORES DE FORMULARIO (FORM CARD)
+   ========================================================================== */
 .form-card {
   width: 100%;
 
   background: white;
-
   border-radius: 15px;
 
-  overflow: hidden;
-
+  overflow: hidden; /* Recorta esquinas del header para respetar el radio del borde */
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
 }
 
-/* ==========================================================================
-   HEADER CARD
-========================================================================== */
+/* Cabecera de la Tarjeta */
 .form-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   flex-wrap: wrap;
-
   gap: 15px;
 
   padding: 20px;
-
   border-bottom: 1px solid #e8ecf6;
 }
 
@@ -416,8 +391,7 @@ body {
   height: 45px;
 
   border-radius: 10px;
-
-  background: rgba(232, 96, 10, 0.1);
+  background: rgba(232, 96, 10, 0.1); /* Fondo naranja suavizado al 10% */
 
   display: flex;
   align-items: center;
@@ -436,16 +410,12 @@ body {
   color: #7a8599;
 }
 
-/* ==========================================================================
-   FORM BODY
-========================================================================== */
+/* Cuerpo de la Tarjeta */
 .form-body {
   padding: 20px;
 }
 
-/* ==========================================================================
-   SECCIONES
-========================================================================== */
+/* Seccionales de Formulario */
 .form-section {
   margin-bottom: 30px;
 }
@@ -455,7 +425,6 @@ body {
   color: #e8600a;
 
   margin-bottom: 20px;
-
   padding-bottom: 10px;
 
   border-bottom: 1px solid #e8ecf6;
@@ -466,26 +435,26 @@ body {
 }
 
 /* ==========================================================================
-   GRID
-========================================================================== */
+   SISTEMA DE GRIDS AUTOMÁTICAS (FORMULARIOS Y RESÚMENES)
+   ========================================================================== */
+
+/* Rejilla de Formulario Adaptativa */
 .form-grid {
   display: grid;
 
+  /* Crea columnas automáticas que se envuelven solas si miden menos de 220px */
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 
   gap: 18px;
 }
 
-/* ==========================================================================
-   CAMPOS
-========================================================================== */
+/* Estructura del Input Grupal (Label + Input) */
 .field {
   display: flex;
   flex-direction: column;
-
   gap: 8px;
 
-  min-width: 0;
+  min-width: 0; /* Protege a la grilla de desbordamientos por textos largos */
 }
 
 .field label {
@@ -509,28 +478,25 @@ body {
   border: 1px solid #dde2f0;
 
   background: #f7f8fc;
-
   outline: none;
 }
 
 .field textarea {
-  resize: vertical;
+  resize: vertical; /* Limita la manipulación de tamaño solo al eje de altura */
   min-height: 100px;
 }
 
+/* Reactividad al Enfoque */
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
   border-color: #e8600a;
-  background: white;
+  background: white; /* Ilumina el fondo al escribir */
 }
 
-/* ==========================================================================
-   SUMMARY GRID
-========================================================================== */
+/* Rejilla Resumen (Tarjetas de Métricas Rápidas) */
 .summary-grid {
   display: grid;
-
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 
   gap: 18px;
@@ -538,11 +504,9 @@ body {
 
 .summary-card {
   background: #f7f8fc;
-
-  border: 1px dashed #dde2f0;
+  border: 1px dashed #dde2f0; /* Estilo de borde punteado técnico */
 
   border-radius: 10px;
-
   padding: 18px;
 
   text-align: center;
@@ -550,7 +514,6 @@ body {
 
 .summary-card span {
   display: block;
-
   margin-bottom: 5px;
 
   color: #7a8599;
@@ -562,12 +525,11 @@ body {
 }
 
 /* ==========================================================================
-   TABLA
-========================================================================== */
+   TABLA DE RESULTADOS DATA-INTENSE
+   ========================================================================== */
 .table-container {
   width: 100%;
-
-  overflow-x: auto;
+  overflow-x: auto; /* Activa scroll de protección si la tabla es más ancha que la pantalla */
 
   border: 1px solid #e8ecf6;
   border-radius: 10px;
@@ -575,51 +537,43 @@ body {
 
 .results-table {
   width: 100%;
+  border-collapse: collapse; /* Remueve el espaciado doble entre celdas nativas */
 
-  border-collapse: collapse;
-
-  table-layout: fixed;
+  table-layout: fixed; /* Fuerza a las columnas a respetar anchos y acelera el renderizado */
 }
 
 .results-table th,
 .results-table td {
   padding: 12px;
-
   border-bottom: 1px solid #e8ecf6;
 
   text-align: left;
-
-  word-break: break-word;
+  word-break: break-word; /* Rompe cadenas largas de texto para evitar que rompan la celda */
 }
 
 .results-table th {
   background: #f7f8fc;
 }
 
-/* ==========================================================================
-   FOOTER FORM
-========================================================================== */
+/* Pie de Formulario */
 .form-footer {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-end; /* Alinea los botones de confirmación a la derecha */
 
   flex-wrap: wrap;
-
   gap: 12px;
 
   margin-top: 25px;
 }
 
 /* ==========================================================================
-   BOTONES
-========================================================================== */
+   BOTONERA
+   ========================================================================== */
 .btn {
   border: none;
-
   padding: 12px 20px;
 
   border-radius: 10px;
-
   cursor: pointer;
 
   font-weight: 600;
@@ -635,201 +589,19 @@ body {
   color: white;
 }
 
-/* ==========================================================================
-   FOOTER
-========================================================================== */
+/* Footer global */
 .footer {
   margin-top: 30px;
-
   text-align: center;
 
   color: #7a8599;
 }
 
 /* ==========================================================================
-   RESPONSIVE TABLET
-========================================================================== */
-@media screen and (max-width: 992px) {
-  .sidebar {
-    width: 210px;
-    min-width: 210px;
-    max-width: 210px;
-  }
+   ARQUITECTURA DE DISEÑO RESPONSIVO (MEDIA QUERIES)
+   ========================================================================== */
 
-  .main-content {
-    margin-left: 210px;
-    width: calc(100% - 210px);
-
-    padding: 15px;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .summary-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .field[style*="grid-column"] {
-    grid-column: auto !important;
-  }
-
-  .topbar {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .search-box {
-    max-width: 100%;
-  }
-}
-
-/* ==========================================================================
-   RESPONSIVE MÓVIL
-========================================================================== */
-@media screen and (max-width: 768px) {
-  .sidebar {
-    width: 80px;
-    min-width: 80px;
-    max-width: 80px;
-
-    padding: 15px 8px;
-  }
-
-  .logo-img {
-    max-width: 50px;
-    padding: 5px;
-  }
-
-  /* SOLO ICONOS */
-  .menu a,
-  .logout a {
-    justify-content: center;
-
-    font-size: 0;
-
-    padding: 14px 8px;
-  }
-
-  .menu a i,
-  .logout a i {
-    font-size: 18px;
-    margin: 0;
-  }
-
-  .main-content {
-    margin-left: 80px;
-    width: calc(100% - 80px);
-
-    padding: 12px;
-  }
-
-  .page-title h1 {
-    font-size: 22px;
-  }
-
-  .page-title p {
-    font-size: 13px;
-  }
-
-  .form-card-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .form-card-header-left {
-    width: 100%;
-  }
-
-  .topbar-actions {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .user-profile {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .form-body {
-    padding: 15px;
-  }
-
-  .form-footer {
-    flex-direction: column;
-  }
-
-  .btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .results-table {
-    font-size: 12px;
-  }
-
-  .results-table th,
-  .results-table td {
-    padding: 10px;
-  }
-}
-
-/* ==========================================================================
-   RESPONSIVE MÓVIL PEQUEÑO
-========================================================================== */
-@media screen and (max-width: 480px) {
-  .sidebar {
-    width: 70px;
-    min-width: 70px;
-    max-width: 70px;
-  }
-
-  .main-content {
-    margin-left: 70px;
-    width: calc(100% - 70px);
-
-    padding: 10px;
-  }
-
-  .page-title h1 {
-    font-size: 19px;
-  }
-
-  .page-title p {
-    font-size: 12px;
-  }
-
-  .form-card-title {
-    font-size: 15px;
-  }
-
-  .form-card-subtitle {
-    font-size: 12px;
-  }
-
-  .field label {
-    font-size: 12px;
-  }
-
-  .field input,
-  .field select,
-  .field textarea {
-    font-size: 13px;
-  }
-
-  .summary-card strong {
-    font-size: 18px;
-  }
-}
-
-/* ========================================================================== */
-/* ========================= RESPONSIVE COMPLETO ============================ */
-/* ========================================================================== */
-
-/* =========================================================
-   RESPONSIVE - PANTALLAS GRANDES
-========================================================= */
+/* ── PANTALLAS GRANDES (Hasta 1400px) ─────────────────────────────────── */
 @media screen and (max-width: 1400px) {
   .main-content {
     padding: 22px;
@@ -844,13 +616,11 @@ body {
   }
 
   .results-table {
-    min-width: 780px;
+    min-width: 780px; /* Asegura un ancho legible mínimo antes de activar el scroll horizontal */
   }
 }
 
-/* =========================================================
-   RESPONSIVE - LAPTOPS / MEDIANAS
-========================================================= */
+/* ── LAPTOPS / DESKTOPS MEDIANAS (Hasta 1200px) ────────────────────────── */
 @media screen and (max-width: 1200px) {
   .sidebar {
     width: 250px;
@@ -861,7 +631,6 @@ body {
   .main-content {
     margin-left: 250px;
     width: calc(100% - 250px);
-
     padding: 20px;
   }
 
@@ -875,13 +644,13 @@ body {
   }
 
   .search-box {
-    flex: 1 1 100%;
+    flex: 1 1 100%; /* El buscador se expande para ocupar toda la fila disponible */
     max-width: 100%;
   }
 
   .topbar-actions {
     width: 100%;
-    justify-content: flex-end;
+    justify-content: flex-end; /* Mueve las acciones hacia la esquina opuesta */
   }
 
   .form-grid {
@@ -893,22 +662,18 @@ body {
   }
 }
 
-/* =========================================================
-   RESPONSIVE - TABLETS
-========================================================= */
+/* ── TABLETS (Hasta 992px) ────────────────────────────────────────────── */
 @media screen and (max-width: 992px) {
   .sidebar {
     width: 220px;
     min-width: 220px;
     max-width: 220px;
-
     padding: 18px 12px;
   }
 
   .main-content {
     margin-left: 220px;
     width: calc(100% - 220px);
-
     padding: 18px;
   }
 
@@ -916,7 +681,6 @@ body {
     max-width: 170px;
   }
 
-  /* Menú */
   .menu a {
     padding: 12px 14px;
     font-size: 14px;
@@ -934,7 +698,7 @@ body {
 
   .topbar {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Estructuración vertical completa de la barra superior */
     gap: 12px;
     flex-direction: column;
     align-items: stretch;
@@ -961,7 +725,7 @@ body {
   }
 
   .form-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Los campos del formulario pasan a ocupar filas completas */
   }
 
   .summary-grid {
@@ -973,9 +737,7 @@ body {
   }
 }
 
-/* =========================================================
-   RESPONSIVE - CELULARES GRANDES
-========================================================= */
+/* ── SMARTPHONES GRANDES (Hasta 768px) ─────────────────────────────────── */
 @media screen and (max-width: 768px) {
   .sidebar {
     width: 190px;
@@ -986,7 +748,6 @@ body {
   .main-content {
     margin-left: 190px;
     width: calc(100% - 190px);
-
     padding: 15px;
   }
 
@@ -998,7 +759,7 @@ body {
   .menu a {
     font-size: 12px;
     padding: 11px 10px;
-    justify-content: center;
+    justify-content: center; /* Centra los módulos de navegación para optimizar legibilidad móvil */
   }
 
   .menu a i {
@@ -1033,7 +794,7 @@ body {
   }
 
   .user-info {
-    display: none;
+    display: none; /* Oculta textos informativos secundarios para liberar área útil */
   }
 
   .user-profile {
@@ -1070,31 +831,27 @@ body {
   }
 
   .btn {
-    width: 100%;
+    width: 100%; /* Convierte los botones en elementos de bloque completo (Fácil interacción táctil) */
     justify-content: center;
   }
 
   .form-footer {
-    flex-direction: column;
+    flex-direction: column; /* Apila botones verticales (Cancelar abajo, Enviar arriba) */
   }
 }
 
-/* =========================================================
-   RESPONSIVE - CELULARES PEQUEÑOS
-========================================================= */
+/* ── SMARTPHONES PEQUEÑOS (Hasta 576px) ─────────────────────────────────── */
 @media screen and (max-width: 576px) {
   .sidebar {
     width: 170px;
     min-width: 170px;
     max-width: 170px;
-
     padding: 14px 10px;
   }
 
   .main-content {
     margin-left: 170px;
     width: calc(100% - 170px);
-
     padding: 12px;
   }
 

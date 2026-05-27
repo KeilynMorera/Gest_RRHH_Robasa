@@ -1,331 +1,304 @@
-/* =========================================================
-   CONFIGURACIÓN MATRIZ 9 BOX
-========================================================= */
+/* ==========================================================================
+   CONFIGURACIÓN MATRIZ 9 BOX & LAYOUT DE VISTA PREVIA
+   ========================================================================== */
 
-/* =========================
-   GRID GENERAL
-========================= */
+/* ── Grid General de Vista Previa ───────────────────────────────────────── */
 .preview-layout {
-    display: grid;
-    grid-template-columns: 340px 1fr;
-    gap: 28px;
-    align-items: stretch;
-    margin-top: 10px;
+  display: grid; /* Activa CSS Grid para control bidimensional */
+  grid-template-columns: 340px 1fr; /* Columna fija para la tarjeta de datos; columna fluida para la matriz */
+  gap: 28px; /* Separación uniforme entre la tarjeta y la matriz */
+  align-items: stretch; /* Forza a ambos elementos a heredar la misma altura máxima */
+  margin-top: 10px;
 }
 
-/* =========================================================
-   CARD PREVIEW
-========================================================= */
+/* ── Card Preview (Tarjeta informativa del cuadrante activo) ────────────── */
 .preview-card {
-    background: linear-gradient(
-        145deg,
-        #26317a,
-        #32419b
-    );
-    border-radius: 18px;
-    padding: 28px;
-    color: #ffffff;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 10px 28px rgba(38, 49, 122, 0.22);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 340px;
+  background: linear-gradient(
+    145deg,
+    #26317a,
+    #32419b
+  ); /* Degradado diagonal corporativo */
+  border-radius: 18px;
+  padding: 28px;
+  color: #ffffff;
+  position: relative; /* Contexto de posicionamiento para círculos abstractos */
+  overflow: hidden; /* Recorta los círculos decorativos que sobresalen de los bordes */
+  box-shadow: 0 10px 28px rgba(38, 49, 122, 0.22); /* Sombra suave basada en el color de marca */
+  display: flex;
+  flex-direction: column; /* Apila el contenido verticalmente */
+  justify-content: space-between; /* Empuja el título/badge arriba y los niveles abajo */
+  min-height: 340px; /* Sincronizado con la altura de la matriz para balance visual */
 }
 
-/* Decoración */
+/* Círculo decorativo translúcido superior derecho */
 .preview-card::before {
-    content: "";
-    position: absolute;
-    width: 180px;
-    height: 180px;
-    background: rgba(255,255,255,0.08);
-    border-radius: 50%;
-    top: -60px;
-    right: -60px;
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  background: rgba(255, 255, 255, 0.08); /* Blanco al 8% de opacidad */
+  border-radius: 50%;
+  top: -60px;
+  right: -60px;
 }
 
+/* Círculo decorativo translúcido inferior izquierdo */
 .preview-card::after {
-    content: "";
-    position: absolute;
-    width: 120px;
-    height: 120px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 50%;
-    bottom: -40px;
-    left: -40px;
+  content: "";
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background: rgba(255, 255, 255, 0.05); /* Blanco al 5% de opacidad */
+  border-radius: 50%;
+  bottom: -40px;
+  left: -40px;
 }
 
-/* Badge */
+/* Badge Numérico/Identificador del Cuadrante (Efecto Cristal) */
 .preview-badge {
-    width: 82px;
-    height: 82px;
-    border-radius: 20px;
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 34px;
-    font-weight: 800;
-    margin-bottom: 24px;
-    backdrop-filter: blur(4px);
-    position: relative;
-    z-index: 2;
+  width: 82px;
+  height: 82px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.12); /* Base translúcida */
+  border: 1px solid rgba(255, 255, 255, 0.15); /* Borde que simula reflejo de vidrio */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centrado perfecto del identificador */
+  font-size: 34px;
+  font-weight: 800;
+  margin-bottom: 24px;
+  backdrop-filter: blur(
+    4px
+  ); /* Efecto Glassmorphism: desenfoca lo que está detrás */
+  position: relative;
+  z-index: 2; /* Eleva el badge por encima de los círculos de fondo */
 }
 
-/* Título */
 .preview-card h3 {
-    font-size: 28px;
-    font-weight: 800;
-    margin-bottom: 14px;
-    position: relative;
-    z-index: 2;
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 14px;
+  position: relative;
+  z-index: 2;
 }
 
-/* Texto */
 .preview-card p {
-    font-size: 14px;
-    line-height: 1.7;
-    color: rgba(255,255,255,0.85);
-    position: relative;
-    z-index: 2;
+  font-size: 14px;
+  line-height: 1.7; /* Interlineado amplio para lectura confortable */
+  color: rgba(
+    255,
+    255,
+    255,
+    0.85
+  ); /* Blanco suavizado para evitar fatiga visual */
+  position: relative;
+  z-index: 2;
 }
 
-/* =========================================================
-   NIVELES
-========================================================= */
+/* ── Bloque de Niveles de Métrica (Potencial / Desempeño) ──────────────── */
 .preview-levels {
-    display: flex;
-    gap: 14px;
-    margin-top: 30px;
-    position: relative;
-    z-index: 2;
+  display: flex;
+  gap: 14px;
+  margin-top: 30px;
+  position: relative;
+  z-index: 2;
 }
 
 .mini-level {
-    flex: 1;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 14px;
-    padding: 14px;
-    text-align: center;
-    backdrop-filter: blur(6px);
+  flex: 1; /* Distribución equitativa del ancho entre los niveles */
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 14px;
+  text-align: center;
+  backdrop-filter: blur(6px);
 }
 
 .mini-level span {
-    display: block;
-    font-size: 12px;
-    color: rgba(255,255,255,0.75);
-    margin-bottom: 6px;
+  display: block; /* Salto de línea automático para la etiqueta */
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 6px;
 }
 
 .mini-level strong {
-    font-size: 24px;
-    font-weight: 800;
+  font-size: 24px;
+  font-weight: 800;
 }
 
-/* =========================================================
-   MATRIZ PREVIEW
-========================================================= */
+/* ── Contenedor de la Matriz Preview ────────────────────────────────────── */
 .preview-matrix {
-    background: #f8faff;
-    border: 1px solid #e6ebf5;
-    border-radius: 18px;
-    padding: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 340px;
-    position: relative;
+  background: #f8faff;
+  border: 1px solid #e6ebf5;
+  border-radius: 18px;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 340px;
+  position: relative; /* Obligatorio para anclar las etiquetas de los ejes */
 }
 
-/* Etiquetas laterales */
+/* Eje Y: Desempeño (Etiqueta lateral rotada) */
 .preview-matrix::before {
-    content: "Desempeño";
-    position: absolute;
-    left: -34px;
-    top: 50%;
-    transform: rotate(-90deg) translateY(-50%);
-    transform-origin: left;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: #6b7499;
+  content: "Desempeño";
+  position: absolute;
+  left: -34px;
+  top: 50%;
+  transform: rotate(-90deg) translateY(-50%); /* Rota el texto verticalmente y lo centra */
+  transform-origin: left; /* Fija el pivote de rotación a la izquierda */
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px; /* Espaciado de caracteres para look técnico */
+  color: #6b7499;
 }
 
+/* Eje X: Potencial (Etiqueta inferior central) */
 .preview-matrix::after {
-    content: "Potencial";
-    position: absolute;
-    bottom: -24px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: #6b7499;
+  content: "Potencial";
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%); /* Centrado horizontal exacto */
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #6b7499;
 }
 
-/* =========================================================
-   MINI MATRIZ
-========================================================= */
+/* ── Grilla Interna de la Mini Matriz (9 Box Grid) ──────────────────────── */
 .mini-ninebox {
-    display: grid;
-    grid-template-columns: repeat(3, 110px);
-    gap: 14px;
+  display: grid;
+  grid-template-columns: repeat(
+    3,
+    110px
+  ); /* Construye exactamente 3 columnas estables de 110px */
+  gap: 14px;
 }
 
-/* Cuadros */
+/* Cuadrantes individuales (Cajas nativas de la matriz) */
 .mini-box {
-    height: 110px;
-    border-radius: 16px;
-    background: #ffffff;
-    border: 2px solid #dbe3f2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    font-size: 22px;
-    color: #42507d;
-    transition: 0.25s ease;
-    position: relative;
-    overflow: hidden;
+  height: 110px; /* Caja perfectamente cuadrada (110x110px) */
+  border-radius: 16px;
+  background: #ffffff;
+  border: 2px solid #dbe3f2;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centrado interno del número de cuadrante */
+  font-weight: 800;
+  font-size: 22px;
+  color: #42507d;
+  transition: 0.25s ease; /* Transición armónica para el hover */
+  position: relative;
+  overflow: hidden;
 }
 
-/* Hover */
+/* Estado dinámico Hover sobre un cuadrante */
 .mini-box:hover {
-    transform: translateY(-3px);
-    border-color: #4567b7;
-    box-shadow: 0 10px 18px rgba(69, 103, 183, 0.15);
+  transform: translateY(-3px); /* Micro-elevación física */
+  border-color: #4567b7; /* Resalte de color de enfoque */
+  box-shadow: 0 10px 18px rgba(69, 103, 183, 0.15);
 }
 
-/* Caja activa */
+/* Estado Activo (Cuadrante seleccionado/actual del colaborador) */
 .mini-box.active {
-    background: linear-gradient(
-        145deg,
-        #e8600a,
-        #ff8c42
-    );
-    border-color: transparent;
-    color: #ffffff;
-    box-shadow: 0 12px 24px rgba(232, 96, 10, 0.28);
+  background: linear-gradient(
+    145deg,
+    #e8600a,
+    #ff8c42
+  ); /* Color corporativo naranja de realce */
+  border-color: transparent;
+  color: #ffffff;
+  box-shadow: 0 12px 24px rgba(232, 96, 10, 0.28);
 }
 
-/* Glow */
+/* Capa de iluminación extra para el cuadrante activo */
 .mini-box.active::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(255,255,255,0.08);
+  content: "";
+  position: absolute;
+  inset: 0; /* Expande el pseudoelemento al 100% de la caja */
+  background: rgba(255, 255, 255, 0.08);
 }
 
-/* =========================================================
-   CAMPOS MÁS GRANDES
-========================================================= */
+/* ── Inputs Extendidos y Formularios Adaptados ────────────────────────── */
 #perfil,
 #plan_accion {
-    min-height: 150px;
+  min-height: 150px; /* Otorga un área de tipeo generosa a bloques de texto */
 }
 
-/* =========================================================
-   SELECTS MÁS VISUALES
-========================================================= */
 .field select {
-    font-weight: 600;
+  font-weight: 600; /* Remarca las opciones de selección */
 }
 
-/* =========================================================
-   BOTONES
-========================================================= */
 .form-footer {
-    margin-top: 34px;
+  margin-top: 34px;
 }
 
-/* =========================
-   RESET
-========================= */
+/* ==========================================================================
+   RESET, FUENTES Y LAYOUT BASE
+   ========================================================================== */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Incluye padding y bordes dentro del tamaño total */
 }
 
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background: #f4f7fb;
-    color: #d35b1a;
+  font-family: "Segoe UI", sans-serif;
+  background: #f4f7fb;
+  color: #d35b1a;
 }
 
-/* =========================
-   LAYOUT GENERAL
-========================= */
+/* Contenedor Maestro de la Aplicación */
 .dashboard-container {
-    display: flex;
-    min-height: 100vh;
+  display: flex; /* Activa arquitectura flex para Sidebar + Main Content */
+  min-height: 100vh;
 }
 
-/* =========================
-   SIDEBAR
-========================= */
+/* ==========================================================================
+   SIDEBAR CORPORATIVO (Navegación Fija)
+   ========================================================================== */
 .sidebar {
-    width: 280px;
-    background: #26317a;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    padding: 30px 20px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-
-    /* Permite que el contenido haga scroll vertical */
-    overflow-y: auto;
-    overflow-x: hidden;
+  width: 280px;
+  background: #26317a;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 20px;
+  position: fixed; /* Ancla el menú de navegación para que no se desplace con el scroll */
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow-y: auto; /* Permite scroll independiente si el menú excede el alto físico */
+  overflow-x: hidden; /* Bloquea desplazamientos horizontales accidentales */
 }
 
-/* =========================
-   LOGO ROBASA
-========================= */
-
+/* ── Identidad de Marca (Logo) ────────────────────────────────────────── */
 .logo {
   text-align: center;
   margin-bottom: 35px;
 }
 
-/* Imagen */
 .logo-img {
   width: 320px;
   max-width: 100%;
   height: auto;
-
   display: block;
   margin: 0 auto 25px;
-
-  /* Hace que resalte */
   padding: 18px;
-
   border-radius: 22px;
-
   background: rgba(255, 255, 255, 0.08);
-
   border: 1px solid rgba(255, 255, 255, 0.12);
-
   backdrop-filter: blur(6px);
-
-  /* Glow */
+  /* Filtros avanzados de brillo y contraste aplicados por hardware */
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25))
     drop-shadow(0 0 25px rgba(255, 255, 255, 0.12)) brightness(1.18)
     contrast(1.15);
-
   transition: all 0.3s ease;
 }
 
-/* Hover elegante */
 .logo-img:hover {
   transform: scale(1.03);
-
   filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))
     drop-shadow(0 0 32px rgba(255, 255, 255, 0.18)) brightness(1.25)
     contrast(1.2);
@@ -333,631 +306,1053 @@ body {
 
 .logo span {
   font-size: 18px;
-  letter-spacing: 6px;
+  letter-spacing: 6px; /* Tracking ancho de alta gama */
   color: #9bc0ff;
 }
 
-/* Menú */
+/* ── Menú de Enlaces ──────────────────────────────────────────────────── */
 .menu {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding-right: 5px; /* evita que el texto se pegue al scroll */
+  flex: 1; /* Absorbe el espacio disponible empujando el botón Logout abajo */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 5px; /* Margen de seguridad anti-colisión con la barra de scroll */
 }
 
 .menu a {
-    color: #FEFEFD;
-    text-decoration: none;
-    padding: 14px 18px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    transition: 0.3s;
+  color: #fefefd;
+  text-decoration: none;
+  padding: 14px 18px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: 0.3s;
 }
 
+/* Enlace activo o bajo el puntero */
 .menu a:hover,
 .menu a.active {
-    background: #4567b7;
-    color: white;
+  background: #4567b7;
+  color: white;
 }
 
 .menu i {
-    width: 20px;
+  width: 20px; /* Normaliza el ancho del icono para alineación vertical perfecta */
 }
 
-/* Opcional: personalizar la barra de scroll */
+/* Personalización estética de la barra de desplazamiento del Sidebar (Motores Webkit) */
 .sidebar::-webkit-scrollbar {
-    width: 6px;
+  width: 6px;
 }
 
 .sidebar::-webkit-scrollbar-track {
-    background: transparent;
+  background: transparent;
 }
 
 .sidebar::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.25);
-    border-radius: 10px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
 }
 
 .sidebar::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.4);
 }
 
-/* Logout */
+/* Bloque de Cierre de Sesión */
 .logout {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255,255,255,0.15);
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15); /* Línea divisoria sutil integrada */
 }
 
 .logout a {
-    color: white;
-    text-decoration: none;
-    display: flex;
-    gap: 12px;
-    padding: 14px 18px;
-    border-radius: 12px;
+  color: white;
+  text-decoration: none;
+  display: flex;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 12px;
 }
 
 .logout a:hover {
-    background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
 }
 
-/* =========================
-   CONTENIDO PRINCIPAL
-========================= */
+/* ==========================================================================
+   ÁREA DE TRABAJO PRINCIPAL (MAIN CONTENT)
+   ========================================================================== */
 .main-content {
-    flex: 1;
-    margin-left: 280px;
-    padding: 30px;
+  flex: 1;
+  margin-left: 280px; /* Margen idéntico al ancho del sidebar para no encimarse */
+  padding: 30px;
 }
 
-/* =========================
-   TOPBAR
-========================= */
+/* ── Barra Superior de Acciones (Topbar) ──────────────────────────────── */
 .topbar {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 30px;
-    flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+  flex-wrap: wrap; /* Permite la caída de elementos en pantallas compactas */
 }
 
 .menu-toggle {
-    border: none;
-    background: none;
-    font-size: 26px;
-    cursor: pointer;
-    color: #293477;
+  border: none;
+  background: none;
+  font-size: 26px;
+  cursor: pointer;
+  color: #293477;
 }
 
 .page-title {
-    min-width: 260px;
+  min-width: 260px;
 }
 
 .page-title h1 {
-    font-size: 34px;
-    margin-bottom: 5px;
-    color: #d35b1a;
+  font-size: 34px;
+  margin-bottom: 5px;
+  color: #d35b1a;
 }
 
 .page-title p {
-    color: #7a8599;
-    font-size: 15px;
+  color: #7a8599;
+  font-size: 15px;
 }
 
-/* Buscador */
+/* Motor de Búsqueda de la Barra Superior */
 .search-box {
-    flex: 1;
-    max-width: 420px;
-    position: relative;
+  flex: 1;
+  max-width: 420px;
+  position: relative;
 }
 
 .search-box i {
-    position: absolute;
-    top: 50%;
-    left: 18px;
-    transform: translateY(-50%);
-    color: #8a94a6;
+  position: absolute;
+  top: 50%;
+  left: 18px;
+  transform: translateY(-50%); /* Centrado vertical matemático */
+  color: #8a94a6;
 }
 
 .search-box input {
-    width: 100%;
-    padding: 14px 18px 14px 48px;
-    border: 1px solid #dbe2ef;
-    border-radius: 12px;
-    font-size: 15px;
-    outline: none;
+  width: 100%;
+  padding: 14px 18px 14px 48px; /* Sangría izquierda extendida (48px) para no pisar el ícono */
+  border: 1px solid #dbe2ef;
+  border-radius: 12px;
+  font-size: 15px;
+  outline: none;
 }
 
 .search-box input:focus {
-    border-color: #0c45ca;
-    box-shadow: 0 0 0 3px rgba(31,100,255,0.1);
+  border-color: #0c45ca;
+  box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1);
 }
 
-/* Acciones */
+/* Bloque contenedor de perfiles y alertas */
 .topbar-actions {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 25px;
+  margin-left: auto; /* Empuja las acciones al extremo derecho del espacio disponible */
+  display: flex;
+  align-items: center;
+  gap: 25px;
 }
 
-/* Notificaciones */
+/* Notificaciones por Icono */
 .notification {
-    position: relative;
-    font-size: 22px;
-    cursor: pointer;
-    color: #1b2b4b;
+  position: relative;
+  font-size: 22px;
+  cursor: pointer;
+  color: #1b2b4b;
 }
 
+/* Indicador de Alerta (Badge Rojo de Notificaciones) */
 .badge {
-    position: absolute;
-    top: -8px;
-    right: -10px;
-    background: #ff4d4f;
-    color: white;
-    font-size: 11px;
-    font-weight: bold;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background: #ff4d4f;
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Usuario */
+/* Píldora de Perfil de Usuario */
 .user-profile {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: white;
-    padding: 8px 14px;
-    border-radius: 50px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  padding: 8px 14px;
+  border-radius: 50px; /* Cápsula ovalada simétrica */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
 }
 
 .user-profile img {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    object-fit: cover;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%; /* Fotografía circular perfecta */
+  object-fit: cover; /* Mantiene proporciones de la imagen sin deformar */
 }
 
 .user-info {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .user-info strong {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .user-info span {
-    font-size: 12px;
-    color: #7a8599;
+  font-size: 12px;
+  color: #7a8599;
 }
 
-/* =====================================================
-   FORMULARIO DE REGISTRO DE PERSONAS
-===================================================== */
+/* ==========================================================================
+   FORMULARIO DE REGISTRO DE COLABORADORES
+   ========================================================================== */
 
-/* ── Breadcrumb ───────────────────────────────────── */
+/* ── Hilo de Ariadna (Breadcrumb) ─────────────────────────────────────── */
 .breadcrumb {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 20px;
-    font-size: 13px;
-    color: #6b7499;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #6b7499;
 }
 
 .breadcrumb a {
-    color: #6b7499;
-    text-decoration: none;
-    transition: color 0.2s;
+  color: #6b7499;
+  text-decoration: none;
+  transition: color 0.2s;
 }
 
 .breadcrumb a:hover {
-    color: #e8600a;
+  color: #e8600a;
 }
 
 .breadcrumb .sep {
-    font-size: 10px;
-    color: #c5cbdf;
+  font-size: 10px;
+  color: #c5cbdf;
 }
 
 .breadcrumb .current {
-    color: #e8600a;
-    font-weight: 700;
+  color: #e8600a;
+  font-weight: 700;
 }
 
-/* ── Tarjeta principal del formulario ─────────────── */
+/* ── Estructura de Tarjeta de Formulario (Form Card) ──────────────────── */
 .form-card {
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(30, 42, 94, 0.08);
-    overflow: hidden;
-    margin-top: 20px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(30, 42, 94, 0.08);
+  overflow: hidden;
+  margin-top: 20px;
 }
 
-/* ── Encabezado de la tarjeta ─────────────────────── */
 .form-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
-    padding: 24px 30px;
-    border-bottom: 1px solid #e8ecf6;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 24px 30px;
+  border-bottom: 1px solid #e8ecf6;
+  flex-wrap: wrap;
 }
 
 .form-card-header-left {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
+/* Icono descriptivo de cabecera */
 .form-card-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 12px;
-    background: rgba(232, 96, 10, 0.12);
-    color: #e8600a;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: rgba(232, 96, 10, 0.12); /* Fondo naranja translúcido de acento */
+  color: #e8600a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0; /* Evita deformaciones si el texto de lado crece mucho */
 }
 
 .form-card-title {
-    font-size: 22px;
-    font-weight: 700;
-    color: #1a2042;
-    margin-bottom: 4px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a2042;
+  margin-bottom: 4px;
 }
 
 .form-card-subtitle {
-    font-size: 14px;
-    color: #6b7499;
-    margin: 0;
+  font-size: 14px;
+  color: #6b7499;
+  margin: 0;
 }
 
+/* Nota de campos obligatorios */
 .required-note {
-    font-size: 13px;
-    color: #6b7499;
+  font-size: 13px;
+  color: #6b7499;
 }
 
 .required-note span {
-    color: #e53935;
-    font-weight: bold;
+  color: #e53935; /* Rojo de alerta para el asterisco */
+  font-weight: bold;
 }
 
-/* ── Cuerpo del formulario ────────────────────────── */
 .form-body {
-    padding: 30px;
+  padding: 30px;
 }
 
-/* ── Secciones internas ───────────────────────────── */
+/* Secciones divisorias internas del formulario (Ej: Datos Personales, Laborales) */
 .form-section {
-    margin-bottom: 35px;
+  margin-bottom: 35px;
 }
 
 .form-section-title {
-    font-size: 12px;
-    font-weight: 700;
-    color: #e8600a;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 20px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #e8ecf6;
+  font-size: 12px;
+  font-weight: 700;
+  color: #e8600a;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e8ecf6;
 }
 
-/* ── Grid del formulario ──────────────────────────── */
+/* ── Form Grid (Estructura de distribución simétrica) ──────────────────── */
 .form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 22px 28px;
+  display: grid;
+  grid-template-columns: repeat(
+    2,
+    1fr
+  ); /* Divide el espacio nativo en dos columnas idénticas */
+  gap: 22px 28px; /* 22px separación vertical; 28px horizontal */
 }
 
-/* Campo que ocupa todo el ancho */
+/* Selector utilitario para elementos que requieran el 100% del ancho del Grid */
 .field-full {
-    grid-column: 1 / -1;
+  grid-column: 1 / -1; /* Se expande desde la primera línea de grilla hasta la última */
 }
 
-/* ── Campos individuales ─────────────────────────── */
+/* ── Campos e Inputs Individuales ─────────────────────────────────────── */
 .field {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  display: flex;
+  flex-direction: column; /* Fuerza un flujo vertical (Label arriba, Input abajo) */
+  gap: 8px;
 }
 
 .field label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #1a2042;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a2042;
 }
 
 .field-icon {
-    color: #6b7499;
-    width: 14px;
-    text-align: center;
+  color: #6b7499;
+  width: 14px;
+  text-align: center;
 }
 
+/* Indicador de obligatoriedad (Asterisco) */
 .req {
-    color: #e53935;
+  color: #e53935;
 }
 
-/* ── Inputs, Select y Textarea ────────────────────── */
+/* Reglas unificadas para controles de formulario */
 .field input,
 .field select,
 .field textarea {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1.5px solid #dde2f0;
-    border-radius: 10px;
-    background: #f7f8fc;
-    font-size: 14px;
-    font-family: inherit;
-    color: #1a2042;
-    outline: none;
-    transition: all 0.2s ease;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #dde2f0;
+  border-radius: 10px;
+  background: #f7f8fc;
+  font-size: 14px;
+  font-family: inherit;
+  color: #1a2042;
+  outline: none;
+  transition: all 0.2s ease;
 }
 
 .field textarea {
-    resize: vertical;
-    min-height: 100px;
+  resize: vertical; /* Limita el redimensionamiento del usuario únicamente al eje vertical */
+  min-height: 100px;
 }
 
+/* Estado de Enfoque Unificado (Focus) */
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-    border-color: #e8600a;
-    background: #ffffff;
-    box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
+  border-color: #e8600a;
+  background: #ffffff; /* Cambia a blanco puro para mejorar contraste al escribir */
+  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12); /* Halo de enfoque en color corporativo */
 }
 
-/* Placeholder */
 .field input::placeholder,
 .field textarea::placeholder {
-    color: #9aa3b8;
+  color: #9aa3b8;
 }
 
-/* Select personalizado */
+/* Inyección de Flecha Personalizada para Selects vía SVG codificado */
 .field select {
-    appearance: none;
-    cursor: pointer;
-    padding-right: 40px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7499' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
+  appearance: none; /* Elimina la flecha tosca y nativa del sistema operativo */
+  cursor: pointer;
+  padding-right: 40px; /* Reserva espacio a la derecha para que el texto no tape la flecha */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7499' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center; /* Clava la flecha de manera milimétrica en el extremo derecho */
 }
 
-/* ── Footer del formulario ───────────────────────── */
+/* Footer del Formulario (Contenedor de Botones) */
 .form-footer {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
-    padding-top: 24px;
-    border-top: 1px solid #e8ecf6;
+  display: flex;
+  justify-content: flex-end; /* Alinea botones al extremo derecho inferior */
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 24px;
+  border-top: 1px solid #e8ecf6;
 }
 
-/* ── Botones ─────────────────────────────────────── */
+/* ── Botonera del Sistema ─────────────────────────────────────────────── */
 .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 11px 22px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
+/* Botón Fantasma / Cancelar */
 .btn-ghost {
-    background: transparent;
-    border: 1.5px solid #dde2f0;
-    color: #6b7499;
+  background: transparent;
+  border: 1.5px solid #dde2f0;
+  color: #6b7499;
 }
 
 .btn-ghost:hover {
-    background: #f0f2f8;
-    color: #1e2a5e;
-    border-color: #1e2a5e;
+  background: #f0f2f8;
+  color: #1e2a5e;
+  border-color: #1e2a5e;
 }
 
+/* Botón Secundario / Alternativo */
 .btn-secondary {
-    background: #1e2a5e;
-    color: #ffffff;
+  background: #1e2a5e;
+  color: #ffffff;
 }
 
 .btn-secondary:hover {
-    background: #2f438f;
+  background: #2f438f;
 }
 
+/* Botón Primario / Guardar / Enviar */
 .btn-primary {
-    background: #e8600a;
-    color: #ffffff;
-    box-shadow: 0 4px 14px rgba(232, 96, 10, 0.25);
+  background: #e8600a;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(232, 96, 10, 0.25);
 }
 
 .btn-primary:hover {
-    background: #f07530;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(232, 96, 10, 0.35);
+  background: #f07530;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(232, 96, 10, 0.35);
 }
 
-/* =========================
-   FOOTER
-========================= */
+/* Footer global del sitio */
 .footer {
-    margin-top: 30px;
-    text-align: center;
-    color: #7a8599;
-    font-size: 14px;
+  margin-top: 30px;
+  text-align: center;
+  color: #7a8599;
+  font-size: 14px;
 }
 
-/* =========================================================
-   CARGA DE FOTOGRAFÍA
-========================================================= */
+/* ==========================================================================
+   MÓDULO DE CARGA DE FOTOGRAFÍA (UPLOADER)
+   ========================================================================== */
 .photo-upload {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    padding: 20px;
-    border: 2px dashed #dde2f0;
-    border-radius: 12px;
-    background: #f8faff;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 20px;
+  border: 2px dashed #dde2f0; /* Borde discontinuo indicativo de zona de arrastre (Dropzone) */
+  border-radius: 12px;
+  background: #f8faff;
 }
 
-/* Vista previa circular */
+/* Contenedor Circular de Vista Previa */
 .photo-preview {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    border: 3px solid #e8600a;
-    background: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    flex-shrink: 0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid #e8600a;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* Imagen dentro del contenedor */
 .photo-preview img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-/* Si no existe imagen, mostrar ícono centrado */
+/* Icono Avatar por Defecto (Inyectado por CSS via FontAwesome si no hay imagen de usuario) */
 .photo-preview::before {
-    content: "\f007";
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
-    font-size: 42px;
-    color: #c3c9dc;
-    position: absolute;
+  content: "\f007"; /* Glifo unicode unicode de perfil de usuario */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 42px;
+  color: #c3c9dc;
+  position: absolute;
 }
 
-/* Oculta el ícono cuando la imagen sí cargó */
+/* Comportamiento Condicional Avanzado: Esconde el ícono de tipografía si el elemento img posee datos válidos */
 .photo-preview img[src]:not([src=""]) + .photo-preview::before {
-    display: none;
+  display: none;
 }
 
-/* Controles del upload */
 .photo-upload-controls {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-/* Input file */
 .photo-upload-controls input[type="file"] {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1.5px solid #e8600a;
-    border-radius: 10px;
-    background: #ffffff;
-    font-family: inherit;
-    font-size: 14px;
-    color: #1a2042;
-    cursor: pointer;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #e8600a;
+  border-radius: 10px;
+  background: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  color: #1a2042;
+  cursor: pointer;
 }
 
-/* Texto de ayuda */
 .help-text {
-    font-size: 12px;
-    color: #e8600a;
-    line-height: 1.5;
+  font-size: 12px;
+  color: #e8600a;
+  line-height: 1.5;
 }
 
-/* ==========================================
-   TEXTAREA - DESCRIPCIÓN DE EMPRESA
-========================================== */
+/* ==========================================================================
+   REGLAS ESPECÍFICAS ADICIONALES Y COMPLEMENTOS INTERFACES
+   ========================================================================== */
+
+/* Sobreescritura avanzada de campos de texto multilínea */
 .field textarea {
-    width: 100%;
-    border: 1.5px solid #dde2f0;
-    border-radius: 8px;
-    padding: 12px 14px;
-    font-size: 13.5px;
-    font-family: inherit;
-    color: #1a2042;
-    background: #f7f8fc;
-    outline: none;
-    resize: vertical;
-    min-height: 130px;
-    line-height: 1.6;
-    transition: border-color .2s, box-shadow .2s, background .2s;
+  width: 100%;
+  border: 1.5px solid #dde2f0;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 13.5px;
+  font-family: inherit;
+  color: #1a2042;
+  background: #f7f8fc;
+  outline: none;
+  resize: vertical;
+  min-height: 130px;
+  line-height: 1.6;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background 0.2s;
 }
 
 .field textarea:focus {
-    border-color: #e8600a;
-    box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
-    background: #ffffff;
+  border-color: #e8600a;
+  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
+  background: #ffffff;
 }
 
 .field textarea::placeholder {
-    color: #9aa4bd;
+  color: #9aa4bd;
 }
 
-/* Campo que ocupa todo el ancho */
-.field-full {
-    grid-column: 1 / -1;
-}
-
-/* Texto de ayuda */
 .field-help {
-    font-size: 12px;
-    color: #7a8599;
-    margin-top: 4px;
+  font-size: 12px;
+  color: #7a8599;
+  margin-top: 4px;
 }
 
-/* =========================================================
-   FILTER BAR
-========================================================= */
+/* Barra de Filtrado de Listas / Tablas */
 .filter-bar {
-    display: flex;
-    align-items: end;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-bottom: 32px;
-    padding: 20px;
-    border-radius: 14px;
-    background: #f7f8fc;
-    border: 1.5px solid #e8ecf6;
+  display: flex;
+  align-items: end; /* Alinea el botón de búsqueda con la base de los inputs */
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+  padding: 20px;
+  border-radius: 14px;
+  background: #f7f8fc;
+  border: 1.5px solid #e8ecf6;
 }
 
 .filter-field {
-    min-width: 240px;
-    flex: 1;
+  min-width: 240px;
+  flex: 1;
 }
 
-
-/* =========================================================
-   STATS GRID
-========================================================= */
+/* Grilla de Bloques Estadísticos (KPI Cards Dashboard) */
 .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(220px, 1fr)
+  ); /* Auto-ajuste de columnas de forma fluida según espacio disponible */
+  gap: 22px;
+  margin-bottom: 32px;
+}
+
+/* ========================================================================== 
+   DISEÑO RESPONSIVO (SISTEMA DE MEDIA QUERIES OPTIMIZADO)
+   Garantiza estabilidad absoluta, rompe desbordamientos y controla el Viewport
+   ========================================================================== */
+
+/* Bloqueo y Blindaje Global Contra Desbordamientos Horizontales Accidentales */
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+img,
+table,
+textarea,
+input,
+select {
+  max-width: 100%; /* Asegura que ningún control nativo rompa el contenedor de su padre */
+}
+
+/* ── PANTALLAS GRANDES (Hasta 1400px) ─────────────────────────────────── */
+@media screen and (max-width: 1400px) {
+  .main-content {
+    padding: 22px;
+  }
+
+  .preview-layout {
+    grid-template-columns: 300px 1fr; /* Achica proporcionalmente la tarjeta informativa lateral */
     gap: 22px;
-    margin-bottom: 32px;
+  }
+
+  .mini-ninebox {
+    grid-template-columns: repeat(
+      3,
+      minmax(85px, 1fr)
+    ); /* Permite encogimiento elástico de los cuadrantes */
+  }
+
+  .mini-box {
+    height: 95px; /* Escala hacia abajo el alto de la caja */
+    font-size: 20px;
+  }
+
+  .search-box {
+    max-width: 380px;
+  }
+}
+
+/* ── LAPTOPS / DESKTOPS MEDIANAS (Hasta 1200px) ────────────────────────── */
+@media screen and (max-width: 1200px) {
+  .sidebar {
+    width: 250px;
+    min-width: 250px;
+    max-width: 250px;
+  }
+
+  .main-content {
+    margin-left: 250px;
+    width: calc(
+      100% - 250px
+    ); /* Deducción matemática exacta para calcular el espacio neto de la pantalla */
+    padding: 20px;
+  }
+
+  .topbar {
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  .page-title {
+    width: 100%;
+  }
+
+  .search-box {
+    flex: 1 1 100%; /* Fuerza al buscador a expandirse al 100% ocupando una línea entera */
+    max-width: 100%;
+  }
+
+  .topbar-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  /* REESTRUCTURACIÓN DE LA MATRIZ: Se rompe el flujo de columnas paralelas */
+  .preview-layout {
+    grid-template-columns: 1fr; /* Apila la Tarjeta Informativa arriba y la Matriz abajo */
+  }
+
+  .preview-card,
+  .preview-matrix {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .form-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .preview-levels {
+    flex-wrap: wrap; /* Habilita la envoltura elástica si los textos de métricas colisionan */
+  }
+}
+
+/* ── TABLETS (Hasta 992px) ────────────────────────────────────────────── */
+@media screen and (max-width: 992px) {
+  .sidebar {
+    width: 220px;
+    min-width: 220px;
+    max-width: 220px;
+    padding: 18px 12px;
+  }
+
+  .main-content {
+    margin-left: 220px;
+    width: calc(100% - 220px);
+    padding: 18px;
+  }
+
+  .logo-img {
+    max-width: 170px;
+  }
+
+  .menu a {
+    font-size: 13px;
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .topbar {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .search-box {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .topbar-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr; /* Desarma la grilla del formulario a una única columna vertical */
+  }
+
+  .preview-levels {
+    flex-direction: column; /* Apila las etiquetas de métrica una debajo de otra */
+  }
+
+  /* PROTECCIÓN DE LA MATRIZ EN TABLET */
+  .preview-matrix {
+    overflow-x: auto; /* Si la pantalla se reduce de más, la grilla 9-Box adquiere scroll de protección */
+    padding: 20px;
+  }
+
+  .mini-ninebox {
+    width: 100%;
+    grid-template-columns: repeat(3, minmax(80px, 1fr));
+    gap: 10px;
+  }
+
+  .mini-box {
+    aspect-ratio: 1 / 1; /* Fuerza matemática: Mantener proporción simétrica perfecta cuadrada */
+    height: auto;
+    font-size: 18px;
+  }
+
+  .photo-upload {
+    flex-direction: column; /* Apila la foto de perfil arriba del control de input file */
+    align-items: center;
+    text-align: center;
+  }
+
+  .photo-upload-controls {
+    width: 100%;
+  }
+}
+
+/* ── SMARTPHONES GRANDES (Hasta 768px) ─────────────────────────────────── */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 190px;
+    min-width: 190px;
+    max-width: 190px;
+  }
+
+  .main-content {
+    margin-left: 190px;
+    width: calc(100% - 190px);
+    padding: 15px;
+  }
+
+  .logo-img {
+    max-width: 140px;
+    padding: 10px;
+  }
+
+  .menu a {
+    font-size: 12px;
+    padding: 11px 10px;
+  }
+
+  .menu i {
+    width: 16px;
+  }
+
+  .page-title h1 {
+    font-size: 22px;
+  }
+
+  .page-title p {
+    font-size: 12px;
+  }
+
+  .search-box input {
+    padding: 12px 14px 12px 40px;
+    font-size: 13px;
+  }
+
+  .search-box i {
+    left: 13px;
+  }
+
+  .topbar-actions {
+    justify-content: space-between;
+  }
+
+  .user-info {
+    display: none; /* Remueve nombres del usuario para ahorrar espacio en barra superior */
+  }
+
+  .user-profile {
+    border-radius: 14px;
+    padding: 6px 8px;
+  }
+
+  .user-profile img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .form-body,
+  .form-card-header {
+    padding: 16px;
+  }
+
+  .form-card-title {
+    font-size: 16px;
+  }
+
+  .form-card-subtitle {
+    font-size: 12px;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 13px;
+    padding: 11px 12px;
+  }
+
+  .preview-card {
+    padding: 20px;
+  }
+
+  .preview-card h3 {
+    font-size: 22px;
+  }
+
+  .preview-badge {
+    width: 70px;
+    height: 70px;
+    font-size: 28px;
+  }
+
+  .mini-ninebox {
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+  }
+
+  .mini-box {
+    width: 100%;
+    min-width: 0;
+    font-size: 16px;
+  }
+
+  .btn {
+    width: 100%; /* Expande botones de acción para clics cómodos con el pulgar */
+    justify-content: center;
+  }
+
+  .form-footer {
+    flex-direction: column; /* Apila botones de guardar/cancelar uno arriba del otro */
+  }
+}
+
+/* ── SMARTPHONES PEQUEÑOS / PANTALLAS ULTRA COMPACTAS (Hasta 576px) ────── */
+@media screen and (max-width: 576px) {
+  .sidebar {
+    width: 170px;
+    min-width: 170px;
+    max-width: 170px;
+    padding: 14px 10px;
+  }
+
+  .main-content {
+    margin-left: 170px;
+    width: calc(100% - 170px);
+    padding: 12px;
+  }
+
+  .logo-img {
+    max-width: 120px;
+  }
+
+  .menu {
+    gap: 6px;
+  }
+
+  .menu a,
+  .logout a {
+    font-size: 11px;
+    padding: 10px 8px;
+    border-radius: 10px;
+  }
+
+  .page-title h1 {
+    font-size: 20px;
+    margin-bottom: 2px;
+  }
+
+  .page-title p {
+    font-size: 11px;
+  }
+
+  .breadcrumb {
+    font-size: 11px;
+  }
+
+  .form-card {
+    border-radius: 12px;
+  }
+
+  .form-card-header-left {
+    gap: 10px;
+  }
+
+  .form-card-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  .form-card-title {
+    font-size: 14px;
+  }
+
+  .required-note {
+    font-size: 11px;
+  }
+
+  .form-section-title {
+    font-size: 12px;
+  }
+
+  .field label {
+    font-size: 12px;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 12px;
+  }
+
+  .preview-card {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .preview-card h3 {
+    font-size: 18px;
+  }
+
+  .preview-card p {
+    font-size: 12px;
+  }
+
+  .preview-badge {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+  }
+
+  .mini-level strong {
+    font-size: 18px;
+  }
+
+  .preview-matrix {
+    padding: 14px;
+  }
+
+  .mini-ninebox {
+    gap: 6px;
+  }
+
+  .mini-box {
+    font-size: 13px;
+    border-radius: 10px;
+  }
+
+  .preview-matrix::before,
+  .preview-matrix::after {
+    font-size: 10px; /* Reduce tipografía de etiquetas de los ejes X/Y */
+  }
+
+  .footer {
+    font-size: 11px;
+  }
 }

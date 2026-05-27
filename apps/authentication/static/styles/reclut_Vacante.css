@@ -1,222 +1,227 @@
-/* =========================================================
-   PROGRESO DEL CANDIDATO
-========================================================= */
-
+/* ==========================================================================
+   PROGRESO DEL CANDIDATO (Contenedor de Pasos del Formulario / Stepper)
+   ========================================================================== */
 .candidate-progress {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 28px 10px;
-  flex-wrap: wrap;
+  display: flex; /* Alinea los pasos y las líneas conectoras de forma horizontal */
+  align-items: center; /* Centra verticalmente los elementos internos */
+  justify-content: space-between; /* Distribuye el espacio uniformemente entre cada paso */
+  gap: 18px; /* Espaciado de seguridad entre componentes */
+  padding: 28px 10px; /* Margen interno (arriba/abajo izquierda/derecha) */
+  flex-wrap: wrap; /* Permite pasar a otra línea si el espacio horizontal se agota */
 }
 
-/* =========================================================
-   STEP
-========================================================= */
+/* ==========================================================================
+   STEP (Contenedor de un Paso Individual)
+   ========================================================================== */
 .progress-step {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  position: relative;
-  z-index: 2;
+  display: flex; /* Alinea el círculo numérico y los textos de lado a side */
+  align-items: center; /* Centrado vertical del círculo con el texto */
+  gap: 14px; /* Separación entre el círculo y la información textual */
+  position: relative; /* Define un contexto de posicionamiento para elementos internos */
+  z-index: 2; /* Asegura que el paso quede por encima de las líneas de progreso */
 }
 
-/* =========================================================
-   CÍRCULO
-========================================================= */
+/* ==========================================================================
+   CÍRCULO NUMÉRICO DE PASO
+   ========================================================================== */
 .step-circle {
-  width: 62px;
-  height: 62px;
-  border-radius: 50%;
-  background: #eef2fb;
-  border: 2px solid #d8e0f0;
-  display: flex;
+  width: 62px; /* Ancho fijo para mantener la simetría */
+  height: 62px; /* Alto idéntico al ancho */
+  border-radius: 50%; /* Transforma la caja en una circunferencia perfecta */
+  background: #eef2fb; /* Color de fondo por defecto (Gris/Azul claro) */
+  border: 2px solid #d8e0f0; /* Borde sutil de estado inactivo */
+  display: flex; /* Inicializa Flexbox para centrar el número */
   align-items: center;
-  justify-content: center;
-  color: #7b88a8;
-  font-size: 22px;
-  transition: all 0.3s ease;
-  flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(30, 42, 94, 0.05);
+  justify-content: center; /* Centra con precisión el número en horizontal y vertical */
+  color: #7b88a8; /* Color del número apagado por defecto */
+  font-size: 22px; /* Tamaño legible de la fuente numérica */
+  transition: all 0.3s ease; /* Suaviza las animaciones al cambiar de estado (color, escala) */
+  flex-shrink: 0; /* Evita que el círculo se deforme o aplaste si hay poco espacio */
+  box-shadow: 0 4px 12px rgba(30, 42, 94, 0.05); /* Sombra tenue para dar volumen */
 }
 
-/* =========================================================
-   TEXTO
-========================================================= */
+/* ==========================================================================
+   TEXTO INFORMATIVO DE PASO
+   ========================================================================== */
 .step-content {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  flex-direction: column; /* Apila el título en negrita arriba y la descripción abajo */
+  gap: 4px; /* Distancia entre título y subtítulo */
 }
 
 .step-content strong {
   font-size: 15px;
-  color: #1a2042;
+  color: #1a2042; /* Tono azul oscuro para destacar el título */
   font-weight: 700;
 }
 
 .step-content span {
   font-size: 13px;
-  color: #7a8599;
+  color: #7a8599; /* Tono grisáceo secundario para el rol o descripción */
 }
 
-/* =========================================================
-   LÍNEA
-========================================================= */
+/* ==========================================================================
+   LÍNEA CONECTORAS DE PROGRESO
+   ========================================================================== */
 .progress-line {
-  flex: 1;
-  height: 5px;
-  background: #dfe6f4;
-  border-radius: 50px;
-  min-width: 60px;
+  flex: 1; /* Crece y ocupa todo el espacio disponible entre pasos */
+  height: 5px; /* Grosor de la línea */
+  background: #dfe6f4; /* Color gris inactivo base */
+  border-radius: 50px; /* Extremos redondeados */
+  min-width: 60px; /* Asegura que la línea conserve una longitud mínima visible */
   position: relative;
-  overflow: hidden;
+  overflow: hidden; /* Mantiene cualquier efecto interno dentro del marco redondeado */
 }
 
-/* Línea activa */
+/* Línea de estado activa o completada */
 .progress-line.active {
-  background: linear-gradient(90deg, #e8600a, #ff9a57);
-  box-shadow: 0 2px 8px rgba(232, 96, 10, 0.25);
+  background: linear-gradient(
+    90deg,
+    #e8600a,
+    #ff9a57
+  ); /* Degradado moderno de naranja a claro */
+  box-shadow: 0 2px 8px rgba(232, 96, 10, 0.25); /* Resplandor sutil color naranja */
 }
 
-/* =========================================================
-   PASO COMPLETADO
-========================================================= */
+/* ==========================================================================
+   ESTADO: PASO COMPLETADO
+   ========================================================================== */
 .progress-step.completed .step-circle {
-  background: linear-gradient(145deg, #28c76f, #48e28c);
-  border-color: transparent;
-  color: #ffffff;
-  box-shadow: 0 8px 18px rgba(40, 199, 111, 0.28);
+  background: linear-gradient(
+    145deg,
+    #28c76f,
+    #48e28c
+  ); /* Degradado verde de éxito */
+  border-color: transparent; /* Oculta el borde gris inicial */
+  color: #ffffff; /* Transforma el número o check a blanco */
+  box-shadow: 0 8px 18px rgba(40, 199, 111, 0.28); /* Sombra flotante de color verde */
 }
 
 .progress-step.completed .step-content strong {
-  color: #1e7b4d;
+  color: #1e7b4d; /* Cambia el texto del título a un verde oscuro elegante */
 }
 
-/* =========================================================
-   PASO ACTIVO
-========================================================= */
+/* ==========================================================================
+   ESTADO: PASO ACTIVO (Paso actual donde se encuentra el usuario)
+   ========================================================================== */
 .progress-step.active .step-circle {
-  background: linear-gradient(145deg, #e8600a, #ff9a57);
+  background: linear-gradient(
+    145deg,
+    #e8600a,
+    #ff9a57
+  ); /* Degradado de enfoque naranja */
   border-color: transparent;
   color: #ffffff;
-  transform: scale(1.05);
-  box-shadow: 0 10px 22px rgba(232, 96, 10, 0.28);
+  transform: scale(
+    1.05
+  ); /* Agranda el círculo un 5% para guiar el foco de atención */
+  box-shadow: 0 10px 22px rgba(232, 96, 10, 0.28); /* Sombra de presencia más pronunciada */
 }
 
 .progress-step.active .step-content strong {
-  color: #e8600a;
+  color: #e8600a; /* Resalta el título en naranja */
 }
 
 .progress-step.active .step-content span {
   color: #a35b26;
-  font-weight: 600;
+  font-weight: 600; /* Aumenta el grosor de la descripción para mayor contraste */
 }
 
-/* =========================================================
-   EFECTO HOVER
-========================================================= */
+/* ==========================================================================
+   EFECTO INTERACTIVO (HOVER)
+   ========================================================================== */
 .progress-step:hover .step-circle {
-  transform: translateY(-3px);
+  transform: translateY(
+    -3px
+  ); /* Desplaza sutilmente el círculo hacia arriba al pasar el mouse */
 }
 
-/* =========================
-   RESET
-========================= */
+/* ==========================================================================
+   RESET GENERAL Y COMPORTAMIENTO BASE
+   ========================================================================== */
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  box-sizing: border-box; /* Incluye los paddings y borders dentro del ancho/alto establecido */
 }
 
 body {
   font-family: "Segoe UI", sans-serif;
-  background: #f4f7fb;
-  color: #d35b1a;
+  background: #f4f7fb; /* Fondo general grisáceo claro para descansar la vista */
+  color: #d35b1a; /* Color corporativo base para tipografías */
 }
 
-/* =========================
+/* ==========================================================================
    LAYOUT GENERAL
-========================= */
+   ========================================================================== */
 .dashboard-container {
-  display: flex;
-  min-height: 100vh;
+  display: flex; /* Ubica el sidebar y el contenido principal frente a frente */
+  min-height: 100vh; /* Asegura que el contenedor cubra todo el alto del navegador */
 }
 
-/* =========================
-   SIDEBAR
-========================= */
+/* ==========================================================================
+   SIDEBAR (Menú de Navegación Lateral Fijo)
+   ========================================================================== */
 .sidebar {
-  width: 280px;
-  background: #26317a;
+  width: 280px; /* Ancho predeterminado de la barra */
+  background: #26317a; /* Color azul marino premium */
   color: #ffffff;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Distribuye el logo, menú y logout en un eje vertical */
   padding: 30px 20px;
-  position: fixed;
+  position: fixed; /* Ancla permanentemente el elemento a la ventana del navegador */
   top: 0;
   left: 0;
   bottom: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow-y: auto; /* Permite hacer scroll interno si el menú es muy largo */
+  overflow-x: hidden; /* Previene desbordamientos horizontales accidentales */
 }
 
-/* =========================
-   LOGO ROBASA
-========================= */
-
+/* ==========================================================================
+   LOGO CORPORATIVO (ROBASA)
+   ========================================================================== */
 .logo {
   text-align: center;
   margin-bottom: 35px;
 }
 
-/* Imagen */
+/* Caja de Imagen de Logo Avanzada */
 .logo-img {
   width: 320px;
-  max-width: 100%;
+  max-width: 100%; /* Evita el desborde si el sidebar se reduce */
   height: auto;
-
   display: block;
   margin: 0 auto 25px;
-
-  /* Hace que resalte */
   padding: 18px;
-
   border-radius: 22px;
+  background: rgba(255, 255, 255, 0.08); /* Fondo blanco traslúcido */
+  border: 1px solid rgba(255, 255, 255, 0.12); /* Borde cristalino */
+  backdrop-filter: blur(6px); /* Efecto Glassmorphism (Desenfoque de fondo) */
 
-  background: rgba(255, 255, 255, 0.08);
-
-  border: 1px solid rgba(255, 255, 255, 0.12);
-
-  backdrop-filter: blur(6px);
-
-  /* Glow */
+  /* Efecto avanzado de brillo (Glow) usando sombras superpuestas */
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25))
     drop-shadow(0 0 25px rgba(255, 255, 255, 0.12)) brightness(1.18)
     contrast(1.15);
-
   transition: all 0.3s ease;
 }
 
-/* Hover elegante */
+/* Estado Hover del Logo */
 .logo-img:hover {
-  transform: scale(1.03);
-
+  transform: scale(1.03); /* Escala suave de tamaño */
   filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))
     drop-shadow(0 0 32px rgba(255, 255, 255, 0.18)) brightness(1.25)
-    contrast(1.2);
+    contrast(1.2); /* Potencia el efecto de luz del logo */
 }
 
 .logo span {
   font-size: 18px;
-  letter-spacing: 6px;
-  color: #9bc0ff;
+  letter-spacing: 6px; /* Espaciado de lujo entre caracteres */
+  color: #9bc0ff; /* Tono celeste de resalte */
 }
 
-/* Menú */
+/* Menú de Navegación */
 .menu {
-  flex: 1;
+  flex: 1; /* Toma todo el espacio disponible para empujar el logout al final */
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -225,26 +230,27 @@ body {
 
 .menu a {
   color: #fefefd;
-  text-decoration: none;
+  text-decoration: none; /* Quita el subrayado nativo de enlaces */
   padding: 14px 18px;
   border-radius: 12px;
   display: flex;
-  align-items: center;
+  align-items: center; /* Alinea los iconos de FontAwesome horizontalmente con el texto */
   gap: 12px;
   transition: 0.3s;
 }
 
+/* Hover e indicador de enlace activo */
 .menu a:hover,
 .menu a.active {
-  background: #4567b7;
+  background: #4567b7; /* Fondo de resalte */
   color: #ffffff;
 }
 
 .menu i {
-  width: 20px;
+  width: 20px; /* Ancho fijo para los íconos para que el texto subsiguiente quede alineado simétricamente */
 }
 
-/* Scroll del sidebar */
+/* Personalización del Scrollbar en Sidebar (Webkit) */
 .sidebar::-webkit-scrollbar {
   width: 6px;
 }
@@ -262,11 +268,11 @@ body {
   background: rgba(255, 255, 255, 0.4);
 }
 
-/* Logout */
+/* Botón Cerrar Sesión (Logout) */
 .logout {
   margin-top: 20px;
   padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.15); /* Separador lineal discreto */
 }
 
 .logout a {
@@ -282,18 +288,18 @@ body {
   background: rgba(255, 255, 255, 0.08);
 }
 
-/* =========================
-   CONTENIDO PRINCIPAL
-========================= */
+/* ==========================================================================
+   CONTENIDO PRINCIPAL (Espacio de trabajo principal)
+   ========================================================================== */
 .main-content {
   flex: 1;
-  margin-left: 280px;
+  margin-left: 280px; /* Espacio correspondiente al ancho del sidebar para no superponerse */
   padding: 30px;
 }
 
-/* =========================
-   TOPBAR
-========================= */
+/* ==========================================================================
+   BARRA SUPERIOR (Topbar)
+   ========================================================================== */
 .topbar {
   display: flex;
   align-items: center;
@@ -325,24 +331,24 @@ body {
   font-size: 15px;
 }
 
-/* Buscador */
+/* Motor de búsqueda de barra superior */
 .search-box {
-  flex: 1;
+  flex: 1; /* Se expande de manera fluida */
   max-width: 420px;
-  position: relative;
+  position: relative; /* Base de posicionamiento absoluto para el ícono de lupa */
 }
 
 .search-box i {
   position: absolute;
   top: 50%;
   left: 18px;
-  transform: translateY(-50%);
+  transform: translateY(-50%); /* Centrado vertical absoluto exacto */
   color: #8a94a6;
 }
 
 .search-box input {
   width: 100%;
-  padding: 14px 18px 14px 48px;
+  padding: 14px 18px 14px 48px; /* Padding extra a la izquierda para no pisar el ícono de lupa */
   border: 1px solid #dbe2ef;
   border-radius: 12px;
   font-size: 15px;
@@ -351,18 +357,18 @@ body {
 
 .search-box input:focus {
   border-color: #0c45ca;
-  box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1);
+  box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1); /* Anillo de enfoque translúcido */
 }
 
-/* Acciones */
+/* Bloque de Acciones (Notificaciones + Perfil) */
 .topbar-actions {
-  margin-left: auto;
+  margin-left: auto; /* Empuja todo el bloque magnéticamente a la derecha */
   display: flex;
   align-items: center;
   gap: 25px;
 }
 
-/* Notificaciones */
+/* Notificación */
 .notification {
   position: relative;
   font-size: 22px;
@@ -370,11 +376,12 @@ body {
   color: #1b2b4b;
 }
 
+/* Globo indicador numérico */
 .badge {
   position: absolute;
   top: -8px;
   right: -10px;
-  background: #ff4d4f;
+  background: #ff4d4f; /* Color de alerta rojo */
   color: white;
   font-size: 11px;
   font-weight: bold;
@@ -386,14 +393,14 @@ body {
   justify-content: center;
 }
 
-/* Usuario */
+/* Perfil del Usuario */
 .user-profile {
   display: flex;
   align-items: center;
   gap: 12px;
   background: white;
   padding: 8px 14px;
-  border-radius: 50px;
+  border-radius: 50px; /* Forma de píldora redonda */
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   cursor: pointer;
 }
@@ -402,7 +409,7 @@ body {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  object-fit: cover;
+  object-fit: cover; /* Ajusta la foto sin deformar las proporciones */
 }
 
 .user-info {
@@ -419,9 +426,9 @@ body {
   color: #7a8599;
 }
 
-/* =========================
-   BREADCRUMB
-========================= */
+/* ==========================================================================
+   BREADCRUMB (Ruta de Navegación / Migas de pan)
+   ========================================================================== */
 .breadcrumb {
   display: flex;
   align-items: center;
@@ -451,18 +458,18 @@ body {
   font-weight: 700;
 }
 
-/* =========================
-   FORM CARD
-========================= */
+/* ==========================================================================
+   FORM CARD (Tarjeta Base de Formulario)
+   ========================================================================== */
 .form-card {
   background: #ffffff;
   border-radius: 14px;
   box-shadow: 0 2px 14px rgba(30, 42, 94, 0.1);
   margin: 20px 28px 28px;
-  overflow: hidden;
+  overflow: hidden; /* Conserva las esquinas superiores e inferiores limpias */
 }
 
-/* Encabezado */
+/* Encabezado de Tarjeta */
 .form-card-header {
   display: flex;
   align-items: center;
@@ -479,10 +486,11 @@ body {
   gap: 14px;
 }
 
+/* Ícono decorativo del Formulario */
 .form-card-icon {
   width: 44px;
   height: 44px;
-  background: rgba(232, 96, 10, 0.12);
+  background: rgba(232, 96, 10, 0.12); /* Tono suave naranja de fondo */
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -504,61 +512,63 @@ body {
   color: #6b7499;
 }
 
+/* Indicador de campos obligatorios */
 .required-note {
   font-size: 12px;
   color: #6b7499;
 }
 
 .required-note span {
-  color: #e53935;
+  color: #e53935; /* Asterisco rojo de advertencia */
 }
 
-/* Cuerpo */
+/* Cuerpo Interno del Formulario */
 .form-body {
   padding: 28px;
 }
 
-/* =========================
-   SECCIONES
-========================= */
+/* ==========================================================================
+   SECCIONES INTERNAS
+   ========================================================================== */
 .form-section {
   margin-bottom: 32px;
 }
 
 .form-section:last-of-type {
-  margin-bottom: 0;
+  margin-bottom: 0; /* Elimina margen residual al último bloque */
 }
 
 .form-section-title {
   font-size: 12px;
   font-weight: 700;
   color: #e8600a;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
+  text-transform: uppercase; /* Forzado automático a mayúsculas */
+  letter-spacing: 1.2px; /* Apertura tipográfica minimalista */
   margin-bottom: 18px;
   padding-bottom: 8px;
-  border-bottom: 1.5px solid #e8ecf6;
+  border-bottom: 1.5px solid #e8ecf6; /* Línea divisoria interna */
 }
 
-/* =========================
-   GRID DE CAMPOS
-========================= */
+/* ==========================================================================
+   GRID DE CAMPOS (Estructura de rejilla modular)
+   ========================================================================== */
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px 28px;
+  grid-template-columns: repeat(2, 1fr); /* 2 Columnas de igual dimensión */
+  gap: 20px 28px; /* 20px vertical, 28px horizontal */
 }
 
+/* Utilidad para elementos que toman toda la rejilla de extremo a extremo */
 .field-full {
-  grid-column: 1 / -1;
+  grid-column: 1 / -1; /* Inicia en la primera columna y termina en la última */
 }
 
-/* =========================
-   CAMPOS
-========================= */
+/* ==========================================================================
+   CAMPOS / CONTROLES INDIVUALES (Fields)
+   ========================================================================== */
 .field {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Coloca el Label por encima de la caja de Input */
   gap: 7px;
 }
 
@@ -582,7 +592,7 @@ body {
   color: #e53935;
 }
 
-/* Inputs */
+/* Inputs, Selects y Textareas unificados */
 .field input[type="text"],
 .field input[type="number"],
 .field input[type="date"],
@@ -593,9 +603,9 @@ body {
   border-radius: 8px;
   padding: 10px 14px;
   font-size: 13.5px;
-  font-family: inherit;
+  font-family: inherit; /* Hereda Segoe UI definida en el body */
   color: #1a2042;
-  background: #f7f8fc;
+  background: #f7f8fc; /* Color gris neutro de fondo para control en reposo */
   outline: none;
   transition:
     border-color 0.2s,
@@ -605,40 +615,42 @@ body {
 
 .field textarea {
   min-height: 110px;
-  resize: vertical;
+  resize: vertical; /* Solo permite ajustar el tamaño verticalmente */
 }
 
+/* Estado Focus (Cuando el usuario está escribiendo) */
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-  border-color: #e8600a;
-  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
-  background: #ffffff;
+  border-color: #e8600a; /* El borde cambia a naranja */
+  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12); /* Efecto halo naranja tenue */
+  background: #ffffff; /* El fondo pasa a blanco puro para mejorar contraste */
 }
 
-/* Select personalizado */
+/* Estilización del Select Personalizado (Flecha nativa eliminada) */
 .field select {
-  appearance: none;
+  appearance: none; /* Borra la flecha original del sistema operativo */
+  /* Inserta un SVG codificado en base64 de una flecha minimalista */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7499' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 14px center;
-  padding-right: 36px;
+  background-position: right 14px center; /* Posiciona la flecha a la derecha */
+  padding-right: 36px; /* Evita que el texto tape el ícono de la flecha */
   cursor: pointer;
 }
 
-/* Placeholder */
+/* Estilo del texto provisional (Placeholder) */
 .field input::placeholder,
 .field textarea::placeholder {
   color: #9aa4b8;
 }
 
-/* =========================
-   FOOTER DEL FORMULARIO
-========================= */
+/* ==========================================================================
+   FOOTER DEL FORMULARIO (Zona de Botones)
+   ========================================================================== */
 .form-footer {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-end; /* Alinea los botones hacia la esquina derecha */
   gap: 12px;
   padding-top: 24px;
   border-top: 1.5px solid #e8ecf6;
@@ -646,11 +658,11 @@ body {
   flex-wrap: wrap;
 }
 
-/* =========================
-   BOTONES
-========================= */
+/* ==========================================================================
+   BOTONES REUTILIZABLES (Componentes de botón)
+   ========================================================================== */
 .btn {
-  display: inline-flex;
+  display: inline-flex; /* Facilita el alineamiento de texto e íconos internos */
   align-items: center;
   gap: 8px;
   padding: 10px 22px;
@@ -664,6 +676,7 @@ body {
   transition: all 0.2s ease;
 }
 
+/* Variante: Botón Contorno / Fantasma */
 .btn-ghost {
   background: transparent;
   border: 1.5px solid #dde2f0;
@@ -676,6 +689,7 @@ body {
   background: #f0f2f8;
 }
 
+/* Variante: Botón Oscuro / Azul */
 .btn-secondary {
   background: #1e2a5e;
   color: #ffffff;
@@ -685,28 +699,430 @@ body {
   background: #2e3f8f;
 }
 
+/* Variante: Botón Destacado / Principal Naranja */
 .btn-primary {
   background: #e8600a;
   color: #ffffff;
-  box-shadow: 0 4px 14px rgba(232, 96, 10, 0.3);
+  box-shadow: 0 4px 14px rgba(232, 96, 10, 0.3); /* Sombra difusa naranja */
 }
 
 .btn-primary:hover {
   background: #f07530;
   box-shadow: 0 6px 18px rgba(232, 96, 10, 0.38);
-  transform: translateY(-1px);
+  transform: translateY(-1px); /* Elevación milimétrica en hover */
 }
 
 .btn-primary:active {
-  transform: translateY(0);
+  transform: translateY(
+    0
+  ); /* Devuelve el botón a su estado original al presionarlo */
 }
 
-/* =========================
-   FOOTER
-========================= */
+/* Pie de página de derechos reservados */
 .footer {
   margin-top: 30px;
   text-align: center;
   color: #7a8599;
   font-size: 14px;
+}
+
+/* ==========================================================================
+   DISEÑO RESPONSIVO (MEDIA QUERIES) - ESTRATEGIA DE CASCADA DESCENTRALIZADA
+   ========================================================================== */
+
+/* ── PANTALLAS GRANDES / LAPTOPS COMPACTAS (Hasta 1400px) ── */
+@media screen and (max-width: 1400px) {
+  .sidebar {
+    width: 260px;
+    min-width: 260px;
+    max-width: 260px; /* Reducción milimétrica de barra lateral */
+  }
+  .main-content {
+    margin-left: 260px;
+    width: calc(
+      100% - 260px
+    ); /* Cálculo preciso del área restante de pantalla */
+    padding: 24px;
+  }
+  .candidate-progress {
+    gap: 14px;
+    padding: 24px 6px;
+  }
+  .step-circle {
+    width: 56px;
+    height: 56px;
+    font-size: 20px;
+  } /* Ajuste de escala del stepper */
+  .step-content strong {
+    font-size: 14px;
+  }
+  .step-content span {
+    font-size: 12px;
+  }
+  .progress-line {
+    min-width: 45px;
+  }
+  .search-box {
+    max-width: 360px;
+  }
+}
+
+/* ── PANTALLAS MEDIANAS / MINILAPTOPS (Hasta 1200px) ── */
+@media screen and (max-width: 1200px) {
+  .sidebar {
+    width: 240px;
+    min-width: 240px;
+    max-width: 240px;
+    padding: 24px 16px;
+  }
+  .main-content {
+    margin-left: 240px;
+    width: calc(100% - 240px);
+    padding: 20px;
+  }
+  .topbar {
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .page-title {
+    width: 100%;
+  } /* El título pasa a ocupar toda la línea */
+  .search-box {
+    flex: 1 1 100%;
+    max-width: 100%;
+  } /* Caja de búsqueda salta de línea y abarca el 100% */
+  .topbar-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  /* Ajuste Dinámico de Rejilla del Formulario */
+  .form-grid {
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(240px, 1fr)
+    ); /* Auto-acomodo fluido de columnas */
+  }
+
+  /* TRANSFORMACIÓN DEL STEPPER A FORMATO VERTICAL/FILAS */
+  .candidate-progress {
+    display: grid;
+    grid-template-columns: 1fr; /* Cambia de fila a una cuadrícula de una sola columna vertical */
+    gap: 18px;
+    padding: 20px 0;
+  }
+  .progress-step {
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    background: #f8faff; /* Convierte cada paso en una pequeña tarjeta individualizada */
+    border: 1px solid #e3e9f5;
+  }
+  .progress-line {
+    width: 100%;
+    min-width: 100%;
+    height: 4px;
+  }
+  .step-circle {
+    width: 54px;
+    height: 54px;
+    font-size: 19px;
+  }
+}
+
+/* ── TABLETS EN VERTICAL (Hasta 992px) ── */
+@media screen and (max-width: 992px) {
+  .sidebar {
+    width: 220px;
+    min-width: 220px;
+    max-width: 220px;
+    padding: 20px 14px;
+  }
+  .main-content {
+    margin-left: 220px;
+    width: calc(100% - 220px);
+    padding: 18px;
+  }
+  .logo-img {
+    max-width: 170px;
+    padding: 12px;
+  }
+  .menu a {
+    font-size: 13px;
+    padding: 12px;
+    gap: 10px;
+  }
+  .topbar {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .search-box {
+    width: 100%;
+    max-width: 100%;
+  }
+  .topbar-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .page-title h1 {
+    font-size: 28px;
+  }
+  .page-title p {
+    font-size: 13px;
+  }
+  .form-card {
+    margin: 18px 0;
+  } /* Elimina los márgenes laterales de la tarjeta */
+  .form-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 18px;
+  }
+  .form-body {
+    padding: 18px;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+  } /* Colapso total del formulario a una sola columna */
+
+  .candidate-progress {
+    gap: 14px;
+  }
+  .progress-step {
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+  }
+  .step-circle {
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+  }
+  .step-content strong {
+    font-size: 13px;
+  }
+  .step-content span {
+    font-size: 11px;
+  }
+  .progress-line {
+    height: 4px;
+  }
+}
+
+/* ── SMARTPHONES GRANDES (Hasta 768px) ── */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 190px;
+    min-width: 190px;
+    max-width: 190px;
+    padding: 16px 10px;
+  }
+  .main-content {
+    margin-left: 190px;
+    width: calc(100% - 190px);
+    padding: 15px;
+  }
+  .logo-img {
+    max-width: 140px;
+    padding: 10px;
+  }
+  .menu a {
+    font-size: 12px;
+    padding: 10px;
+  }
+  .menu i {
+    width: 16px;
+  }
+
+  .user-info {
+    display: none;
+  } /* Oculta textos del perfil para economizar espacio en pantalla móvil */
+  .user-profile {
+    padding: 6px 8px;
+    border-radius: 14px;
+  }
+  .user-profile img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .page-title h1 {
+    font-size: 24px;
+  }
+  .page-title p {
+    font-size: 12px;
+  }
+  .search-box input {
+    font-size: 13px;
+    padding: 12px 14px 12px 40px;
+  }
+  .search-box i {
+    left: 14px;
+  }
+  .breadcrumb {
+    padding: 12px 0 0;
+    font-size: 11px;
+    flex-wrap: wrap;
+  }
+  .form-card-header {
+    padding: 16px;
+  }
+  .form-body {
+    padding: 16px;
+  }
+  .form-card-title {
+    font-size: 15px;
+  }
+  .form-card-subtitle {
+    font-size: 11px;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+
+  .candidate-progress {
+    padding: 10px 0;
+  }
+  .progress-step {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 12px;
+  }
+  .step-circle {
+    width: 46px;
+    height: 46px;
+    font-size: 16px;
+  }
+  .step-content {
+    gap: 2px;
+  }
+  .step-content strong {
+    font-size: 12px;
+  }
+  .step-content span {
+    font-size: 10px;
+  }
+  .progress-line {
+    min-width: 100%;
+    height: 3px;
+  }
+
+  /* Ajuste de Botones en Bloque para Móvil */
+  .btn {
+    width: 100%;
+    justify-content: center;
+  } /* Botones a lo ancho total de pantalla */
+  .form-footer {
+    flex-direction: column;
+  } /* Apilamiento vertical de botones */
+}
+
+/* ── SMARTPHONES PEQUEÑOS (Hasta 576px) ── */
+@media screen and (max-width: 576px) {
+  .sidebar {
+    width: 170px;
+    min-width: 170px;
+    max-width: 170px;
+    padding: 14px 8px;
+  }
+  .main-content {
+    margin-left: 170px;
+    width: calc(100% - 170px);
+    padding: 12px;
+  }
+  .logo-img {
+    max-width: 115px;
+    padding: 8px;
+  }
+  .menu {
+    gap: 6px;
+  }
+  .menu a {
+    font-size: 11px;
+    padding: 9px 8px;
+    border-radius: 10px;
+  }
+  .logout a {
+    font-size: 11px;
+    padding: 9px 8px;
+  }
+
+  .page-title h1 {
+    font-size: 20px;
+  }
+  .page-title p {
+    font-size: 11px;
+  }
+  .topbar {
+    gap: 10px;
+  }
+  .topbar-actions {
+    justify-content: space-between;
+  }
+  .search-box input {
+    font-size: 12px;
+  }
+  .form-card {
+    border-radius: 12px;
+  }
+  .form-card-header {
+    padding: 14px;
+  }
+  .form-body {
+    padding: 14px;
+  }
+  .form-card-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 15px;
+  }
+  .form-card-title {
+    font-size: 14px;
+  }
+  .required-note {
+    font-size: 11px;
+  }
+  .form-section-title {
+    font-size: 11px;
+  }
+  .field > label {
+    font-size: 12px;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 12px;
+    padding: 9px 10px;
+  }
+
+  .candidate-progress {
+    gap: 12px;
+  }
+  .progress-step {
+    padding: 10px 8px;
+  }
+  .step-circle {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+  }
+  .step-content strong {
+    font-size: 11px;
+  }
+  .step-content span {
+    font-size: 9px;
+  }
+  .progress-line {
+    height: 3px;
+  }
+  .footer {
+    font-size: 11px;
+  }
 }
