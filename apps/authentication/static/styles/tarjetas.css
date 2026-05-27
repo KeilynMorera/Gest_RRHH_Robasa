@@ -1,595 +1,586 @@
-/* =========================
-   RESET
-========================= */
+/* ==========================================================
+   RESET Y ESTILOS BASE
+   ========================================================== */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Incluye el padding y el borde en el cálculo del ancho y alto total */
 }
 
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background: #f4f7fb;
-    color: #d35b1a;
+  font-family:
+    "Segoe UI", sans-serif; /* Tipografía limpia de aspecto profesional */
+  background: #f4f7fb; /* Fondo gris claro azulado muy común en paneles de control */
+  color: #d35b1a; /* Color de texto base en tono naranja óxido */
 }
 
-/* =========================
+/* ==========================================================
    LAYOUT GENERAL
-========================= */
+   ========================================================== */
 .dashboard-container {
-    display: flex;
-    min-height: 100vh;
+  display: flex; /* Alinea la barra lateral y el contenido principal uno al lado del otro */
+  min-height: 100vh; /* Obliga al contenedor a ocupar toda la altura de la pantalla */
 }
 
-/* =========================
-   SIDEBAR
-========================= */
+/* ==========================================================
+   SIDEBAR (Barra lateral de navegación)
+   ========================================================== */
 .sidebar {
-    width: 280px;
-    background: #26317a;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    padding: 30px 20px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
+  width: 280px; /* Ancho fijo inicial en pantallas grandes */
+  background: #26317a; /* Azul marino institucional */
+  color: white;
+  display: flex;
+  flex-direction: column; /* Alinea los elementos internos (logo, menú, logout) en vertical */
+  padding: 30px 20px;
+  position: fixed; /* Mantiene la barra fija a la izquierda sin importar el scroll */
+  top: 0;
+  left: 0;
+  bottom: 0;
 
-    /* Permite que el contenido haga scroll vertical */
-    overflow-y: auto;
-    overflow-x: hidden;
+  /* Gestión de desbordamiento de contenido si el menú es muy largo */
+  overflow-y: auto; /* Activa scroll vertical si es necesario */
+  overflow-x: hidden; /* Oculta cualquier desbordamiento horizontal */
 }
 
-
-/* =========================
-   LOGO ROBASA
-========================= */
-
+/* ==========================================================
+   LOGO ROBASA (Efectos visuales y contenedor)
+   ========================================================== */
 .logo {
-    text-align: center;
-    margin-bottom: 35px;
+  text-align: center;
+  margin-bottom: 35px;
 }
 
-/* Imagen */
+/* Configuración de la imagen del Logo */
 .logo-img {
-    width: 320px;
-    max-width: 100%;
-    height: auto;
+  width: 320px;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto 25px; /* Centra la imagen y añade separación inferior */
+  padding: 18px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.08); /* Fondo semi-transparente sutil */
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(6px); /* Efecto cristal esmerilado detrás del logo */
 
-    display: block;
-    margin: 0 auto 25px;
+  /* Filtros avanzados combinados para dar un efecto de brillo (Glow) */
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25))
+    drop-shadow(0 0 25px rgba(255, 255, 255, 0.12)) brightness(1.18)
+    contrast(1.15);
 
-    /* Hace que resalte */
-    padding: 18px;
-
-    border-radius: 22px;
-
-    background: rgba(255, 255, 255, 0.08);
-
-    border: 1px solid rgba(255,255,255,0.12);
-
-    backdrop-filter: blur(6px);
-
-    /* Glow */
-    filter:
-        drop-shadow(0 0 10px rgba(255,255,255,0.25))
-        drop-shadow(0 0 25px rgba(255,255,255,0.12))
-        brightness(1.18)
-        contrast(1.15);
-
-    transition: all 0.3s ease;
+  transition: all 0.3s ease; /* Suaviza los cambios de estilos en transiciones (como hover) */
 }
 
-/* Hover elegante */
+/* Efecto al pasar el cursor sobre el logo */
 .logo-img:hover {
-    transform: scale(1.03);
+  transform: scale(1.03); /* Escala ligeramente el tamaño un 3% */
 
-    filter:
-        drop-shadow(0 0 16px rgba(255,255,255,0.4))
-        drop-shadow(0 0 32px rgba(255,255,255,0.18))
-        brightness(1.25)
-        contrast(1.2);
+  /* Intensifica el efecto de brillo e iluminación en hover */
+  filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))
+    drop-shadow(0 0 32px rgba(255, 255, 255, 0.18)) brightness(1.25)
+    contrast(1.2);
 }
 
+/* Subtexto debajo de la imagen del logo */
 .logo span {
-    font-size: 18px;
-    letter-spacing: 6px;
-    color: #9bc0ff;
+  font-size: 18px;
+  letter-spacing: 6px; /* Gran separación entre caracteres para estilo moderno */
+  color: #9bc0ff; /* Azul claro complementario */
 }
 
-/* Menú */
+/* Menú de Navegación */
 .menu {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding-right: 5px; /* evita que el texto se pegue al scroll */
+  flex: 1; /* Absorbe el espacio vertical sobrante, empujando la sección "logout" al fondo */
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Separación fija entre botones del menú */
+  padding-right: 5px; /* Evita que los textos choquen con la barra de scroll */
 }
 
+/* Enlaces individuales del menú */
 .menu a {
-    color: #FEFEFD;
-    text-decoration: none;
-    padding: 14px 18px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    transition: 0.3s;
+  color: #fefefd;
+  text-decoration: none; /* Elimina la línea de subrayado nativa */
+  padding: 14px 18px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center; /* Centra los iconos verticalmente con el texto */
+  gap: 12px; /* Espacio entre el icono y el texto */
+  transition: 0.3s;
 }
 
+/* Estado activo o al posicionar el mouse sobre los enlaces */
 .menu a:hover,
 .menu a.active {
-    background: #4567b7;
-    color: white;
+  background: #4567b7; /* Tono de azul más claro e iluminado */
+  color: white;
 }
 
+/* Ancho fijo para los iconos de navegación para garantizar que los textos inicien alineados */
 .menu i {
-    width: 20px;
+  width: 20px;
 }
 
-/* Opcional: personalizar la barra de scroll */
+/* Personalización del diseño del scroll en navegadores basados en Webkit (Chrome, Edge, Safari) */
 .sidebar::-webkit-scrollbar {
-    width: 6px;
+  width: 6px;
 }
 
 .sidebar::-webkit-scrollbar-track {
-    background: transparent;
+  background: transparent;
 }
 
 .sidebar::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.25);
-    border-radius: 10px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
 }
 
 .sidebar::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.4);
 }
 
-/* Logout */
+/* Botón de Logout (Cerrar sesión) */
 .logout {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255,255,255,0.15);
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15); /* Línea divisoria superior sutil */
 }
 
 .logout a {
-    color: white;
-    text-decoration: none;
-    display: flex;
-    gap: 12px;
-    padding: 14px 18px;
-    border-radius: 12px;
+  color: white;
+  text-decoration: none;
+  display: flex;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 12px;
 }
 
 .logout a:hover {
-    background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
 }
 
-/* =========================
+/* ==========================================================
    CONTENIDO PRINCIPAL
-========================= */
+   ========================================================== */
 .main-content {
-    flex: 1;
-    margin-left: 280px;
-    padding: 30px;
+  flex: 1; /* Ocupa todo el espacio horizontal restante al lado de la barra lateral */
+  margin-left: 280px; /* Crea un margen idéntico al ancho del sidebar fijo para evitar superposiciones */
+  padding: 30px;
 }
 
-/* =========================
-   TOPBAR
-========================= */
+/* ==========================================================
+   TOPBAR (Barra superior de acciones)
+   ========================================================== */
 .topbar {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 30px;
-    flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+  flex-wrap: wrap; /* Si disminuye la resolución, los elementos pasan a una nueva línea */
 }
 
+/* Botón alternador para móviles (Hamburguesa) */
 .menu-toggle {
-    border: none;
-    background: none;
-    font-size: 26px;
-    cursor: pointer;
-    color: #293477;
+  border: none;
+  background: none;
+  font-size: 26px;
+  cursor: pointer;
+  color: #293477;
 }
 
 .page-title {
-    min-width: 260px;
+  min-width: 260px;
 }
 
 .page-title h1 {
-    font-size: 34px;
-    margin-bottom: 5px;
-    color: #1a2042;
+  font-size: 34px;
+  margin-bottom: 5px;
+  color: #1a2042; /* Azul marino muy oscuro */
 }
 
 .page-title p {
-    color: #7a8599;
-    font-size: 15px;
+  color: #7a8599; /* Gris azulado tenue */
+  font-size: 15px;
 }
 
-/* Buscador */
+/* Contenedor del Buscador */
 .search-box {
-    flex: 1;
-    max-width: 420px;
-    position: relative;
+  flex: 1; /* Intenta expandirse para ocupar el espacio central disponible */
+  max-width: 420px;
+  position: relative; /* Permite posicionar el icono de manera absoluta dentro de la caja */
 }
 
+/* Icono de lupa */
 .search-box i {
-    position: absolute;
-    top: 50%;
-    left: 18px;
-    transform: translateY(-50%);
-    color: #8a94a6;
+  position: absolute;
+  top: 50%;
+  left: 18px;
+  transform: translateY(
+    -50%
+  ); /* Técnica CSS para centrar verticalmente de forma perfecta */
+  color: #8a94a6;
 }
 
+/* Campo de entrada de búsqueda */
 .search-box input {
-    width: 100%;
-    padding: 14px 18px 14px 48px;
-    border: 1px solid #dbe2ef;
-    border-radius: 12px;
-    font-size: 15px;
-    outline: none;
+  width: 100%;
+  padding: 14px 18px 14px 48px; /* 48px a la izquierda para dejar espacio libre al icono */
+  border: 1px solid #dbe2ef;
+  border-radius: 12px;
+  font-size: 15px;
+  outline: none; /* Elimina la línea exterior azul nativa de los navegadores */
 }
 
 .search-box input:focus {
-    border-color: #0c45ca;
-    box-shadow: 0 0 0 3px rgba(31,100,255,0.1);
+  border-color: #0c45ca;
+  box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1); /* Efecto halo de enfoque azul claro */
 }
 
-/* Acciones */
+/* Zona derecha de la Topbar (Perfil y Notificaciones) */
 .topbar-actions {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 25px;
+  margin-left: auto; /* Empuja el contenedor hacia la derecha en layouts flex */
+  display: flex;
+  align-items: center;
+  gap: 25px;
 }
 
-/* Notificaciones */
+/* Icono de notificación */
 .notification {
-    position: relative;
-    font-size: 22px;
-    cursor: pointer;
-    color: #1b2b4b;
+  position: relative;
+  font-size: 22px;
+  cursor: pointer;
+  color: #1b2b4b;
 }
 
+/* Globo indicador numérico de alertas */
 .badge {
-    position: absolute;
-    top: -8px;
-    right: -10px;
-    background: #ff4d4f;
-    color: white;
-    font-size: 11px;
-    font-weight: bold;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background: #ff4d4f; /* Rojo vibrante de alerta */
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%; /* Transforma la caja en un círculo perfecto */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centrado absoluto del texto numérico interior */
 }
 
-/* Usuario */
+/* Módulo del perfil de usuario */
 .user-profile {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: white;
-    padding: 8px 14px;
-    border-radius: 50px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  padding: 8px 14px;
+  border-radius: 50px; /* Estilo píldora */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Sombra difuminada suave */
+  cursor: pointer;
 }
 
 .user-profile img {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    object-fit: cover;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%; /* Imagen redonda */
+  object-fit: cover; /* Recorta proporcionalmente la foto para que no se deforme */
 }
 
 .user-info {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .user-info strong {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .user-info span {
-    font-size: 12px;
-    color: #7a8599;
+  font-size: 12px;
+  color: #7a8599;
 }
 
+/* ==========================================================
+   ACTION CARDS GRID (Cuadrícula de accesos directos)
+   ========================================================== */
 .action-cards-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-    padding: 28px;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Estructura inicial en dos columnas iguales */
+  gap: 24px;
+  padding: 28px;
 }
 
-/* ── Tarjeta base ───────────────────────────────────────────── */
+/* Tarjeta Base */
 .action-card {
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 2px 16px rgba(30, 42, 94, .10);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: transform .2s, box-shadow .2s;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(30, 42, 94, 0.1);
+  overflow: hidden; /* Oculta contenidos de los hijos que sobresalgan de las esquinas redondeadas */
+  display: flex;
+  flex-direction: column;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
+/* Animación de elevación al pasar el mouse por encima de la tarjeta */
 .action-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 28px rgba(30, 42, 94, .15);
+  transform: translateY(-4px); /* Desplaza la tarjeta 4px hacia arriba */
+  box-shadow: 0 8px 28px rgba(30, 42, 94, 0.15); /* Incrementa e intensifica la sombra */
 }
 
-/* ── Zona de ilustración (parte superior de la tarjeta) ─────── */
+/* Zona de ilustración (Cabecera visual de la tarjeta) */
 .action-card-illustration {
-    background: linear-gradient(135deg, #1e2a5e 0%, #2e3f8f 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 160px;
-    position: relative;
-    overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    #1e2a5e 0%,
+    #2e3f8f 100%
+  ); /* Degradado corporativo oscuro */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 160px;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Círculos decorativos de fondo */
+/* Creación de círculos decorativos abstractos usando pseudoelementos CSS sin alterar el HTML */
 .action-card-illustration::before,
 .action-card-illustration::after {
-    content: '';
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, .06);
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06); /* Círculos con opacidad muy baja */
 }
 .action-card-illustration::before {
-    width: 200px; height: 200px;
-    top: -60px; right: -60px;
+  width: 200px;
+  height: 200px;
+  top: -60px;
+  right: -60px; /* Posicionado en la esquina superior derecha */
 }
 .action-card-illustration::after {
-    width: 130px; height: 130px;
-    bottom: -40px; left: -30px;
+  width: 130px;
+  height: 130px;
+  bottom: -40px;
+  left: -30px; /* Posicionado en la esquina inferior izquierda */
 }
 
+/* Clase de variación para cabecera con color acentuado (Naranja) */
 .action-card-illustration.accent {
-    background: linear-gradient(135deg, #b84a00 0%, #e8600a 100%);
+  background: linear-gradient(135deg, #b84a00 0%, #e8600a 100%);
 }
 
+/* Iconos de las tarjetas */
 .action-card-illustration i {
-    font-size: 64px;
-    color: rgba(255, 255, 255, .90);
-    position: relative; /* encima de los círculos */
-    z-index: 1;
-    filter: drop-shadow(0 4px 12px rgba(0,0,0,.20));
+  font-size: 64px;
+  color: rgba(255, 255, 255, 0.9);
+  position: relative;
+  z-index: 1; /* Forzado a situarse por delante de los círculos decorativos */
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
 }
 
-/* ── Cuerpo de texto ────────────────────────────────────────── */
+/* Cuerpo de información de la tarjeta */
 .action-card-body {
-    padding: 24px 26px 26px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    flex: 1;
+  padding: 24px 26px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1; /* Estira el contenedor para igualar alturas si hay tarjetas con menos textos */
 }
 
 .action-card-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: #1a2042;
-    margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a2042;
+  margin: 0;
 }
 
 .action-card-desc {
-    font-size: 13.5px;
-    color: #6b7499;
-    line-height: 1.65;
-    margin: 0;
-    flex: 1;
+  font-size: 13.5px;
+  color: #6b7499;
+  line-height: 1.65; /* Interlineado amplio para mejorar la legibilidad */
+  margin: 0;
+  flex: 1;
 }
 
-/* ── Botón ──────────────────────────────────────────────────── */
+/* Botón de acción dentro de la tarjeta */
 .action-card-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    align-self: flex-start;
-    margin-top: 6px;
-    padding: 10px 22px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 700;
-    text-decoration: none;
-    background: #1e2a5e;
-    color: #ffffff;
-    transition: background .2s, box-shadow .2s, transform .15s;
-    box-shadow: 0 4px 12px rgba(30, 42, 94, .25);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start; /* Evita que el botón se estire a todo el ancho, midiendo solo su texto */
+  margin-top: 6px;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  background: #1e2a5e;
+  color: #ffffff;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s,
+    transform 0.15s;
+  box-shadow: 0 4px 12px rgba(30, 42, 94, 0.25);
 }
 
 .action-card-btn:hover {
-    background: #2e3f8f;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(30, 42, 94, .30);
+  background: #2e3f8f;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(30, 42, 94, 0.3);
 }
 
+/* Variación de botón acentuado (Naranja) */
 .action-card-btn.accent {
-    background: #e8600a;
-    box-shadow: 0 4px 12px rgba(232, 96, 10, .30);
+  background: #e8600a;
+  box-shadow: 0 4px 12px rgba(232, 96, 10, 0.3);
 }
 
 .action-card-btn.accent:hover {
-    background: #f07530;
-    box-shadow: 0 6px 16px rgba(232, 96, 10, .38);
+  background: #f07530;
+  box-shadow: 0 6px 16px rgba(232, 96, 10, 0.38);
 }
 
-/* =========================
+/* ==========================================================
    FOOTER
-========================= */
+   ========================================================== */
 .footer {
-    margin-top: 30px;
-    text-align: center;
-    color: #7a8599;
-    font-size: 14px;
+  margin-top: 30px;
+  text-align: center;
+  color: #7a8599;
+  font-size: 14px;
 }
 
-/* ============================================================
-   RESPONSIVE DESIGN
-   Sidebar SIEMPRE a la izquierda
-============================================================ */
+/* ==========================================================
+   RESPONSIVE DESIGN (Media Queries)
+   ========================================================== */
 
-
-/* ============================================================
-   TABLETS Y LAPTOPS
-============================================================ */
+/* ── TABLETS Y LAPTOPS (Puntos de quiebre hasta 1200px) ──────────────── */
 @media screen and (max-width: 1200px) {
+  /* Compactación de la estructura lateral y contenido principal */
+  .sidebar {
+    width: 230px;
+  }
 
-    /* Sidebar más compacto */
-    .sidebar {
-        width: 230px;
-    }
+  .main-content {
+    margin-left: 230px;
+    padding: 22px;
+  }
 
-    /* Ajuste contenido */
-    .main-content {
-        margin-left: 230px;
-        padding: 22px;
-    }
+  .logo-img {
+    width: 220px;
+  }
 
-    /* Logo */
-    .logo-img {
-        width: 220px;
-    }
-
-    /* Grid */
-    .action-cards-grid {
-        grid-template-columns: 1fr;
-    }
-
+  /* La cuadrícula de tarjetas pasa de 2 columnas a 1 sola fila por elemento */
+  .action-cards-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
-
-/* ============================================================
-   CELULARES
-============================================================ */
+/* ── CELULARES (Puntos de quiebre hasta 768px) ───────────────────────── */
 @media screen and (max-width: 768px) {
+  /* Reducción radical del Sidebar para convertirse en una barra de iconos */
+  .sidebar {
+    width: 85px;
+    padding: 18px 10px;
+    align-items: center;
+  }
 
-    /* Sidebar SIEMPRE visible */
-    .sidebar {
-        width: 85px;
-        padding: 18px 10px;
-        align-items: center;
-    }
+  .main-content {
+    margin-left: 85px;
+    padding: 15px;
+  }
 
-    /* Main */
-    .main-content {
-        margin-left: 85px;
-        padding: 15px;
-    }
+  .logo-img {
+    width: 60px;
+    padding: 6px;
+    border-radius: 14px;
+  }
 
-    /* Logo pequeño */
-    .logo-img {
-        width: 60px;
-        padding: 6px;
-        border-radius: 14px;
-    }
+  /* Técnica de accesibilidad/diseño: Se esconde el texto de los links y solo quedan los iconos */
+  .menu a {
+    justify-content: center;
+    padding: 14px;
+    font-size: 0; /* Esconde el texto de forma efectiva sin usar display: none */
+  }
 
-    /* Ocultar textos del menú */
-    .menu a {
-        justify-content: center;
-        padding: 14px;
-        font-size: 0;
-    }
+  .menu a i {
+    font-size: 20px;
+    margin: 0;
+    width: auto;
+  }
 
-    /* Mostrar solo iconos */
-    .menu a i {
-        font-size: 20px;
-        margin: 0;
-        width: auto;
-    }
+  .logout a {
+    justify-content: center;
+    font-size: 0;
+  }
 
-    /* Logout */
-    .logout a {
-        justify-content: center;
-        font-size: 0;
-    }
+  .logout a i {
+    font-size: 20px;
+  }
 
-    .logout a i {
-        font-size: 20px;
-    }
+  /* Adaptación del encabezado */
+  .topbar {
+    flex-direction: column; /* Apila el buscador y los datos del usuario en vertical */
+    align-items: stretch;
+  }
 
-    /* Header */
-    .topbar {
-        flex-direction: column;
-        align-items: stretch;
-    }
+  .search-box {
+    max-width: 100%; /* El campo de búsqueda aprovecha todo el ancho horizontal disponible */
+  }
 
-    /* Search */
-    .search-box {
-        max-width: 100%;
-    }
+  .user-info {
+    display: none; /* Se elimina el nombre escrito de la persona en pantallas móviles, queda solo su foto avatar */
+  }
 
-    /* Usuario */
-    .user-info {
-        display: none;
-    }
-
-    /* Tarjetas */
-    .action-cards-grid {
-        grid-template-columns: 1fr;
-        padding: 0;
-    }
-
+  .action-cards-grid {
+    grid-template-columns: 1fr;
+    padding: 0; /* Remueve paddings externos para aprovechar píxeles de pantalla */
+  }
 }
 
-
-/* ============================================================
-   CELULARES PEQUEÑOS
-============================================================ */
+/* ── CELULARES PEQUEÑOS (Puntos de quiebre hasta 480px) ───────────────── */
 @media screen and (max-width: 480px) {
+  /* Mini-sidebar optimizada */
+  .sidebar {
+    width: 75px;
+  }
 
-    /* Sidebar ultra compacta */
-    .sidebar {
-        width: 75px;
-    }
+  .main-content {
+    margin-left: 75px;
+    padding: 12px;
+  }
 
-    /* Contenido */
-    .main-content {
-        margin-left: 75px;
-        padding: 12px;
-    }
+  .logo-img {
+    width: 50px;
+  }
 
-    /* Logo */
-    .logo-img {
-        width: 50px;
-    }
+  /* Tipografías reducidas proporcionalmente a pantallas pequeñas */
+  .page-title h1 {
+    font-size: 22px;
+  }
 
-    /* Títulos */
-    .page-title h1 {
-        font-size: 22px;
-    }
+  .page-title p {
+    font-size: 13px;
+  }
 
-    .page-title p {
-        font-size: 13px;
-    }
+  .action-card-body {
+    padding: 18px;
+  }
 
-    /* Cards */
-    .action-card-body {
-        padding: 18px;
-    }
+  .action-card-title {
+    font-size: 18px;
+  }
 
-    .action-card-title {
-        font-size: 18px;
-    }
+  .action-card-desc {
+    font-size: 12px;
+  }
 
-    .action-card-desc {
-        font-size: 12px;
-    }
-
-    /* Botones */
-    .action-card-btn {
-        width: 100%;
-        justify-content: center;
-    }
-
+  /* Los botones de las tarjetas se estiran para facilitar el clic táctil (Tap) con el pulgar */
+  .action-card-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
