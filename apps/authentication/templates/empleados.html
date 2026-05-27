@@ -168,7 +168,6 @@
           <a href="login.html">
             <!-- Icono -->
             <i class="fas fa-right-from-bracket"></i>
-
             Cerrar sesión
           </a>
         </div>
@@ -182,19 +181,13 @@
              HEADER / BARRA SUPERIOR
         ====================================================== -->
         <header class="topbar">
-          <!-- ======================================================
-               BOTÓN MENÚ HAMBURGUESA
-          ====================================================== -->
-          <button class="menu-toggle">
-            <i class="fas fa-bars"></i>
-          </button>
+          
 
           <!-- ======================================================
                TÍTULO DE LA PÁGINA
           ====================================================== -->
           <div class="page-title">
             <h1>Empleados</h1>
-
             <p>Registro de un nuevo empleado</p>
           </div>
 
@@ -204,7 +197,6 @@
           <div class="search-box">
             <!-- Icono de búsqueda -->
             <i class="fas fa-search"></i>
-
             <!-- Campo de búsqueda -->
             <input
               type="text"
@@ -222,7 +214,6 @@
             <div class="notification">
               <!-- Icono -->
               <i class="fas fa-bell"></i>
-
               <!-- Cantidad de notificaciones -->
               <span class="badge">3</span>
             </div>
@@ -237,12 +228,10 @@
               <!-- Información -->
               <div class="user-info">
                 <strong>María Gómez</strong>
-
                 <span>Recursos Humanos</span>
               </div>
 
-              <!-- Flecha desplegable -->
-              <i class="fas fa-chevron-down"></i>
+              
             </div>
           </div>
         </header>
@@ -262,7 +251,7 @@
           <i class="fas fa-chevron-right sep"></i>
 
           <!-- Sección -->
-          <a href="{% url 'per_emp' %}"> Personas o Empleados </a>
+          <a href="{% url 'per_emp' %}"> Registro Personal </a>
 
           <!-- Separador -->
           <i class="fas fa-chevron-right sep"></i>
@@ -289,7 +278,6 @@
               <!-- Título y subtítulo -->
               <div>
                 <h2 class="form-card-title">Registro de un nuevo Empleado</h2>
-
                 <p class="form-card-subtitle">
                   Complete los campos requeridos para crear el perfil del
                   empleado
@@ -399,7 +387,6 @@
 
                         <label for="estadoActivo">
                           <span class="dot"></span>
-
                           Activo
                         </label>
                       </div>
@@ -415,7 +402,6 @@
 
                         <label for="estadoInactivo">
                           <span class="dot"></span>
-
                           Inactivo
                         </label>
                       </div>
@@ -451,7 +437,6 @@
                   <div class="field">
                     <label for="fecha_ingreso">
                       <i class="fas fa-calendar-day field-icon"></i>
-
                       Fecha de ingreso <span class="req">*</span>
                     </label>
 
@@ -473,21 +458,18 @@
                 <!-- Botón cancelar -->
                 <a href="{% url 'per_emp' %}" class="btn btn-ghost">
                   <i class="fas fa-arrow-left"></i>
-
                   Cancelar
                 </a>
 
                 <!-- Botón limpiar -->
                 <button type="reset" class="btn btn-secondary">
                   <i class="fas fa-rotate-left"></i>
-
                   Limpiar
                 </button>
 
                 <!-- Botón guardar -->
                 <button type="submit" class="btn btn-primary">
                   <i class="fas fa-floppy-disk"></i>
-
                   Guardar empleado
                 </button>
               </div>
