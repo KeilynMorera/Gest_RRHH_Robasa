@@ -800,7 +800,7 @@ body {
     gap: 16px;
   }
 
-   .page-title {
+  .page-title {
     min-width: auto;
     text-align: center;
   }
@@ -893,17 +893,6 @@ body {
     font-size: 0;
   }
 
-   .page-title {
-    min-width: auto;
-    text-align: center;
-  }
-  .page-title h1 {
-    font-size: 22px;
-  }
-  .page-title p {
-    font-size: 13px;
-  }
-
   .search-box {
     max-width: 100%;
   }
@@ -924,7 +913,7 @@ body {
     min-width: 100%;
   }
 
-   .page-title {
+  .page-title {
     min-width: auto;
     text-align: center;
   }

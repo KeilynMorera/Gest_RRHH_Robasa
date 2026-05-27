@@ -846,7 +846,7 @@ body {
   .topbar {
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     text-align: center;
     gap: 18px;
   }
@@ -958,7 +958,7 @@ body {
 
   /* Acciones superiores */
   .topbar-actions {
-    justify-content: center;
+    justify-content: space-between;
     gap: 16px;
   }
 
