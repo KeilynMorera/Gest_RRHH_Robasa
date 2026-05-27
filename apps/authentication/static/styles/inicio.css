@@ -4,16 +4,16 @@
 
 /* Selector universal para estandarizar márgenes y cálculo de tamaños */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box; /* Incluye padding y bordes en el ancho total del elemento */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Incluye padding y bordes en el ancho total del elemento */
 }
 
 /* Estilos globales del cuerpo del documento */
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background: #f4f7fb; /* Fondo gris claro ultra-limpio para dashboards */
-    color: #d35b1a;      /* Color acento principal (Naranja Robasa) */
+  font-family: "Segoe UI", sans-serif;
+  background: #f4f7fb; /* Fondo gris claro ultra-limpio para dashboards */
+  color: #d35b1a; /* Color acento principal (Naranja Robasa) */
 }
 
 /* ==========================================================================
@@ -22,8 +22,8 @@ body {
 
 /* Contenedor principal que envuelve el Sidebar y el Main Content */
 .dashboard-container {
-    display: flex;       /* Permite la disposición en columnas/lados (Sidebar + Contenido) */
-    min-height: 100vh;   /* Asegura que ocupe todo el alto de la pantalla visible */
+  display: flex; /* Permite la disposición en columnas/lados (Sidebar + Contenido) */
+  min-height: 100vh; /* Asegura que ocupe todo el alto de la pantalla visible */
 }
 
 /* ==========================================================================
@@ -31,134 +31,130 @@ body {
    ========================================================================== */
 
 .sidebar {
-    width: 280px;
-    background: #26317a; /* Azul institucional oscuro */
-    color: white;
-    display: flex;
-    flex-direction: column;
-    padding: 30px 20px;
-    position: fixed;     /* Se mantiene estática al hacer scroll en el contenido principal */
-    top: 0;
-    left: 0;
-    bottom: 0;
+  width: 280px;
+  background: #26317a; /* Azul institucional oscuro */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 20px;
+  position: fixed; /* Se mantiene estática al hacer scroll en el contenido principal */
+  top: 0;
+  left: 0;
+  bottom: 0;
 
-    /* Control de desbordamiento en caso de pantallas con poca altura */
-    overflow-y: auto;    /* Activa scroll vertical si el menú es muy largo */
-    overflow-x: hidden;  /* Evita cualquier desborde horizontal accidental */
+  /* Control de desbordamiento en caso de pantallas con poca altura */
+  overflow-y: auto; /* Activa scroll vertical si el menú es muy largo */
+  overflow-x: hidden; /* Evita cualquier desborde horizontal accidental */
 }
 
 /* ── Módulo de Marca / Logo ───────────────────────── */
 .logo {
-    text-align: center;
-    margin-bottom: 35px;
+  text-align: center;
+  margin-bottom: 35px;
 }
 
 /* Efecto avanzado "Glassmorphism" con brillo acentuado */
 .logo-img {
-    width: 320px;
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin: 0 auto 25px;
-    padding: 18px;
-    border-radius: 22px;
-    background: rgba(255, 255, 255, 0.08);       /* Fondo translúcido blanco */
-    border: 1px solid rgba(255, 255, 255, 0.12); /* Borde sutil estilo cristal */
-    backdrop-filter: blur(6px);                  /* Difumina lo que esté detrás */
+  width: 320px;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto 25px;
+  padding: 18px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.08); /* Fondo translúcido blanco */
+  border: 1px solid rgba(255, 255, 255, 0.12); /* Borde sutil estilo cristal */
+  backdrop-filter: blur(6px); /* Difumina lo que esté detrás */
 
-    /* Combinación de sombras nativas para simular un "Glow" iluminado */
-    filter:
-        drop-shadow(0 0 10px rgba(255, 255, 255, 0.25))
-        drop-shadow(0 0 25px rgba(255, 255, 255, 0.12))
-        brightness(1.18)
-        contrast(1.15);
+  /* Combinación de sombras nativas para simular un "Glow" iluminado */
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25))
+    drop-shadow(0 0 25px rgba(255, 255, 255, 0.12)) brightness(1.18)
+    contrast(1.15);
 
-    transition: all 0.3s ease; /* Suaviza la transición hacia el hover */
+  transition: all 0.3s ease; /* Suaviza la transición hacia el hover */
 }
 
 /* Efecto interactivo al pasar el mouse por encima del logo */
 .logo-img:hover {
-    transform: scale(1.03); /* Micro-escalado de respuesta */
-    filter:
-        drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))
-        drop-shadow(0 0 32px rgba(255, 255, 255, 0.18))
-        brightness(1.25)
-        contrast(1.2);
+  transform: scale(1.03); /* Micro-escalado de respuesta */
+  filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))
+    drop-shadow(0 0 32px rgba(255, 255, 255, 0.18)) brightness(1.25)
+    contrast(1.2);
 }
 
 .logo span {
-    font-size: 18px;
-    letter-spacing: 6px; /* Espaciado moderno entre caracteres */
-    color: #9bc0ff;      /* Azul claro suavizado */
+  font-size: 18px;
+  letter-spacing: 6px; /* Espaciado moderno entre caracteres */
+  color: #9bc0ff; /* Azul claro suavizado */
 }
 
 /* ── Menú de Navegación ────────────────────────────── */
 .menu {
-    flex: 1;             /* Empuja de manera automática al bloque .logout hacia el fondo */
-    display: flex;
-    flex-direction: column;
-    gap: 8px;            /* Separación uniforme entre enlaces */
-    padding-right: 5px;  /* Espacio de seguridad para que el texto no toque la barra de scroll */
+  flex: 1; /* Empuja de manera automática al bloque .logout hacia el fondo */
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Separación uniforme entre enlaces */
+  padding-right: 5px; /* Espacio de seguridad para que el texto no toque la barra de scroll */
 }
 
 .menu a {
-    color: #FEFEFD;
-    text-decoration: none;
-    padding: 14px 18px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    gap: 12px;           /* Separación entre el icono interno y el texto */
-    transition: 0.3s;
+  color: #fefefd;
+  text-decoration: none;
+  padding: 14px 18px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Separación entre el icono interno y el texto */
+  transition: 0.3s;
 }
 
 /* Estado activo o seleccionado y Hover del Menú */
 .menu a:hover,
 .menu a.active {
-    background: #4567b7; /* Azul intermedio brillante */
-    color: white;
+  background: #4567b7; /* Azul intermedio brillante */
+  color: white;
 }
 
 .menu i {
-    width: 20px;         /* Ancho fijo para que los iconos queden perfectamente alineados en vertical */
+  width: 20px; /* Ancho fijo para que los iconos queden perfectamente alineados en vertical */
 }
 
 /* ── Personalización de la barra de Scroll interna (Motores Webkit) ── */
 .sidebar::-webkit-scrollbar {
-    width: 6px;
+  width: 6px;
 }
 
 .sidebar::-webkit-scrollbar-track {
-    background: transparent;
+  background: transparent;
 }
 
 .sidebar::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.25);
-    border-radius: 10px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
 }
 
 .sidebar::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.4);
 }
 
 /* ── Enlace de Salida (Logout) ─────────────────────── */
 .logout {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.15); /* Línea divisoria sutil */
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15); /* Línea divisoria sutil */
 }
 
 .logout a {
-    color: white;
-    text-decoration: none;
-    display: flex;
-    gap: 12px;
-    padding: 14px 18px;
-    border-radius: 12px;
+  color: white;
+  text-decoration: none;
+  display: flex;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 12px;
 }
 
 .logout a:hover {
-    background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* ==========================================================================
@@ -166,9 +162,9 @@ body {
    ========================================================================== */
 
 .main-content {
-    flex: 1;
-    margin-left: 280px;  /* Desplazamiento exacto equivalente al ancho del Sidebar fijo */
-    padding: 30px;
+  flex: 1;
+  margin-left: 280px; /* Desplazamiento exacto equivalente al ancho del Sidebar fijo */
+  padding: 30px;
 }
 
 /* ==========================================================================
@@ -176,130 +172,122 @@ body {
    ========================================================================== */
 
 .topbar {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 30px;
-    flex-wrap: wrap;     /* Permite que los elementos bajen si la pantalla se estrecha */
-}
-
-.menu-toggle {
-    border: none;
-    background: none;
-    font-size: 26px;
-    cursor: pointer;
-    color: #293477;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+  flex-wrap: wrap; /* Permite que los elementos bajen si la pantalla se estrecha */
 }
 
 .page-title {
-    min-width: 260px;
+  min-width: 260px;
 }
 
 .page-title h1 {
-    font-size: 34px;
-    margin-bottom: 5px;
-    color: #1a2042;      /* Azul oscuro para máxima legibilidad tipográfica */
+  font-size: 34px;
+  margin-bottom: 5px;
+  color: #1a2042; /* Azul oscuro para máxima legibilidad tipográfica */
 }
 
 .page-title p {
-    color: #7a8599;
-    font-size: 15px;
+  color: #7a8599;
+  font-size: 15px;
 }
 
 /* ── Caja del Buscador Dinámico ────────────────────── */
 .search-box {
-    flex: 1;             /* Crece de manera dinámica para ocupar el espacio disponible */
-    max-width: 420px;    /* Límite de expansión en pantallas grandes */
-    position: relative;  /* Necesario para posicionar el icono interno de forma absoluta */
+  flex: 1; /* Crece de manera dinámica para ocupar el espacio disponible */
+  max-width: 420px; /* Límite de expansión en pantallas grandes */
+  position: relative; /* Necesario para posicionar el icono interno de forma absoluta */
 }
 
 .search-box i {
-    position: absolute;
-    top: 50%;
-    left: 18px;
-    transform: translateY(-50%); /* Centrado vertical matemático */
-    color: #8a94a6;
+  position: absolute;
+  top: 50%;
+  left: 18px;
+  transform: translateY(-50%); /* Centrado vertical matemático */
+  color: #8a94a6;
 }
 
 .search-box input {
-    width: 100%;
-    padding: 14px 18px 14px 48px; /* Mayor padding izquierdo para no sobreescribir el icono */
-    border: 1px solid #dbe2ef;
-    border-radius: 12px;
-    font-size: 15px;
-    outline: none;
+  width: 100%;
+  padding: 14px 18px 14px 48px; /* Mayor padding izquierdo para no sobreescribir el icono */
+  border: 1px solid #dbe2ef;
+  border-radius: 12px;
+  font-size: 15px;
+  outline: none;
 }
 
 /* Estado Focus interactivo del Input */
 .search-box input:focus {
-    border-color: #0c45ca;
-    box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1); /* Anillo perimetral azul claro */
+  border-color: #0c45ca;
+  box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1); /* Anillo perimetral azul claro */
 }
 
 /* ── Bloque de Acciones (Notificaciones + Perfil) ──── */
 .topbar-actions {
-    margin-left: auto;   /* Empuja todo el grupo de acciones hacia el extremo derecho */
-    display: flex;
-    align-items: center;
-    gap: 25px;
+  margin-left: auto; /* Empuja todo el grupo de acciones hacia el extremo derecho */
+  display: flex;
+  align-items: center;
+  gap: 25px;
 }
 
 /* Icono de Campana de Notificación */
 .notification {
-    position: relative;
-    font-size: 22px;
-    cursor: pointer;
-    color: #1b2b4b;
+  position: relative;
+  font-size: 22px;
+  cursor: pointer;
+  color: #1b2b4b;
 }
 
 /* Indicador numérico flotante rojo (Badge) */
 .badge {
-    position: absolute;
-    top: -8px;
-    right: -10px;
-    background: #ff4d4f;
-    color: white;
-    font-size: 11px;
-    font-weight: bold;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background: #ff4d4f;
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Tarjeta Perfil de Usuario */
 .user-profile {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: white;
-    padding: 8px 14px;
-    border-radius: 50px; /* Estilo píldora totalmente redondeado */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  padding: 8px 14px;
+  border-radius: 50px; /* Estilo píldora totalmente redondeado */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
 }
 
 .user-profile img {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    object-fit: cover;   /* Evita que la foto de perfil se deforme estirándose */
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover; /* Evita que la foto de perfil se deforme estirándose */
 }
 
 .user-info {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .user-info strong {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .user-info span {
-    font-size: 12px;
-    color: #7a8599;
+  font-size: 12px;
+  color: #7a8599;
 }
 
 /* ==========================================================================
@@ -307,35 +295,35 @@ body {
    ========================================================================== */
 
 .cards-grid {
-    display: grid;
-    /* Rejilla inteligente: define columnas automáticas según el espacio mínimo de 240px */
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
+  display: grid;
+  /* Rejilla inteligente: define columnas automáticas según el espacio mínimo de 240px */
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
 }
 
 .card {
-    background: white;
-    border-radius: 18px;
-    padding: 25px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  background: white;
+  border-radius: 18px;
+  padding: 25px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
 }
 
 .card h3 {
-    font-size: 16px;
-    color: #7a8599;
-    margin-bottom: 10px;
+  font-size: 16px;
+  color: #7a8599;
+  margin-bottom: 10px;
 }
 
 .card h2 {
-    font-size: 32px;
-    color: #0a1f44;
-    margin-bottom: 8px;
+  font-size: 32px;
+  color: #0a1f44;
+  margin-bottom: 8px;
 }
 
 .card p {
-    font-size: 14px;
-    color: #7a8599;
+  font-size: 14px;
+  color: #7a8599;
 }
 
 /* ==========================================================================
@@ -343,224 +331,368 @@ body {
    ========================================================================== */
 
 .content-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Estructura inicial rígida de 3 columnas */
-    gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(
+    3,
+    1fr
+  ); /* Estructura inicial rígida de 3 columnas */
+  gap: 20px;
 }
 
 /* Extensión de panel para secciones anchas (ej. Tablas o Gráficas) */
 .large-panel {
-    grid-column: span 2; /* Absorbe 2 de las 3 columnas disponibles */
+  grid-column: span 2; /* Absorbe 2 de las 3 columnas disponibles */
 }
 
 .panel {
-    background: white;
-    border-radius: 18px;
-    padding: 25px;
-    min-height: 220px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  background: white;
+  border-radius: 18px;
+  padding: 25px;
+  min-height: 220px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
 }
 
 .panel h3 {
-    margin-bottom: 20px;
-    font-size: 18px;
+  margin-bottom: 20px;
+  font-size: 18px;
 }
 
 /* Contenedor temporal (Para gráficos vacíos o zonas de carga) */
 .placeholder {
-    height: 160px;
-    background: #f4f7fb;
-    border: 2px dashed #dbe2ef; /* Borde discontinuo de carga */
-    border-radius: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #8a94a6;
+  height: 160px;
+  background: #f4f7fb;
+  border: 2px dashed #dbe2ef; /* Borde discontinuo de carga */
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #8a94a6;
 }
 
 /* ==========================================================================
    FOOTER INSTITUCIONAL
    ========================================================================== */
 .footer {
-    margin-top: 30px;
-    text-align: center;
-    color: #7a8599;
+  margin-top: 30px;
+  text-align: center;
+  color: #7a8599;
+  font-size: 14px;
+}
+
+/* ==========================================================================  
+   RESPONSIVE OPTIMIZADO
+   - Sidebar SIEMPRE a la izquierda
+   - Menú más compacto en tablets y móviles
+   - En pantallas pequeñas solo se muestran iconos
+========================================================================== */
+
+/* ==========================================================================  
+   PANTALLAS GRANDES (Desktop / Monitores)
+========================================================================== */
+@media screen and (max-width: 1400px) {
+  .sidebar {
+    width: 250px;
+    padding: 24px 16px;
+  }
+
+  .main-content {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    padding: 24px;
+  }
+
+  .logo-img {
+    width: 240px;
+    padding: 14px;
+  }
+
+  .menu a,
+  .logout a {
+    padding: 12px 14px;
     font-size: 14px;
+  }
+
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .content-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .large-panel {
+    grid-column: span 2;
+  }
 }
 
-/* ==========================================================================
-   DISEÑO RESPONSIVO (MEDIA QUERIES)
-   ========================================================================== */
+/* ==========================================================================  
+   PANTALLAS MEDIANAS (Laptops / Tablets horizontales)
+========================================================================== */
+@media screen and (max-width: 992px) {
+  /* Sidebar compacto */
+  .sidebar {
+    width: 90px;
+    min-width: 90px;
+    padding: 18px 10px;
+    align-items: center;
+  }
 
-/* --------------------------------------------------------------------------
-   Pantallas Grandes (Desktops y monitores de alta resolución)
-   -------------------------------------------------------------------------- */
-@media (min-width: 1200px) {
-    .sidebar { width: 280px; }
-    .main-content { margin-left: 280px; padding: 30px; }
-    .cards-grid { grid-template-columns: repeat(4, 1fr); } /* 4 Tarjetas por fila */
-    .content-grid { grid-template-columns: repeat(3, 1fr); }
-    .large-panel { grid-column: span 2; }
-    .page-title h1 { font-size: 34px; }
-    .search-box { max-width: 420px; }
+  /* Contenido principal ajustado */
+  .main-content {
+    margin-left: 90px;
+    width: calc(100% - 90px);
+    padding: 20px;
+  }
+
+  /* Logo reducido */
+  .logo {
+    margin-bottom: 24px;
+  }
+
+  .logo-img {
+    width: 58px;
+    padding: 10px;
+    border-radius: 16px;
+    margin-bottom: 10px;
+  }
+
+  .logo span {
+    display: none;
+  }
+
+  /* SOLO ICONOS */
+  .menu a,
+  .logout a {
+    justify-content: center;
+    padding: 14px 10px;
+    font-size: 0;
+    gap: 0;
+  }
+
+  .menu a i,
+  .logout a i {
+    font-size: 20px;
+    width: auto;
+    margin: 0;
+  }
+
+  /* TOPBAR */
+  .topbar {
+    gap: 14px;
+  }
+
+  .page-title {
+    width: 100%;
+  }
+
+  .page-title h1 {
+    font-size: 28px;
+  }
+
+  .search-box {
+    max-width: 100%;
+    width: 100%;
+    order: 3;
+  }
+
+  .topbar-actions {
+    margin-left: auto;
+  }
+
+  .user-info {
+    display: none;
+  }
+
+  /* GRID */
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .large-panel {
+    grid-column: span 1;
+  }
 }
 
-/* --------------------------------------------------------------------------
-   Pantallas Medianas (Laptops y portátiles estándares de 13" - 15")
-   -------------------------------------------------------------------------- */
-@media (max-width: 1199px) and (min-width: 992px) {
-    .sidebar { width: 240px; } /* Compacta el sidebar para ganar área de trabajo */
-    .main-content { margin-left: 240px; padding: 25px; }
-    .logo h2 { font-size: 28px; }
-    .menu a { padding: 12px 14px; font-size: 14px; }
-    .cards-grid { grid-template-columns: repeat(2, 1fr); } /* Baja a 2 Tarjetas por fila */
-    .content-grid { grid-template-columns: repeat(2, 1fr); }
-    .large-panel { grid-column: span 2; }
-    .search-box { max-width: 320px; }
+/* ==========================================================================  
+   PANTALLAS PEQUEÑAS (Celulares / Tablets verticales)
+========================================================================== */
+@media screen and (max-width: 768px) {
+  /* Sidebar mini SIEMPRE visible */
+  .sidebar {
+    width: 72px;
+    min-width: 72px;
+    padding: 16px 8px;
+    align-items: center;
+  }
+
+  /* Main content */
+  .main-content {
+    margin-left: 72px;
+    width: calc(100% - 72px);
+    padding: 16px;
+  }
+
+  /* Logo mini */
+  .logo-img {
+    width: 48px;
+    padding: 8px;
+    border-radius: 14px;
+  }
+
+  /* Ocultar textos */
+  .logo span,
+  .menu a span,
+  .logout a span {
+    display: none;
+  }
+
+  /* Menú solo iconos */
+  .menu {
+    gap: 6px;
+    width: 100%;
+  }
+
+  .menu a,
+  .logout a {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 8px;
+    border-radius: 12px;
+    font-size: 0;
+    gap: 0;
+  }
+
+  .menu a i,
+  .logout a i {
+    font-size: 18px;
+    width: auto;
+  }
+
+  /* TOPBAR */
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .page-title h1 {
+    font-size: 24px;
+  }
+
+  .page-title p {
+    font-size: 13px;
+  }
+
+  .search-box {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .search-box input {
+    font-size: 14px;
+    padding: 12px 14px 12px 42px;
+  }
+
+  .topbar-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .user-profile {
+    padding: 6px 10px;
+  }
+
+  .user-profile img {
+    width: 38px;
+    height: 38px;
+  }
+
+  /* Cards */
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card,
+  .panel {
+    padding: 18px;
+  }
+
+  .card h2 {
+    font-size: 26px;
+  }
+
+  .panel {
+    min-height: auto;
+  }
+
+  .footer {
+    font-size: 12px;
+  }
 }
 
-/* --------------------------------------------------------------------------
-   Tablets (Formato vertical y pantallas compactas)
-   -------------------------------------------------------------------------- */
-@media (max-width: 991px) and (min-width: 768px) {
-    /* El sidebar pasa a modo icono minimalista para preservar la legibilidad central */
-    .sidebar {
-        width: 90px;
-        padding: 20px 10px;
-        overflow-y: auto;
-    }
+/* ==========================================================================  
+   CELULARES MUY PEQUEÑOS
+========================================================================== */
+@media screen and (max-width: 480px) {
+  .sidebar {
+    width: 64px;
+    min-width: 64px;
+    padding: 14px 6px;
+  }
 
-    /* Ocultación controlada de textos mediante colapso de tamaño */
-    .logo h2,
-    .logo span,
-    .menu a {
-        font-size: 0;
-    }
+  .main-content {
+    margin-left: 64px;
+    width: calc(100% - 64px);
+    padding: 14px;
+  }
 
-    /* Redefinición y centrado de iconos del menú */
-    .menu a i,
-    .logout a i {
-        font-size: 20px;
-        margin: 0;
-    }
+  .logo-img {
+    width: 42px;
+    padding: 6px;
+  }
 
-    .logout a { font-size: 0; }
-    .main-content { margin-left: 90px; padding: 20px; }
-    .topbar { gap: 15px; }
-    .page-title { width: 100%; }
-    .page-title h1 { font-size: 28px; }
+  .menu a,
+  .logout a {
+    padding: 10px 6px;
+    border-radius: 10px;
+  }
 
-    /* El buscador se expande al 100% y se reordena al final mediante Flexbox order */
-    .search-box {
-        max-width: 100%;
-        width: 100%;
-        order: 3;
-    }
+  .menu a i,
+  .logout a i {
+    font-size: 16px;
+  }
 
-    .topbar-actions { margin-left: auto; }
-    .user-info { display: none; } /* Remueve textos de usuario innecesarios */
-    .cards-grid { grid-template-columns: repeat(2, 1fr); }
-    .content-grid { grid-template-columns: 1fr; } /* Rompe las columnas a filas únicas apiladas */
-    .large-panel { grid-column: span 1; }
-}
+  .page-title h1 {
+    font-size: 21px;
+  }
 
-/* --------------------------------------------------------------------------
-   Dispositivos Móviles (Smartphones de todos los tamaños)
-   -------------------------------------------------------------------------- */
-@media (max-width: 767px) {
-    /* Mantiene comportamiento horizontal nativo por fila */
-    .dashboard-container {
-        display: flex;
-        flex-direction: row;
-    }
+  .page-title p {
+    font-size: 12px;
+  }
 
-    /* Sidebar Flotante Completo (Preparado para ser activado vía JS) */
-    .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 280px;
-        height: 100vh;
-        padding: 20px;
-        z-index: 1000;
-        overflow-y: auto;
-        overflow-x: hidden;
-        transition: transform 0.3s ease; /* Transición fluida para efectos de deslizamiento */
-    }
+  .search-box input {
+    font-size: 13px;
+  }
 
-    /* Clase utilitaria para colapsar u ocultar el menú de manera lateral externa */
-    .sidebar.collapsed {
-        transform: translateX(-100%);
-    }
+  .card h2 {
+    font-size: 22px;
+  }
 
-    /* Ajuste de márgenes dinámicos del área de trabajo */
-    .main-content {
-        margin-left: 280px;
-        width: calc(100% - 280px);
-        padding: 15px;
-        transition: margin-left 0.3s ease, width 0.3s ease;
-    }
+  .card h3,
+  .panel h3 {
+    font-size: 15px;
+  }
 
-    /* Clase reactiva: cuando el menú se oculta por JS, el contenido toma el total de la pantalla */
-    .main-content.expanded {
-        margin-left: 0;
-        width: 100%;
-    }
-
-    .logo { margin-bottom: 20px; }
-    .logo h2 { font-size: 26px; }
-    .logo span { font-size: 10px; letter-spacing: 3px; }
-    .menu { gap: 6px; }
-    .menu a, .logout a { font-size: 14px; padding: 12px 14px; }
-
-    /* Reorganización vertical de la barra de cabecera */
-    .topbar {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 15px;
-    }
-
-    .menu-toggle { align-self: flex-start; }
-    .page-title { min-width: auto; }
-    .page-title h1 { font-size: 26px; }
-    .page-title p { font-size: 14px; }
-    .search-box { max-width: 100%; width: 100%; }
-
-    /* Caja de acciones distribuida simétricamente */
-    .topbar-actions {
-        margin-left: 0;
-        justify-content: space-between;
-        gap: 15px;
-    }
-
-    .user-profile { flex: 1; justify-content: center; }
-    .user-info { display: none; }
-    
-    /* Apilamiento completo a 1 sola columna para layouts pequeños */
-    .cards-grid { grid-template-columns: 1fr; }
-    .content-grid { grid-template-columns: 1fr; }
-    .large-panel { grid-column: span 1; }
-    .card, .panel { padding: 20px; }
-    .card h2 { font-size: 28px; }
-    .panel { min-height: auto; }
-    .placeholder { height: 140px; }
-    .footer { font-size: 12px; padding: 10px 0; }
-}
-
-/* --------------------------------------------------------------------------
-   Móviles Pequeños (Smartphones compactos)
-   -------------------------------------------------------------------------- */
-@media (max-width: 480px) {
-    .sidebar { width: 260px; padding: 15px; }
-    .main-content { margin-left: 260px; width: calc(100% - 260px); }
-    .menu a, .logout a { font-size: 13px; padding: 10px 12px; }
-    .page-title h1 { font-size: 22px; }
-    .page-title p { font-size: 13px; }
-    .search-box input { padding: 12px 16px 12px 42px; font-size: 14px; }
-    .notification { font-size: 20px; }
-    .user-profile { padding: 6px 10px; }
-    .user-profile img { width: 38px; height: 38px; }
-    .card h2 { font-size: 24px; }
-    .card h3, .panel h3 { font-size: 15px; }
-    .placeholder { height: 120px; font-size: 13px; }
+  .placeholder {
+    height: 110px;
+    font-size: 12px;
+  }
 }

@@ -24,6 +24,12 @@
     <link rel="stylesheet" href="{% static 'styles/inicio.css' %}" />
 
     <!-- ======================================================
+         ARCHIVO JS LOCAL
+         Se conecta el archivo menu.js
+    ====================================================== -->
+    <script src="{% static 'js/menu.js' %}"></script>
+
+    <!-- ======================================================
          FONT AWESOME
          Librería para usar iconos
     ====================================================== -->
@@ -177,14 +183,6 @@
         ====================================================== -->
         <header class="topbar">
           <!-- ======================================================
-               BOTÓN MENÚ HAMBURGUESA
-               (para responsive o menú lateral)
-          ====================================================== -->
-          <button class="menu-toggle">
-            <i class="fas fa-bars"></i>
-          </button>
-
-          <!-- ======================================================
                TÍTULO DE LA PÁGINA
           ====================================================== -->
           <div class="page-title">
@@ -232,12 +230,8 @@
               <!-- Información del usuario -->
               <div class="user-info">
                 <strong>María Gómez</strong>
-
                 <span>Recursos Humanos</span>
               </div>
-
-              <!-- Flecha desplegable -->
-              <i class="fas fa-chevron-down"></i>
             </div>
           </div>
         </header>
@@ -253,36 +247,28 @@
           <!-- Tarjeta 1 -->
           <div class="card">
             <h3>Total Empleados</h3>
-
             <h2>128</h2>
-
             <p>Activos actualmente</p>
           </div>
 
           <!-- Tarjeta 2 -->
           <div class="card">
             <h3>Empresas</h3>
-
             <h2>5</h2>
-
             <p>Empresas registradas</p>
           </div>
 
           <!-- Tarjeta 3 -->
           <div class="card">
             <h3>Planilla Total</h3>
-
             <h2>₡18,450,000</h2>
-
             <p>Salario neto mensual</p>
           </div>
 
           <!-- Tarjeta 4 -->
           <div class="card">
             <h3>Vacaciones Pendientes</h3>
-
             <h2>23</h2>
-
             <p>Solicitudes pendientes</p>
           </div>
         </section>
@@ -294,28 +280,24 @@
           <!-- Panel Resumen Planilla -->
           <div class="panel large-panel">
             <h3>Resumen de la Planilla</h3>
-
             <div class="placeholder">Gráfico Circular</div>
           </div>
 
           <!-- Panel Empleados por Empresa -->
           <div class="panel large-panel">
             <h3>Empleados por Empresa</h3>
-
             <div class="placeholder">Gráfico de Barras</div>
           </div>
 
           <!-- Panel Solicitudes -->
           <div class="panel">
             <h3>Solicitudes Recientes</h3>
-
             <div class="placeholder">Vacaciones, permisos...</div>
           </div>
 
           <!-- Panel Asistencia -->
           <div class="panel">
             <h3>Asistencia - Hoy</h3>
-
             <div class="placeholder">Indicador 92%</div>
           </div>
         </section>
