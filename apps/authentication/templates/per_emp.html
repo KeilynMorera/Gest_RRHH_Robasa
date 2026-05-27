@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Título de la pestaña del navegador -->
-    <title>Nuevo Ingreso - Gestión de Talento Humano</title>
+    <title>Elección de Ingreso - Gestión de Talento Humano</title>
 
     <!-- ======================================================
          ARCHIVO CSS LOCAL
@@ -162,7 +162,6 @@
           <a href="login.html">
             <!-- Icono de cerrar sesión -->
             <i class="fas fa-right-from-bracket"></i>
-
             Cerrar sesión
           </a>
         </div>
@@ -177,18 +176,10 @@
         ====================================================== -->
         <header class="topbar">
           <!-- ======================================================
-               BOTÓN MENÚ HAMBURGUESA
-          ====================================================== -->
-          <button class="menu-toggle">
-            <i class="fas fa-bars"></i>
-          </button>
-
-          <!-- ======================================================
                TÍTULO DE LA PÁGINA
           ====================================================== -->
           <div class="page-title">
-            <h1>Nuevo Ingreso</h1>
-
+            <h1>Registro Personal</h1>
             <p>Selecione el tipo de registro que desea agregar</p>
           </div>
 
@@ -231,12 +222,8 @@
               <!-- Información del usuario -->
               <div class="user-info">
                 <strong>María Gómez</strong>
-
                 <span>Recursos Humanos</span>
               </div>
-
-              <!-- Flecha desplegable -->
-              <i class="fas fa-chevron-down"></i>
             </div>
           </div>
         </header>
@@ -268,13 +255,12 @@
               <p class="action-card-desc">
                 Registra los datos personales de un individuo en el sistema:
                 nombre, identificación, contacto y más. Este paso es previo al
-                registro como empleado.
+                registro como empleado o pasante.
               </p>
 
               <!-- Botón -->
               <a href="{% url 'personas' %}" class="action-card-btn">
                 <i class="fas fa-plus"></i>
-
                 Ingresar persona
               </a>
             </div>
@@ -304,7 +290,6 @@
               <!-- Botón -->
               <a href="{% url 'empleados' %}" class="action-card-btn accent">
                 <i class="fas fa-user-plus"></i>
-
                 Registrar empleado
               </a>
             </div>
@@ -334,7 +319,6 @@
               <!-- Botón -->
               <a href="{% url 'pasantes' %}" class="action-card-btn">
                 <i class="fas fa-user-plus"></i>
-
                 Ingresar pasante
               </a>
             </div>

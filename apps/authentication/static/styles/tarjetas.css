@@ -179,15 +179,6 @@ body {
   flex-wrap: wrap; /* Si disminuye la resolución, los elementos pasan a una nueva línea */
 }
 
-/* Botón alternador para móviles (Hamburguesa) */
-.menu-toggle {
-  border: none;
-  background: none;
-  font-size: 26px;
-  cursor: pointer;
-  color: #293477;
-}
-
 .page-title {
   min-width: 260px;
 }
