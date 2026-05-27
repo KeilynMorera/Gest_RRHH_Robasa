@@ -196,7 +196,7 @@ body {
 .page-title h1 {
   font-size: 34px;
   margin-bottom: 5px;
-  color: #1a2042;
+  color: #d35b1a;
 }
 
 .page-title p {
@@ -734,164 +734,31 @@ body {
 }
 
 /* =====================================================
-   RESPONSIVE DESIGN
-   Pantallas pequeñas, medianas y grandes
+   RESPONSIVE GENERAL
 ===================================================== */
-
-/* =====================================================
-   PANTALLAS GRANDES (1200px en adelante)
-===================================================== */
-@media (min-width: 1200px) {
-  .main-content {
-    padding: 40px;
-  }
-
-  .form-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px 32px;
-  }
-
-  .form-card {
-    max-width: 1400px;
-  }
-
-  .search-box {
-    max-width: 500px;
-  }
-
-  .page-title h1 {
-    font-size: 38px;
-  }
-
-  .form-card-title {
-    font-size: 26px;
-  }
-}
 
 /* =====================================================
    LAPTOPS Y TABLETS GRANDES
-   992px - 1199px
+   1200px ↓
 ===================================================== */
-@media (max-width: 1199px) {
-  /* Sidebar más compacta */
+@media screen and (max-width: 1200px) {
   .sidebar {
-    width: 240px;
+    width: 230px;
     padding: 24px 16px;
   }
 
   .main-content {
-    margin-left: 240px;
+    margin-left: 230px;
     padding: 24px;
   }
 
   .logo-img {
-    width: 240px;
+    width: 220px;
   }
 
   .menu a {
     font-size: 14px;
     padding: 12px 14px;
-  }
-
-  .page-title h1 {
-    font-size: 30px;
-  }
-
-  .search-box {
-    max-width: 350px;
-  }
-
-  .form-grid {
-    gap: 20px;
-  }
-}
-
-/* =====================================================
-   TABLETS MEDIANAS
-   768px - 991px
-===================================================== */
-@media (max-width: 991px) {
-  /* Sidebar siempre visible */
-  .sidebar {
-    width: 210px;
-    padding: 20px 14px;
-  }
-
-  .main-content {
-    margin-left: 210px;
-    padding: 20px;
-  }
-
-  /* Logo */
-  .logo-img {
-    width: 180px;
-    padding: 14px;
-  }
-
-  /* Menú */
-  .menu {
-    gap: 6px;
-  }
-
-  .menu a {
-    font-size: 13px;
-    padding: 11px 12px;
-    gap: 10px;
-  }
-
-  .menu i {
-    width: 18px;
-    font-size: 14px;
-  }
-
-  /* Topbar */
-  .topbar {
-    gap: 16px;
-  }
-
-  .page-title {
-    min-width: 100%;
-  }
-
-  .page-title h1 {
-    font-size: 28px;
-  }
-
-  .page-title p {
-    font-size: 14px;
-  }
-
-  /* Buscador */
-  .search-box {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  /* Acciones */
-  .topbar-actions {
-    width: 100%;
-    justify-content: space-between;
-    margin-left: 0;
-  }
-
-  /* Usuario */
-  .user-profile {
-    padding: 8px 12px;
-  }
-
-  .user-profile img {
-    width: 40px;
-    height: 40px;
-  }
-
-  /* Formulario */
-  .form-card-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .form-body {
-    padding: 24px;
   }
 
   .form-grid {
@@ -901,106 +768,162 @@ body {
   .field-full {
     grid-column: auto;
   }
+}
 
-  /* Fotografía */
-  .photo-upload {
+/* =====================================================
+   TABLETS
+   992px ↓
+===================================================== */
+@media screen and (max-width: 992px) {
+  .sidebar {
+    width: 200px;
+    padding: 20px 14px;
+  }
+
+  .main-content {
+    margin-left: 200px;
+    padding: 20px;
+  }
+
+  .logo-img {
+    width: 170px;
+    padding: 12px;
+  }
+
+  .menu a {
+    padding: 11px 12px;
+    font-size: 13px;
+  }
+
+  .topbar {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .search-box {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .topbar-actions {
+    width: 100%;
+    justify-content: space-between;
+    margin-left: 0;
+  }
+
+  .form-card-header {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .photo-preview {
-    width: 100px;
-    height: 100px;
+  .form-body {
+    padding: 24px;
+  }
+
+  .photo-upload {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 
 /* =====================================================
-   MÓVILES GRANDES
-   576px - 767px
+   MÓVILES Y TABLETS PEQUEÑAS
+   768px ↓
 ===================================================== */
-@media (max-width: 767px) {
-  /* Sidebar fija y más angosta */
+@media screen and (max-width: 768px) {
+  /* =====================================
+     SIDEBAR SOLO ICONOS
+  ===================================== */
   .sidebar {
-    width: 180px;
-    padding: 18px 12px;
+    width: 85px;
+    padding: 18px 10px;
+    align-items: center;
   }
 
   .main-content {
-    margin-left: 180px;
+    margin-left: 85px;
     padding: 18px;
   }
 
-  /* Logo */
+  /* Logo compacto */
   .logo-img {
-    width: 150px;
-    padding: 10px;
-    border-radius: 16px;
+    width: 55px;
+    padding: 6px;
+    border-radius: 14px;
   }
 
   /* Menú */
-  .menu a {
-    font-size: 12px;
-    padding: 10px;
-    border-radius: 10px;
+  .menu {
+    width: 100%;
+    gap: 8px;
   }
 
-  .menu i {
-    font-size: 13px;
-    width: 16px;
+  .menu a {
+    justify-content: center;
+    align-items: center;
+    padding: 14px;
+    font-size: 0;
+    gap: 0;
+  }
+
+  .menu a i {
+    font-size: 20px;
+    width: auto;
+    margin: 0;
   }
 
   /* Logout */
-  .logout a {
-    font-size: 12px;
-    padding: 10px;
+  .logout {
+    width: 100%;
   }
 
-  /* Topbar */
+  .logout a {
+    justify-content: center;
+    padding: 14px;
+    font-size: 0;
+  }
+
+  .logout a i {
+    font-size: 20px;
+  }
+
+  /* =====================================
+     TOPBAR
+  ===================================== */
   .topbar {
     flex-direction: column;
     align-items: stretch;
   }
 
+  .page-title {
+    min-width: 100%;
+  }
+
   .page-title h1 {
-    font-size: 24px;
+    font-size: 26px;
   }
 
   .page-title p {
     font-size: 13px;
   }
 
-  /* Buscador */
-  .search-box input {
-    font-size: 14px;
-    padding: 12px 14px 12px 42px;
+  .search-box {
+    max-width: 100%;
   }
 
-  /* Acciones */
   .topbar-actions {
-    justify-content: space-between;
-    gap: 12px;
-  }
-
-  /* Usuario */
-  .user-profile {
     width: 100%;
-    justify-content: center;
+    justify-content: space-between;
   }
 
-  .user-info strong {
-    font-size: 13px;
+  /* Oculta texto del usuario */
+  .user-info {
+    display: none;
   }
 
-  .user-info span {
-    font-size: 11px;
-  }
-
-  /* Breadcrumb */
-  .breadcrumb {
-    font-size: 12px;
-  }
-
-  /* Tarjeta formulario */
+  /* =====================================
+     FORMULARIO
+  ===================================== */
   .form-card {
     border-radius: 14px;
   }
@@ -1021,14 +944,21 @@ body {
     font-size: 13px;
   }
 
-  /* Campos */
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .field-full {
+    grid-column: auto;
+  }
+
   .field input,
   .field select,
   .field textarea {
     font-size: 13px;
   }
 
-  /* Footer formulario */
   .form-footer {
     flex-direction: column;
     align-items: stretch;
@@ -1039,7 +969,6 @@ body {
     justify-content: center;
   }
 
-  /* Upload */
   .photo-upload {
     padding: 16px;
   }
@@ -1052,49 +981,39 @@ body {
 
 /* =====================================================
    MÓVILES PEQUEÑOS
-   hasta 575px
+   480px ↓
 ===================================================== */
-@media (max-width: 575px) {
-  /* Sidebar ultra compacta */
+@media screen and (max-width: 480px) {
   .sidebar {
-    width: 150px;
-    padding: 14px 10px;
+    width: 75px;
+    padding: 14px 8px;
   }
 
   .main-content {
-    margin-left: 150px;
+    margin-left: 75px;
     padding: 14px;
   }
 
-  /* Logo */
   .logo-img {
-    width: 120px;
-    padding: 8px;
-  }
-
-  /* Menú */
-  .menu {
-    gap: 4px;
+    width: 48px;
   }
 
   .menu a {
-    font-size: 11px;
-    padding: 8px;
-    gap: 8px;
+    padding: 12px;
   }
 
-  .menu i {
-    font-size: 12px;
-    width: 14px;
+  .menu a i {
+    font-size: 18px;
   }
 
-  /* Logout */
   .logout a {
-    font-size: 11px;
-    padding: 8px;
+    padding: 12px;
   }
 
-  /* Topbar */
+  .logout a i {
+    font-size: 18px;
+  }
+
   .page-title h1 {
     font-size: 22px;
   }
@@ -1103,42 +1022,6 @@ body {
     font-size: 12px;
   }
 
-  /* Buscador */
-  .search-box input {
-    font-size: 13px;
-  }
-
-  /* Notificación */
-  .notification {
-    font-size: 18px;
-  }
-
-  .badge {
-    width: 18px;
-    height: 18px;
-    font-size: 10px;
-  }
-
-  /* Usuario */
-  .user-profile {
-    padding: 6px 10px;
-    gap: 8px;
-  }
-
-  .user-profile img {
-    width: 34px;
-    height: 34px;
-  }
-
-  .user-info strong {
-    font-size: 12px;
-  }
-
-  .user-info span {
-    font-size: 10px;
-  }
-
-  /* Tarjeta */
   .form-card-header {
     padding: 16px;
   }
@@ -1161,7 +1044,6 @@ body {
     font-size: 12px;
   }
 
-  /* Campos */
   .field label {
     font-size: 12px;
   }
@@ -1173,16 +1055,9 @@ body {
     padding: 10px 12px;
   }
 
-  /* Botones */
   .btn {
     font-size: 12px;
     padding: 10px 14px;
-  }
-
-  /* Upload */
-  .photo-upload {
-    padding: 14px;
-    gap: 14px;
   }
 
   .photo-preview {
@@ -1194,7 +1069,6 @@ body {
     font-size: 11px;
   }
 
-  /* Footer */
   .footer {
     font-size: 12px;
   }
