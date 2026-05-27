@@ -196,15 +196,11 @@ body {
   display: flex;
   flex-wrap: wrap; /* Permite que los elementos se reacomoden verticalmente si el espacio colapsa */
 
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
 
   gap: 15px;
   margin-bottom: 20px;
-}
-
-.menu-toggle {
-  display: none; /* Oculto en escritorio; reservado para lógica de menú hamburguesa móvil */
 }
 
 .page-title {
@@ -223,40 +219,33 @@ body {
   font-size: 14px;
 }
 
-/* ── SEARCH BOX (MOTOR DE BÚSQUEDA) ────────────────────────────────────── */
+/* ── Buscador Integrado ── */
 .search-box {
-  position: relative; /* Contexto de posicionamiento absoluto para el icono interno */
-
-  flex: 1 1 320px; /* Crecimiento flexible con base mínima de seguridad de 320px */
-
+  flex: 1;
   max-width: 420px;
-  min-width: 0; /* Corrige fallas de desbordamiento de texto dentro de flex items */
+  position: relative; /* Contexto de posición para anclar el icono de lupa */
 }
 
 .search-box i {
   position: absolute;
-
   top: 50%;
-  left: 15px;
-
-  transform: translateY(-50%); /* Centrado vertical exacto del icono de lupa */
-
+  left: 18px;
+  transform: translateY(-50%); /* Centrado vertical matemático exacto */
   color: #8a94a6;
 }
 
 .search-box input {
   width: 100%;
-
-  padding: 12px 15px 12px 42px; /* Margen izquierdo amplio (42px) para evitar colisión con el icono */
-
-  border-radius: 10px;
+  padding: 14px 18px 14px 48px; /* Relleno extra a la izquierda para no tapar el texto con el icono */
   border: 1px solid #dbe2ef;
-
+  border-radius: 12px;
+  font-size: 15px;
   outline: none;
 }
 
 .search-box input:focus {
   border-color: #0c45ca;
+  box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1); /* Efecto halo azul en enfoque */
 }
 
 /* ── TOPBAR ACTIONS (NOTIFICACIONES & PERFIL) ─────────────────────────── */
@@ -302,20 +291,19 @@ body {
 .user-profile {
   display: flex;
   align-items: center;
-  gap: 10px;
-
+  gap: 12px;
   background: white;
-  padding: 8px 12px;
-
+  padding: 8px 14px;
   border-radius: 50px; /* Estilo píldora */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
 }
 
 .user-profile img {
-  width: 42px;
-  height: 42px;
-
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
+  object-fit: cover; /* Evita la distorsión de la foto si las proporciones no son 1:1 */
 }
 
 .user-info {
@@ -324,11 +312,11 @@ body {
 }
 
 .user-info strong {
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .user-info span {
-  font-size: 11px;
+  font-size: 12px;
   color: #7a8599;
 }
 
@@ -339,14 +327,26 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-
+  align-items: center;
   margin-bottom: 20px;
   font-size: 13px;
+  padding: 18px 28px 0;
+  color: #6b7499;
 }
 
 .breadcrumb a {
-  text-decoration: none;
   color: #6b7499;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.breadcrumb a:hover {
+  color: #e8600a;
+}
+
+.breadcrumb .sep {
+  font-size: 10px;
+  color: #c5cbdf;
 }
 
 .current {
@@ -662,29 +662,86 @@ body {
   }
 }
 
+/* ========================================================================== */
 /* ── TABLETS (Hasta 992px) ────────────────────────────────────────────── */
+/* ========================================================================== */
 @media screen and (max-width: 992px) {
   .sidebar {
-    width: 220px;
-    min-width: 220px;
-    max-width: 220px;
-    padding: 18px 12px;
+    width: 80px;
+    min-width: 80px;
+    max-width: 80px;
+
+    padding: 18px 8px;
+
+    align-items: center;
   }
 
   .main-content {
-    margin-left: 220px;
-    width: calc(100% - 220px);
+    margin-left: 80px;
+    width: calc(100% - 80px);
+
     padding: 18px;
   }
 
+  /* Oculta el texto del logo */
+  .logo span {
+    display: none;
+  }
+
+  /* Reduce el tamaño del logo */
   .logo-img {
-    max-width: 170px;
+    max-width: 55px;
+    padding: 8px;
+  }
+
+  /* Menú centrado */
+  .menu {
+    width: 100%;
+    align-items: center;
   }
 
   .menu a {
-    padding: 12px 14px;
-    font-size: 14px;
-    gap: 10px;
+    width: 55px;
+    height: 55px;
+
+    padding: 0;
+
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 12px;
+
+    font-size: 0; /* Oculta el texto */
+  }
+
+  .menu a i {
+    font-size: 20px;
+    width: auto;
+    margin: 0;
+  }
+
+  /* Logout solo icono */
+  .logout {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .logout a {
+    width: 55px;
+    height: 55px;
+
+    padding: 0;
+
+    justify-content: center;
+    align-items: center;
+
+    font-size: 0;
+  }
+
+  .logout a i {
+    font-size: 20px;
+    margin: 0;
   }
 
   .page-title h1 {
@@ -698,9 +755,9 @@ body {
 
   .topbar {
     display: grid;
-    grid-template-columns: 1fr; /* Estructuración vertical completa de la barra superior */
+    grid-template-columns: 1fr;
     gap: 12px;
-    flex-direction: column;
+
     align-items: stretch;
   }
 
@@ -725,7 +782,7 @@ body {
   }
 
   .form-grid {
-    grid-template-columns: 1fr; /* Los campos del formulario pasan a ocupar filas completas */
+    grid-template-columns: 1fr;
   }
 
   .summary-grid {
@@ -737,35 +794,60 @@ body {
   }
 }
 
+/* ========================================================================== */
 /* ── SMARTPHONES GRANDES (Hasta 768px) ─────────────────────────────────── */
+/* ========================================================================== */
 @media screen and (max-width: 768px) {
   .sidebar {
-    width: 190px;
-    min-width: 190px;
-    max-width: 190px;
+    width: 70px;
+    min-width: 70px;
+    max-width: 70px;
+
+    padding: 15px 6px;
+
+    align-items: center;
   }
 
   .main-content {
-    margin-left: 190px;
-    width: calc(100% - 190px);
+    margin-left: 70px;
+    width: calc(100% - 70px);
+
     padding: 15px;
   }
 
   .logo-img {
-    max-width: 140px;
-    padding: 10px;
+    max-width: 45px;
+    padding: 6px;
   }
 
   .menu a {
-    font-size: 12px;
-    padding: 11px 10px;
-    justify-content: center; /* Centra los módulos de navegación para optimizar legibilidad móvil */
+    width: 50px;
+    height: 50px;
+
+    font-size: 0;
+
+    padding: 0;
+
+    justify-content: center;
   }
 
   .menu a i {
     font-size: 18px;
-    margin: 0;
-    width: auto;
+  }
+
+  .logout a {
+    width: 50px;
+    height: 50px;
+
+    padding: 0;
+
+    font-size: 0;
+
+    justify-content: center;
+  }
+
+  .logout a i {
+    font-size: 18px;
   }
 
   .page-title h1 {
@@ -794,7 +876,7 @@ body {
   }
 
   .user-info {
-    display: none; /* Oculta textos informativos secundarios para liberar área útil */
+    display: none;
   }
 
   .user-profile {
@@ -831,49 +913,46 @@ body {
   }
 
   .btn {
-    width: 100%; /* Convierte los botones en elementos de bloque completo (Fácil interacción táctil) */
+    width: 100%;
     justify-content: center;
   }
 
   .form-footer {
-    flex-direction: column; /* Apila botones verticales (Cancelar abajo, Enviar arriba) */
+    flex-direction: column;
   }
 }
 
+/* ========================================================================== */
 /* ── SMARTPHONES PEQUEÑOS (Hasta 576px) ─────────────────────────────────── */
+/* ========================================================================== */
 @media screen and (max-width: 576px) {
   .sidebar {
-    width: 170px;
-    min-width: 170px;
-    max-width: 170px;
-    padding: 14px 10px;
+    width: 65px;
+    min-width: 65px;
+    max-width: 65px;
+
+    padding: 12px 5px;
   }
 
   .main-content {
-    margin-left: 170px;
-    width: calc(100% - 170px);
+    margin-left: 65px;
+    width: calc(100% - 65px);
+
     padding: 12px;
   }
 
-  .topbar {
-    gap: 10px;
-  }
-
-  .topbar-actions {
-    justify-content: space-between;
-  }
-
   .logo-img {
-    max-width: 120px;
+    max-width: 40px;
   }
 
   .menu {
-    gap: 6px;
+    gap: 8px;
   }
 
   .menu a {
-    font-size: 11px;
-    padding: 10px 8px;
+    width: 45px;
+    height: 45px;
+
     border-radius: 10px;
   }
 
@@ -882,8 +961,12 @@ body {
   }
 
   .logout a {
-    font-size: 11px;
-    padding: 10px 8px;
+    width: 45px;
+    height: 45px;
+  }
+
+  .logout a i {
+    font-size: 16px;
   }
 
   .page-title h1 {
@@ -892,10 +975,6 @@ body {
 
   .page-title p {
     font-size: 11px;
-  }
-
-  .search-box {
-    margin-top: 0;
   }
 
   .breadcrumb {
