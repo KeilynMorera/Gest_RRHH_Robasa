@@ -182,20 +182,39 @@ body {
   align-items: center;
   gap: 25px;
 }
+/* Botón/Cápsula de Perfil de Usuario */
 .user-profile {
   display: flex;
   align-items: center;
   gap: 12px;
   background: white;
   padding: 8px 14px;
-  border-radius: 50px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  border-radius: 50px; /* Forma redondeada estilo píldora/cápsula */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Sombra flotante muy suave */
+  cursor: pointer;
 }
+
+/* Fotografía del usuario */
 .user-profile img {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  object-fit: cover;
+  object-fit: cover; /* Previene que la foto se estire o se deforme */
+}
+
+/* Bloque de texto del perfil */
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-info strong {
+  font-size: 14px;
+}
+
+.user-info span {
+  font-size: 12px;
+  color: #7a8599;
 }
 
 /* BREADCRUMB */
@@ -392,4 +411,454 @@ body {
   color: #7a8599;
   font-size: 14px;
   margin-top: auto;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   MENU SIEMPRE A LA IZQUIERDA
+========================================================================== */
+
+/* =========================
+   PANTALLAS GRANDES
+   1400px ↓
+========================= */
+@media screen and (max-width: 1400px) {
+  .sidebar {
+    width: 260px;
+    padding: 26px 18px;
+  }
+
+  .main-content {
+    margin-left: 260px;
+    width: calc(100% - 260px);
+    padding: 24px;
+  }
+
+  .logo-img {
+    max-width: 240px;
+  }
+
+  .page-title h1 {
+    font-size: 30px;
+  }
+
+  .form-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .results-table th,
+  .results-table td {
+    padding: 12px 14px;
+  }
+}
+
+/* =========================
+   PANTALLAS MEDIANAS
+   1200px ↓
+========================= */
+@media screen and (max-width: 1200px) {
+  .sidebar {
+    width: 230px;
+    min-width: 230px;
+    max-width: 230px;
+    padding: 22px 16px;
+  }
+
+  .main-content {
+    margin-left: 230px;
+    width: calc(100% - 230px);
+    padding: 22px;
+  }
+
+  .logo-img {
+    max-width: 190px;
+    padding: 14px;
+  }
+
+  .menu a {
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+
+  .topbar {
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .topbar-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .page-title {
+    width: 100%;
+  }
+
+  .page-title h1 {
+    font-size: 28px;
+  }
+
+  .form-card-header {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .form-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .results-table {
+    min-width: 800px;
+  }
+}
+
+/* =========================
+   TABLETS
+   992px ↓
+========================= */
+@media screen and (max-width: 992px) {
+  .sidebar {
+    width: 210px;
+    min-width: 210px;
+    max-width: 210px;
+    padding: 20px 14px;
+  }
+
+  .main-content {
+    margin-left: 210px;
+    width: calc(100% - 210px);
+    padding: 18px;
+  }
+
+  .logo-img {
+    max-width: 160px;
+    padding: 12px;
+  }
+
+  .menu {
+    gap: 6px;
+  }
+
+  .menu a {
+    font-size: 12px;
+    padding: 11px 12px;
+    gap: 10px;
+  }
+
+  .menu i {
+    width: 16px;
+  }
+
+  .logout a {
+    font-size: 12px;
+    padding: 11px 12px;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .topbar-actions {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .page-title h1 {
+    font-size: 25px;
+  }
+
+  .page-title p {
+    font-size: 13px;
+  }
+
+  .user-profile {
+    padding: 6px 10px;
+  }
+
+  .user-profile img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .breadcrumb {
+    flex-wrap: wrap;
+    font-size: 12px;
+  }
+
+  .form-card-header {
+    padding: 18px;
+  }
+
+  .form-body {
+    padding: 20px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 13px;
+  }
+
+  .results-table th,
+  .results-table td {
+    font-size: 12px;
+    padding: 12px;
+  }
+
+  .form-footer {
+    flex-wrap: wrap;
+  }
+}
+
+/* =========================
+   CELULARES GRANDES
+   768px ↓
+========================= */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 180px;
+    min-width: 180px;
+    max-width: 180px;
+    padding: 16px 10px;
+  }
+
+  .main-content {
+    margin-left: 180px;
+    width: calc(100% - 180px);
+    padding: 14px;
+  }
+
+  .logo {
+    margin-bottom: 22px;
+  }
+
+  .logo-img {
+    max-width: 120px;
+    padding: 8px;
+    border-radius: 14px;
+  }
+
+  .logo span {
+    font-size: 12px;
+    letter-spacing: 3px;
+  }
+
+  .menu a {
+    font-size: 11px;
+    padding: 10px 8px;
+    border-radius: 10px;
+  }
+
+  .menu i {
+    width: 14px;
+    font-size: 12px;
+  }
+
+  .logout {
+    margin-top: 14px;
+    padding-top: 14px;
+  }
+
+  .logout a {
+    font-size: 11px;
+    padding: 10px 8px;
+  }
+
+  .page-title h1 {
+    font-size: 22px;
+  }
+
+  .page-title p {
+    font-size: 12px;
+  }
+
+  .topbar-actions {
+    gap: 12px;
+  }
+
+  .user-profile {
+    padding: 6px 8px;
+    gap: 8px;
+    border-radius: 14px;
+  }
+
+  .user-profile img {
+    width: 34px;
+    height: 34px;
+  }
+
+  .breadcrumb {
+    font-size: 11px;
+    gap: 5px;
+  }
+
+  .form-card {
+    border-radius: 12px;
+  }
+
+  .form-card-header {
+    padding: 16px;
+  }
+
+  .form-card-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 15px;
+  }
+
+  .form-card-title {
+    font-size: 15px;
+  }
+
+  .form-body {
+    padding: 16px;
+  }
+
+  .field label {
+    font-size: 12px;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .form-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .results-table {
+    min-width: 700px;
+  }
+
+  .footer {
+    font-size: 12px;
+  }
+}
+
+/* =========================
+   CELULARES PEQUEÑOS
+   576px ↓
+========================= */
+@media screen and (max-width: 576px) {
+  .sidebar {
+    width: 155px;
+    min-width: 155px;
+    max-width: 155px;
+    padding: 14px 8px;
+  }
+
+  .main-content {
+    margin-left: 155px;
+    width: calc(100% - 155px);
+    padding: 10px;
+  }
+
+  .logo-img {
+    max-width: 95px;
+    padding: 6px;
+  }
+
+  .logo span {
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  .menu {
+    gap: 4px;
+  }
+
+  .menu a {
+    font-size: 10px;
+    padding: 8px 6px;
+    gap: 6px;
+  }
+
+  .logout a {
+    font-size: 10px;
+    padding: 8px 6px;
+  }
+
+  .page-title h1 {
+    font-size: 18px;
+  }
+
+  .page-title p {
+    font-size: 11px;
+  }
+
+  .topbar {
+    margin-bottom: 20px;
+  }
+
+  .user-profile {
+    padding: 5px 7px;
+  }
+
+  .user-profile img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .breadcrumb {
+    font-size: 10px;
+  }
+
+  .form-card-header {
+    padding: 14px;
+  }
+
+  .form-card-title {
+    font-size: 14px;
+  }
+
+  .form-body {
+    padding: 14px;
+  }
+
+  .field label {
+    font-size: 11px;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    padding: 9px 10px;
+    font-size: 11px;
+  }
+
+  .results-table th,
+  .results-table td {
+    padding: 10px;
+    font-size: 11px;
+  }
+
+  .badge-category {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+
+  .btn {
+    font-size: 12px;
+    padding: 10px;
+  }
+
+  .footer {
+    font-size: 11px;
+    padding-top: 20px;
+  }
 }

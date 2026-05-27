@@ -2,41 +2,42 @@
    RESET - Limpieza y homogenización de estilos base del navegador
    ========================================================================== */
 * {
-  margin: 0;            /* Elimina los márgenes por defecto de todos los elementos */
-  padding: 0;           /* Elimina los rellenos/paddings por defecto */
+  margin: 0; /* Elimina los márgenes por defecto de todos los elementos */
+  padding: 0; /* Elimina los rellenos/paddings por defecto */
   box-sizing: border-box; /* Fuerza a que el padding y borde no alteren el ancho total configurado */
 }
 
 body {
-  font-family: 'Segoe UI', sans-serif; /* Tipografía moderna y limpia para la interfaz */
-  background: #f4f7fb;                 /* Color de fondo general gris-azulado muy claro */
-  color: #d35b1a;                      /* Color de texto principal corporativo (Naranja) */
+  font-family:
+    "Segoe UI", sans-serif; /* Tipografía moderna y limpia para la interfaz */
+  background: #f4f7fb; /* Color de fondo general gris-azulado muy claro */
+  color: #d35b1a; /* Color de texto principal corporativo (Naranja) */
 }
 
 /* ==========================================================================
    LAYOUT GENERAL - Estructura global de la aplicación
    ========================================================================== */
 .dashboard-container {
-  display: flex;       /* Activa Flexbox para alinear el Sidebar y el Main Content lado a lado */
-  min-height: 100vh;   /* Asegura que el contenedor abarque mínimo el 100% de la altura de la pantalla */
-  width: 100%;         /* Extiende el contenedor a todo el ancho disponible */
+  display: flex; /* Activa Flexbox para alinear el Sidebar y el Main Content lado a lado */
+  min-height: 100vh; /* Asegura que el contenedor abarque mínimo el 100% de la altura de la pantalla */
+  width: 100%; /* Extiende el contenedor a todo el ancho disponible */
 }
 
 /* ==========================================================================
    SIDEBAR - Panel de navegación lateral fijo
    ========================================================================== */
 .sidebar {
-  width: 280px;        /* Define un ancho base estricto de 280px */
-  min-width: 280px;    /* Evita que el contenedor se encoja por efectos de Flexbox */
-  max-width: 280px;    /* Evita que el contenedor se estire más de lo deseado */
+  width: 280px; /* Define un ancho base estricto de 280px */
+  min-width: 280px; /* Evita que el contenedor se encoja por efectos de Flexbox */
+  max-width: 280px; /* Evita que el contenedor se estire más de lo deseado */
 
   background: #26317a; /* Color de fondo azul marino oscuro */
-  color: #ffffff;      /* Texto e iconos en color blanco puro */
+  color: #ffffff; /* Texto e iconos en color blanco puro */
 
-  display: flex;       /* Convierte el sidebar en contenedor flex para organizar su contenido */
+  display: flex; /* Convierte el sidebar en contenedor flex para organizar su contenido */
   flex-direction: column; /* Apila los elementos internos (Logo, Menú, Logout) verticalmente */
 
-  padding: 25px 18px;  /* Margen interno: 25px arriba/abajo y 18px a los lados */
+  padding: 25px 18px; /* Margen interno: 25px arriba/abajo y 18px a los lados */
 
   /* Posicionamiento fijo: se queda clavado en pantalla aunque el usuario haga scroll */
   position: fixed;
@@ -44,41 +45,46 @@ body {
   left: 0;
   bottom: 0;
 
-  overflow-y: auto;    /* Activa scroll vertical si el menú es muy largo para pantallas pequeñas */
-  overflow-x: hidden;  /* Cancela cualquier desborde o scroll horizontal interno */
+  overflow-y: auto; /* Activa scroll vertical si el menú es muy largo para pantallas pequeñas */
+  overflow-x: hidden; /* Cancela cualquier desborde o scroll horizontal interno */
 
-  z-index: 999;        /* Asegura que la barra lateral flote por encima del contenido general */
+  z-index: 999; /* Asegura que la barra lateral flote por encima del contenido general */
 }
 
 /* ==========================================================================
    LOGO ROBASA - Contenedor y efectos estéticos de la marca
    ========================================================================== */
 .logo {
-  text-align: center;  /* Centra el texto y la imagen internamente */
+  text-align: center; /* Centra el texto y la imagen internamente */
   margin-bottom: 35px; /* Separación inferior respecto al bloque de menú */
 }
 
 /* Estilización avanzada de la imagen del logo */
 .logo-img {
   width: 320px;
-  max-width: 100%;     /* Evita que la imagen rompa su contenedor en resoluciones menores */
-  height: auto;        /* Mantiene la proporción de aspecto original de la imagen */
+  max-width: 100%; /* Evita que la imagen rompa su contenedor en resoluciones menores */
+  height: auto; /* Mantiene la proporción de aspecto original de la imagen */
 
-  display: block;      /* Cambia a bloque para poder usar márgenes automáticos */
+  display: block; /* Cambia a bloque para poder usar márgenes automáticos */
   margin: 0 auto 25px; /* Centra horizontalmente y añade 25px de margen inferior */
 
-  padding: 18px;        /* Aire interior para el efecto de contenedor de la imagen */
-  border-radius: 22px;  /* Esquinas fuertemente redondeadas */
+  padding: 18px; /* Aire interior para el efecto de contenedor de la imagen */
+  border-radius: 22px; /* Esquinas fuertemente redondeadas */
 
-  background: rgba(255, 255, 255, 0.08); /* Fondo blanco con 8% de opacidad (Efecto Glass) */
+  background: rgba(
+    255,
+    255,
+    255,
+    0.08
+  ); /* Fondo blanco con 8% de opacidad (Efecto Glass) */
   border: 1px solid rgba(255, 255, 255, 0.12); /* Borde blanco sutil y semitransparente */
-  backdrop-filter: blur(6px); /* Desenfoca lo que esté detrás del fondo (Efecto esmerilado) */
+  backdrop-filter: blur(
+    6px
+  ); /* Desenfoca lo que esté detrás del fondo (Efecto esmerilado) */
 
   /* Filtro de sombra múltiple para crear un resplandor (Glow) blanco, aumentando brillo y contraste */
-  filter:
-    drop-shadow(0 0 10px rgba(255, 255, 255, 0.25))
-    drop-shadow(0 0 25px rgba(255, 255, 255, 0.12))
-    brightness(1.18)
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25))
+    drop-shadow(0 0 25px rgba(255, 255, 255, 0.12)) brightness(1.18)
     contrast(1.15);
 
   transition: all 0.3s ease; /* Suaviza la animación de todos los estados (como el Hover) */
@@ -89,10 +95,8 @@ body {
   transform: scale(1.03); /* Agranda sutilmente el logo un 3% */
 
   /* Intensifica notablemente el resplandor blanco (Glow), el brillo y el contraste */
-  filter:
-    drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))
-    drop-shadow(0 0 32px rgba(255, 255, 255, 0.18))
-    brightness(1.25)
+  filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))
+    drop-shadow(0 0 32px rgba(255, 255, 255, 0.18)) brightness(1.25)
     contrast(1.2);
 }
 
@@ -100,57 +104,67 @@ body {
 .logo span {
   font-size: 18px;
   letter-spacing: 6px; /* Separación amplia entre letras para un aspecto más premium */
-  color: #9bc0ff;      /* Color de fuente azul claro */
+  color: #9bc0ff; /* Color de fuente azul claro */
 }
 
 /* ==========================================================================
    MENÚ - Enlaces de navegación principal
    ========================================================================== */
 .menu {
-  flex: 1;              /* Ocupa todo el espacio vertical sobrante, empujando el Logout al fondo */
+  flex: 1; /* Ocupa todo el espacio vertical sobrante, empujando el Logout al fondo */
   display: flex;
   flex-direction: column;
-  gap: 8px;             /* Espacio controlado de 8px entre cada botón de enlace */
-  padding-right: 5px;   /* Previene que el texto se encime con la barra de scroll vertical */
+  gap: 8px; /* Espacio controlado de 8px entre cada botón de enlace */
+  padding-right: 5px; /* Previene que el texto se encime con la barra de scroll vertical */
 }
 
 /* Botones de enlace individuales */
 .menu a {
-  color: #FEFEFD;        /* Blanco hueso muy limpio */
+  color: #fefefd; /* Blanco hueso muy limpio */
   text-decoration: none; /* Elimina la línea de subrayado por defecto de los enlaces */
-  padding: 14px 18px;    /* Distribución interna del botón */
-  border-radius: 12px;   /* Bordes suavizados */
-  display: flex;         /* Activa Flexbox interno para ordenar icono y texto */
-  align-items: center;   /* Centra verticalmente el icono con el texto */
-  gap: 12px;             /* Separación de 12px entre el icono y el texto */
-  transition: 0.3s;      /* Animación sutil de 0.3 segundos para los cambios de color */
+  padding: 14px 18px; /* Distribución interna del botón */
+  border-radius: 12px; /* Bordes suavizados */
+  display: flex; /* Activa Flexbox interno para ordenar icono y texto */
+  align-items: center; /* Centra verticalmente el icono con el texto */
+  gap: 12px; /* Separación de 12px entre el icono y el texto */
+  transition: 0.3s; /* Animación sutil de 0.3 segundos para los cambios de color */
 }
 
 /* Estado al pasar el mouse o cuando la pestaña está activa */
 .menu a:hover,
 .menu a.active {
-  background: #4567b7;   /* Fondo azul intermedio */
-  color: white;          /* Fuerza el texto a blanco puro */
+  background: #4567b7; /* Fondo azul intermedio */
+  color: white; /* Fuerza el texto a blanco puro */
 }
 
 /* Iconos integrados en los enlaces */
 .menu i {
-  width: 20px;           /* Ancho fijo para garantizar que todos los textos comiencen alineados */
+  width: 20px; /* Ancho fijo para garantizar que todos los textos comiencen alineados */
 }
 
 /* Personalización estética de la barra de scroll en el Sidebar (Navegadores Webkit) */
 .sidebar::-webkit-scrollbar {
-  width: 6px;            /* Grosor de la barra de scroll */
+  width: 6px; /* Grosor de la barra de scroll */
 }
 .sidebar::-webkit-scrollbar-track {
   background: transparent; /* Fondo del carril transparente */
 }
 .sidebar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.25); /* Color de la barra con transparencia */
-  border-radius: 10px;   /* Bordes redondeados para la barra */
+  background: rgba(
+    255,
+    255,
+    255,
+    0.25
+  ); /* Color de la barra con transparencia */
+  border-radius: 10px; /* Bordes redondeados para la barra */
 }
 .sidebar::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.4);  /* Se oscurece un poco al pasar el mouse */
+  background: rgba(
+    255,
+    255,
+    255,
+    0.4
+  ); /* Se oscurece un poco al pasar el mouse */
 }
 
 /* Bloque inferior de Cerrar Sesión (Logout) */
@@ -170,16 +184,21 @@ body {
 }
 
 .logout a:hover {
-  background: rgba(255, 255, 255, 0.08); /* Fondo claro tenue indicando interactividad */
+  background: rgba(
+    255,
+    255,
+    255,
+    0.08
+  ); /* Fondo claro tenue indicando interactividad */
 }
 
 /* ==========================================================================
    CONTENIDO PRINCIPAL - Espacio de trabajo del Dashboard (Derecha)
    ========================================================================== */
 .main-content {
-  flex: 1;              /* Consume todo el ancho disponible restante a la derecha */
-  margin-left: 280px;   /* Desplazamiento obligatorio idéntico al ancho del Sidebar fijo */
-  padding: 30px;        /* Margen interno general para que los componentes respiren */
+  flex: 1; /* Consume todo el ancho disponible restante a la derecha */
+  margin-left: 280px; /* Desplazamiento obligatorio idéntico al ancho del Sidebar fijo */
+  padding: 30px; /* Margen interno general para que los componentes respiren */
 }
 
 /* ==========================================================================
@@ -187,10 +206,10 @@ body {
    ========================================================================== */
 .topbar {
   display: flex;
-  align-items: center;  /* Centra de forma vertical todos los elementos internos */
-  gap: 20px;            /* Distancia entre título, buscador y perfil */
-  margin-bottom: 30px;  /* Separación inferior con respecto al área de trabajo */
-  flex-wrap: wrap;      /* Permite colapsar elementos en filas si el ancho disminuye */
+  align-items: center; /* Centra de forma vertical todos los elementos internos */
+  gap: 20px; /* Distancia entre título, buscador y perfil */
+  margin-bottom: 30px; /* Separación inferior con respecto al área de trabajo */
+  flex-wrap: wrap; /* Permite colapsar elementos en filas si el ancho disminuye */
 }
 
 /* Botón alternador del menú (Generalmente un icono de hamburguesa de 3 líneas) */
@@ -210,19 +229,19 @@ body {
 .page-title h1 {
   font-size: 34px;
   margin-bottom: 5px;
-  color: #d35b1a;       /* Título en color Naranja */
+  color: #d35b1a; /* Título en color Naranja */
 }
 
 .page-title p {
-  color: #7a8599;       /* Color gris sutil para textos descriptivos secundarios */
+  color: #7a8599; /* Color gris sutil para textos descriptivos secundarios */
   font-size: 15px;
 }
 
 /* Buscador */
 .search-box {
-  flex: 1;              /* Crece dinámicamente para ocupar el espacio central disponible */
-  max-width: 420px;     /* Ancho máximo permitido para mantener la elegancia */
-  position: relative;   /* Base referencial obligatoria para posicionar el icono adentro */
+  flex: 1; /* Crece dinámicamente para ocupar el espacio central disponible */
+  max-width: 420px; /* Ancho máximo permitido para mantener la elegancia */
+  position: relative; /* Base referencial obligatoria para posicionar el icono adentro */
 }
 
 /* Icono de la lupa de búsqueda */
@@ -241,7 +260,7 @@ body {
   border: 1px solid #dbe2ef;
   border-radius: 12px;
   font-size: 15px;
-  outline: none;        /* Quita el borde nativo del navegador */
+  outline: none; /* Quita el borde nativo del navegador */
 }
 
 /* Animación del buscador cuando el usuario hace clic en él (Focus) */
@@ -252,7 +271,7 @@ body {
 
 /* Bloque de acciones (Notificaciones, Perfil de Usuario) */
 .topbar-actions {
-  margin-left: auto;    /* Imán CSS: empuja magnéticamente todo este contenedor a la derecha */
+  margin-left: auto; /* Imán CSS: empuja magnéticamente todo este contenedor a la derecha */
   display: flex;
   align-items: center;
   gap: 25px;
@@ -260,7 +279,7 @@ body {
 
 /* Icono de la campana de notificaciones */
 .notification {
-  position: relative;   /* Necesario para posicionar el contador de alertas encima */
+  position: relative; /* Necesario para posicionar el contador de alertas encima */
   font-size: 22px;
   cursor: pointer;
   color: #1b2b4b;
@@ -271,13 +290,13 @@ body {
   position: absolute;
   top: -8px;
   right: -10px;
-  background: #ff4d4f;  /* Color rojo de alerta internacional */
+  background: #ff4d4f; /* Color rojo de alerta internacional */
   color: white;
   font-size: 11px;
   font-weight: bold;
   width: 20px;
   height: 20px;
-  border-radius: 50%;   /* Lo transforma en una circunferencia perfecta */
+  border-radius: 50%; /* Lo transforma en una circunferencia perfecta */
   display: flex;
   align-items: center;
   justify-content: center; /* Centrado absoluto del número interno */
@@ -290,7 +309,7 @@ body {
   gap: 12px;
   background: white;
   padding: 8px 14px;
-  border-radius: 50px;  /* Forma redondeada estilo píldora/cápsula */
+  border-radius: 50px; /* Forma redondeada estilo píldora/cápsula */
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Sombra flotante muy suave */
   cursor: pointer;
 }
@@ -300,7 +319,7 @@ body {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  object-fit: cover;    /* Previene que la foto se estire o se deforme */
+  object-fit: cover; /* Previene que la foto se estire o se deforme */
 }
 
 /* Bloque de texto del perfil */
@@ -323,7 +342,7 @@ body {
    ========================================================================== */
 .breadcrumb {
   display: flex;
-  flex-wrap: wrap;      /* Salta de línea si las rutas son excesivamente largas en móvil */
+  flex-wrap: wrap; /* Salta de línea si las rutas son excesivamente largas en móvil */
   gap: 8px;
   margin-bottom: 20px;
   font-size: 13px;
@@ -348,7 +367,7 @@ body {
   max-width: 100%;
   background: white;
   border-radius: 16px;
-  overflow: hidden;     /* Asegura que los hijos no rompan las esquinas curvas de la tarjeta */
+  overflow: hidden; /* Asegura que los hijos no rompan las esquinas curvas de la tarjeta */
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04); /* Sombra perimetral ligera */
 }
 
@@ -378,7 +397,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #e8600a;       /* Icono en naranja fuerte */
+  color: #e8600a; /* Icono en naranja fuerte */
 }
 
 .form-card-title {
@@ -395,11 +414,11 @@ body {
    FORM BODY & SECTIONS - Estructuración interna del formulario
    ========================================================================== */
 .form-body {
-  padding: 25px;        /* Margen de aire interno para las entradas de datos */
+  padding: 25px; /* Margen de aire interno para las entradas de datos */
 }
 
 .form-section {
-  margin-bottom: 30px;  /* Distancia prudente entre bloques lógicos de información */
+  margin-bottom: 30px; /* Distancia prudente entre bloques lógicos de información */
 }
 
 /* Título de subtramo o subsección */
@@ -418,20 +437,20 @@ body {
   display: grid;
   /* Inteligente: acomoda columnas de mínimo 240px cada una y rellena de forma simétrica (auto-fit) el espacio */
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;            /* Espacio de separación entre celdas (horizontal y vertical) */
+  gap: 20px; /* Espacio de separación entre celdas (horizontal y vertical) */
 }
 
 /* Contenedor individual de una casilla */
 .field {
   display: flex;
   flex-direction: column; /* Label arriba, Control abajo */
-  gap: 8px;             /* Separación entre el label y la caja de texto */
+  gap: 8px; /* Separación entre el label y la caja de texto */
 }
 
 .field label {
   font-size: 13px;
   color: #1a2042;
-  font-weight: 600;     /* Texto ligeramente seminegrita */
+  font-weight: 600; /* Texto ligeramente seminegrita */
 }
 
 /* Estilos unificados para elementos de entrada de datos (Inputs, Selects y Textareas) */
@@ -442,14 +461,14 @@ body {
   padding: 12px 14px;
   border-radius: 10px;
   border: 1px solid #dde2f0;
-  background: #f7f8fc;   /* Color de fondo sutil grisáceo */
+  background: #f7f8fc; /* Color de fondo sutil grisáceo */
   font-size: 14px;
 }
 
 /* Adaptación para áreas de texto libre amplias */
 .field textarea {
-  resize: vertical;      /* Permite agrandar el campo verticalmente pero bloquea la deformación horizontal */
-  min-height: 100px;     /* Altura mínima de inicio */
+  resize: vertical; /* Permite agrandar el campo verticalmente pero bloquea la deformación horizontal */
+  min-height: 100px; /* Altura mínima de inicio */
 }
 
 /* Efectos visuales interactivos cuando el usuario edita un campo (Focus) */
@@ -457,8 +476,8 @@ body {
 .field select:focus,
 .field textarea:focus {
   border-color: #e8600a; /* El borde cambia a naranja */
-  background: white;     /* El fondo se aclara a blanco puro para mejorar contraste */
-  outline: none;         /* Elimina la línea azul nativa del navegador */
+  background: white; /* El fondo se aclara a blanco puro para mejorar contraste */
+  outline: none; /* Elimina la línea azul nativa del navegador */
 }
 
 /* ==========================================================================
@@ -480,14 +499,14 @@ body {
 }
 
 .summary-card span {
-  display: block;       /* Rompe línea obligando a simular un salto */
+  display: block; /* Rompe línea obligando a simular un salto */
   margin-bottom: 6px;
   font-size: 12px;
   color: #6b7499;
 }
 
 .summary-card strong {
-  color: #26317a;       /* Destaca los totales numéricos en el azul corporativo oscuro */
+  color: #26317a; /* Destaca los totales numéricos en el azul corporativo oscuro */
 }
 
 /* ==========================================================================
@@ -495,14 +514,14 @@ body {
    ========================================================================== */
 .table-container {
   width: 100%;
-  overflow-x: auto;     /* Genera scroll horizontal únicamente en la tabla si las columnas desbordan en móviles */
+  overflow-x: auto; /* Genera scroll horizontal únicamente en la tabla si las columnas desbordan en móviles */
   border-radius: 12px;
   border: 1px solid #e8ecf6;
 }
 
 .results-table {
   width: 100%;
-  min-width: 850px;     /* Obliga a la tabla a medir mínimo 850px para evitar aplastamiento de celdas */
+  min-width: 850px; /* Obliga a la tabla a medir mínimo 850px para evitar aplastamiento de celdas */
   border-collapse: collapse; /* Une los bordes de las celdas en una sola línea fluida */
 }
 
@@ -550,7 +569,7 @@ body {
 
 /* Botón principal/guardar/enviar */
 .btn-primary {
-  background: #e8600a;   /* Naranja corporativo vibrante */
+  background: #e8600a; /* Naranja corporativo vibrante */
   color: white;
 }
 
@@ -570,10 +589,18 @@ body {
 
 /* PANTALLAS GRANDES / LAPTOPS COMPACTAS (Hasta 1400px) */
 @media screen and (max-width: 1400px) {
-  .main-content { padding: 22px; } /* Reduce levemente el espaciado para ganar pantalla útil */
-  .topbar { gap: 16px; }
-  .search-box { max-width: 380px; } /* Ajusta el ancho máximo del buscador */
-  .results-table { min-width: 780px; } /* Permite que la tabla reduzca su scroll base */
+  .main-content {
+    padding: 22px;
+  } /* Reduce levemente el espaciado para ganar pantalla útil */
+  .topbar {
+    gap: 16px;
+  }
+  .search-box {
+    max-width: 380px;
+  } /* Ajusta el ancho máximo del buscador */
+  .results-table {
+    min-width: 780px;
+  } /* Permite que la tabla reduzca su scroll base */
 }
 
 /* LAPTOPS / DESKTOPS MEDIANAS (Hasta 1200px) */
@@ -593,14 +620,29 @@ body {
   }
 
   /* Re-estructuración de la barra superior */
-  .topbar { align-items: flex-start; gap: 18px; }
-  .page-title { width: 100%; } /* El título toma toda la línea superior */
-  .search-box { flex: 1 1 100%; max-width: 100%; } /* El buscador baja a una segunda línea completa */
-  .topbar-actions { width: 100%; justify-content: flex-end; } /* Las acciones van a la derecha de esa línea */
+  .topbar {
+    align-items: flex-start;
+    gap: 18px;
+  }
+  .page-title {
+    width: 100%;
+  } /* El título toma toda la línea superior */
+  .search-box {
+    flex: 1 1 100%;
+    max-width: 100%;
+  } /* El buscador baja a una segunda línea completa */
+  .topbar-actions {
+    width: 100%;
+    justify-content: flex-end;
+  } /* Las acciones van a la derecha de esa línea */
 
   /* Los sistemas de celdas disminuyen su anchura mínima aceptable para caber holgadamente */
-  .form-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-  .summary-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+  .form-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+  .summary-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
 }
 
 /* TABLETS / PANTALLAS VERTICALES (Hasta 992px) */
@@ -620,26 +662,61 @@ body {
     padding: 18px;
   }
 
-  .logo-img { max-width: 170px; } /* Reduce el tamaño del logo */
-  .menu a { font-size: 13px; padding: 12px; gap: 10px; } /* Reduce tamaño de botones del menú */
+  .logo-img {
+    max-width: 170px;
+  } /* Reduce el tamaño del logo */
+  .menu a {
+    font-size: 13px;
+    padding: 12px;
+    gap: 10px;
+  } /* Reduce tamaño de botones del menú */
 
-  .page-title h1 { width: 100%; min-width: 100%; }
-  .page-title p { font-size: 13px; }
+  .page-title h1 {
+    width: 100%;
+    min-width: 100%;
+  }
+  .page-title p {
+    font-size: 13px;
+  }
 
   /* La Topbar pasa a ser un listado vertical de elementos mediante CSS Grid */
-  .topbar { display: grid; grid-template-columns: 1fr; gap: 12px; flex-direction: column; align-items: stretch; }
-  .search-box { width: 100%; max-width: 100%; min-width: 100%; }
-  .topbar-actions { width: 100%; justify-content: flex-end; }
-  
-  .user-profile { padding: 7px 10px; }
+  .topbar {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .search-box {
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+  }
+  .topbar-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .user-profile {
+    padding: 7px 10px;
+  }
 
   /* El encabezado de la tarjeta colapsa en formato de lista vertical */
-  .form-card-header { flex-direction: column; align-items: flex-start; }
+  .form-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
   /* Las rejillas se rompen por completo, forzando a que todos los campos midan el 100% (1 sola columna) */
-  .form-grid { grid-template-columns: 1fr; }
-  .summary-grid { grid-template-columns: 1fr; }
-  .results-table { min-width: 700px; }
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+  .results-table {
+    min-width: 700px;
+  }
 }
 
 /* CELULARES GRANDES / DISPOSITIVOS MÓVILES (Hasta 768px) */
@@ -657,34 +734,81 @@ body {
     padding: 15px;
   }
 
-  .logo-img { max-width: 140px; padding: 10px; }
-  .menu a { font-size: 12px; padding: 11px 10px; }
-  .menu i { width: 16px; }
+  .logo-img {
+    max-width: 140px;
+    padding: 10px;
+  }
+  .menu a {
+    font-size: 12px;
+    padding: 11px 10px;
+  }
+  .menu i {
+    width: 16px;
+  }
 
-  .page-title h1 { font-size: 22px; }
-  .page-title p { font-size: 12px; }
+  .page-title h1 {
+    font-size: 22px;
+  }
+  .page-title p {
+    font-size: 12px;
+  }
 
-  .search-box input { padding: 12px 14px 12px 40px; font-size: 13px; }
-  .search-box i { left: 13px; }
+  .search-box input {
+    padding: 12px 14px 12px 40px;
+    font-size: 13px;
+  }
+  .search-box i {
+    left: 13px;
+  }
 
-  .topbar { gap: 10px; }
+  .topbar {
+    gap: 10px;
+  }
   /* Distribuye los elementos extremos de la barra de acciones */
-  .topbar-actions { justify-content: space-between; }
+  .topbar-actions {
+    justify-content: space-between;
+  }
 
-  .user-info { display: none; } /* ESCONDE el nombre y rol del usuario para salvar espacio horizontal */
-  .user-profile { border-radius: 14px; padding: 6px 8px; }
-  .user-profile img { width: 36px; height: 36px; } /* Foto de perfil más pequeña */
+  .user-info {
+    display: none;
+  } /* ESCONDE el nombre y rol del usuario para salvar espacio horizontal */
+  .user-profile {
+    border-radius: 14px;
+    padding: 6px 8px;
+  }
+  .user-profile img {
+    width: 36px;
+    height: 36px;
+  } /* Foto de perfil más pequeña */
 
-  .form-body { padding: 16px; }
-  .form-card-header { padding: 16px; }
-  .form-card-title { font-size: 16px; }
-  .form-card-subtitle { font-size: 12px; }
+  .form-body {
+    padding: 16px;
+  }
+  .form-card-header {
+    padding: 16px;
+  }
+  .form-card-title {
+    font-size: 16px;
+  }
+  .form-card-subtitle {
+    font-size: 12px;
+  }
 
-  .field input, .field select, .field textarea { font-size: 13px; padding: 11px 12px; }
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 13px;
+    padding: 11px 12px;
+  }
 
   /* En celulares, los botones se estiran al 100% de la pantalla para facilitar el clic con el pulgar */
-  .btn { width: 100%; justify-content: center; }
-  .form-footer { flex-direction: column; } /* Apila los botones uno encima del otro */
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .form-footer {
+    flex-direction: column;
+  } /* Apila los botones uno encima del otro */
 }
 
 /* CELULARES PEQUEÑOS / PANTALLAS ULTRA ESTRECHAS (Hasta 576px) */
@@ -703,33 +827,83 @@ body {
     padding: 12px;
   }
 
-  .topbar { gap: 10px; }
-  .topbar-actions { justify-content: space-between; }
+  .topbar {
+    gap: 10px;
+  }
+  .topbar-actions {
+    justify-content: space-between;
+  }
 
-  .logo-img { max-width: 120px; }
-  .menu { gap: 6px; }
-  .menu a { font-size: 11px; padding: 10px 8px; border-radius: 10px; }
-  .logout a { font-size: 11px; padding: 10px 8px; }
+  .logo-img {
+    max-width: 120px;
+  }
+  .menu {
+    gap: 6px;
+  }
+  .menu a {
+    font-size: 11px;
+    padding: 10px 8px;
+    border-radius: 10px;
+  }
+  .logout a {
+    font-size: 11px;
+    padding: 10px 8px;
+  }
 
-  .page-title h1 { margin-bottom: 2px; }
-  .page-title p { font-size: 11px; }
+  .page-title h1 {
+    margin-bottom: 2px;
+  }
+  .page-title p {
+    font-size: 11px;
+  }
 
-  .search-box { margin-top: 0; }
-  .breadcrumb { font-size: 11px; }
+  .search-box {
+    margin-top: 0;
+  }
+  .breadcrumb {
+    font-size: 11px;
+  }
 
-  .form-card { border-radius: 12px; }
-  .form-card-header-left { gap: 10px; }
-  .form-card-icon { width: 40px; height: 40px; }
-  .form-card-title { font-size: 14px; }
-  .required-note { font-size: 11px; }
+  .form-card {
+    border-radius: 12px;
+  }
+  .form-card-header-left {
+    gap: 10px;
+  }
+  .form-card-icon {
+    width: 40px;
+    height: 40px;
+  }
+  .form-card-title {
+    font-size: 14px;
+  }
+  .required-note {
+    font-size: 11px;
+  }
 
-  .form-section-title { font-size: 12px; }
-  .field label { font-size: 12px; }
-  .field input, .field select, .field textarea { font-size: 12px; }
+  .form-section-title {
+    font-size: 12px;
+  }
+  .field label {
+    font-size: 12px;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 12px;
+  }
 
-  .summary-card { padding: 14px; }
-  .summary-card strong { font-size: 15px; }
+  .summary-card {
+    padding: 14px;
+  }
+  .summary-card strong {
+    font-size: 15px;
+  }
 
-  .results-table { min-width: 650px; } /* Límite final para prevenir que la tabla se rompa */
-  .footer { font-size: 11px; }
+  .results-table {
+    min-width: 650px;
+  } /* Límite final para prevenir que la tabla se rompa */
+  .footer {
+    font-size: 11px;
+  }
 }

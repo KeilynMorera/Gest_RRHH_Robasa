@@ -1,859 +1,1257 @@
-/* =========================
-   RESET
-========================= */
+/* ==========================================================================
+   RESET GENERAL Y COMPORTAMIENTO BASE
+   ========================================================================== */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Incluye el padding y border en el cálculo del ancho/alto total */
 }
 
 body {
   font-family: "Segoe UI", sans-serif;
-  background: #f4f7fb;
-  color: #d35b1a;
+  background: #f4f7fb; /* Fondo general grisáceo claro para contraste */
+  color: #d35b1a; /* Color de texto corporativo base */
 }
 
-/* =========================
-   LAYOUT GENERAL
-========================= */
+/* ==========================================================================
+   LAYOUT GENERAL (Estructura de la aplicación)
+   ========================================================================== */
 .dashboard-container {
-    display: flex;
-    min-height: 100vh;
+  display: flex; /* Coloca el Sidebar y el Main Content uno al lado del otro */
+  min-height: 100vh; /* Fuerza al contenedor a ocupar todo el alto de la pantalla */
 }
 
-/* =========================
-   SIDEBAR
-========================= */
+/* ==========================================================================
+   SIDEBAR (Menú de navegación lateral fijo)
+   ========================================================================== */
 .sidebar {
-    width: 280px;
-    background: #26317a;
-    color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    padding: 30px 20px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
+  width: 280px; /* Ancho predeterminado de la barra lateral */
+  background: #26317a; /* Color azul marino oscuro */
+  color: #ffffff;
+  display: flex;
+  flex-direction: column; /* Apila los elementos internos verticalmente */
+  padding: 30px 20px;
+  position: fixed; /* Mantiene la barra fija en pantalla al hacer scroll */
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow-y: auto; /* Permite scroll vertical si el contenido supera la pantalla */
+  overflow-x: hidden; /* Previene desbordamientos horizontales */
 }
 
-/* =========================
+/* ==========================================================================
    LOGO ROBASA
-========================= */
-
+   ========================================================================== */
 .logo {
-    text-align: center;
-    margin-bottom: 35px;
+  text-align: center;
+  margin-bottom: 35px;
 }
 
-/* Imagen */
+/* Caja contenedora e imagen de logo avanzada */
 .logo-img {
-    width: 320px;
-    max-width: 100%;
-    height: auto;
+  width: 320px;
+  max-width: 100%; /* No permite que exceda el ancho del sidebar */
+  height: auto;
+  display: block;
+  margin: 0 auto 25px;
+  padding: 18px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.08); /* Fondo blanco translúcido */
+  border: 1px solid rgba(255, 255, 255, 0.12); /* Borde sutil cristalino */
+  backdrop-filter: blur(
+    6px
+  ); /* Efecto de desenfoque de fondo (Glassmorphism) */
 
-    display: block;
-    margin: 0 auto 25px;
-
-    /* Hace que resalte */
-    padding: 18px;
-
-    border-radius: 22px;
-
-    background: rgba(255, 255, 255, 0.08);
-
-    border: 1px solid rgba(255,255,255,0.12);
-
-    backdrop-filter: blur(6px);
-
-    /* Glow */
-    filter:
-        drop-shadow(0 0 10px rgba(255,255,255,0.25))
-        drop-shadow(0 0 25px rgba(255,255,255,0.12))
-        brightness(1.18)
-        contrast(1.15);
-
-    transition: all 0.3s ease;
+  /* Capas de sombras y resplandor avanzado (Glow effect) */
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25))
+    drop-shadow(0 0 25px rgba(255, 255, 255, 0.12)) brightness(1.18)
+    contrast(1.15);
+  transition: all 0.3s ease; /* Suaviza la transición al estado hover */
 }
 
-/* Hover elegante */
+/* Hover elegante en el logo */
 .logo-img:hover {
-    transform: scale(1.03);
-
-    filter:
-        drop-shadow(0 0 16px rgba(255,255,255,0.4))
-        drop-shadow(0 0 32px rgba(255,255,255,0.18))
-        brightness(1.25)
-        contrast(1.2);
+  transform: scale(1.03); /* Incrementa ligeramente el tamaño */
+  filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))
+    drop-shadow(0 0 32px rgba(255, 255, 255, 0.18)) brightness(1.25)
+    contrast(1.2); /* Intensifica el brillo del logo */
 }
 
 .logo span {
-    font-size: 18px;
-    letter-spacing: 6px;
-    color: #9bc0ff;
+  font-size: 18px;
+  letter-spacing: 6px; /* Espaciado amplio entre letras */
+  color: #9bc0ff;
 }
 
-/* Menú */
+/* Menú de Navegación */
 .menu {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding-right: 5px;
+  flex: 1; /* Ocupa el espacio disponible empujando el botón logout abajo */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 5px;
 }
 
 .menu a {
-    color: #fefefd;
-    text-decoration: none;
-    padding: 14px 18px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    transition: 0.3s;
+  color: #fefefd;
+  text-decoration: none; /* Remueve el subrayado por defecto de los enlaces */
+  padding: 14px 18px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center; /* Alinea los iconos de FontAwesome con el texto */
+  gap: 12px;
+  transition: 0.3s;
 }
 
+/* Enlace seleccionado o activo */
 .menu a:hover,
 .menu a.active {
-    background: #4567b7;
-    color: #ffffff;
+  background: #4567b7; /* Fondo de contraste */
+  color: #ffffff;
 }
 
 .menu i {
-    width: 20px;
+  width: 20px; /* Ancho fijo para mantener los textos perfectamente alineados en vertical */
 }
 
-/* Scroll del sidebar */
+/* Scrollbar personalizado para el Sidebar (Motores Webkit) */
 .sidebar::-webkit-scrollbar {
-    width: 6px;
+  width: 6px;
 }
 
 .sidebar::-webkit-scrollbar-track {
-    background: transparent;
+  background: transparent;
 }
 
 .sidebar::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.25);
-    border-radius: 10px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
 }
 
 .sidebar::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.4);
 }
 
-/* Logout */
+/* Contenedor del Botón Logout */
 .logout {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15); /* Línea divisoria sutil */
 }
 
 .logout a {
-    color: #ffffff;
-    text-decoration: none;
-    display: flex;
-    gap: 12px;
-    padding: 14px 18px;
-    border-radius: 12px;
+  color: #ffffff;
+  text-decoration: none;
+  display: flex;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 12px;
 }
 
 .logout a:hover {
-    background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.08);
 }
 
-/* =========================
-   CONTENIDO PRINCIPAL
-========================= */
+/* ==========================================================================
+   CONTENIDO PRINCIPAL (Panel central derecho)
+   ========================================================================== */
 .main-content {
-    flex: 1;
-    margin-left: 280px;
-    padding: 30px;
+  flex: 1;
+  margin-left: 280px; /* Evita que el contenido quede oculto debajo del sidebar fijo */
+  padding: 30px;
 }
 
-/* =========================
-   TOPBAR
-========================= */
+/* ==========================================================================
+   BARRA SUPERIOR (Topbar)
+   ========================================================================== */
 .topbar {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 30px;
-    flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+  flex-wrap: wrap; /* Permite pasar a otra línea si el ancho de pantalla disminuye */
 }
 
 .menu-toggle {
-    border: none;
-    background: none;
-    font-size: 26px;
-    cursor: pointer;
-    color: #293477;
+  border: none;
+  background: none;
+  font-size: 26px;
+  cursor: pointer;
+  color: #293477;
 }
 
 .page-title {
-    min-width: 260px;
+  min-width: 260px;
 }
 
 .page-title h1 {
-    font-size: 34px;
-    margin-bottom: 5px;
-    color: #d35b1a;
+  font-size: 34px;
+  margin-bottom: 5px;
+  color: #d35b1a;
 }
 
 .page-title p {
-    color: #7a8599;
-    font-size: 15px;
+  color: #7a8599;
+  font-size: 15px;
 }
 
-/* Buscador */
+/* Caja del Buscador */
 .search-box {
-    flex: 1;
-    max-width: 420px;
-    position: relative;
+  flex: 1; /* Crece dinámicamente para ocupar el espacio central libre */
+  max-width: 420px;
+  position: relative; /* Permite posicionar el ícono de la lupa de forma absoluta */
 }
 
 .search-box i {
-    position: absolute;
-    top: 50%;
-    left: 18px;
-    transform: translateY(-50%);
-    color: #8a94a6;
+  position: absolute;
+  top: 50%;
+  left: 18px;
+  transform: translateY(-50%); /* Centrado vertical exacto del ícono */
+  color: #8a94a6;
 }
 
 .search-box input {
-    width: 100%;
-    padding: 14px 18px 14px 48px;
-    border: 1px solid #dbe2ef;
-    border-radius: 12px;
-    font-size: 15px;
-    outline: none;
-    background: #ffffff;
+  width: 100%;
+  padding: 14px 18px 14px 48px; /* Margen extra a la izquierda para no solaparse con el ícono */
+  border: 1px solid #dbe2ef;
+  border-radius: 12px;
+  font-size: 15px;
+  outline: none;
+  background: #ffffff;
 }
 
 .search-box input:focus {
-    border-color: #0c45ca;
-    box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1);
+  border-color: #0c45ca;
+  box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1); /* Efecto de anillo exterior */
 }
 
-/* Acciones */
+/* Acciones del Perfil (Notificaciones y Foto) */
 .topbar-actions {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 25px;
+  margin-left: auto; /* Empuja todo el bloque magnéticamente hacia el extremo derecho */
+  display: flex;
+  align-items: center;
+  gap: 25px;
 }
 
-/* Notificaciones */
+/* Ícono de Notificación */
 .notification {
-    position: relative;
-    font-size: 22px;
-    cursor: pointer;
-    color: #1b2b4b;
+  position: relative;
+  font-size: 22px;
+  cursor: pointer;
+  color: #1b2b4b;
 }
 
+/* Globo indicador numérico (Badge) */
 .badge {
-    position: absolute;
-    top: -8px;
-    right: -10px;
-    background: #ff4d4f;
-    color: #ffffff;
-    font-size: 11px;
-    font-weight: bold;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background: #ff4d4f; /* Rojo vibrante de alerta */
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: bold;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%; /* Forma circular */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centra perfectamente el número */
 }
 
-/* Usuario */
+/* Bloque de Perfil del Usuario */
 .user-profile {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: #ffffff;
-    padding: 8px 14px;
-    border-radius: 50px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  padding: 8px 14px;
+  border-radius: 50px; /* Formato píldora redondeada */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
 }
 
 .user-profile img {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    object-fit: cover;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover; /* Recorta y ajusta la imagen sin distorsionarla */
 }
 
 .user-info {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .user-info strong {
-    font-size: 14px;
-    color: #1a2042;
+  font-size: 14px;
+  color: #1a2042;
 }
 
 .user-info span {
-    font-size: 12px;
-    color: #7a8599;
+  font-size: 12px;
+  color: #7a8599;
 }
 
-/* =========================
-   BREADCRUMB
-========================= */
+/* ==========================================================================
+   BREADCRUMB (Rutas de navegación)
+   ========================================================================== */
 .breadcrumb {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 18px 28px 0;
-    font-size: 13px;
-    color: #6b7499;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 28px 0;
+  font-size: 13px;
+  color: #6b7499;
 }
 
 .breadcrumb a {
-    color: #6b7499;
-    text-decoration: none;
-    transition: color 0.15s;
+  color: #6b7499;
+  text-decoration: none;
+  transition: color 0.15s;
 }
 
 .breadcrumb a:hover {
-    color: #e8600a;
+  color: #e8600a;
 }
 
 .breadcrumb .sep {
-    font-size: 10px;
-    color: #c5cbdf;
+  font-size: 10px;
+  color: #c5cbdf;
 }
 
 .breadcrumb .current {
-    color: #e8600a;
-    font-weight: 700;
+  color: #e8600a;
+  font-weight: 700;
 }
 
-/* =========================
-   FORM CARD
-========================= */
+/* ==========================================================================
+   FORM CARD (Contenedor principal de los formularios)
+   ========================================================================== */
 .form-card {
-    background: #ffffff;
-    border-radius: 14px;
-    box-shadow: 0 2px 14px rgba(30, 42, 94, 0.10);
-    margin: 20px 28px 28px;
-    overflow: hidden;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 2px 14px rgba(30, 42, 94, 0.1);
+  margin: 20px 28px 28px;
+  overflow: hidden; /* Mantiene las esquinas de los elementos hijos dentro del radio */
 }
 
-/* Encabezado */
+/* Encabezado del Formulario */
 .form-card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 22px 28px;
-    border-bottom: 1.5px solid #e8ecf6;
-    gap: 20px;
-    flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 28px;
+  border-bottom: 1.5px solid #e8ecf6;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
 .form-card-header-left {
-    display: flex;
-    align-items: center;
-    gap: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
+/* Ícono decorativo del Formulario */
 .form-card-icon {
-    width: 44px;
-    height: 44px;
-    background: rgba(232, 96, 10, 0.12);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #e8600a;
-    font-size: 18px;
-    flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  background: rgba(232, 96, 10, 0.12); /* Fondo naranja claro translúcido */
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e8600a;
+  font-size: 18px;
+  flex-shrink: 0; /* Impide que el círculo pierda dimensiones en pantallas compactas */
 }
 
 .form-card-title {
-    font-size: 17px;
-    font-weight: 700;
-    color: #1a2042;
-    margin-bottom: 3px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #1a2042;
+  margin-bottom: 3px;
 }
 
 .form-card-subtitle {
-    font-size: 12px;
-    color: #6b7499;
+  font-size: 12px;
+  color: #6b7499;
 }
 
 .required-note {
-    font-size: 12px;
-    color: #6b7499;
+  font-size: 12px;
+  color: #6b7499;
 }
 
 .required-note span {
-    color: #e53935;
+  color: #e53935; /* Asterisco obligatorio en rojo */
 }
 
-/* Cuerpo */
+/* Cuerpo Interno de la Tarjeta */
 .form-body {
-    padding: 28px;
+  padding: 28px;
 }
 
-/* =========================
-   SECCIONES
-========================= */
+/* ==========================================================================
+   SECCIONES DE FORMULARIO
+   ========================================================================== */
 .form-section {
-    margin-bottom: 32px;
+  margin-bottom: 32px;
 }
 
 .form-section:last-of-type {
-    margin-bottom: 0;
+  margin-bottom: 0; /* Evita el margen extra inferior en el último elemento */
 }
 
 .form-section-title {
-    font-size: 12px;
-    font-weight: 700;
-    color: #e8600a;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    margin-bottom: 18px;
-    padding-bottom: 8px;
-    border-bottom: 1.5px solid #e8ecf6;
+  font-size: 12px;
+  font-weight: 700;
+  color: #e8600a;
+  text-transform: uppercase; /* Fuerza el uso de mayúsculas */
+  letter-spacing: 1.2px; /* Aumenta la separación de las letras para aspecto UI moderno */
+  margin-bottom: 18px;
+  padding-bottom: 8px;
+  border-bottom: 1.5px solid #e8ecf6;
 }
 
-/* =========================
-   GRID DE CAMPOS
-========================= */
+/* ==========================================================================
+   GRID DE CAMPOS (Rejilla de dos columnas)
+   ========================================================================== */
 .form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px 28px;
+  display: grid;
+  grid-template-columns: repeat(
+    2,
+    1fr
+  ); /* 2 Columnas de igual ancho simétrico */
+  gap: 20px 28px;
 }
 
+/* Modificador para que un control abarque las dos columnas del Grid */
 .field-full {
-    grid-column: 1 / -1;
+  grid-column: 1 / -1; /* Inicia en la columna 1 y se estira hasta el final */
 }
 
-/* =========================
-   CAMPOS
-========================= */
+/* ==========================================================================
+   CONTROLES DE ENTRADA (Fields)
+   ========================================================================== */
 .field {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
+  display: flex;
+  flex-direction: column; /* Coloca las etiquetas sobre los elementos de entrada */
+  gap: 7px;
 }
 
 .field > label {
-    font-size: 13px;
-    font-weight: 600;
-    color: #1a2042;
-    display: flex;
-    align-items: center;
-    gap: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a2042;
+  display: flex;
+  align-items: center;
+  gap: 7px;
 }
 
 .field-icon {
-    color: #6b7499;
-    font-size: 13px;
-    width: 14px;
-    text-align: center;
+  color: #6b7499;
+  font-size: 13px;
+  width: 14px;
+  text-align: center;
 }
 
 .field .req {
-    color: #e53935;
+  color: #e53935;
 }
 
-/* Inputs */
+/* Normalización de Inputs, Textareas y Selects */
 .field input[type="text"],
 .field input[type="number"],
 .field input[type="date"],
 .field select,
 .field textarea {
-    width: 100%;
-    border: 1.5px solid #dde2f0;
-    border-radius: 8px;
-    padding: 10px 14px;
-    font-size: 13.5px;
-    font-family: inherit;
-    color: #1a2042;
-    background: #f7f8fc;
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  width: 100%;
+  border: 1.5px solid #dde2f0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13.5px;
+  font-family: inherit;
+  color: #1a2042;
+  background: #f7f8fc; /* Fondo ligeramente grisáceo en reposo */
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background 0.2s;
 }
 
 .field textarea {
-    min-height: 110px;
-    resize: vertical;
+  min-height: 110px;
+  resize: vertical; /* Solo permite redimensionar hacia abajo para no romper el layout */
 }
 
+/* Comportamiento al enfocarse (Focus) */
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-    border-color: #e8600a;
-    box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
-    background: #ffffff;
+  border-color: #e8600a; /* El borde cambia a color corporativo naranja */
+  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12); /* Sutil halo de enfoque */
+  background: #ffffff; /* Fondo blanco puro para facilitar la lectura */
 }
 
-/* Select personalizado */
+/* Select Personalizado */
 .field select {
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7499' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    padding-right: 36px;
-    cursor: pointer;
+  appearance: none; /* Remueve la flecha nativa del navegador */
+  /* Inserta un icono de flecha en formato SVG directamente desde el código */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7499' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center; /* Ubica la flecha SVG a la derecha de la caja */
+  padding-right: 36px; /* Evita que el texto de las opciones monte la flecha */
+  cursor: pointer;
 }
 
-/* Placeholder */
+/* Marcadores de posición (Placeholders) */
 .field input::placeholder,
 .field textarea::placeholder {
-    color: #9aa4b8;
+  color: #9aa4b8;
 }
 
-/* =========================
+/* ==========================================================================
    FOOTER DEL FORMULARIO
-========================= */
+   ========================================================================== */
 .form-footer {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 12px;
-    padding-top: 24px;
-    border-top: 1.5px solid #e8ecf6;
-    margin-top: 10px;
-    flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Alinea los botones de control al extremo derecho */
+  gap: 12px;
+  padding-top: 24px;
+  border-top: 1.5px solid #e8ecf6;
+  margin-top: 10px;
+  flex-wrap: wrap;
 }
 
-/* =========================
-   BOTONES
-========================= */
+/* ==========================================================================
+   BOTONES REUTILIZABLES (Componentes estandarizados)
+   ========================================================================== */
 .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 22px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 700;
-    font-family: inherit;
-    cursor: pointer;
-    border: none;
-    text-decoration: none;
-    transition: all 0.2s ease;
+  display: inline-flex; /* Permite alinear horizontalmente íconos y textos dentro del botón */
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: all 0.2s ease;
 }
 
+/* Botón Fantasma / Secundario */
 .btn-ghost {
-    background: transparent;
-    border: 1.5px solid #dde2f0;
-    color: #6b7499;
+  background: transparent;
+  border: 1.5px solid #dde2f0;
+  color: #6b7499;
 }
 
 .btn-ghost:hover {
-    border-color: #1e2a5e;
-    color: #1e2a5e;
-    background: #f0f2f8;
+  border-color: #1e2a5e;
+  color: #1e2a5e;
+  background: #f0f2f8;
 }
 
+/* Botón Azul Oscuro */
 .btn-secondary {
-    background: #1e2a5e;
-    color: #ffffff;
+  background: #1e2a5e;
+  color: #ffffff;
 }
 
 .btn-secondary:hover {
-    background: #2e3f8f;
+  background: #2e3f8f;
 }
 
+/* Botón Primario Naranja */
 .btn-primary {
-    background: #e8600a;
-    color: #ffffff;
-    box-shadow: 0 4px 14px rgba(232, 96, 10, 0.30);
+  background: #e8600a;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(232, 96, 10, 0.3); /* Sombra difusa */
 }
 
 .btn-primary:hover {
-    background: #f07530;
-    box-shadow: 0 6px 18px rgba(232, 96, 10, 0.38);
-    transform: translateY(-1px);
+  background: #f07530;
+  box-shadow: 0 6px 18px rgba(232, 96, 10, 0.38);
+  transform: translateY(-1px); /* Elevación sutil en Hover */
 }
 
 .btn-primary:active {
-    transform: translateY(0);
+  transform: translateY(0); /* Efecto pulsado */
 }
 
-/* =========================
-   FOOTER
-========================= */
+/* Pie de Página de la App */
 .footer {
-    margin-top: 30px;
-    text-align: center;
-    color: #7a8599;
-    font-size: 14px;
+  margin-top: 30px;
+  text-align: center;
+  color: #7a8599;
+  font-size: 14px;
 }
 
-/* =========================================================
+/* ==========================================================================
    GENERADOR DINÁMICO DE REPORTES
-========================================================= */
-
-.fields-selector{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:18px;
-    margin-top:20px;
+   ========================================================================== */
+.fields-selector {
+  display: grid;
+  /* Rejilla responsive automática: crea las columnas necesarias que midan mínimo 280px */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+  margin-top: 20px;
 }
 
-/* =========================================================
-   CHECKBOX CARDS
-========================================================= */
-
-.field-check{
-    position:relative;
-    display:flex;
-    align-items:flex-start;
-    gap:14px;
-    padding:18px;
-    border-radius:18px;
-    background:#fff;
-    border:1px solid #e5e7eb;
-    cursor:pointer;
-    transition:all .25s ease;
-    box-shadow:0 4px 12px rgba(15,23,42,.04);
+/* ==========================================================================
+   TARJETAS DE SELECCIÓN (Checkbox Cards)
+   ========================================================================== */
+.field-check {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px;
+  border-radius: 18px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
 }
 
-.field-check:hover{
-    transform:translateY(-2px);
-    border-color:#cbd5e1;
-    box-shadow:0 10px 24px rgba(15,23,42,.08);
+.field-check:hover {
+  transform: translateY(-2px);
+  border-color: #cbd5e1;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
 }
 
-.field-check input{
-    display:none;
+/* Oculta la caja original del checkbox nativo */
+.field-check input {
+  display: none;
 }
 
-/* CHECK CUSTOM */
-.check-custom{
-    width:22px;
-    height:22px;
-    min-width:22px;
-    border-radius:7px;
-    border:2px solid #cbd5e1;
-    position:relative;
-    margin-top:2px;
-    transition:all .25s ease;
-    background:#fff;
+/* Checkbox personalizado */
+.check-custom {
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  border-radius: 7px;
+  border: 2px solid #cbd5e1;
+  position: relative;
+  margin-top: 2px;
+  transition: all 0.25s ease;
+  background: #fff;
 }
 
-.check-custom::after{
-    content:"✔";
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%, -50%) scale(0);
-    font-size:11px;
-    color:#fff;
-    transition:all .2s ease;
+/* Icono de verificación oculto por defecto */
+.check-custom::after {
+  content: "✔";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0); /* Escalado a 0 (invisible) */
+  font-size: 11px;
+  color: #fff;
+  transition: all 0.2s ease;
 }
 
-.field-check input:checked + .check-custom{
-    background:linear-gradient(135deg,#2563eb,#1d4ed8);
-    border-color:#2563eb;
+/* Comportamiento mediante selector de hermano (+) cuando el input está verificado (:checked) */
+.field-check input:checked + .check-custom {
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #1d4ed8
+  ); /* Fondo azul gradiente */
+  border-color: #2563eb;
 }
 
-.field-check input:checked + .check-custom::after{
-    transform:translate(-50%, -50%) scale(1);
+.field-check input:checked + .check-custom::after {
+  transform: translate(-50%, -50%) scale(1); /* Muestra el check de verificación en tamaño real */
 }
 
-.check-info strong{
-    display:block;
-    font-size:.95rem;
-    color:#0f172a;
-    margin-bottom:5px;
+.check-info strong {
+  display: block;
+  font-size: 0.95rem;
+  color: #0f172a;
+  margin-bottom: 5px;
 }
 
-.check-info small{
-    color:#64748b;
-    line-height:1.5;
-    font-size:.82rem;
+.check-info small {
+  color: #64748b;
+  line-height: 1.5;
+  font-size: 0.82rem;
 }
 
-/* =========================================================
-   FILTER TAGS
-========================================================= */
-
-.filter-tags{
-    display:flex;
-    flex-wrap:wrap;
-    gap:12px;
-    margin-top:20px;
+/* ==========================================================================
+   ETIQUETAS DE FILTRADO (Filter Tags)
+   ========================================================================== */
+.filter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
 }
 
-.filter-tag{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    padding:12px 16px;
-    border-radius:999px;
-    background:#f8fafc;
-    border:1px solid #e2e8f0;
-    color:#334155;
-    font-size:.88rem;
-    font-weight:600;
-    cursor:pointer;
-    transition:all .25s ease;
+.filter-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 999px; /* Bordes completamente redondeados en píldora */
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #334155;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
 }
 
-.filter-tag:hover{
-    background:#eff6ff;
-    border-color:#93c5fd;
-    color:#2563eb;
+.filter-tag:hover {
+  background: #eff6ff;
+  border-color: #93c5fd;
+  color: #2563eb;
 }
 
-.filter-tag.active{
-    background:linear-gradient(135deg,#2563eb,#1d4ed8);
-    color:#fff;
-    border:none;
-    box-shadow:0 10px 24px rgba(37,99,235,.25);
+/* Estado activo del tag de filtro */
+.filter-tag.active {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  border: none;
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.25);
 }
 
-/* =========================================================
-   REPORT PREVIEW
-========================================================= */
-
-.report-preview{
-    background:#fff;
-    border-radius:22px;
-    border:1px solid #e5e7eb;
-    overflow:hidden;
-    box-shadow:0 8px 24px rgba(15,23,42,.05);
-    margin-top:20px;
+/* ==========================================================================
+   CONTENEDOR DE VISTA PREVIA DEL REPORTE
+   ========================================================================== */
+.report-preview {
+  background: #fff;
+  border-radius: 22px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  margin-top: 20px;
 }
 
-/* HEADER */
-.preview-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:22px 24px;
-    border-bottom:1px solid #f1f5f9;
-    background:linear-gradient(to right,#f8fafc,#ffffff);
+/* Encabezado del reporte */
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 24px;
+  border-bottom: 1px solid #f1f5f9;
+  background: linear-gradient(to right, #f8fafc, #ffffff);
 }
 
-.preview-header h3{
-    margin:0;
-    font-size:1.1rem;
-    color:#0f172a;
+.preview-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #0f172a;
 }
 
-.preview-header span{
-    color:#64748b;
-    font-size:.85rem;
+.preview-header span {
+  color: #64748b;
+  font-size: 0.85rem;
 }
 
-/* FORMAT BADGES */
-.preview-format{
-    display:flex;
-    gap:10px;
+/* Formatos de exportación (Badges) */
+.preview-format {
+  display: flex;
+  gap: 10px;
 }
 
-.format-badge{
-    padding:8px 14px;
-    border-radius:999px;
-    font-size:.8rem;
-    font-weight:700;
-    letter-spacing:.4px;
+.format-badge {
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
 }
 
-.format-badge.pdf{
-    background:#fee2e2;
-    color:#dc2626;
+.format-badge.pdf {
+  background: #fee2e2;
+  color: #dc2626;
 }
 
-.format-badge.excel{
-    background:#dcfce7;
-    color:#15803d;
+.format-badge.excel {
+  background: #dcfce7;
+  color: #15803d;
 }
 
-/* =========================================================
-   TABLE
-========================================================= */
-
-.table-container{
-    width:100%;
-    overflow-x:auto;
+/* ==========================================================================
+   TABLA DE RESULTADOS
+   ========================================================================== */
+.table-container {
+  width: 100%;
+  overflow-x: auto; /* Genera scroll horizontal interno si la tabla no cabe en móviles */
 }
 
-.results-table{
-    width:100%;
-    border-collapse:collapse;
-    min-width:700px;
+.results-table {
+  width: 100%;
+  border-collapse: collapse; /* Une los bordes de las celdas en una sola línea */
+  min-width: 700px; /* Protege la tabla para que mantenga estructura legible */
 }
 
-.results-table thead{
-    background:#f8fafc;
+.results-table thead {
+  background: #f8fafc;
 }
 
-.results-table th{
-    padding:16px 18px;
-    text-align:left;
-    font-size:.85rem;
-    font-weight:700;
-    color:#334155;
-    border-bottom:1px solid #e2e8f0;
+.results-table th {
+  padding: 16px 18px;
+  text-align: left;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #334155;
+  border-bottom: 1px solid #e2e8f0;
 }
 
-.results-table td{
-    padding:16px 18px;
-    font-size:.92rem;
-    color:#475569;
-    border-bottom:1px solid #f1f5f9;
+.results-table td {
+  padding: 16px 18px;
+  font-size: 0.92rem;
+  color: #475569;
+  border-bottom: 1px solid #f1f5f9;
 }
 
-.results-table tbody tr{
-    transition:all .2s ease;
+.results-table tbody tr {
+  transition: all 0.2s ease;
 }
 
-.results-table tbody tr:hover{
-    background:#f8fbff;
+/* Efecto de resalte en la fila al pasar el puntero */
+.results-table tbody tr:hover {
+  background: #f8fbff;
 }
 
-/* =========================================================
-   STATUS BADGES
-========================================================= */
-
-.status-badge{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    padding:7px 14px;
-    border-radius:999px;
-    font-size:.75rem;
-    font-weight:700;
+/* ==========================================================================
+   ETIQUETAS DE ESTADO (Status Badges)
+   ========================================================================== */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
 }
 
-.status-badge.success{
-    background:#dcfce7;
-    color:#15803d;
+.status-badge.success {
+  background: #dcfce7;
+  color: #15803d;
 }
 
-.status-badge.pending{
-    background:#fef3c7;
-    color:#b45309;
+.status-badge.pending {
+  background: #fef3c7;
+  color: #b45309;
 }
 
-/* =========================================================
-   FORM SECTION STYLE
-========================================================= */
-
-.form-section{
-    margin-bottom:35px;
+/* Estilo alternativo de Título de sección */
+.form-section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.form-section-title{
-    font-size:1rem;
-    font-weight:700;
-    color:#0f172a;
-    margin-bottom:20px;
-    display:flex;
-    align-items:center;
-    gap:10px;
+/* ==========================================================================
+   DISEÑO RESPONSIVO OPTIMIZADO (MEDIA QUERIES)
+   Mantiene el Sidebar siempre a la izquierda adaptando proporciones
+   ========================================================================== */
+
+/* ── PANTALLAS GRANDES (Hasta 1400px) ── */
+@media screen and (max-width: 1400px) {
+  .main-content {
+    padding: 24px;
+  }
+  .topbar {
+    gap: 16px;
+  }
+  .search-box {
+    max-width: 380px;
+  }
+  .fields-selector {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+  .results-table {
+    min-width: 780px;
+  }
+  .form-card {
+    margin: 18px 20px 24px;
+  }
+}
+
+/* ── LAPTOPS MEDIANAS (Hasta 1200px) ── */
+@media screen and (max-width: 1200px) {
+  .sidebar {
+    width: 250px;
+    min-width: 250px;
+    max-width: 250px;
+    padding: 24px 16px;
+  }
+  .main-content {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    padding: 20px;
+  }
+  .topbar {
+    align-items: flex-start;
+    gap: 18px;
+  }
+  .page-title {
+    width: 100%;
+  }
+  .search-box {
+    flex: 1 1 100%;
+    max-width: 100%;
+  } /* Rompe fila: el buscador pasa abajo ocupando el 100% */
+  .topbar-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+  .logo-img {
+    max-width: 200px;
+  }
+
+  /* Ajuste de rejillas */
+  .form-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+  .fields-selector {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+  .field-check {
+    padding: 16px;
+  }
+  .report-preview {
+    overflow: hidden;
+  }
+}
+
+/* ── TABLETS EN VERTICAL (Hasta 992px) ── */
+@media screen and (max-width: 992px) {
+  .sidebar {
+    width: 220px;
+    min-width: 220px;
+    max-width: 220px;
+    padding: 18px 12px;
+  }
+  .main-content {
+    margin-left: 220px;
+    width: calc(100% - 220px);
+    padding: 18px;
+  }
+  .logo-img {
+    max-width: 160px;
+    padding: 12px;
+  }
+  .menu a {
+    font-size: 13px;
+    padding: 12px;
+    gap: 10px;
+  }
+  .menu i {
+    width: 18px;
+  }
+
+  /* Conversión de topbar a estructura de bloque estricta */
+  .topbar {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    align-items: stretch;
+  }
+  .page-title h1 {
+    font-size: 28px;
+  }
+  .page-title p {
+    font-size: 13px;
+  }
+  .search-box {
+    width: 100%;
+    max-width: 100%;
+  }
+  .topbar-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .user-profile {
+    padding: 7px 10px;
+  }
+  .form-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .form-body {
+    padding: 22px;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+  } /* Colapsa formularios a 1 columna */
+  .fields-selector {
+    grid-template-columns: 1fr;
+  } /* Colapsa selector de reportes a 1 columna */
+  .filter-tags {
+    gap: 10px;
+  }
+  .filter-tag {
+    font-size: 0.82rem;
+    padding: 10px 14px;
+  }
+  .results-table {
+    min-width: 700px;
+  }
+}
+
+/* ── SMARTPHONES GRANDES (Hasta 768px) ── */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 190px;
+    min-width: 190px;
+    max-width: 190px;
+    padding: 16px 10px;
+  }
+  .main-content {
+    margin-left: 190px;
+    width: calc(100% - 190px);
+    padding: 14px;
+  }
+  .logo-img {
+    max-width: 130px;
+    padding: 10px;
+  }
+  .menu {
+    gap: 6px;
+  }
+  .menu a {
+    font-size: 12px;
+    padding: 10px 8px;
+    gap: 8px;
+  }
+  .menu i {
+    width: 16px;
+  }
+  .logout a {
+    font-size: 12px;
+    padding: 10px 8px;
+  }
+
+  .topbar {
+    gap: 10px;
+  }
+  .page-title {
+    min-width: 100%;
+  }
+  .page-title h1 {
+    font-size: 22px;
+  }
+  .page-title p {
+    font-size: 12px;
+  }
+  .search-box input {
+    padding: 12px 14px 12px 40px;
+    font-size: 13px;
+  }
+  .search-box i {
+    left: 13px;
+  }
+
+  .topbar-actions {
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .user-info {
+    display: none;
+  } /* Oculta textos de perfil para ahorrar espacio */
+  .user-profile {
+    border-radius: 14px;
+    padding: 6px 8px;
+  }
+  .user-profile img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .breadcrumb {
+    padding: 10px 0 0;
+    font-size: 11px;
+    flex-wrap: wrap;
+  }
+  .form-card {
+    margin: 14px 0 20px;
+    border-radius: 12px;
+  }
+  .form-card-header {
+    padding: 16px;
+  }
+  .form-card-title {
+    font-size: 15px;
+  }
+  .form-card-subtitle {
+    font-size: 11px;
+  }
+  .required-note {
+    font-size: 11px;
+  }
+  .form-body {
+    padding: 16px;
+  }
+  .form-section-title {
+    font-size: 12px;
+  }
+  .field > label {
+    font-size: 12px;
+  }
+
+  .field input[type="text"],
+  .field input[type="number"],
+  .field input[type="date"],
+  .field select,
+  .field textarea {
+    font-size: 13px;
+    padding: 11px 12px;
+  }
+
+  .field-check {
+    padding: 14px;
+    border-radius: 14px;
+  }
+  .check-info strong {
+    font-size: 0.88rem;
+  }
+  .check-info small {
+    font-size: 0.76rem;
+  }
+  .filter-tags {
+    gap: 8px;
+  }
+  .filter-tag {
+    font-size: 0.75rem;
+    padding: 9px 12px;
+  }
+
+  .preview-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .preview-format {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  .results-table {
+    min-width: 650px;
+  }
+
+  /* Botones adaptados para interactuar en pantallas touch móviles */
+  .form-footer {
+    flex-direction: column;
+  }
+  .btn {
+    width: 100%;
+    justify-content: center;
+  } /* Botón a lo ancho total de la pantalla */
+  .footer {
+    font-size: 12px;
+  }
+}
+
+/* ── SMARTPHONES PEQUEÑOS (Hasta 576px) ── */
+@media screen and (max-width: 576px) {
+  .sidebar {
+    width: 170px;
+    min-width: 170px;
+    max-width: 170px;
+    padding: 14px 8px;
+  }
+  .main-content {
+    margin-left: 170px;
+    width: calc(100% - 170px);
+    padding: 12px;
+  }
+  .logo-img {
+    max-width: 110px;
+    padding: 8px;
+  }
+  .menu a {
+    font-size: 11px;
+    padding: 9px 7px;
+    border-radius: 10px;
+  }
+  .logout a {
+    font-size: 11px;
+    padding: 9px 7px;
+  }
+
+  .page-title h1 {
+    font-size: 19px;
+    margin-bottom: 2px;
+  }
+  .page-title p {
+    font-size: 11px;
+  }
+  .breadcrumb {
+    font-size: 10px;
+  }
+  .form-card {
+    border-radius: 10px;
+  }
+  .form-card-header-left {
+    gap: 10px;
+  }
+  .form-card-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 15px;
+  }
+  .form-card-title {
+    font-size: 14px;
+  }
+  .form-section-title {
+    font-size: 11px;
+  }
+  .field > label {
+    font-size: 11px;
+  }
+
+  .field input[type="text"],
+  .field input[type="number"],
+  .field input[type="date"],
+  .field select,
+  .field textarea {
+    font-size: 12px;
+    padding: 10px;
+  }
+
+  .field-check {
+    gap: 10px;
+    padding: 12px;
+  }
+  .check-custom {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+  }
+  .filter-tag {
+    width: 100%;
+    justify-content: center;
+  } /* Filtros se apilan verticalmente al 100% */
+  .results-table {
+    min-width: 620px;
+  }
+  .results-table th,
+  .results-table td {
+    padding: 12px 14px;
+    font-size: 12px;
+  }
+  .status-badge {
+    font-size: 0.68rem;
+    padding: 6px 10px;
+  }
+  .footer {
+    font-size: 11px;
+  }
 }
