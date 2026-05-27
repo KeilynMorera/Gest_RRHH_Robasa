@@ -2,51 +2,51 @@
    RESET - Limpieza de estilos iniciales del navegador
    ========================================================================== */
 * {
-  margin: 0;            /* Elimina márgenes por defecto */
-  padding: 0;           /* Elimina rellenos por defecto */
+  margin: 0; /* Elimina márgenes por defecto */
+  padding: 0; /* Elimina rellenos por defecto */
   box-sizing: border-box; /* Incluye el padding y el borde en el tamaño total del elemento */
 }
 
 body {
-  font-family: 'Segoe UI', sans-serif; /* Tipografía para el proyecto */
-  background: #f4f7fb;                 /* Color de fondo gris-azulado claro */
-  color: #d35b1a;                      /* Color de texto principal naranja */
+  font-family: "Segoe UI", sans-serif; /* Tipografía para el proyecto */
+  background: #f4f7fb; /* Color de fondo gris-azulado claro */
+  color: #d35b1a; /* Color de texto principal naranja */
 }
 
 /* ==========================================================================
    LAYOUT GENERAL - Estructura base de la aplicación
    ========================================================================== */
 .dashboard-container {
-  display: flex;       /* Activa Flexbox para alinear la barra lateral y el contenido principal */
-  min-height: 100vh;   /* Asegura que ocupe toda la altura de la pantalla */
+  display: flex; /* Activa Flexbox para alinear la barra lateral y el contenido principal */
+  min-height: 100vh; /* Asegura que ocupe toda la altura de la pantalla */
 }
 
 /* ==========================================================================
    SIDEBAR - Barra lateral de navegación fija
    ========================================================================== */
 .sidebar {
-  width: 280px;        /* Ancho inicial de la barra */
+  width: 280px; /* Ancho inicial de la barra */
   background: #26317a; /* Fondo azul oscuro corporativo */
-  color: #ffffff;      /* Texto e iconos internos en blanco */
-  display: flex;       /* Flexbox para ordenar el contenido verticalmente */
-  flex-direction: column; 
-  padding: 30px 20px;  /* Espaciado interno: 30px arriba/abajo, 20px a los lados */
-  
+  color: #ffffff; /* Texto e iconos internos en blanco */
+  display: flex; /* Flexbox para ordenar el contenido verticalmente */
+  flex-direction: column;
+  padding: 30px 20px; /* Espaciado interno: 30px arriba/abajo, 20px a los lados */
+
   /* Posicionamiento fijo para que no se mueva al hacer scroll */
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
-  
-  overflow-y: auto;    /* Permite scroll vertical si el contenido del menú sobrepasa la pantalla */
-  overflow-x: hidden;  /* Evita el scroll horizontal interno */
+
+  overflow-y: auto; /* Permite scroll vertical si el contenido del menú sobrepasa la pantalla */
+  overflow-x: hidden; /* Evita el scroll horizontal interno */
 }
 
 /* ==========================================================================
    LOGO ROBASA - Contenedor e imagen de marca
    ========================================================================== */
 .logo {
-  text-align: center;  /* Centra los elementos internos */
+  text-align: center; /* Centra los elementos internos */
   margin-bottom: 35px; /* Margen inferior para separarlo del menú */
 }
 
@@ -59,8 +59,8 @@ body {
   display: block;
   margin: 0 auto 25px; /* Centra la imagen y le da 25px de espacio inferior */
 
-  padding: 18px;        /* Espacio para que respire el logo dentro de su recuadro */
-  border-radius: 22px;  /* Bordes bien redondeados */
+  padding: 18px; /* Espacio para que respire el logo dentro de su recuadro */
+  border-radius: 22px; /* Bordes bien redondeados */
 
   background: rgba(255, 255, 255, 0.08); /* Fondo blanco traslúcido */
   border: 1px solid rgba(255, 255, 255, 0.12); /* Borde sutil */
@@ -88,52 +88,58 @@ body {
 .logo span {
   font-size: 18px;
   letter-spacing: 6px; /* Gran separación entre letras para estilo moderno */
-  color: #9bc0ff;      /* Azul claro */
+  color: #9bc0ff; /* Azul claro */
 }
 
 /* ==========================================================================
    MENÚ - Enlaces de navegación principales
    ========================================================================== */
 .menu {
-  flex: 1;              /* Ocupa todo el espacio vertical sobrante para empujar el logout abajo */
+  flex: 1; /* Ocupa todo el espacio vertical sobrante para empujar el logout abajo */
   display: flex;
   flex-direction: column;
-  gap: 8px;             /* 8px de separación entre cada opción de menú */
-  padding-right: 5px;   /* Pequeño colchón para que el texto no toque la barra de scroll */
+  gap: 8px; /* 8px de separación entre cada opción de menú */
+  padding-right: 5px; /* Pequeño colchón para que el texto no toque la barra de scroll */
 }
 
 /* Enlaces del menú */
 .menu a {
-  color: #fefefd;        /* Blanco hueso */
+  color: #fefefd; /* Blanco hueso */
   text-decoration: none; /* Quita el subrayado */
-  padding: 14px 18px;    /* Tamaño interno del botón */
-  border-radius: 12px;   /* Bordes redondeados */
-  display: flex;         /* Activa flexbox para alinear icono + texto */
-  align-items: center;   /* Centra verticalmente */
-  gap: 12px;             /* 12px de separación entre icono y texto */
-  transition: 0.3s;      /* Suaviza cambios de color/fondo */
+  padding: 14px 18px; /* Tamaño interno del botón */
+  border-radius: 12px; /* Bordes redondeados */
+  display: flex; /* Activa flexbox para alinear icono + texto */
+  align-items: center; /* Centra verticalmente */
+  gap: 12px; /* 12px de separación entre icono y texto */
+  transition: 0.3s; /* Suaviza cambios de color/fondo */
 }
 
 /* Enlace seleccionado (active) o con el cursor encima (hover) */
 .menu a:hover,
 .menu a.active {
-  background: #4567b7;   /* Azul intermedio */
-  color: white;          /* Texto blanco puro */
+  background: #4567b7; /* Azul intermedio */
+  color: white; /* Texto blanco puro */
 }
 
 /* Iconos del menú */
 .menu i {
-  width: 20px;           /* Ancho fijo para que los textos empiecen exactamente en la misma línea */
+  width: 20px; /* Ancho fijo para que los textos empiecen exactamente en la misma línea */
 }
 
 /* Personalización estética del scroll del Sidebar (Navegadores Webkit) */
-.sidebar::-webkit-scrollbar { width: 6px; }
-.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
 .sidebar::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.25);
   border-radius: 10px;
 }
-.sidebar::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.4); }
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
 
 /* Sección Cerrar Sesión (Logout) */
 .logout {
@@ -152,16 +158,21 @@ body {
 }
 
 .logout a:hover {
-  background: rgba(255, 255, 255, 0.08); /* Fondo claro muy sutil al pasar el mouse */
+  background: rgba(
+    255,
+    255,
+    255,
+    0.08
+  ); /* Fondo claro muy sutil al pasar el mouse */
 }
 
 /* ==========================================================================
    CONTENIDO PRINCIPAL - Panel de trabajo (derecha)
    ========================================================================== */
 .main-content {
-  flex: 1;              /* Ocupa el ancho restante de la pantalla */
-  margin-left: 280px;   /* Espacio obligatorio para no quedar oculto detrás de la barra fija */
-  padding: 30px;        /* Colchón de aire interno de 30px */
+  flex: 1; /* Ocupa el ancho restante de la pantalla */
+  margin-left: 280px; /* Espacio obligatorio para no quedar oculto detrás de la barra fija */
+  padding: 30px; /* Colchón de aire interno de 30px */
 }
 
 /* ==========================================================================
@@ -169,10 +180,10 @@ body {
    ========================================================================== */
 .topbar {
   display: flex;
-  align-items: center;  /* Centra verticalmente buscador, títulos y perfil */
-  gap: 20px;            /* Separación horizontal entre los bloques */
+  align-items: center; /* Centra verticalmente buscador, títulos y perfil */
+  gap: 20px; /* Separación horizontal entre los bloques */
   margin-bottom: 30px;
-  flex-wrap: wrap;      /* Permite saltos de línea si el espacio se reduce */
+  flex-wrap: wrap; /* Permite saltos de línea si el espacio se reduce */
 }
 
 /* Botón del menú (hamburguesa) */
@@ -192,19 +203,19 @@ body {
 .page-title h1 {
   font-size: 34px;
   margin-bottom: 5px;
-  color: #d35b1a;       /* Naranja */
+  color: #d35b1a; /* Naranja */
 }
 
 .page-title p {
-  color: #7a8599;       /* Gris azulado para subtítulos */
+  color: #7a8599; /* Gris azulado para subtítulos */
   font-size: 15px;
 }
 
 /* Buscador de la barra superior */
 .search-box {
-  flex: 1;              /* Crece de forma flexible */
-  max-width: 420px;     /* Límite de ancho */
-  position: relative;   /* Permite colocar el icono de manera absoluta dentro */
+  flex: 1; /* Crece de forma flexible */
+  max-width: 420px; /* Límite de ancho */
+  position: relative; /* Permite colocar el icono de manera absoluta dentro */
 }
 
 /* Icono de la lupa */
@@ -229,12 +240,12 @@ body {
 /* Cuando se hace clic en el buscador */
 .search-box input:focus {
   border-color: #0c45ca; /* Borde azul */
-  box-shadow: 0 0 0 3px rgba(31,100,255,0.1); /* Efecto halo de luz azul alrededor */
+  box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1); /* Efecto halo de luz azul alrededor */
 }
 
 /* Contenedor derecho de la barra (notificaciones y usuario) */
 .topbar-actions {
-  margin-left: auto;    /* Imán que empuja todo este bloque al extremo derecho */
+  margin-left: auto; /* Imán que empuja todo este bloque al extremo derecho */
   display: flex;
   align-items: center;
   gap: 25px;
@@ -253,13 +264,13 @@ body {
   position: absolute;
   top: -8px;
   right: -10px;
-  background: #ff4d4f;  /* Rojo de alerta */
+  background: #ff4d4f; /* Rojo de alerta */
   color: white;
   font-size: 11px;
   font-weight: bold;
   width: 20px;
   height: 20px;
-  border-radius: 50%;   /* Forma circular perfecta */
+  border-radius: 50%; /* Forma circular perfecta */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -272,8 +283,8 @@ body {
   gap: 12px;
   background: white;
   padding: 8px 14px;
-  border-radius: 50px;  /* Forma de cápsula o pastilla */
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Sombra muy tenue */
+  border-radius: 50px; /* Forma de cápsula o pastilla */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Sombra muy tenue */
   cursor: pointer;
 }
 
@@ -282,7 +293,7 @@ body {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  object-fit: cover;    /* Previene distorsión de la imagen */
+  object-fit: cover; /* Previene distorsión de la imagen */
 }
 
 .user-info {
@@ -290,8 +301,13 @@ body {
   flex-direction: column;
 }
 
-.user-info strong { font-size: 14px; }
-.user-info span { font-size: 12px; color: #7a8599; }
+.user-info strong {
+  font-size: 14px;
+}
+.user-info span {
+  font-size: 12px;
+  color: #7a8599;
+}
 
 /* ==========================================================================
    BREADCRUMB - Indicador de ruta actual
@@ -312,7 +328,7 @@ body {
 }
 
 .breadcrumb a:hover {
-  color: #e8600a;       /* El enlace se ilumina en naranja al pasar el mouse */
+  color: #e8600a; /* El enlace se ilumina en naranja al pasar el mouse */
 }
 
 /* Separador (generalmente un carácter "/" o ">") */
@@ -324,7 +340,7 @@ body {
 /* Página actual en la que se está (No es un enlace clickable) */
 .breadcrumb .current {
   color: #e8600a;
-  font-weight: 700;     /* Texto en negrita */
+  font-weight: 700; /* Texto en negrita */
 }
 
 /* ==========================================================================
@@ -335,7 +351,7 @@ body {
   border-radius: 14px;
   box-shadow: 0 2px 14px rgba(30, 42, 94, 0.1); /* Sombra azulada con profundidad */
   margin: 20px 28px 28px; /* Separación con el entorno exterior */
-  overflow: hidden;     /* Recorta el contenido de los hijos si sobrepasan las esquinas redondeadas */
+  overflow: hidden; /* Recorta el contenido de los hijos si sobrepasan las esquinas redondeadas */
 }
 
 /* Encabezado de la tarjeta */
@@ -364,9 +380,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #e8600a;       /* Icono naranja */
+  color: #e8600a; /* Icono naranja */
   font-size: 18px;
-  flex-shrink: 0;       /* Impide que el icono se comprima si hay poco espacio */
+  flex-shrink: 0; /* Impide que el icono se comprima si hay poco espacio */
 }
 
 .form-card-title {
@@ -401,7 +417,7 @@ body {
    SECCIONES - Agrupadores de campos dentro del formulario
    ========================================================================== */
 .form-section {
-  margin-bottom: 32px;  /* Espacio amplio entre secciones */
+  margin-bottom: 32px; /* Espacio amplio entre secciones */
 }
 
 /* Quita el espacio en la última sección para no duplicar paddings con el contenedor */
@@ -415,7 +431,7 @@ body {
   font-weight: 700;
   color: #e8600a;
   text-transform: uppercase; /* Convierte el texto automáticamente a MAYÚSCULAS */
-  letter-spacing: 1.2px;     /* Separa un poco las letras */
+  letter-spacing: 1.2px; /* Separa un poco las letras */
   margin-bottom: 18px;
   padding-bottom: 8px;
   border-bottom: 1.5px solid #e8ecf6; /* Línea divisoria */
@@ -426,13 +442,16 @@ body {
    ========================================================================== */
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Crea una estructura simétrica de 2 columnas iguales */
-  gap: 20px 28px;       /* 20px de separación entre filas y 28px entre columnas */
+  grid-template-columns: repeat(
+    2,
+    1fr
+  ); /* Crea una estructura simétrica de 2 columnas iguales */
+  gap: 20px 28px; /* 20px de separación entre filas y 28px entre columnas */
 }
 
 /* Clase especial para campos que deben ocupar todo el ancho (ej: Observaciones o Textareas) */
 .field-full {
-  grid-column: 1 / -1;  /* Empieza en la columna 1 y se estira hasta el final (-1) */
+  grid-column: 1 / -1; /* Empieza en la columna 1 y se estira hasta el final (-1) */
 }
 
 /* ==========================================================================
@@ -477,11 +496,11 @@ body {
   border-radius: 8px;
   padding: 10px 14px;
   font-size: 13.5px;
-  font-family: inherit;  /* Hereda 'Segoe UI' del body automáticamente */
+  font-family: inherit; /* Hereda 'Segoe UI' del body automáticamente */
   color: #1a2042;
-  background: #f7f8fc;   /* Fondo gris pálido */
+  background: #f7f8fc; /* Fondo gris pálido */
   outline: none;
-  
+
   /* Transición controlada en 3 propiedades para cuando el usuario hace focus */
   transition:
     border-color 0.2s,
@@ -491,7 +510,7 @@ body {
 
 .field textarea {
   min-height: 110px;
-  resize: vertical;      /* Bloquea la alteración horizontal del campo por el usuario */
+  resize: vertical; /* Bloquea la alteración horizontal del campo por el usuario */
 }
 
 /* Estado Focus cuando el elemento está activo */
@@ -500,18 +519,18 @@ body {
 .field textarea:focus {
   border-color: #e8600a; /* Borde naranja */
   box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12); /* Sombra difuminada naranja */
-  background: #ffffff;   /* Fondo cambia a blanco puro */
+  background: #ffffff; /* Fondo cambia a blanco puro */
 }
 
 /* Selector/Select personalizado con código SVG nativo */
 .field select {
-  appearance: none;      /* Elimina la flecha fea por defecto del navegador */
-  
+  appearance: none; /* Elimina la flecha fea por defecto del navegador */
+
   /* Inserta un SVG codificado en texto que dibuja una flecha personalizada muy elegante */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7499' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 14px center; /* Ubica la flecha a 14px del borde derecho centrado verticalmente */
-  padding-right: 36px;   /* Evita que el texto de las opciones tape la flecha */
+  padding-right: 36px; /* Evita que el texto de las opciones tape la flecha */
   cursor: pointer;
 }
 
@@ -539,7 +558,7 @@ body {
    BOTONES - Estilos y variantes (Ghost, Secondary, Primary)
    ========================================================================== */
 .btn {
-  display: inline-flex;  /* Flexbox inline para centrar textos e iconos dentro del botón */
+  display: inline-flex; /* Flexbox inline para centrar textos e iconos dentro del botón */
   align-items: center;
   gap: 8px;
   padding: 10px 22px;
@@ -619,7 +638,10 @@ body {
   color: #1a2042;
   background: #f7f8fc;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background 0.2s;
 }
 
 .field input[type="time"]:focus {
@@ -630,10 +652,10 @@ body {
 
 /* Campos bloqueados / Solo Lectura (Ej: Horas calculadas automáticamente) */
 .field input[readonly] {
-  background: #eef2fb;   /* Fondo azulado desactivado */
-  color: #5f6b88;        /* Color opaco */
+  background: #eef2fb; /* Fondo azulado desactivado */
+  color: #5f6b88; /* Color opaco */
   font-weight: 600;
-  cursor: not-allowed;   /* Cambia el cursor a un círculo rojo de prohibición */
+  cursor: not-allowed; /* Cambia el cursor a un círculo rojo de prohibición */
 }
 
 /* Texto de ayuda explicativo pequeño debajo de los campos */
@@ -691,9 +713,9 @@ body {
 
 /* Truco CSS avanzado: Cuando el radio oculto está CHECKED (+ significa el label inmediato de al lado) */
 .status-option input:checked + label {
-  border-color: #e8600a;   /* Borde cambia a naranja */
+  border-color: #e8600a; /* Borde cambia a naranja */
   background: rgba(232, 96, 10, 0.08); /* Fondo naranja translúcido */
-  color: #e8600a;          /* Texto naranja */
+  color: #e8600a; /* Texto naranja */
   box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.08);
 }
 
@@ -708,7 +730,11 @@ body {
 
 /* Caja de resumen de horas con fondo degradado */
 .summary-box {
-  background: linear-gradient(135deg, #fff7f1 0%, #ffffff 100%); /* Degradado diagonal suave */
+  background: linear-gradient(
+    135deg,
+    #fff7f1 0%,
+    #ffffff 100%
+  ); /* Degradado diagonal suave */
   border: 1px solid rgba(232, 96, 10, 0.15);
   border-radius: 12px;
   padding: 20px 22px;
@@ -768,7 +794,7 @@ body {
   align-items: flex-start; /* Alinea los ítems al inicio arriba */
   gap: 12px;
   padding: 14px 16px;
-  background: #f8fbff;    /* Fondo azul hielo */
+  background: #f8fbff; /* Fondo azul hielo */
   border: 1px solid #d9e7ff;
   border-left: 4px solid #4567b7; /* Borde izquierdo grueso azul como acento */
   border-radius: 10px;
@@ -794,17 +820,29 @@ body {
   align-items: center;
   gap: 6px;
   padding: 5px 10px;
-  border-radius: 999px;   /* Forma de píldora redondeada completa */
+  border-radius: 999px; /* Forma de píldora redondeada completa */
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.3px;
 }
 
 /* Variantes de colores para los badges de asistencia */
-.status-badge.present { background: #e8f7ee; color: #1b8f4d; }    /* Verde */
-.status-badge.absent { background: #ffecec; color: #d93025; }     /* Rojo */
-.status-badge.late { background: #fff5e6; color: #e67e00; }       /* Amarillo/Naranja */
-.status-badge.permission { background: #eef3ff; color: #4567b7; } /* Azul */
+.status-badge.present {
+  background: #e8f7ee;
+  color: #1b8f4d;
+} /* Verde */
+.status-badge.absent {
+  background: #ffecec;
+  color: #d93025;
+} /* Rojo */
+.status-badge.late {
+  background: #fff5e6;
+  color: #e67e00;
+} /* Amarillo/Naranja */
+.status-badge.permission {
+  background: #eef3ff;
+  color: #4567b7;
+} /* Azul */
 
 /* Contenedor para inputs que tienen sufijos (Ej: un campo de número con "Semanas" o "Horas" estático al final) */
 .input-suffix {
@@ -812,7 +850,7 @@ body {
 }
 
 .input-suffix input {
-  padding-right: 48px;   /* Colchón para no escribir sobre el sufijo */
+  padding-right: 48px; /* Colchón para no escribir sobre el sufijo */
 }
 
 /* El texto del sufijo (Ej: "kg", "hrs") posicionado al fondo a la derecha del input */
@@ -824,7 +862,7 @@ body {
   font-size: 12px;
   font-weight: 600;
   color: #7a8599;
-  pointer-events: none;  /* Hace que los clics atraviesen el texto y actúen en el input */
+  pointer-events: none; /* Hace que los clics atraviesen el texto y actúen en el input */
 }
 
 /* ==========================================================================
@@ -835,24 +873,52 @@ body {
    PANTALLAS ULTRA GRANDES (1400px o más)
    ========================================================================== */
 @media screen and (min-width: 1400px) {
-  .main-content { padding: 35px 45px; }
-  .form-card { max-width: 1500px; margin: 25px auto; } /* Centra el formulario con tope máximo */
-  .form-grid { grid-template-columns: repeat(3, 1fr); } /* Crece de 2 a 3 columnas para aprovechar espacio */
-  .page-title h1 { font-size: 38px; }
-  .search-box { max-width: 520px; }
+  .main-content {
+    padding: 35px 45px;
+  }
+  .form-card {
+    max-width: 1500px;
+    margin: 25px auto;
+  } /* Centra el formulario con tope máximo */
+  .form-grid {
+    grid-template-columns: repeat(3, 1fr);
+  } /* Crece de 2 a 3 columnas para aprovechar espacio */
+  .page-title h1 {
+    font-size: 38px;
+  }
+  .search-box {
+    max-width: 520px;
+  }
 }
 
 /* ==========================================================================
    LAPTOPS Y PANTALLAS MEDIANAS (Menos de 1200px)
    ========================================================================== */
 @media screen and (max-width: 1200px) {
-  .sidebar { width: 240px; padding: 25px 15px; } /* Sidebar se compacta ligeramente */
-  .main-content { margin-left: 240px; padding: 25px; }
-  .logo-img { width: 220px; }
-  .menu a { font-size: 14px; padding: 12px 14px; }
-  .form-grid { grid-template-columns: repeat(2, 1fr); }
-  .topbar { gap: 15px; }
-  .search-box { max-width: 100%; }
+  .sidebar {
+    width: 240px;
+    padding: 25px 15px;
+  } /* Sidebar se compacta ligeramente */
+  .main-content {
+    margin-left: 240px;
+    padding: 25px;
+  }
+  .logo-img {
+    width: 220px;
+  }
+  .menu a {
+    font-size: 14px;
+    padding: 12px 14px;
+  }
+  .form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .topbar {
+    gap: 15px;
+  }
+  .search-box {
+    max-width: 100%;
+  }
 }
 
 /* ==========================================================================
@@ -866,9 +932,15 @@ body {
     align-items: center; /* Centra los iconos de forma vertical */
   }
 
-  .logo-img { width: 60px; padding: 10px; }
+  .logo-img {
+    width: 60px;
+    padding: 10px;
+  }
 
-  .menu { width: 100%; align-items: center; }
+  .menu {
+    width: 100%;
+    align-items: center;
+  }
 
   /* Truco de invisibilidad: font-size: 0 elimina el texto de los enlaces de menú
      y justify-content: center deja los iconos solos en el centro exacto */
@@ -876,16 +948,26 @@ body {
     justify-content: center;
     padding: 14px 10px;
     width: 100%;
-    font-size: 0;       /* Oculta los textos por completo */
+    font-size: 0; /* Oculta los textos por completo */
     border-radius: 14px;
   }
 
-  .menu a i { font-size: 20px; width: auto; } /* Engrandece el icono para mejor experiencia touch */
+  .menu a i {
+    font-size: 20px;
+    width: auto;
+  } /* Engrandece el icono para mejor experiencia touch */
 
   /* Aplica la misma regla de ocultar texto para el botón de logout */
-  .logout { width: 100%; }
-  .logout a { justify-content: center; font-size: 0; }
-  .logout a i { font-size: 20px; }
+  .logout {
+    width: 100%;
+  }
+  .logout a {
+    justify-content: center;
+    font-size: 0;
+  }
+  .logout a i {
+    font-size: 20px;
+  }
 
   /* Re-ajuste del espacio del contenido principal basado en el nuevo ancho del sidebar (95px) */
   .main-content {
@@ -895,47 +977,119 @@ body {
   }
 
   /* Cambios en la barra superior para organizarse en bloques apilados */
-  .topbar { flex-direction: column; align-items: stretch; gap: 15px; margin-bottom: 15px; }
-  .page-title { width: 100%; min-width: unset; }
-  .page-title h1 { font-size: 30px; }
-  .search-box { width: 100%; max-width: 100%; }
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+  .page-title {
+    width: 100%;
+    min-width: unset;
+  }
+  .page-title h1 {
+    font-size: 30px;
+  }
+  .search-box {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .topbar-actions {
+    width: 100%;
+    margin-left: 0;
+    justify-content: space-between;
+  }
   
-  .topbar-actions { width: 100%; margin-left: 0; justify-content: space-between; }
-  .user-profile { width: auto; flex: 1; justify-content: center; }
+  /* Oculta texto del usuario */
+  .user-info {
+    display: none;
+  }
+
 
   /* Reducción de rejillas a 1 sola columna vertical */
-  .breadcrumb { padding: 0; margin-bottom: 15px; flex-wrap: wrap; }
-  .form-card { margin: 0; width: 100%; }
-  .form-card-header { padding: 20px; }
-  .form-body { padding: 20px; }
-  
-  .form-grid { grid-template-columns: 1fr; gap: 18px; }
-  .field-full { grid-column: auto; } /* Desactiva la expansión forzada */
-  
-  .summary-grid { grid-template-columns: 1fr; }
-  .summary-item { width: 100%; }
+  .breadcrumb {
+    padding: 0;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+  }
+  .form-card {
+    margin: 0;
+    width: 100%;
+  }
+  .form-card-header {
+    padding: 20px;
+  }
+  .form-body {
+    padding: 20px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .field-full {
+    grid-column: auto;
+  } /* Desactiva la expansión forzada */
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+  .summary-item {
+    width: 100%;
+  }
 
   /* Botones adaptables al 100% del ancho */
-  .form-footer { justify-content: stretch; }
-  .btn { width: 100%; justify-content: center; }
-  .results-table { min-width: 700px; }
+  .form-footer {
+    justify-content: stretch;
+  }
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .results-table {
+    min-width: 700px;
+  }
 }
 
 /* ==========================================================================
    CELULARES (Menos de 576px)
    ========================================================================== */
 @media screen and (max-width: 576px) {
-  body { overflow-x: hidden; } /* Evita cualquier desborde o descuadre de pantalla lateral */
-  .dashboard-container { width: 100%; overflow-x: hidden; }
+  body {
+    overflow-x: hidden;
+  } /* Evita cualquier desborde o descuadre de pantalla lateral */
+  .dashboard-container {
+    width: 100%;
+    overflow-x: hidden;
+  }
 
   /* El sidebar se vuelve extremadamente delgado (78px) */
-  .sidebar { width: 78px; padding: 15px 8px; }
-  .logo { margin-bottom: 20px; }
-  .logo-img { width: 52px; padding: 6px; border-radius: 12px; }
-  .menu { gap: 6px; }
-  .menu a { padding: 12px 6px; border-radius: 10px; }
-  .menu a i { font-size: 18px; }
-  .logout a i { font-size: 18px; }
+  .sidebar {
+    width: 78px;
+    padding: 15px 8px;
+  }
+  .logo {
+    margin-bottom: 20px;
+  }
+  .logo-img {
+    width: 52px;
+    padding: 6px;
+    border-radius: 12px;
+  }
+  .menu {
+    gap: 6px;
+  }
+  .menu a {
+    padding: 12px 6px;
+    border-radius: 10px;
+  }
+  .menu a i {
+    font-size: 18px;
+  }
+  .logout a i {
+    font-size: 18px;
+  }
 
   /* Re-ajuste del espacio del contenido principal para los 78px del sidebar */
   .main-content {
@@ -944,77 +1098,198 @@ body {
     padding: 14px;
   }
 
-  .topbar { margin-bottom: 10px; gap: 10px; }
-  .menu-toggle { display: none; } /* En celulares se asume que la barra compacta es fija y no requiere toggle */
+  .topbar {
+    margin-bottom: 10px;
+    gap: 10px;
+  }
+  .menu-toggle {
+    display: none;
+  } /* En celulares se asume que la barra compacta es fija y no requiere toggle */
+
+  .page-title {
+    width: 100%;
+  }
+  .page-title h1 {
+    font-size: 22px;
+    line-height: 1.2;
+  }
+  .page-title p {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .search-box {
+    width: 100%;
+    max-width: 100%;
+  }
+  .search-box input {
+    font-size: 13px;
+    padding: 12px 14px 12px 42px;
+  }
+
+  .topbar-actions {
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 0;
+  }
+  .notification {
+    font-size: 20px;
+  }
+
   
-  .page-title { width: 100%; }
-  .page-title h1 { font-size: 22px; line-height: 1.2; }
-  .page-title p { font-size: 13px; line-height: 1.4; }
+  /* Oculta texto del usuario */
+  .user-info {
+    display: none;
+  }
 
-  .search-box { width: 100%; max-width: 100%; }
-  .search-box input { font-size: 13px; padding: 12px 14px 12px 42px; }
 
-  .topbar-actions { width: 100%; justify-content: space-between; gap: 10px; margin-top: 0; }
-  .notification { font-size: 20px; }
-  
-  /* Ajuste de la tarjeta de perfil para pantallas chicas */
-  .user-profile { flex: 1; min-width: 0; padding: 8px 10px; gap: 8px; }
-  .user-profile img { width: 38px; height: 38px; }
-  .user-info strong { font-size: 12px; }
-  .user-info span { font-size: 11px; }
-
-  .breadcrumb { font-size: 12px; gap: 5px; margin-bottom: 12px; }
+  .breadcrumb {
+    font-size: 12px;
+    gap: 5px;
+    margin-bottom: 12px;
+  }
 
   /* Tarjetas y formularios optimizados para dedos */
-  .form-card { border-radius: 12px; }
-  .form-card-header { padding: 16px; gap: 15px; }
-  .form-card-header-left { align-items: flex-start; }
-  .form-card-icon { width: 40px; height: 40px; font-size: 16px; }
-  .form-card-title { font-size: 15px; line-height: 1.4; }
-  .form-card-subtitle { font-size: 11px; line-height: 1.5; }
-  .required-note { font-size: 11px; }
+  .form-card {
+    border-radius: 12px;
+  }
+  .form-card-header {
+    padding: 16px;
+    gap: 15px;
+  }
+  .form-card-header-left {
+    align-items: flex-start;
+  }
+  .form-card-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+  .form-card-title {
+    font-size: 15px;
+    line-height: 1.4;
+  }
+  .form-card-subtitle {
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  .required-note {
+    font-size: 11px;
+  }
 
-  .form-body { padding: 16px; }
-  .form-section { margin-bottom: 24px; }
-  .form-section-title { font-size: 11px; line-height: 1.5; }
+  .form-body {
+    padding: 16px;
+  }
+  .form-section {
+    margin-bottom: 24px;
+  }
+  .form-section-title {
+    font-size: 11px;
+    line-height: 1.5;
+  }
 
-  .field label { font-size: 12px; line-height: 1.4; }
-  .field input, .field select, .field textarea { font-size: 13px; padding: 11px 12px; }
-  .field textarea { min-height: 90px; }
+  .field label {
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 13px;
+    padding: 11px 12px;
+  }
+  .field textarea {
+    min-height: 90px;
+  }
 
-  .summary-box { padding: 15px; }
-  .summary-grid { gap: 12px; }
-  .summary-item { padding: 12px; }
-  .summary-value { font-size: 18px; }
+  .summary-box {
+    padding: 15px;
+  }
+  .summary-grid {
+    gap: 12px;
+  }
+  .summary-item {
+    padding: 12px;
+  }
+  .summary-value {
+    font-size: 18px;
+  }
 
   /* Tabla de resultados adaptable mediante scrollbar interno */
-  .table-container { overflow-x: auto; border-radius: 10px; }
-  .results-table { min-width: 650px; font-size: 12px; }
-  .results-table th, .results-table td { padding: 10px 12px; }
+  .table-container {
+    overflow-x: auto;
+    border-radius: 10px;
+  }
+  .results-table {
+    min-width: 650px;
+    font-size: 12px;
+  }
+  .results-table th,
+  .results-table td {
+    padding: 10px 12px;
+  }
 
-  .form-footer { flex-direction: column; align-items: stretch; }
-  .btn { width: 100%; padding: 12px; font-size: 13px; }
-  
-  .footer { font-size: 12px; line-height: 1.5; margin-top: 20px; padding-bottom: 10px; }
+  .form-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 13px;
+  }
+
+  .footer {
+    font-size: 12px;
+    line-height: 1.5;
+    margin-top: 20px;
+    padding-bottom: 10px;
+  }
 }
 
 /* ==========================================================================
    CELULARES EXTRA PEQUEÑOS (Menos de 400px - Dispositivos antiguos o muy angostos)
    ========================================================================== */
 @media screen and (max-width: 400px) {
-  .sidebar { width: 70px; } /* Lleva el sidebar a su tamaño más estricto */
-  .main-content { margin-left: 70px; width: calc(100% - 70px); padding: 12px; }
+  .sidebar {
+    width: 70px;
+  } /* Lleva el sidebar a su tamaño más estricto */
+  .main-content {
+    margin-left: 70px;
+    width: calc(100% - 70px);
+    padding: 12px;
+  }
 
-  .page-title h1 { font-size: 20px; }
-  .page-title p { font-size: 12px; }
+  .page-title h1 {
+    font-size: 20px;
+  }
+  .page-title p {
+    font-size: 12px;
+  }
 
-  .form-card-header, .form-body { padding: 14px; }
+  .form-card-header,
+  .form-body {
+    padding: 14px;
+  }
 
-  /* Ajusta los datos del perfil para que no rompan la barra superior */
-  .user-profile { padding: 6px 8px; }
-  .user-profile img { width: 34px; height: 34px; }
-  .user-info strong { font-size: 11px; }
-  .user-info span { font-size: 10px; }
-  
-  .search-box input { font-size: 12px; }
+  .search-box input {
+    padding: 12px 14px 12px 42px; /* Reajuste del padding interno del buscador */
+    font-size: 13px;
+  }
+
+  .user-profile {
+    gap: 8px;
+    padding: 6px 8px;
+  }
+
+  .user-profile img {
+    width: 38px;
+    height: 38px; /* Foto de perfil más pequeña */
+  }
+
+  /* OCULTA el bloque de textos del usuario. En pantallas de menos de 480px sólo queda la foto */
+  .user-info {
+    display: none;
+  }
 }

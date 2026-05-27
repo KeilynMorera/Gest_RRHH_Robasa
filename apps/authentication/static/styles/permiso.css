@@ -258,14 +258,6 @@ body {
   flex-wrap: wrap;
 }
 
-.menu-toggle {
-  border: none;
-  background: none;
-  font-size: 26px;
-  cursor: pointer;
-  color: #293477;
-}
-
 .page-title {
   min-width: 260px;
 }
@@ -705,415 +697,174 @@ body {
 /* ── PANTALLAS MEDIANAS (Hasta 1200px) ── */
 @media screen and (max-width: 1200px) {
   .sidebar {
-    width: 235px;
-    min-width: 235px;
-    max-width: 235px;
-    padding: 24px 16px;
+    width: 85px;
+    min-width: 85px;
+    max-width: 85px;
+    padding: 20px 10px;
+    align-items: center;
   }
+
   .main-content {
-    margin-left: 235px;
-    width: calc(100% - 235px);
+    margin-left: 85px;
+    width: calc(100% - 85px);
     padding: 20px;
   }
-  .logo-img {
-    max-width: 200px;
-    padding: 14px;
-  }
-  .menu a {
-    font-size: 13px;
-    padding: 12px 14px;
-  }
 
-  /* Descomposición estructural de la barra superior */
-  .topbar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px;
-    align-items: flex-start;
-  }
-  .page-title {
-    width: 100%;
-  }
-  .search-box {
-    flex: 1 1 100%;
-    max-width: 100%;
-  } /* El buscador ocupa toda la fila intermedia */
-  .topbar-actions {
-    width: 100%;
-    justify-content: flex-end;
-  }
-  .form-card {
-    margin: 16px 18px 22px;
-  }
-  .form-card-header {
-    padding: 20px;
-  }
-  .form-body {
-    padding: 22px;
-  }
-
-  /* Modificación adaptativa de columnas automáticas */
-  .form-grid {
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 18px;
-  }
-  .status-group {
-    gap: 10px;
-  }
-  .status-option {
-    min-width: 140px;
-  }
-}
-
-/* ── TABLETS (Hasta 992px) ── */
-@media screen and (max-width: 992px) {
-  .sidebar {
-    width: 210px;
-    min-width: 210px;
-    max-width: 210px;
-    padding: 18px 12px;
-  }
-  .main-content {
-    margin-left: 210px;
-    width: calc(100% - 210px);
-    padding: 18px;
-  }
-  .logo-img {
-    max-width: 160px;
-    padding: 12px;
-  }
-  .menu {
-    gap: 6px;
-  }
-  .menu a {
-    font-size: 12px;
-    padding: 11px 12px;
-    gap: 10px;
-  }
-  .menu i {
-    width: 16px;
-  }
-  .logout a {
-    font-size: 12px;
-    padding: 11px 12px;
-  }
-
-  /* Cambio drástico del Topbar a formato grilla mono-columna */
-  .topbar {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  .page-title h1 {
-    font-size: 28px;
-  }
-  .page-title p {
-    font-size: 13px;
-  }
-  .search-box {
-    width: 100%;
-    max-width: 100%;
-  }
-  .topbar-actions {
-    width: 100%;
-    justify-content: space-between;
-  }
-  .user-profile {
-    padding: 6px 10px;
-  }
-  .form-card {
-    margin: 14px 14px 20px;
-    border-radius: 12px;
-  }
-  .form-card-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 14px;
-  }
-  .form-body {
-    padding: 18px;
-  }
-
-  /* El formulario colapsa estrictamente a 1 columna */
-  .form-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-  .field-full {
-    grid-column: auto;
-  } /* Resetea el ancho completo a herencia fluida */
-  .status-group {
-    flex-direction: column;
-  } /* Grupo de radios pasa a apilamiento vertical */
-  .status-option {
-    width: 100%;
-    min-width: 100%;
-  }
-  .form-footer {
-    justify-content: stretch;
-  }
-  .btn {
-    flex: 1;
-    justify-content: center;
-  } /* Los botones se distribuyen al ancho total */
-}
-
-/* ── CELULARES GRANDES (Hasta 768px) ── */
-@media screen and (max-width: 768px) {
-  .sidebar {
-    width: 185px;
-    min-width: 185px;
-    max-width: 185px;
-    padding: 16px 10px;
-  }
-  .main-content {
-    margin-left: 185px;
-    width: calc(100% - 185px);
-    padding: 14px;
-  }
-  .logo {
-    margin-bottom: 24px;
-  }
-  .logo-img {
-    max-width: 135px;
-    padding: 10px;
-    border-radius: 16px;
-  }
+  /* Oculta el texto del logo */
   .logo span {
-    font-size: 12px;
-    letter-spacing: 3px;
+    display: none;
   }
+
+  /* Reduce tamaño del logo */
+  .logo-img {
+    max-width: 55px;
+    padding: 8px;
+    margin-bottom: 20px;
+  }
+
+  /* Centra los iconos */
+  .menu {
+    width: 100%;
+    align-items: center;
+  }
+
   .menu a {
-    font-size: 11px;
-    padding: 10px;
-    border-radius: 10px;
+    justify-content: center;
+    padding: 14px 0;
+    width: 55px;
+    height: 55px;
+    border-radius: 14px;
+    font-size: 0; /* Oculta el texto */
   }
-  .menu i {
-    width: 14px;
-    font-size: 12px;
+
+  .menu a i {
+    font-size: 18px;
+    width: auto;
+    margin: 0;
   }
-  .logout a {
-    font-size: 11px;
-    padding: 10px;
-  }
-  .page-title {
-    min-width: 100%;
-  }
-  .page-title h1 {
-    font-size: 22px;
-  }
-  .page-title p {
-    font-size: 12px;
-  }
-  .search-box input {
-    padding: 11px 12px 11px 38px;
-    font-size: 13px;
-  }
-  .search-box i {
-    left: 12px;
-  }
-  .topbar-actions {
-    gap: 12px;
-  }
+
+  /* OCULTA el bloque de textos del usuario. En pantallas de menos de 480px sólo queda la foto */
   .user-info {
     display: none;
-  } /* Oculta textos del perfil de usuario por falta de espacio horizontal */
-  .user-profile {
+  }
+
+  /* Logout solo con icono */
+  .logout {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .logout a {
+    justify-content: center;
+    width: 55px;
+    height: 55px;
+    padding: 0;
+    font-size: 0;
     border-radius: 14px;
+  }
+
+  .logout a i {
+    font-size: 18px;
+    margin: 0;
+  }
+}
+
+/* ── TABLETS Y CELULARES (Hasta 992px) ── */
+@media screen and (max-width: 992px) {
+  .sidebar {
+    width: 75px;
+    min-width: 75px;
+    max-width: 75px;
+    padding: 16px 8px;
+  }
+
+  .main-content {
+    margin-left: 75px;
+    width: calc(100% - 75px);
+    padding: 16px;
+  }
+
+  .logo-img {
+    max-width: 48px;
+    padding: 6px;
+  }
+
+  .menu a {
+    width: 50px;
+    height: 50px;
+    padding: 0;
+  }
+
+  .menu a i {
+    font-size: 16px;
+  }
+
+  .logout a {
+    width: 50px;
+    height: 50px;
+  }
+
+  .logout a i {
+    font-size: 16px;
+  }
+
+  .search-box input {
+    padding: 12px 14px 12px 42px; /* Reajuste del padding interno del buscador */
+    font-size: 13px;
+  }
+
+  .user-profile {
+    gap: 8px;
     padding: 6px 8px;
   }
+
   .user-profile img {
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px; /* Foto de perfil más pequeña */
   }
-  .breadcrumb {
-    padding: 14px 14px 0;
-    font-size: 11px;
-    flex-wrap: wrap;
-  }
-  .form-card {
-    margin: 12px;
-  }
-  .form-card-header {
-    padding: 16px;
-  }
-  .form-card-title {
-    font-size: 15px;
-  }
-  .form-card-subtitle {
-    font-size: 11px;
-  }
-  .required-note {
-    font-size: 11px;
-  }
-  .form-body {
-    padding: 16px;
-  }
-  .form-section-title {
-    font-size: 11px;
-  }
-  .field > label {
-    font-size: 12px;
-  }
-  .field input,
-  .field select,
-  .field textarea {
-    font-size: 12px;
-    padding: 10px 12px;
-  }
-  .status-option label {
-    font-size: 12px;
-    padding: 11px 12px;
-  }
-  .form-footer {
-    flex-direction: column;
-    gap: 10px;
-  } /* Botones apilados individualmente */
-  .btn {
-    width: 100%;
-  }
-  .footer {
-    font-size: 12px;
+
+  /* OCULTA el bloque de textos del usuario. En pantallas de menos de 480px sólo queda la foto */
+  .user-info {
+    display: none;
   }
 }
 
 /* ── CELULARES PEQUEÑOS (Hasta 576px) ── */
 @media screen and (max-width: 576px) {
-  /* Optimización extrema de áreas compactas */
   .sidebar {
-    width: 165px;
-    min-width: 165px;
-    max-width: 165px;
-    padding: 14px 8px;
+    width: 68px;
+    min-width: 68px;
+    max-width: 68px;
+    padding: 14px 6px;
   }
+
   .main-content {
-    margin-left: 165px;
-    width: calc(100% - 165px);
-    padding: 10px;
+    margin-left: 68px;
+    width: calc(100% - 68px);
+    padding: 12px;
   }
+
   .logo-img {
-    max-width: 110px;
-    padding: 8px;
+    max-width: 42px;
+    padding: 5px;
   }
-  .logo span {
-    font-size: 10px;
-    letter-spacing: 2px;
-  }
-  .menu {
-    gap: 4px;
-  }
+
   .menu a {
-    font-size: 10px;
-    padding: 9px 8px;
-    gap: 8px;
+    width: 46px;
+    height: 46px;
   }
-  .logout {
-    margin-top: 14px;
-    padding-top: 14px;
-  }
-  .logout a {
-    font-size: 10px;
-    padding: 9px 8px;
-  }
-  .page-title h1 {
-    font-size: 18px;
-  }
-  .page-title p {
-    font-size: 11px;
-  }
-  .topbar {
-    gap: 10px;
-    margin-bottom: 18px;
-  }
-  .search-box input {
-    font-size: 12px;
-  }
-  .notification {
-    font-size: 18px;
-  }
-  .badge {
-    width: 17px;
-    height: 17px;
-    font-size: 9px;
-  }
-  .user-profile img {
-    width: 32px;
-    height: 32px;
-  }
-  .breadcrumb {
-    gap: 5px;
-    font-size: 10px;
-    padding: 10px 10px 0;
-  }
-  .form-card {
-    margin: 10px;
-    border-radius: 10px;
-  }
-  .form-card-header {
-    padding: 14px;
-  }
-  .form-card-header-left {
-    gap: 10px;
-  }
-  .form-card-icon {
-    width: 38px;
-    height: 38px;
+
+  .menu a i {
     font-size: 15px;
   }
-  .form-card-title {
-    font-size: 14px;
+
+  .logout a {
+    width: 46px;
+    height: 46px;
   }
-  .form-card-subtitle,
-  .required-note {
-    font-size: 10px;
-  }
-  .form-body {
-    padding: 14px;
-  }
-  .form-section {
-    margin-bottom: 22px;
-  }
-  .form-section-title {
-    font-size: 10px;
-  }
-  .field {
-    gap: 6px;
-  }
-  .field > label {
-    font-size: 11px;
-  }
-  .field input,
-  .field select,
-  .field textarea {
-    font-size: 11px;
-    padding: 9px 10px;
-    border-radius: 7px;
-  }
-  .field textarea {
-    min-height: 90px;
-  }
-  .status-group {
-    gap: 8px;
-  }
-  .status-option label {
-    font-size: 11px;
-    padding: 10px;
-    border-radius: 7px;
-  }
-  .status-option .dot {
-    width: 8px;
-    height: 8px;
-  }
-  .form-footer {
-    padding-top: 18px;
-  }
-  .btn {
-    font-size: 12px;
-    padding: 10px;
-    border-radius: 7px;
-  }
-  .footer {
-    margin-top: 20px;
-    font-size: 11px;
+
+  .logout a i {
+    font-size: 15px;
   }
 }
