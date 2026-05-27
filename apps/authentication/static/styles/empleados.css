@@ -801,9 +801,19 @@ body {
     margin-left: 0;
   }
 
+   .page-title {
+    min-width: auto;
+    text-align: center;
+  }
+  .page-title h1 {
+    font-size: 22px;
+  }
+  .page-title p {
+    font-size: 13px;
+  }
+
   .search-box {
-    width: 100%;
-    max-width: 100%; /* Buscador ocupa el 100% de su fila */
+    max-width: 100%;
   }
 
   .breadcrumb {
@@ -874,12 +884,19 @@ body {
     padding: 16px;
   }
 
-  .page-title h1 {
-    font-size: 26px; /* Fuentes más pequeñas para celulares */
+   .page-title {
+    min-width: auto;
+    text-align: center;
   }
-
+  .page-title h1 {
+    font-size: 22px;
+  }
   .page-title p {
     font-size: 13px;
+  }
+
+  .search-box {
+    max-width: 100%;
   }
 
   .topbar {

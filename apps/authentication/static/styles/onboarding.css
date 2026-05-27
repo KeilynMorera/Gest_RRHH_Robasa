@@ -744,13 +744,19 @@ body {
     margin: 0;
   }
 
-  .page-title h1 {
-    width: 100%;
-    min-width: 100%;
+   .page-title {
+    min-width: auto;
+    text-align: center;
   }
-
+  .page-title h1 {
+    font-size: 22px;
+  }
   .page-title p {
     font-size: 13px;
+  }
+
+  .search-box {
+    max-width: 100%;
   }
 
   .topbar {
@@ -759,12 +765,6 @@ body {
     gap: 12px;
 
     align-items: stretch;
-  }
-
-  .search-box {
-    width: 100%;
-    max-width: 100%;
-    min-width: 100%;
   }
 
   .topbar-actions {
@@ -850,21 +850,19 @@ body {
     font-size: 18px;
   }
 
+   .page-title {
+    min-width: auto;
+    text-align: center;
+  }
   .page-title h1 {
     font-size: 22px;
   }
-
   .page-title p {
-    font-size: 12px;
-  }
-
-  .search-box input {
-    padding: 12px 14px 12px 40px;
     font-size: 13px;
   }
 
-  .search-box i {
-    left: 13px;
+  .search-box {
+    max-width: 100%;
   }
 
   .topbar {
