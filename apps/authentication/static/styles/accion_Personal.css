@@ -590,6 +590,12 @@ body {
   .topbar {
     gap: 16px;
   }
+
+  .page-title {
+    min-width: auto;
+    text-align: center;
+  }
+
   .search-box {
     max-width: 380px;
   } /* Ajusta el ancho máximo del buscador */
@@ -680,6 +686,11 @@ body {
 
   .logout i {
     font-size: 20px;
+  }
+
+  .page-title {
+    min-width: auto;
+    text-align: center;
   }
 
   /* ==========================================================================
