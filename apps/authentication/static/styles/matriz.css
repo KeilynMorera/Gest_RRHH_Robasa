@@ -1036,323 +1036,94 @@ select {
   }
 }
 
-/* ── TABLETS (Hasta 992px) ────────────────────────────────────────────── */
+/* ==========================================================================
+   SIDEBAR RESPONSIVE SOLO ÍCONOS
+   ========================================================================== */
+
+/* ── TABLETS Y PANTALLAS MEDIANAS ─────────────────────────────────────── */
 @media screen and (max-width: 992px) {
   .sidebar {
-    width: 220px;
-    min-width: 220px;
-    max-width: 220px;
-    padding: 18px 12px;
-  }
-
-  .main-content {
-    margin-left: 220px;
-    width: calc(100% - 220px);
-    padding: 18px;
-  }
-
-  .logo-img {
-    max-width: 170px;
-  }
-
-  .menu a {
-    font-size: 13px;
-    padding: 12px;
-    gap: 10px;
-  }
-
-  .topbar {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .search-box {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .topbar-actions {
-    width: 100%;
-    justify-content: flex-end;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr; /* Desarma la grilla del formulario a una única columna vertical */
-  }
-
-  .preview-levels {
-    flex-direction: column; /* Apila las etiquetas de métrica una debajo de otra */
-  }
-
-  /* PROTECCIÓN DE LA MATRIZ EN TABLET */
-  .preview-matrix {
-    overflow-x: auto; /* Si la pantalla se reduce de más, la grilla 9-Box adquiere scroll de protección */
-    padding: 20px;
-  }
-
-  .mini-ninebox {
-    width: 100%;
-    grid-template-columns: repeat(3, minmax(80px, 1fr));
-    gap: 10px;
-  }
-
-  .mini-box {
-    aspect-ratio: 1 / 1; /* Fuerza matemática: Mantener proporción simétrica perfecta cuadrada */
-    height: auto;
-    font-size: 18px;
-  }
-
-  .photo-upload {
-    flex-direction: column; /* Apila la foto de perfil arriba del control de input file */
+    width: 90px;
+    min-width: 90px;
+    max-width: 90px;
+    padding: 18px 10px;
     align-items: center;
-    text-align: center;
-  }
-
-  .photo-upload-controls {
-    width: 100%;
-  }
-}
-
-/* ── SMARTPHONES GRANDES (Hasta 768px) ─────────────────────────────────── */
-@media screen and (max-width: 768px) {
-  .sidebar {
-    width: 190px;
-    min-width: 190px;
-    max-width: 190px;
   }
 
   .main-content {
-    margin-left: 190px;
-    width: calc(100% - 190px);
-    padding: 15px;
+    margin-left: 90px;
+    width: calc(100% - 90px);
   }
 
+  /* Logo más compacto */
   .logo-img {
-    max-width: 140px;
-    padding: 10px;
+    max-width: 55px;
+    padding: 8px;
   }
 
-  .menu a {
-    font-size: 12px;
-    padding: 11px 10px;
-  }
-
-  .menu i {
-    width: 16px;
-  }
-
-  .page-title h1 {
-    font-size: 22px;
-  }
-
-  .page-title p {
-    font-size: 12px;
-  }
-
-  .search-box input {
-    padding: 12px 14px 12px 40px;
-    font-size: 13px;
-  }
-
-  .search-box i {
-    left: 13px;
-  }
-
-  .topbar-actions {
-    justify-content: space-between;
-  }
-
-  .user-info {
-    display: none; /* Remueve nombres del usuario para ahorrar espacio en barra superior */
-  }
-
-  .user-profile {
-    border-radius: 14px;
-    padding: 6px 8px;
-  }
-
-  .user-profile img {
-    width: 36px;
-    height: 36px;
-  }
-
-  .form-body,
-  .form-card-header {
-    padding: 16px;
-  }
-
-  .form-card-title {
-    font-size: 16px;
-  }
-
-  .form-card-subtitle {
-    font-size: 12px;
-  }
-
-  .field input,
-  .field select,
-  .field textarea {
-    font-size: 13px;
-    padding: 11px 12px;
-  }
-
-  .preview-card {
-    padding: 20px;
-  }
-
-  .preview-card h3 {
-    font-size: 22px;
-  }
-
-  .preview-badge {
-    width: 70px;
-    height: 70px;
-    font-size: 28px;
-  }
-
-  .mini-ninebox {
-    grid-template-columns: repeat(3, 1fr);
-    width: 100%;
-  }
-
-  .mini-box {
-    width: 100%;
-    min-width: 0;
-    font-size: 16px;
-  }
-
-  .btn {
-    width: 100%; /* Expande botones de acción para clics cómodos con el pulgar */
-    justify-content: center;
-  }
-
-  .form-footer {
-    flex-direction: column; /* Apila botones de guardar/cancelar uno arriba del otro */
-  }
-}
-
-/* ── SMARTPHONES PEQUEÑOS / PANTALLAS ULTRA COMPACTAS (Hasta 576px) ────── */
-@media screen and (max-width: 576px) {
-  .sidebar {
-    width: 170px;
-    min-width: 170px;
-    max-width: 170px;
-    padding: 14px 10px;
-  }
-
-  .main-content {
-    margin-left: 170px;
-    width: calc(100% - 170px);
-    padding: 12px;
-  }
-
-  .logo-img {
-    max-width: 120px;
-  }
-
+  /* Centrado del menú */
   .menu {
-    gap: 6px;
+    width: 100%;
+    align-items: center;
   }
 
   .menu a,
   .logout a {
-    font-size: 11px;
-    padding: 10px 8px;
-    border-radius: 10px;
-  }
-
-  .page-title h1 {
-    font-size: 20px;
-    margin-bottom: 2px;
-  }
-
-  .page-title p {
-    font-size: 11px;
-  }
-
-  .breadcrumb {
-    font-size: 11px;
-  }
-
-  .form-card {
-    border-radius: 12px;
-  }
-
-  .form-card-header-left {
-    gap: 10px;
-  }
-
-  .form-card-icon {
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
-  }
-
-  .form-card-title {
-    font-size: 14px;
-  }
-
-  .required-note {
-    font-size: 11px;
-  }
-
-  .form-section-title {
-    font-size: 12px;
-  }
-
-  .field label {
-    font-size: 12px;
-  }
-
-  .field input,
-  .field select,
-  .field textarea {
-    font-size: 12px;
-  }
-
-  .preview-card {
-    padding: 16px;
+    justify-content: center;
+    padding: 14px;
+    gap: 0;
+    width: 60px;
+    height: 60px;
     border-radius: 14px;
   }
 
-  .preview-card h3 {
+  /* Oculta el texto */
+  .menu a {
+    font-size: 0;
+  }
+
+  .logout a {
+    font-size: 0;
+  }
+
+  /* Mantiene visibles los iconos */
+  .menu a i,
+  .logout a i {
+    font-size: 20px;
+    width: auto;
+    margin: 0;
+  }
+}
+
+/* ── SMARTPHONES ───────────────────────────────────────────────────────── */
+@media screen and (max-width: 576px) {
+  .sidebar {
+    width: 75px;
+    min-width: 75px;
+    max-width: 75px;
+    padding: 14px 6px;
+  }
+
+  .main-content {
+    margin-left: 75px;
+    width: calc(100% - 75px);
+    padding: 12px;
+  }
+
+  .logo-img {
+    max-width: 45px;
+    padding: 6px;
+  }
+
+  .menu a,
+  .logout a {
+    width: 52px;
+    height: 52px;
+    padding: 12px;
+  }
+
+  .menu a i,
+  .logout a i {
     font-size: 18px;
-  }
-
-  .preview-card p {
-    font-size: 12px;
-  }
-
-  .preview-badge {
-    width: 60px;
-    height: 60px;
-    font-size: 24px;
-  }
-
-  .mini-level strong {
-    font-size: 18px;
-  }
-
-  .preview-matrix {
-    padding: 14px;
-  }
-
-  .mini-ninebox {
-    gap: 6px;
-  }
-
-  .mini-box {
-    font-size: 13px;
-    border-radius: 10px;
-  }
-
-  .preview-matrix::before,
-  .preview-matrix::after {
-    font-size: 10px; /* Reduce tipografía de etiquetas de los ejes X/Y */
-  }
-
-  .footer {
-    font-size: 11px;
   }
 }

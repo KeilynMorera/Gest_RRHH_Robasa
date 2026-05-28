@@ -1003,6 +1003,10 @@ button {
     gap: 14px;
     align-items: stretch;
   }
+  .page-title {
+    min-width: auto;
+    text-align: center;
+  }
   .page-title h1 {
     font-size: 26px;
   }
@@ -1084,6 +1088,10 @@ button {
 
   .topbar {
     gap: 12px;
+  }
+  .page-title {
+    min-width: auto;
+    text-align: center;
   }
   .page-title h1 {
     font-size: 22px;
@@ -1183,7 +1191,10 @@ button {
   .logout a i {
     font-size: 18px;
   }
-
+  .page-title {
+    min-width: auto;
+    text-align: center;
+  }
   .page-title h1 {
     font-size: 20px;
     margin-bottom: 2px;
@@ -1271,6 +1282,10 @@ button {
   }
   .logo-img {
     max-width: 44px;
+  }
+  .page-title {
+    min-width: auto;
+    text-align: center;
   }
   .page-title h1 {
     font-size: 18px;

@@ -1,23 +1,47 @@
-<!-- Cargar la librería al inicio del template, para usar archivos estaticos -->
+<!-- =========================================================
+     CARGA DE LIBRERÍAS ESTÁTICAS DE DJANGO
+     Permite utilizar archivos CSS, JS, imágenes y otros recursos
+========================================================= -->
 {% load static %}
 
 <!doctype html>
 <html lang="es">
   <head>
+    <!-- =========================================================
+         CONFIGURACIÓN GENERAL DEL DOCUMENTO
+    ========================================================= -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Título de la página mostrado en la pestaña del navegador -->
     <title>Configuración Matriz 9 Box - Gestión de Talento Humano</title>
 
+    <!-- =========================================================
+         HOJA DE ESTILOS PRINCIPAL
+    ========================================================= -->
     <link rel="stylesheet" href="{% static 'styles/matriz.css' %}" />
 
+    <!-- =========================================================
+         LIBRERÍA DE ÍCONOS FONT AWESOME
+    ========================================================= -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
   </head>
+
   <body>
+    <!-- =========================================================
+         CONTENEDOR GENERAL DEL DASHBOARD
+    ========================================================= -->
     <div class="dashboard-container">
+      <!-- =========================================================
+           SIDEBAR / MENÚ LATERAL
+      ========================================================= -->
       <aside class="sidebar">
+        <!-- =========================================================
+             LOGO DE LA EMPRESA
+        ========================================================= -->
         <div class="logo-container">
           <img
             src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
@@ -27,7 +51,7 @@
         </div>
 
         <!-- ======================================================
-             MENÚ DE NAVEGACIÓN
+             MENÚ DE NAVEGACIÓN PRINCIPAL
         ====================================================== -->
         <nav class="menu">
           <!-- Opción Inicio -->
@@ -127,84 +151,143 @@
           </a>
         </nav>
 
+        <!-- =========================================================
+             BOTÓN DE CERRAR SESIÓN
+        ========================================================= -->
         <div class="logout">
           <a href="login.html">
-            <i class="fas fa-right-from-bracket"></i> Cerrar sesión
+            <i class="fas fa-right-from-bracket"></i>
+            Cerrar sesión
           </a>
         </div>
       </aside>
 
+      <!-- =========================================================
+           CONTENIDO PRINCIPAL DEL SISTEMA
+      ========================================================= -->
       <main class="main-content">
+        <!-- =========================================================
+             BARRA SUPERIOR (TOPBAR)
+        ========================================================= -->
         <header class="topbar">
-          <button class="menu-toggle">
-            <i class="fas fa-bars"></i>
-          </button>
-
+          <!-- Título y descripción de la página -->
           <div class="page-title">
             <h1>Configuración Matriz 9 Box</h1>
             <p>Definición de parámetros, perfiles y estrategias de talento</p>
           </div>
 
+          <!-- =====================================================
+               BUSCADOR GENERAL
+          ===================================================== -->
           <div class="search-box">
             <i class="fas fa-search"></i>
+
             <input
               type="text"
               placeholder="Buscar empleado, módulo, reporte..."
             />
           </div>
 
+          <!-- =====================================================
+               ACCIONES SUPERIORES (NOTIFICACIONES Y PERFIL)
+          ===================================================== -->
           <div class="topbar-actions">
+            <!-- Notificaciones -->
             <div class="notification">
               <i class="fas fa-bell"></i>
               <span class="badge">3</span>
             </div>
 
+            <!-- Perfil del usuario -->
             <div class="user-profile">
               <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
+
               <div class="user-info">
                 <strong>María Gómez</strong>
                 <span>Recursos Humanos</span>
               </div>
-              <i class="fas fa-chevron-down"></i>
             </div>
           </div>
         </header>
 
+        <!-- =========================================================
+             BREADCRUMB / MIGAS DE PAN
+        ========================================================= -->
         <div class="breadcrumb">
-          <a href="{% url 'inicio' %}"> <i class="fas fa-house"></i> Inicio </a>
+          <!-- Ruta Inicio -->
+          <a href="{% url 'inicio' %}">
+            <i class="fas fa-house"></i>
+            Inicio
+          </a>
+
+          <!-- Separador -->
           <i class="fas fa-chevron-right sep"></i>
+
+          <!-- Ruta Evaluaciones -->
           <a href="{% url 'evaluaciones' %}"> Evaluaciones </a>
+
+          <!-- Separador -->
           <i class="fas fa-chevron-right sep"></i>
+
+          <!-- Página actual -->
           <span class="current"> Configuración Matriz 9 Box </span>
         </div>
 
+        <!-- =========================================================
+             TARJETA PRINCIPAL DEL FORMULARIO
+        ========================================================= -->
         <section class="form-card">
+          <!-- =====================================================
+               ENCABEZADO DE LA TARJETA
+          ===================================================== -->
           <div class="form-card-header">
+            <!-- Lado izquierdo del encabezado -->
             <div class="form-card-header-left">
+              <!-- Ícono decorativo -->
               <div class="form-card-icon">
                 <i class="fas fa-border-all"></i>
               </div>
+
+              <!-- Título y subtítulo -->
               <div>
                 <h2 class="form-card-title">
                   Configuración de Cuadrantes 9 Box
                 </h2>
+
                 <p class="form-card-subtitle">
                   Registro y administración de perfiles, niveles y planes de
                   acción de la matriz de talento.
                 </p>
               </div>
             </div>
-            <p class="required-note"><span>*</span> Campos obligatorios</p>
+
+            <!-- Nota de campos obligatorios -->
+            <p class="required-note">
+              <span>*</span>
+              Campos obligatorios
+            </p>
           </div>
 
+          <!-- =====================================================
+               CUERPO DEL FORMULARIO
+          ===================================================== -->
           <div class="form-body">
+            <!-- =====================================================
+                 FILTROS SUPERIORES
+            ===================================================== -->
             <div class="filter-bar">
+              <!-- Filtro de colaborador -->
               <div class="field filter-field">
                 <label>
-                  <i class="fas fa-user field-icon"></i> Colaborador
+                  <i class="fas fa-user field-icon"></i>
+                  Colaborador
                 </label>
+
                 <select name="colaborador_filtro">
+                  <!-- Valor por defecto -->
                   <option selected>Carlos Méndez</option>
+
+                  <!-- Lista dinámica de colaboradores -->
                   {% for colaborador in colaboradores %}
                   <option value="{{ colaborador.id }}">
                     {{ colaborador.nombre }}
@@ -213,39 +296,58 @@
                 </select>
               </div>
 
+              <!-- Filtro de período -->
               <div class="field filter-field">
                 <label>
-                  <i class="fas fa-calendar field-icon"></i> Periodo
+                  <i class="fas fa-calendar field-icon"></i>
+                  Periodo
                 </label>
+
                 <select name="periodo_filtro">
                   <option selected>Año 2026</option>
                   <option>Año 2025</option>
                 </select>
               </div>
 
+              <!-- Botón consultar -->
               <button type="button" class="btn btn-primary">
-                <i class="fas fa-magnifying-glass-chart"></i> Consultar
+                <i class="fas fa-magnifying-glass-chart"></i>
+                Consultar
               </button>
             </div>
 
+            <!-- =====================================================
+                 FORMULARIO PRINCIPAL
+            ===================================================== -->
             <form action="#" method="POST">
+              <!-- Token de seguridad CSRF de Django -->
               {% csrf_token %}
+
+              <!-- =================================================
+                   SECCIÓN: INFORMACIÓN DEL CUADRANTE
+              ================================================= -->
               <div class="form-section">
                 <h4 class="form-section-title">Información del Cuadrante</h4>
 
                 <div class="form-grid">
+                  <!-- Campo Código del Cuadrante -->
                   <div class="field">
                     <label for="cuadrante">
                       <i class="fas fa-table-cells-large field-icon"></i>
-                      Código del Cuadrante <span class="req">*</span>
+
+                      Código del Cuadrante
+                      <span class="req">*</span>
                     </label>
+
                     <select id="cuadrante" name="cuadrante_codigo" required>
                       <option disabled selected>
                         Seleccione un cuadrante...
                       </option>
+
                       <option value="B1">
                         B1 (Bajo Desempeño / Bajo Potencial)
                       </option>
+
                       <option value="B2">B2</option>
                       <option value="B3">B3</option>
                       <option value="M1">M1</option>
@@ -253,17 +355,22 @@
                       <option value="M3">M3</option>
                       <option value="A1">A1</option>
                       <option value="A2">A2</option>
+
                       <option value="A3">
                         A3 (Alto Desempeño / Alto Potencial)
                       </option>
                     </select>
                   </div>
 
+                  <!-- Campo Tipo Profesional -->
                   <div class="field">
                     <label for="tipo_profesional">
                       <i class="fas fa-user-tie field-icon"></i>
-                      Tipo Profesional <span class="req">*</span>
+
+                      Tipo Profesional
+                      <span class="req">*</span>
                     </label>
+
                     <input
                       type="text"
                       id="tipo_profesional"
@@ -273,34 +380,44 @@
                     />
                   </div>
 
+                  <!-- Campo Nivel de Desempeño -->
                   <div class="field">
                     <label for="nivel_desempeno">
                       <i class="fas fa-chart-column field-icon"></i>
-                      Nivel de Desempeño <span class="req">*</span>
+
+                      Nivel de Desempeño
+                      <span class="req">*</span>
                     </label>
+
                     <select
                       id="nivel_desempeno"
                       name="nivel_desempeno"
                       required
                     >
                       <option disabled selected>Seleccione nivel...</option>
+
                       <option value="1">1 - Bajo</option>
                       <option value="2">2 - Medio</option>
                       <option value="3">3 - Alto</option>
                     </select>
                   </div>
 
+                  <!-- Campo Nivel Potencial -->
                   <div class="field">
                     <label for="nivel_potencial">
                       <i class="fas fa-rocket field-icon"></i>
-                      Nivel Potencial <span class="req">*</span>
+
+                      Nivel Potencial
+                      <span class="req">*</span>
                     </label>
+
                     <select
                       id="nivel_potencial"
                       name="nivel_potencial"
                       required
                     >
                       <option disabled selected>Seleccione potencial...</option>
+
                       <option value="A">A - Alto</option>
                       <option value="B">B - Medio</option>
                       <option value="C">C - Bajo</option>
@@ -309,14 +426,22 @@
                 </div>
               </div>
 
+              <!-- =================================================
+                   SECCIÓN: PERFIL DEL CUADRANTE
+              ================================================= -->
               <div class="form-section">
                 <h4 class="form-section-title">Perfil del Cuadrante</h4>
+
                 <div class="form-grid">
+                  <!-- Descripción del perfil -->
                   <div class="field field-full">
                     <label for="perfil">
                       <i class="fas fa-id-badge field-icon"></i>
-                      Descripción del Perfil <span class="req">*</span>
+
+                      Descripción del Perfil
+                      <span class="req">*</span>
                     </label>
+
                     <textarea
                       id="perfil"
                       name="perfil_descripcion"
@@ -328,14 +453,22 @@
                 </div>
               </div>
 
+              <!-- =================================================
+                   SECCIÓN: PLAN DE ACCIÓN
+              ================================================= -->
               <div class="form-section">
                 <h4 class="form-section-title">Plan de Acción</h4>
+
                 <div class="form-grid">
+                  <!-- Estrategias recomendadas -->
                   <div class="field field-full">
                     <label for="plan_accion">
                       <i class="fas fa-lightbulb field-icon"></i>
-                      Recomendaciones Estratégicas <span class="req">*</span>
+
+                      Recomendaciones Estratégicas
+                      <span class="req">*</span>
                     </label>
+
                     <textarea
                       id="plan_accion"
                       name="plan_accion_estrategia"
@@ -347,23 +480,36 @@
                 </div>
               </div>
 
+              <!-- =================================================
+                   SECCIÓN: VISTA PREVIA DEL CUADRANTE
+              ================================================= -->
               <div class="form-section">
                 <h4 class="form-section-title">Vista Previa del Cuadrante</h4>
 
                 <div class="preview-layout">
+                  <!-- Tarjeta de vista previa -->
                   <div class="preview-card">
+                    <!-- Badge del cuadrante -->
                     <div class="preview-badge">A3</div>
+
+                    <!-- Nombre del perfil -->
                     <h3>Top Talent</h3>
+
+                    <!-- Descripción -->
                     <p>
                       Colaborador altamente eficaz, comprometido y con potencial
                       estratégico de crecimiento dentro de la organización.
                     </p>
 
+                    <!-- Niveles -->
                     <div class="preview-levels">
+                      <!-- Nivel desempeño -->
                       <div class="mini-level">
                         <span>Desempeño</span>
                         <strong>3</strong>
                       </div>
+
+                      <!-- Nivel potencial -->
                       <div class="mini-level">
                         <span>Potencial</span>
                         <strong>A</strong>
@@ -371,6 +517,7 @@
                     </div>
                   </div>
 
+                  <!-- Mini matriz visual -->
                   <div class="preview-matrix">
                     <div class="mini-ninebox">
                       <div class="mini-box">B1</div>
@@ -378,7 +525,10 @@
                       <div class="mini-box">B3</div>
 
                       <div class="mini-box">M1</div>
+
+                      <!-- Cuadrante activo -->
                       <div class="mini-box active">A3</div>
+
                       <div class="mini-box">M3</div>
 
                       <div class="mini-box">A1</div>
@@ -389,31 +539,44 @@
                 </div>
               </div>
 
+              <!-- =================================================
+                   FOOTER DEL FORMULARIO
+                   BOTONES DE ACCIÓN
+              ================================================= -->
               <div class="form-footer">
+                <!-- Botón limpiar -->
                 <button type="reset" class="btn btn-ghost">
-                  <i class="fas fa-rotate-left"></i> Limpiar
+                  <i class="fas fa-rotate-left"></i>
+                  Limpiar
                 </button>
 
+                <!-- Botón guardar borrador -->
                 <button
                   type="submit"
                   name="action_draft"
                   class="btn btn-secondary"
                 >
-                  <i class="fas fa-floppy-disk"></i> Guardar borrador
+                  <i class="fas fa-floppy-disk"></i>
+                  Guardar borrador
                 </button>
 
+                <!-- Botón guardar -->
                 <button
                   type="submit"
                   name="action_save"
                   class="btn btn-primary"
                 >
-                  <i class="fas fa-check"></i> Guardar cuadrante
+                  <i class="fas fa-check"></i>
+                  Guardar cuadrante
                 </button>
               </div>
             </form>
           </div>
         </section>
 
+        <!-- =========================================================
+             FOOTER GENERAL DEL SISTEMA
+        ========================================================= -->
         <footer class="footer">
           © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
         </footer>

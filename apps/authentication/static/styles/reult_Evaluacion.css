@@ -633,15 +633,6 @@ body {
   flex-wrap: wrap;
 }
 
-/* Botón para pantallas móviles (Menú hamburguesa) */
-.menu-toggle {
-  border: none;
-  background: none;
-  font-size: 26px;
-  cursor: pointer;
-  color: #293477;
-}
-
 /* Zona de títulos de la página actual */
 .page-title {
   min-width: 260px;
@@ -1018,72 +1009,6 @@ body {
   box-shadow: 0 6px 18px rgba(232, 96, 10, 0.35);
 }
 
-/* =====================================================
-   RESPONSIVE (Estilos intermedios heredados)
-===================================================== */
-@media (max-width: 991px) {
-  .form-card-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .form-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  } /* Cambia a una sola columna */
-  .field-full {
-    grid-column: auto;
-  }
-  .form-body,
-  .form-card-header {
-    padding: 24px;
-  }
-}
-
-@media (max-width: 767px) {
-  .breadcrumb {
-    font-size: 12px;
-  }
-  .form-card-title {
-    font-size: 20px;
-  }
-  .form-card-subtitle {
-    font-size: 13px;
-  }
-  .form-body,
-  .form-card-header {
-    padding: 20px;
-  }
-  .form-footer {
-    flex-direction: column;
-    align-items: stretch;
-  } /* Botones verticales en móviles */
-  .form-footer .btn {
-    width: 100%;
-    justify-content: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .form-card-icon {
-    width: 44px;
-    height: 44px;
-    font-size: 18px;
-  }
-  .form-card-title {
-    font-size: 18px;
-  }
-  .field input,
-  .field select,
-  .field textarea {
-    font-size: 13px;
-    padding: 11px 12px;
-  }
-  .btn {
-    font-size: 13px;
-    padding: 10px 16px;
-  }
-}
-
 /* =========================
    FOOTER
    Pie de página de la aplicación
@@ -1213,7 +1138,9 @@ body {
 
 /* ==========================================================================
    RESPONSIVE DESIGN COMPLETO
-   Media Queries organizados por cortes estándar. Mantiene fijo el Menú Lateral.
+   Sidebar responsivo:
+   - Siempre fijo a la izquierda
+   - En pantallas medianas y pequeñas solo muestra íconos
 ========================================================================== */
 
 /* ── DESKTOP MEDIANO (Pantallas < 1400px) ───────────────── */
@@ -1221,15 +1148,19 @@ body {
   .main-content {
     padding: 24px;
   }
+
   .results-layout {
     gap: 22px;
   }
+
   .stats-grid {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
+
   .employee-mini-card {
     min-width: 220px;
   }
+
   .results-table {
     min-width: 760px;
   }
@@ -1237,43 +1168,89 @@ body {
 
 /* ── LAPTOPS / PORTÁTILES (Pantallas < 1200px) ──────────── */
 @media screen and (max-width: 1200px) {
-  /* Reducción proporcional del ancho del menú lateral */
+  /* Sidebar compacto SOLO con íconos */
   .sidebar {
-    width: 240px;
-    min-width: 240px;
-    max-width: 240px;
-    padding: 24px 16px;
+    width: 90px;
+    min-width: 90px;
+    max-width: 90px;
+    padding: 20px 10px;
+    align-items: center;
   }
-  /* Recalcula el ancho restante para el panel derecho */
+
+  /* Ajuste del contenido principal */
   .main-content {
-    margin-left: 240px;
-    width: calc(100% - 240px);
+    margin-left: 90px;
+    width: calc(100% - 90px);
     padding: 20px;
   }
+
+  /* Logo más pequeño */
   .logo-img {
-    max-width: 200px;
+    max-width: 55px;
+    padding: 8px;
   }
+
+  /* Oculta texto del logo */
+  .logo span {
+    display: none;
+  }
+
+  /* Menú centrado */
+  .menu {
+    width: 100%;
+    align-items: center;
+  }
+
+  /* Links solo íconos */
+  .menu a,
+  .logout a {
+    justify-content: center;
+    padding: 14px;
+    gap: 0;
+  }
+
+  /* Oculta texto del menú */
   .menu a {
-    padding: 12px 14px;
-    font-size: 13px;
+    font-size: 0;
   }
+
+  .logout a {
+    font-size: 0;
+  }
+
+  /* Íconos visibles */
+  .menu i,
+  .logout i {
+    font-size: 18px;
+    width: auto;
+    margin: 0;
+  }
+
   .topbar {
     gap: 16px;
   }
+
+  .page-title {
+    min-width: auto;
+    text-align: center;
+  }
+
   .search-box {
     max-width: 100%;
   }
 
-  /* El diseño de dos columnas de resultados se rompe a una sola columna vertical */
   .results-layout {
     grid-template-columns: 1fr;
   }
+
   .stats-grid {
     grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   }
+
   .filter-bar {
     gap: 16px;
   }
+
   .results-table {
     min-width: 720px;
   }
@@ -1281,50 +1258,66 @@ body {
 
 /* ── TABLETS (Pantallas < 992px) ────────────────────────── */
 @media screen and (max-width: 992px) {
+  /* Mantiene sidebar fijo a la izquierda */
   .sidebar {
-    width: 210px;
-    min-width: 210px;
-    max-width: 210px;
-    padding: 18px 12px;
-  }
-  .main-content {
-    margin-left: 210px;
-    width: calc(100% - 210px);
-    padding: 18px;
-  }
-  .logo-img {
-    max-width: 160px;
-    padding: 12px;
-  }
-  .menu {
-    gap: 6px;
-  }
-  .menu a {
-    font-size: 12px;
-    padding: 11px 12px;
-    gap: 10px;
-  }
-  .menu i {
-    width: 16px;
+    width: 80px;
+    min-width: 80px;
+    max-width: 80px;
+    padding: 16px 8px;
+    align-items: center;
   }
 
-  /* La cabecera superior apila sus elementos verticalmente */
+  .main-content {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+    padding: 18px;
+  }
+
+  .logo-img {
+    max-width: 50px;
+    padding: 6px;
+  }
+
+  .menu {
+    gap: 8px;
+    align-items: center;
+  }
+
+  .menu a,
+  .logout a {
+    justify-content: center;
+    padding: 12px;
+    gap: 0;
+    font-size: 0;
+  }
+
+  .menu i,
+  .logout i {
+    font-size: 18px;
+    width: auto;
+  }
+
   .topbar {
     display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: 14px;
   }
+
   .page-title {
-    min-width: 100%;
+    min-width: auto;
+    text-align: center;
   }
+
   .page-title h1 {
     font-size: 28px;
   }
+
   .search-box {
     width: 100%;
     max-width: 100%;
   }
+
   .topbar-actions {
     width: 100%;
     justify-content: flex-end;
@@ -1333,31 +1326,37 @@ body {
   .form-grid {
     grid-template-columns: 1fr;
   }
+
   .form-card-header {
     flex-direction: column;
     align-items: flex-start;
   }
+
   .form-body {
     padding: 22px;
   }
+
   .photo-upload {
     flex-direction: column;
     align-items: flex-start;
   }
+
   .stats-grid {
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   }
+
   .stat-card h2 {
     font-size: 30px;
   }
+
   .ninebox-grid {
     gap: 10px;
   }
 
-  /* Permite scroll horizontal en las tablas para que no rompan el layout general */
   .table-container {
     overflow-x: auto;
   }
+
   .results-table {
     min-width: 680px;
   }
@@ -1365,54 +1364,65 @@ body {
 
 /* ── CELULARES GRANDES / SMARTPHONES (Pantallas < 768px) ── */
 @media screen and (max-width: 768px) {
+  /* Sidebar delgado solo íconos */
   .sidebar {
-    width: 185px;
-    min-width: 185px;
-    max-width: 185px;
-    padding: 16px 10px;
+    width: 72px;
+    min-width: 72px;
+    max-width: 72px;
+    padding: 14px 6px;
+    align-items: center;
   }
+
   .main-content {
-    margin-left: 185px;
-    width: calc(100% - 185px);
+    margin-left: 72px;
+    width: calc(100% - 72px);
     padding: 14px;
   }
+
   .logo-img {
-    max-width: 130px;
-    padding: 10px;
+    max-width: 42px;
+    padding: 4px;
   }
-  .logo span {
-    font-size: 12px;
-    letter-spacing: 3px;
-  }
+
   .menu a,
   .logout a {
-    font-size: 11px;
-    padding: 10px;
-    gap: 8px;
+    justify-content: center;
+    padding: 11px;
+    font-size: 0;
+    gap: 0;
+  }
+
+  .menu i,
+  .logout i {
+    font-size: 17px;
   }
 
   .page-title h1 {
     font-size: 22px;
   }
+
   .page-title p {
     font-size: 12px;
   }
+
   .search-box input {
     padding: 12px 14px 12px 40px;
     font-size: 13px;
   }
+
   .search-box i {
     left: 14px;
   }
 
-  /* Esconde los textos informativos del usuario guardando solo la foto de perfil */
   .user-info {
     display: none;
   }
+
   .user-profile {
     padding: 6px 8px;
     border-radius: 14px;
   }
+
   .user-profile img {
     width: 36px;
     height: 36px;
@@ -1422,61 +1432,78 @@ body {
     padding: 16px;
     gap: 14px;
   }
+
   .filter-field {
     min-width: 100%;
   }
+
   .employee-mini-card {
     width: 100%;
     min-width: unset;
   }
+
   .form-card {
     border-radius: 12px;
   }
+
   .form-card-header,
   .form-body {
     padding: 18px;
   }
+
   .form-card-title {
     font-size: 18px;
   }
+
   .form-card-subtitle {
     font-size: 12px;
   }
+
   .field input,
   .field select,
   .field textarea {
     font-size: 13px;
     padding: 11px 12px;
   }
+
   .form-footer {
     flex-direction: column;
   }
+
   .btn {
     width: 100%;
     justify-content: center;
   }
+
   .stats-grid {
     grid-template-columns: 1fr;
   }
+
   .stat-card {
     padding: 20px;
   }
+
   .stat-card h2 {
     font-size: 28px;
   }
+
   .result-panel {
     padding: 18px;
   }
+
   .panel-header h3 {
     font-size: 15px;
   }
+
   .timeline-content {
     padding: 14px;
   }
+
   .timeline-top {
     flex-direction: column;
     align-items: flex-start;
   }
+
   .results-table {
     min-width: 620px;
   }
@@ -1484,85 +1511,105 @@ body {
 
 /* ── CELULARES PEQUEÑOS (Pantallas < 576px) ──────────────── */
 @media screen and (max-width: 576px) {
-  /* El sidebar se contrae al máximo legible */
   .sidebar {
-    width: 165px;
-    min-width: 165px;
-    max-width: 165px;
-    padding: 12px 8px;
-  }
-  .main-content {
-    margin-left: 165px;
-    width: calc(100% - 165px);
-    padding: 12px;
-  }
-  .logo-img {
-    max-width: 110px;
-  }
-  .menu {
-    gap: 5px;
-  }
-  .menu a {
-    font-size: 10px;
-    padding: 9px 8px;
-    border-radius: 10px;
-  }
-  .logout a {
-    font-size: 10px;
-    padding: 9px 8px;
+    width: 65px;
+    min-width: 65px;
+    max-width: 65px;
+    padding: 12px 5px;
   }
 
-  /* Escalamiento hacia abajo de tipografías y paddings para pantallas compactas */
+  .main-content {
+    margin-left: 65px;
+    width: calc(100% - 65px);
+    padding: 12px;
+  }
+
+  .logo-img {
+    max-width: 36px;
+    padding: 3px;
+  }
+
+  .menu {
+    gap: 6px;
+  }
+
+  .menu a,
+  .logout a {
+    padding: 10px;
+    font-size: 0;
+    justify-content: center;
+  }
+
+  .menu i,
+  .logout i {
+    font-size: 16px;
+  }
+
   .page-title h1 {
     font-size: 18px;
   }
+
   .page-title p,
   .breadcrumb {
     font-size: 11px;
   }
+
   .form-card-title {
     font-size: 16px;
   }
+
   .form-section-title {
     font-size: 11px;
   }
+
   .field label {
     font-size: 12px;
   }
+
   .field input,
   .field select,
   .field textarea {
     font-size: 12px;
   }
+
   .btn {
     font-size: 12px;
     padding: 10px 14px;
   }
+
   .stat-card {
     padding: 18px;
   }
+
   .stat-card h2 {
     font-size: 24px;
   }
+
   .stat-top span,
   .stat-card p {
     font-size: 12px;
   }
+
   .panel-header {
     gap: 10px;
   }
+
   .panel-header h3 {
     font-size: 14px;
   }
+
   .comment-box {
     padding: 16px;
   }
+
   .comment-box p {
     font-size: 13px;
   }
+
   .results-table {
     min-width: 580px;
   }
+
   .footer {
     font-size: 11px;
   }
