@@ -1082,6 +1082,11 @@ select {
     font-size: 0;
   }
 
+  /* Oculta texto del usuario */
+  .user-info {
+    display: none;
+  }
+
   .logout a {
     font-size: 0;
   }
@@ -1125,5 +1130,10 @@ select {
   .menu a i,
   .logout a i {
     font-size: 18px;
+  }
+
+  /* Oculta texto del usuario */
+  .user-info {
+    display: none;
   }
 }
