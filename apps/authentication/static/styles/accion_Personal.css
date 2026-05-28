@@ -212,15 +212,6 @@ body {
   flex-wrap: wrap; /* Permite colapsar elementos en filas si el ancho disminuye */
 }
 
-/* Botón alternador del menú (Generalmente un icono de hamburguesa de 3 líneas) */
-.menu-toggle {
-  border: none;
-  background: none;
-  font-size: 26px;
-  cursor: pointer;
-  color: #293477;
-}
-
 /* Contenedor del título de la página actual */
 .page-title {
   min-width: 260px;
@@ -351,6 +342,10 @@ body {
 .breadcrumb a {
   text-decoration: none;
   color: #6b7499;
+}
+
+.breadcrumb a:hover {
+  color: #e8600a;
 }
 
 /* Estilo para marcar visualmente la página exacta donde está el usuario */
@@ -603,152 +598,211 @@ body {
   } /* Permite que la tabla reduzca su scroll base */
 }
 
-/* LAPTOPS / DESKTOPS MEDIANAS (Hasta 1200px) */
-@media screen and (max-width: 1200px) {
-  /* Contracción del Sidebar a 250px de ancho */
-  .sidebar {
-    width: 250px;
-    min-width: 250px;
-    max-width: 250px;
-  }
+/* ==========================================================================  
+   RESPONSIVE MEJORADO - SIDEBAR SOLO CON ÍCONOS EN TABLETS Y MÓVILES
+   ========================================================================== */
 
-  /* El contenido se desplaza menos a la izquierda para cuadrar con el nuevo ancho del Sidebar */
-  .main-content {
-    margin-left: 250px;
-    width: calc(100% - 250px);
-    padding: 20px;
-  }
-
-  /* Re-estructuración de la barra superior */
-  .topbar {
-    align-items: flex-start;
-    gap: 18px;
-  }
-  .page-title {
-    width: 100%;
-  } /* El título toma toda la línea superior */
-  .search-box {
-    flex: 1 1 100%;
-    max-width: 100%;
-  } /* El buscador baja a una segunda línea completa */
-  .topbar-actions {
-    width: 100%;
-    justify-content: flex-end;
-  } /* Las acciones van a la derecha de esa línea */
-
-  /* Los sistemas de celdas disminuyen su anchura mínima aceptable para caber holgadamente */
-  .form-grid {
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  }
-  .summary-grid {
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  }
-}
-
-/* TABLETS / PANTALLAS VERTICALES (Hasta 992px) */
+/* ==========================================================================  
+   TABLETS Y PANTALLAS MEDIANAS (Hasta 992px)
+   ========================================================================== */
 @media screen and (max-width: 992px) {
-  /* Contracción del Sidebar a 220px de ancho */
+  /* ==========================================================================
+     SIDEBAR COMPACTO
+     ==========================================================================
+     - Mantiene el menú SIEMPRE FIJO A LA IZQUIERDA
+     - Reduce el ancho
+     - Solo muestra íconos
+  ========================================================================== */
   .sidebar {
-    width: 220px;
-    min-width: 220px;
-    max-width: 220px;
-    padding: 18px 12px;
+    width: 90px;
+    min-width: 90px;
+    max-width: 90px;
+
+    padding: 18px 10px;
+
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
   }
 
-  /* Ajuste matemático de la zona derecha */
+  /* ==========================================================================
+     CONTENIDO PRINCIPAL
+     ==========================================================================
+     - Se mueve automáticamente según el nuevo ancho del sidebar
+  ========================================================================== */
   .main-content {
-    margin-left: 220px;
-    width: calc(100% - 220px);
+    margin-left: 90px;
+    width: calc(100% - 90px);
     padding: 18px;
   }
 
+  /* ==========================================================================
+     LOGO
+     ==========================================================================
+     - Reduce tamaño del logo
+  ========================================================================== */
   .logo-img {
-    max-width: 170px;
-  } /* Reduce el tamaño del logo */
+    max-width: 55px;
+    padding: 6px;
+  }
+
+  /* ==========================================================================
+     MENÚ
+     ==========================================================================
+     - Centra los íconos
+     - Oculta el texto
+  ========================================================================== */
   .menu a {
-    font-size: 13px;
-    padding: 12px;
-    gap: 10px;
-  } /* Reduce tamaño de botones del menú */
-
-  .page-title h1 {
-    width: 100%;
-    min-width: 100%;
-  }
-  .page-title p {
-    font-size: 13px;
+    justify-content: center;
+    padding: 14px 10px;
+    gap: 0;
+    font-size: 0; /* Oculta el texto */
   }
 
-  /* La Topbar pasa a ser un listado vertical de elementos mediante CSS Grid */
+  /* ÍCONOS */
+  .menu i {
+    width: auto;
+    font-size: 20px;
+  }
+
+  /* ==========================================================================
+     LOGOUT
+     ==========================================================================
+     - Igual comportamiento que el menú
+  ========================================================================== */
+  .logout a {
+    justify-content: center;
+    gap: 0;
+    font-size: 0;
+    padding: 14px 10px;
+  }
+
+  .logout i {
+    font-size: 20px;
+  }
+
+  /* ==========================================================================
+     TOPBAR
+  ========================================================================== */
   .topbar {
     display: grid;
     grid-template-columns: 1fr;
     gap: 12px;
-    flex-direction: column;
     align-items: stretch;
   }
+
   .search-box {
     width: 100%;
     max-width: 100%;
-    min-width: 100%;
   }
+
   .topbar-actions {
     width: 100%;
     justify-content: flex-end;
   }
 
-  .user-profile {
-    padding: 7px 10px;
+  /* ==========================================================================
+     FORMULARIOS
+  ========================================================================== */
+  .form-grid,
+  .summary-grid {
+    grid-template-columns: 1fr;
   }
 
-  /* El encabezado de la tarjeta colapsa en formato de lista vertical */
   .form-card-header {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  /* Las rejillas se rompen por completo, forzando a que todos los campos midan el 100% (1 sola columna) */
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-  .summary-grid {
-    grid-template-columns: 1fr;
-  }
   .results-table {
     min-width: 700px;
   }
 }
 
-/* CELULARES GRANDES / DISPOSITIVOS MÓVILES (Hasta 768px) */
+/* ==========================================================================  
+   CELULARES Y PANTALLAS PEQUEÑAS (Hasta 768px)
+   ========================================================================== */
 @media screen and (max-width: 768px) {
-  /* El sidebar se encoje al máximo soportado en texto legible (190px) */
+  /* ==========================================================================
+     SIDEBAR MÁS COMPACTO
+  ========================================================================== */
   .sidebar {
-    width: 190px;
-    min-width: 190px;
-    max-width: 190px;
+    width: 75px;
+    min-width: 75px;
+    max-width: 75px;
+
+    padding: 14px 8px;
+
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
   }
 
+  /* ==========================================================================
+     MAIN CONTENT
+  ========================================================================== */
   .main-content {
-    margin-left: 190px;
-    width: calc(100% - 190px);
+    margin-left: 75px;
+    width: calc(100% - 75px);
     padding: 15px;
   }
 
+  /* ==========================================================================
+     LOGO
+  ========================================================================== */
   .logo-img {
-    max-width: 140px;
-    padding: 10px;
-  }
-  .menu a {
-    font-size: 12px;
-    padding: 11px 10px;
-  }
-  .menu i {
-    width: 16px;
+    max-width: 45px;
+    padding: 4px;
   }
 
+  /* ==========================================================================
+     MENÚ
+  ========================================================================== */
+  .menu {
+    gap: 6px;
+  }
+
+  .menu a {
+    justify-content: center;
+    align-items: center;
+
+    padding: 12px 8px;
+
+    font-size: 0;
+    gap: 0;
+
+    border-radius: 10px;
+  }
+
+  .menu i {
+    font-size: 18px;
+  }
+
+  /* ==========================================================================
+     LOGOUT
+  ========================================================================== */
+  .logout a {
+    justify-content: center;
+
+    padding: 12px 8px;
+
+    font-size: 0;
+    gap: 0;
+  }
+
+  .logout i {
+    font-size: 18px;
+  }
+
+  /* ==========================================================================
+     TOPBAR
+  ========================================================================== */
   .page-title h1 {
     font-size: 22px;
   }
+
   .page-title p {
     font-size: 12px;
   }
@@ -757,152 +811,74 @@ body {
     padding: 12px 14px 12px 40px;
     font-size: 13px;
   }
-  .search-box i {
-    left: 13px;
-  }
-
-  .topbar {
-    gap: 10px;
-  }
-  /* Distribuye los elementos extremos de la barra de acciones */
-  .topbar-actions {
-    justify-content: space-between;
-  }
 
   .user-info {
     display: none;
-  } /* ESCONDE el nombre y rol del usuario para salvar espacio horizontal */
+  }
+
   .user-profile {
     border-radius: 14px;
     padding: 6px 8px;
   }
+
   .user-profile img {
     width: 36px;
     height: 36px;
-  } /* Foto de perfil más pequeña */
-
-  .form-body {
-    padding: 16px;
-  }
-  .form-card-header {
-    padding: 16px;
-  }
-  .form-card-title {
-    font-size: 16px;
-  }
-  .form-card-subtitle {
-    font-size: 12px;
   }
 
-  .field input,
-  .field select,
-  .field textarea {
-    font-size: 13px;
-    padding: 11px 12px;
-  }
-
-  /* En celulares, los botones se estiran al 100% de la pantalla para facilitar el clic con el pulgar */
+  /* ==========================================================================
+     BOTONES
+  ========================================================================== */
   .btn {
     width: 100%;
     justify-content: center;
   }
+
   .form-footer {
     flex-direction: column;
-  } /* Apila los botones uno encima del otro */
+  }
 }
 
-/* CELULARES PEQUEÑOS / PANTALLAS ULTRA ESTRECHAS (Hasta 576px) */
+/* ==========================================================================  
+   CELULARES MUY PEQUEÑOS (Hasta 576px)
+   ========================================================================== */
 @media screen and (max-width: 576px) {
-  /* Última reducción de la barra lateral a 170px */
   .sidebar {
-    width: 170px;
-    min-width: 170px;
-    max-width: 170px;
-    padding: 14px 10px;
+    width: 68px;
+    min-width: 68px;
+    max-width: 68px;
+
+    padding: 12px 6px;
   }
 
   .main-content {
-    margin-left: 170px;
-    width: calc(100% - 170px);
+    margin-left: 68px;
+    width: calc(100% - 68px);
     padding: 12px;
   }
 
-  .topbar {
-    gap: 10px;
-  }
-  .topbar-actions {
-    justify-content: space-between;
+  .logo-img {
+    max-width: 40px;
   }
 
-  .logo-img {
-    max-width: 120px;
-  }
-  .menu {
-    gap: 6px;
-  }
-  .menu a {
-    font-size: 11px;
-    padding: 10px 8px;
-    border-radius: 10px;
-  }
+  .menu a,
   .logout a {
-    font-size: 11px;
-    padding: 10px 8px;
+    padding: 11px 6px;
+  }
+
+  .menu i,
+  .logout i {
+    font-size: 17px;
   }
 
   .page-title h1 {
-    margin-bottom: 2px;
+    font-size: 20px;
   }
+
   .page-title p {
     font-size: 11px;
   }
 
-  .search-box {
-    margin-top: 0;
-  }
-  .breadcrumb {
-    font-size: 11px;
-  }
-
-  .form-card {
-    border-radius: 12px;
-  }
-  .form-card-header-left {
-    gap: 10px;
-  }
-  .form-card-icon {
-    width: 40px;
-    height: 40px;
-  }
-  .form-card-title {
-    font-size: 14px;
-  }
-  .required-note {
-    font-size: 11px;
-  }
-
-  .form-section-title {
-    font-size: 12px;
-  }
-  .field label {
-    font-size: 12px;
-  }
-  .field input,
-  .field select,
-  .field textarea {
-    font-size: 12px;
-  }
-
-  .summary-card {
-    padding: 14px;
-  }
-  .summary-card strong {
-    font-size: 15px;
-  }
-
-  .results-table {
-    min-width: 650px;
-  } /* Límite final para prevenir que la tabla se rompa */
   .footer {
     font-size: 11px;
   }

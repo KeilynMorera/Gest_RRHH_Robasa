@@ -1,5 +1,6 @@
 <!-- =========================================================
      CARGAR LIBRERÍA DE ARCHIVOS ESTÁTICOS DE DJANGO
+     Permite utilizar imágenes, CSS y JS almacenados en /static
 ========================================================= -->
 {% load static %}
 
@@ -7,25 +8,27 @@
 <html lang="es">
   <head>
     <!-- =========================================================
-         CONFIGURACIÓN GENERAL DEL DOCUMENTO
+         CONFIGURACIÓN GENERAL DEL DOCUMENTO HTML
     ========================================================= -->
+
+    <!-- Define la codificación de caracteres UTF-8 -->
     <meta charset="UTF-8" />
 
-    <!-- Hace que el diseño sea responsive en dispositivos móviles -->
+    <!-- Hace que el diseño sea responsive en celulares y tablets -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Título que aparece en la pestaña del navegador -->
+    <!-- Título mostrado en la pestaña del navegador -->
     <title>Elección de Movimientos - Gestión de Talento Humano</title>
 
     <!-- =========================================================
-         ARCHIVO CSS LOCAL
-         Se carga el archivo de estilos desde la carpeta static
+         HOJA DE ESTILOS LOCAL
+         Carga el archivo CSS principal del módulo
     ========================================================= -->
     <link rel="stylesheet" href="{% static 'styles/tarjetas.css' %}" />
 
     <!-- =========================================================
          LIBRERÍA FONT AWESOME
-         Permite usar íconos dentro del sistema
+         Permite utilizar íconos visuales en el sistema
     ========================================================= -->
     <link
       rel="stylesheet"
@@ -36,6 +39,7 @@
   <body>
     <!-- =========================================================
          CONTENEDOR PRINCIPAL DEL DASHBOARD
+         Agrupa sidebar + contenido principal
     ========================================================= -->
     <div class="dashboard-container">
       <!-- =========================================================
@@ -46,7 +50,7 @@
              LOGO DE LA EMPRESA
         ========================================================= -->
         <div class="logo-container">
-          <!-- Imagen cargada desde archivos estáticos -->
+          <!-- Logo corporativo cargado desde static -->
           <img
             src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
             alt="Logo Robasa"
@@ -55,100 +59,100 @@
         </div>
 
         <!-- ======================================================
-             MENÚ DE NAVEGACIÓN
+             MENÚ DE NAVEGACIÓN PRINCIPAL
         ====================================================== -->
         <nav class="menu">
-          <!-- Opción Inicio -->
+          <!-- Inicio -->
           <a href="{% url 'inicio' %}">
             <i class="fas fa-house"></i>
             Inicio
           </a>
 
-          <!-- Opción Personas o Empleados -->
+          <!-- Personas / Empleados -->
           <a href="{% url 'per_emp' %}">
             <i class="fas fa-user-group"></i>
             Personas o Empleados
           </a>
 
-          <!-- Opción Onboarding -->
+          <!-- Onboarding -->
           <a href="{% url 'onboarding' %}">
             <i class="fas fa-rocket"></i>
             Onboarding / Entradas
           </a>
 
-          <!-- Opción Empresas -->
+          <!-- Empresas -->
           <a href="{% url 'empresas' %}">
             <i class="fas fa-building"></i>
             Empresas
           </a>
 
-          <!-- Opción Gerencias, Departamentos y Puestos -->
+          <!-- Gerencias y Puestos -->
           <a href="{% url 'comple_Empresa' %}">
             <i class="fas fa-briefcase"></i>
             Gerencias, Departamentos y Puestos
           </a>
 
-          <!-- Opción Salarios -->
+          <!-- Salarios -->
           <a href="{% url 'salario' %}">
             <i class="fas fa-money-bill-wave"></i>
             Salarios
           </a>
 
-          <!-- Opción Reclutamiento -->
+          <!-- Reclutamiento -->
           <a href="{% url 'reclutamiento' %}">
             <i class="fas fa-wallet"></i>
             Reclutamiento
           </a>
 
-          <!-- Opción Vacaciones -->
+          <!-- Vacaciones -->
           <a href="{% url 'vacaciones' %}">
             <i class="fas fa-umbrella-beach"></i>
             Vacaciones
           </a>
 
-          <!-- Opción Asistencia y Permisos -->
+          <!-- Asistencia -->
           <a href="{% url 'elec_Asistencia' %}">
             <i class="fas fa-clock"></i>
             Asistencia y Permiso
           </a>
 
-          <!-- Acción o Rotación de Personal -->
+          <!-- Acciones y Rotaciones -->
           <a href="{% url 'accion_rotacion' %}">
             <i class="fas fa-clipboard-list"></i>
             Acciones o Rotaciones del Personal
           </a>
 
-          <!-- Opción Evaluaciones -->
+          <!-- Evaluaciones -->
           <a href="{% url 'evaluaciones' %}">
             <i class="fas fa-chart-line"></i>
             Evaluación de Desempeño
           </a>
 
-          <!-- Opción KPIs -->
+          <!-- KPIs -->
           <a href="{% url 'elec_KPI' %}">
             <i class="fas fa-file-lines"></i>
             KPIs
           </a>
 
-          <!-- Opción Offboarding -->
+          <!-- Offboarding -->
           <a href="{% url 'elec_Offboarding' %}">
             <i class="fas fa-door-open"></i>
             Offboarding / Salidas
           </a>
 
-          <!-- Opción Reportes -->
+          <!-- Reportes -->
           <a href="{% url 'reportes' %}">
             <i class="fas fa-file-lines"></i>
             Reportes
           </a>
 
-          <!-- Opción Usuarios y Roles -->
+          <!-- Usuarios y Roles -->
           <a href="{% url 'usuarios' %}">
             <i class="fas fa-users-cog"></i>
             Usuarios y Roles
           </a>
 
-          <!-- Opción Configuración -->
+          <!-- Configuración -->
           <a href="{% url 'configuraciones' %}">
             <i class="fas fa-gear"></i>
             Configuración
@@ -167,95 +171,134 @@
       </aside>
 
       <!-- =========================================================
-           CONTENIDO PRINCIPAL
+           CONTENIDO PRINCIPAL DEL SISTEMA
       ========================================================= -->
       <main class="main-content">
+        <!-- =========================================================
+             TOPBAR / BARRA SUPERIOR
+        ========================================================= -->
         <header class="topbar">
-          <button class="menu-toggle">
-            <i class="fas fa-bars"></i>
-          </button>
-
+          <!-- Título del módulo -->
           <div class="page-title">
             <h1>Movimientos y Estabilidad Laboral</h1>
+
             <p>
               Seleccione el módulo administrativo o analítico que desea
               gestionar
             </p>
           </div>
 
+          <!-- =====================================================
+               CAJA DE BÚSQUEDA
+          ===================================================== -->
           <div class="search-box">
+            <!-- Ícono de búsqueda -->
             <i class="fas fa-search"></i>
+
+            <!-- Campo de búsqueda -->
             <input
               type="text"
               placeholder="Buscar historial, colaboradores o tasas IRP..."
             />
           </div>
 
+          <!-- =====================================================
+               ACCIONES DEL TOPBAR
+          ===================================================== -->
           <div class="topbar-actions">
+            <!-- Notificaciones -->
             <div class="notification">
               <i class="fas fa-bell"></i>
+
+              <!-- Cantidad de alertas -->
               <span class="badge">3</span>
             </div>
 
+            <!-- Perfil del usuario -->
             <div class="user-profile">
+              <!-- Imagen de perfil -->
               <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
+
+              <!-- Información del usuario -->
               <div class="user-info">
                 <strong>María Gómez</strong>
                 <span>Recursos Humanos</span>
               </div>
-              <i class="fas fa-chevron-down"></i>
             </div>
           </div>
         </header>
 
+        <!-- =========================================================
+             TARJETAS DE ACCIÓN DEL MÓDULO
+        ========================================================= -->
         <section class="action-cards-grid">
+          <!-- =====================================================
+               TARJETA: ACCIONES DE PERSONAL
+          ===================================================== -->
           <div class="action-card">
+            <!-- Ícono principal -->
             <div class="action-card-illustration">
               <i class="fas fa-gavel"></i>
             </div>
 
+            <!-- Contenido de la tarjeta -->
             <div class="action-card-body">
+              <!-- Título -->
               <h3 class="action-card-title">Acciones de Personal</h3>
+
+              <!-- Descripción -->
               <p class="action-card-desc">
                 Registra, documenta y sella justificantes legales para ascensos,
                 amonestaciones, licencias especiales o modificaciones en las
                 estructuras salariales de los colaboradores.
               </p>
 
-              <a
-                href="{% url 'accion_Personal' %}"
-                class="action-card-btn"
-              >
+              <!-- Botón de navegación -->
+              <a href="{% url 'accion_Personal' %}" class="action-card-btn">
                 <i class="fas fa-file-signature"></i>
+
                 Ingresar Acciones
               </a>
             </div>
           </div>
 
+          <!-- =====================================================
+               TARJETA: ROTACIÓN DE PERSONAL
+          ===================================================== -->
           <div class="action-card">
+            <!-- Ícono principal -->
             <div class="action-card-illustration accent">
               <i class="fas fa-chart-pie"></i>
             </div>
 
+            <!-- Contenido de la tarjeta -->
             <div class="action-card-body">
+              <!-- Título -->
               <h3 class="action-card-title">Rotación de Personal (IRP)</h3>
+
+              <!-- Descripción -->
               <p class="action-card-desc">
                 Consulta el Índice de Rotación de Personal calculado de manera
                 automática por períodos (mensual, trimestral, anual) cruzando
                 ingresos, bajas por offboarding y desvinculaciones.
               </p>
 
+              <!-- Botón de navegación -->
               <a
                 href="{% url 'rotacion_Personal' %}"
                 class="action-card-btn accent"
               >
                 <i class="fas fa-square-poll-vertical"></i>
+
                 Analizar Rotación
               </a>
             </div>
           </div>
         </section>
 
+        <!-- =========================================================
+             FOOTER / PIE DE PÁGINA
+        ========================================================= -->
         <footer class="footer">
           © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
         </footer>
