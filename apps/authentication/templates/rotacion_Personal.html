@@ -135,7 +135,6 @@
 
       <main class="main-content">
         <header class="topbar">
-          <button class="menu-toggle"><i class="fas fa-bars"></i></button>
           <div class="page-title">
             <h1>Índice de Rotación de Personal (IRP)</h1>
             <p>
@@ -162,15 +161,31 @@
                 <strong>María Gómez</strong>
                 <span>Recursos Humanos</span>
               </div>
-              <i class="fas fa-chevron-down"></i>
             </div>
           </div>
         </header>
 
+        <!-- =================================================
+             BREADCRUMB / RUTA DE NAVEGACIÓN
+        ================================================== -->
         <div class="breadcrumb">
-          <a href="{% url 'inicio' %}"><i class="fas fa-home"></i> Inicio</a>
-          <span class="sep">/</span>
-          <span class="current">Rotación de Personal</span>
+          <!-- Inicio -->
+          <a href="{% url 'inicio' %}">
+            <i class="fas fa-house"></i>
+            Inicio
+          </a>
+
+          <!-- Separador -->
+          <i class="fas fa-chevron-right sep"></i>
+
+          <!-- Módulo -->
+          <a href="{% url 'accion_rotacion' %}"> Acciones de Rotación </a>
+
+          <!-- Separador -->
+          <i class="fas fa-chevron-right sep"></i>
+
+          <!-- Página actual -->
+          <span class="current"> Rotación de Personal </span>
         </div>
 
         <section class="form-card">
@@ -446,8 +461,6 @@
                 <button type="reset" class="btn btn-secondary">
                   <i class="fas fa-rotate-left"></i> Limpiar
                 </button>
-
-               
 
                 <button type="submit" class="btn btn-primary">
                   <i class="fas fa-floppy-disk"></i> Guardar Asistencia

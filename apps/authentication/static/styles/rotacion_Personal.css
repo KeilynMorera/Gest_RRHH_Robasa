@@ -166,14 +166,6 @@ body {
   flex-wrap: wrap; /* Permite que los elementos bajen si la pantalla se achica */
 }
 
-.menu-toggle {
-  border: none;
-  background: none;
-  font-size: 26px;
-  cursor: pointer;
-  color: #293477; /* Botón típicamente usado para ocultar/mostrar la sidebar en móviles */
-}
-
 .page-title {
   min-width: 260px;
 }
@@ -181,7 +173,7 @@ body {
 .page-title h1 {
   font-size: 34px;
   margin-bottom: 5px;
-  color: #1a2042; /* Azul marino muy oscuro para encabezados */
+  color: #d35b1a; /* Azul marino muy oscuro para encabezados */
 }
 
 .page-title p {
