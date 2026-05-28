@@ -1,254 +1,345 @@
-<!-- Cargar la librería al inicio del template, para usar archivos estaticos -->
+<!-- =========================================================
+     CARGA DE LIBRERÍAS ESTÁTICAS DE DJANGO
+     Permite utilizar archivos CSS, imágenes, JavaScript, etc.
+========================================================= -->
 {% load static %}
 
 <!doctype html>
 <html lang="es">
   <head>
+    <!-- =====================================================
+         CONFIGURACIÓN GENERAL DEL DOCUMENTO
+    ====================================================== -->
     <meta charset="UTF-8" />
+
+    <!-- Hace que el diseño sea responsive en móviles -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Título de la pestaña del navegador -->
     <title>Elección de Evaluaciones - Gestión de Talento Humano</title>
 
+    <!-- =====================================================
+         HOJA DE ESTILOS PRINCIPAL
+    ====================================================== -->
     <link rel="stylesheet" href="{% static 'styles/tarjetas.css' %}" />
 
+    <!-- =====================================================
+         LIBRERÍA DE ICONOS FONT AWESOME
+    ====================================================== -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
   </head>
+
   <body>
+    <!-- =====================================================
+         CONTENEDOR GENERAL DEL DASHBOARD
+    ====================================================== -->
     <div class="dashboard-container">
+      <!-- =====================================================
+           SIDEBAR / BARRA LATERAL
+      ====================================================== -->
       <aside class="sidebar">
-        <!-- =========================================================
+        <!-- =====================================================
              LOGO DE LA EMPRESA
-        ========================================================= -->
+        ====================================================== -->
         <div class="logo-container">
-          <!-- Imagen cargada desde archivos estáticos -->
+          <!-- Logo cargado desde archivos estáticos -->
           <img
             src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
             alt="Logo Robasa"
             class="logo-img"
           />
         </div>
-        
-        <!-- ======================================================
+
+        <!-- =====================================================
              MENÚ DE NAVEGACIÓN
         ====================================================== -->
         <nav class="menu">
-          <!-- Opción Inicio -->
+          <!-- Inicio -->
           <a href="{% url 'inicio' %}">
             <i class="fas fa-house"></i>
             Inicio
           </a>
 
-          <!-- Opción Personas o Empleados -->
+          <!-- Personas o Empleados -->
           <a href="{% url 'per_emp' %}">
             <i class="fas fa-user-group"></i>
             Personas o Empleados
           </a>
 
-          <!-- Opción Onboarding -->
+          <!-- Onboarding -->
           <a href="{% url 'onboarding' %}">
             <i class="fas fa-rocket"></i>
             Onboarding / Entradas
           </a>
 
-          <!-- Opción Empresas -->
+          <!-- Empresas -->
           <a href="{% url 'empresas' %}">
             <i class="fas fa-building"></i>
             Empresas
           </a>
 
-          <!-- Opción Gerencias, Departamentos y Puestos -->
+          <!-- Gerencias, Departamentos y Puestos -->
           <a href="{% url 'comple_Empresa' %}">
             <i class="fas fa-briefcase"></i>
             Gerencias, Departamentos y Puestos
           </a>
 
-          <!-- Opción Salarios -->
+          <!-- Salarios -->
           <a href="{% url 'salario' %}">
             <i class="fas fa-money-bill-wave"></i>
             Salarios
           </a>
 
-          <!-- Opción Reclutamiento -->
+          <!-- Reclutamiento -->
           <a href="{% url 'reclutamiento' %}">
             <i class="fas fa-wallet"></i>
             Reclutamiento
           </a>
 
-          <!-- Opción Vacaciones -->
+          <!-- Vacaciones -->
           <a href="{% url 'vacaciones' %}">
             <i class="fas fa-umbrella-beach"></i>
             Vacaciones
           </a>
 
-          <!-- Opción Asistencia y Permisos -->
+          <!-- Asistencia y Permisos -->
           <a href="{% url 'elec_Asistencia' %}">
             <i class="fas fa-clock"></i>
             Asistencia y Permiso
           </a>
 
-          <!-- Acción o Rotación de Personal -->
+          <!-- Acciones o Rotaciones -->
           <a href="{% url 'accion_rotacion' %}">
             <i class="fas fa-clipboard-list"></i>
             Acciones o Rotaciones del Personal
           </a>
 
-          <!-- Opción Evaluaciones -->
+          <!-- Evaluación de Desempeño -->
           <a href="{% url 'evaluaciones' %}">
             <i class="fas fa-chart-line"></i>
             Evaluación de Desempeño
           </a>
 
-          <!-- Opción KPIs -->
+          <!-- KPIs -->
           <a href="{% url 'elec_KPI' %}">
             <i class="fas fa-file-lines"></i>
             KPIs
           </a>
 
-          <!-- Opción Offboarding -->
+          <!-- Offboarding -->
           <a href="{% url 'elec_Offboarding' %}">
             <i class="fas fa-door-open"></i>
             Offboarding / Salidas
           </a>
 
-          <!-- Opción Reportes -->
+          <!-- Reportes -->
           <a href="{% url 'reportes' %}">
             <i class="fas fa-file-lines"></i>
             Reportes
           </a>
 
-          <!-- Opción Usuarios y Roles -->
+          <!-- Usuarios y Roles -->
           <a href="{% url 'usuarios' %}">
             <i class="fas fa-users-cog"></i>
             Usuarios y Roles
           </a>
 
-          <!-- Opción Configuración -->
+          <!-- Configuración -->
           <a href="{% url 'configuraciones' %}">
             <i class="fas fa-gear"></i>
             Configuración
           </a>
         </nav>
 
+        <!-- =====================================================
+             BOTÓN DE CERRAR SESIÓN
+        ====================================================== -->
         <div class="logout">
           <a href="login.html">
-            <i class="fas fa-right-from-bracket"></i> Cerrar sesión
+            <i class="fas fa-right-from-bracket"></i>
+            Cerrar sesión
           </a>
         </div>
       </aside>
 
+      <!-- =====================================================
+           CONTENIDO PRINCIPAL
+      ====================================================== -->
       <main class="main-content">
+        <!-- =====================================================
+             TOPBAR / BARRA SUPERIOR
+        ====================================================== -->
         <header class="topbar">
-          <button class="menu-toggle">
-            <i class="fas fa-bars"></i>
-          </button>
-
+          <!-- =================================================
+               TÍTULO DE LA PÁGINA
+          ================================================== -->
           <div class="page-title">
             <h1>Evaluación de Desempeño</h1>
+
             <p>
               Seleccione la acción o el tipo de evaluación corporativa que desea
               procesar
             </p>
           </div>
 
+          <!-- =================================================
+               BARRA DE BÚSQUEDA
+          ================================================== -->
           <div class="search-box">
+            <!-- Icono de lupa -->
             <i class="fas fa-search"></i>
+
+            <!-- Campo de búsqueda -->
             <input
               type="text"
               placeholder="Buscar empleado, módulo, reporte..."
             />
           </div>
 
+          <!-- =================================================
+               ACCIONES SUPERIORES
+          ================================================== -->
           <div class="topbar-actions">
+            <!-- Notificaciones -->
             <div class="notification">
               <i class="fas fa-bell"></i>
+
+              <!-- Cantidad de notificaciones -->
               <span class="badge">3</span>
             </div>
 
+            <!-- Perfil del usuario -->
             <div class="user-profile">
+              <!-- Imagen de usuario -->
               <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
 
+              <!-- Información del usuario -->
               <div class="user-info">
                 <strong>María Gómez</strong>
                 <span>Recursos Humanos</span>
               </div>
-
-              <i class="fas fa-chevron-down"></i>
             </div>
           </div>
         </header>
 
+        <!-- =====================================================
+             TARJETAS DE ACCIONES / EVALUACIONES
+        ====================================================== -->
         <section class="action-cards-grid">
+          <!-- =================================================
+               TARJETA: EVALUACIÓN EMPLEADO
+          ================================================== -->
           <div class="action-card">
+            <!-- Icono ilustrativo -->
             <div class="action-card-illustration">
               <i class="fas fa-clipboard-list"></i>
             </div>
+
+            <!-- Contenido de la tarjeta -->
             <div class="action-card-body">
+              <!-- Título -->
               <h3 class="action-card-title">Evaluación Empleado</h3>
+
+              <!-- Descripción -->
               <p class="action-card-desc">
                 Registra la evaluación de un empleado específico: periodo de
                 evaluación, cumplimiento en metas, objetivos, funciones y
                 asistencia.
               </p>
+
+              <!-- Botón -->
               <a href="{% url 'eva_Empleado' %}" class="action-card-btn">
-                <i class="fas fa-plus"></i> Registrar Evaluación
+                <i class="fas fa-plus"></i>
+                Registrar Evaluación
               </a>
             </div>
           </div>
 
+          <!-- =================================================
+               TARJETA: EVALUACIÓN JEFATURA
+          ================================================== -->
           <div class="action-card">
+            <!-- Icono -->
             <div class="action-card-illustration accent">
               <i class="fas fa-user-gear"></i>
             </div>
+
+            <!-- Contenido -->
             <div class="action-card-body">
               <h3 class="action-card-title">Evaluación Jefatura</h3>
+
               <p class="action-card-desc">
                 Registra la evaluación de jefatura: periodo de evaluación,
                 capacidad de liderazgo, aprendizaje rápido, adaptación al
                 cambio, madurez emocional y observaciones.
               </p>
+
               <a href="{% url 'eva_Jefatura' %}" class="action-card-btn accent">
-                <i class="fas fa-plus"></i> Registrar Evaluación Jefatura
+                <i class="fas fa-plus"></i>
+                Registrar Evaluación Jefatura
               </a>
             </div>
           </div>
 
+          <!-- =================================================
+               TARJETA: RESULTADOS DE EVALUACIÓN
+          ================================================== -->
           <div class="action-card">
+            <!-- Icono -->
             <div class="action-card-illustration">
               <i class="fas fa-chart-pie"></i>
             </div>
+
+            <!-- Contenido -->
             <div class="action-card-body">
               <h3 class="action-card-title">Resultado Evaluación</h3>
+
               <p class="action-card-desc">
                 Se visualizan los resultados porcentuales de la correspondiente
                 evaluación por medio de métricas analíticas e informes
                 consolidados.
               </p>
+
               <a href="{% url 'result_Evaluacion' %}" class="action-card-btn">
-                <i class="fas fa-eye"></i> Visualizar Resultados
+                <i class="fas fa-eye"></i>
+                Visualizar Resultados
               </a>
             </div>
           </div>
 
+          <!-- =================================================
+               TARJETA: MATRIZ 9-BOX
+          ================================================== -->
           <div class="action-card">
+            <!-- Icono -->
             <div class="action-card-illustration accent">
               <i class="fas fa-table-cells"></i>
             </div>
+
+            <!-- Contenido -->
             <div class="action-card-body">
               <h3 class="action-card-title">Cuadrante 9-Box</h3>
+
               <p class="action-card-desc">
-                Se debe de completar antes de ver los resultados de potencial.
+                Se debe completar antes de ver los resultados de potencial.
                 Catálogo de los nueve cuadrantes estratégicos de la matriz de
                 talentos.
               </p>
+
               <a href="{% url 'matriz' %}" class="action-card-btn accent">
-                <i class="fas fa-th-large"></i> Completar Matriz 9-Box
+                <i class="fas fa-th-large"></i>
+                Completar Matriz 9-Box
               </a>
             </div>
           </div>
         </section>
 
+        <!-- =====================================================
+             FOOTER / PIE DE PÁGINA
+        ====================================================== -->
         <footer class="footer">
           © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
         </footer>

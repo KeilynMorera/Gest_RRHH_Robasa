@@ -4,7 +4,7 @@
 .evaluation-list {
   display: flex;
   flex-direction: column; /* Alinea los ítems de evaluación en una lista vertical */
-  gap: 18px;              /* Separación uniforme entre cada fila/criterio */
+  gap: 18px; /* Separación uniforme entre cada fila/criterio */
 }
 
 /* ==========================================================================
@@ -16,10 +16,10 @@
   border-radius: 14px;
   padding: 20px 22px;
   display: flex;
-  align-items: center;          /* Centra verticalmente la información frente a los botones */
+  align-items: center; /* Centra verticalmente la información frente a los botones */
   justify-content: space-between; /* Envía el texto a la izquierda y las opciones a la derecha */
   gap: 22px;
-  transition: all 0.25s ease;    /* Transición suave para el efecto hover */
+  transition: all 0.25s ease; /* Transición suave para el efecto hover */
   box-shadow: 0 2px 10px rgba(30, 42, 94, 0.04); /* Sombra base muy sutil */
 }
 
@@ -27,7 +27,9 @@
 .evaluation-item:hover {
   border-color: rgba(232, 96, 10, 0.35); /* Borde naranja translúcido */
   box-shadow: 0 6px 18px rgba(30, 42, 94, 0.08); /* Sombra más pronunciada */
-  transform: translateY(-1px);          /* Pequeño salto hacia arriba (efecto flotante) */
+  transform: translateY(
+    -1px
+  ); /* Pequeño salto hacia arriba (efecto flotante) */
 }
 
 /* ==========================================================================
@@ -57,7 +59,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  min-width: 280px;         /* Espacio mínimo reservado para evitar que los botones se achiquen */
+  min-width: 280px; /* Espacio mínimo reservado para evitar que los botones se achiquen */
   justify-content: flex-end; /* Alinea los botones de radio hacia la derecha */
 }
 
@@ -66,15 +68,15 @@
    ========================================================================== */
 .evaluation-item .status-option {
   position: relative; /* Base de posicionamiento para los inputs nativos ocultos */
-  flex: 1;            /* Distribuye el ancho equitativamente entre los botones del grupo */
+  flex: 1; /* Distribuye el ancho equitativamente entre los botones del grupo */
 }
 
 /* Ocultado estructural del Input Radio nativo */
 .evaluation-item .status-option input[type="radio"] {
   position: absolute;
-  opacity: 0;         /* Lo vuelve invisible pero mantiene la accesibilidad del teclado */
+  opacity: 0; /* Lo vuelve invisible pero mantiene la accesibilidad del teclado */
   width: 0;
-  height: 0;          /* Retira el elemento del flujo visual */
+  height: 0; /* Retira el elemento del flujo visual */
 }
 
 /* ==========================================================================
@@ -99,8 +101,8 @@
 
 /* Efecto Hover sobre el botón falso */
 .evaluation-item .status-option label:hover {
-  border-color: #e8600a;                 /* Cambia al color naranja de la marca */
-  background: rgba(232, 96, 10, 0.05);   /* Fondo sutilmente anaranjado */
+  border-color: #e8600a; /* Cambia al color naranja de la marca */
+  background: rgba(232, 96, 10, 0.05); /* Fondo sutilmente anaranjado */
   color: #e8600a;
 }
 
@@ -110,7 +112,7 @@
 /* Cuando el radio nativo oculto está :checked, modifica visualmente al label que le sigue */
 .evaluation-item .status-option input:checked + label {
   border-color: #e8600a;
-  background: rgba(232, 96, 10, 0.1);    /* Fondo naranja un poco más intenso */
+  background: rgba(232, 96, 10, 0.1); /* Fondo naranja un poco más intenso */
   color: #e8600a;
   box-shadow: 0 4px 12px rgba(232, 96, 10, 0.14); /* Brillo de confirmación */
 }
@@ -123,14 +125,14 @@
   height: 10px;
   border-radius: 50%;
   background: currentColor; /* Hereda el color de texto activo (.menu a, label:hover, etc.) automáticamente */
-  flex-shrink: 0;           /* Evita que el círculo se deforme */
+  flex-shrink: 0; /* Evita que el círculo se deforme */
 }
 
 /* ==========================================================================
    TEXTAREA OBSERVACIONES (Configuración inicial)
    ========================================================================== */
 textarea {
-  resize: vertical;    /* Permite estirar hacia abajo el cuadro pero no hacia los lados */
+  resize: vertical; /* Permite estirar hacia abajo el cuadro pero no hacia los lados */
   min-height: 130px;
   line-height: 1.5;
 }
@@ -168,8 +170,8 @@ body {
   top: 0;
   left: 0;
   bottom: 0;
-  overflow-y: auto;    /* Habilita scroll si los módulos colapsan el alto */
-  overflow-x: hidden;  /* Protege contra desbordes laterales */
+  overflow-y: auto; /* Habilita scroll si los módulos colapsan el alto */
+  overflow-x: hidden; /* Protege contra desbordes laterales */
 }
 
 /* ==========================================================================
@@ -296,14 +298,6 @@ body {
   gap: 20px;
   margin-bottom: 30px;
   flex-wrap: wrap;
-}
-
-.menu-toggle {
-  border: none;
-  background: none;
-  font-size: 26px;
-  cursor: pointer;
-  color: #293477;
 }
 
 .page-title {
@@ -685,16 +679,26 @@ body {
   .field-full {
     grid-column: auto;
   }
-  .form-body, .form-card-header {
+  .form-body,
+  .form-card-header {
     padding: 24px;
   }
 }
 
 @media (max-width: 767px) {
-  .breadcrumb { font-size: 12px; }
-  .form-card-title { font-size: 20px; }
-  .form-card-subtitle { font-size: 13px; }
-  .form-body, .form-card-header { padding: 20px; }
+  .breadcrumb {
+    font-size: 12px;
+  }
+  .form-card-title {
+    font-size: 20px;
+  }
+  .form-card-subtitle {
+    font-size: 13px;
+  }
+  .form-body,
+  .form-card-header {
+    padding: 20px;
+  }
   .form-footer {
     flex-direction: column;
     align-items: stretch;
@@ -706,13 +710,24 @@ body {
 }
 
 @media (max-width: 480px) {
-  .form-card-icon { width: 44px; height: 44px; font-size: 18px; }
-  .form-card-title { font-size: 18px; }
-  .field input, .field select, .field textarea {
+  .form-card-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+  .form-card-title {
+    font-size: 18px;
+  }
+  .field input,
+  .field select,
+  .field textarea {
     font-size: 13px;
     padding: 11px 12px;
   }
-  .btn { font-size: 13px; padding: 10px 16px; }
+  .btn {
+    font-size: 13px;
+    padding: 10px 16px;
+  }
 }
 
 .footer {
@@ -746,7 +761,7 @@ body {
   align-items: center;
   justify-content: center;
   position: relative; /* Necesario para contener de manera absoluta el pseudo-ícono inferior */
-  overflow: hidden;   /* Recorta la imagen cuadrada para volverla un círculo perfecto */
+  overflow: hidden; /* Recorta la imagen cuadrada para volverla un círculo perfecto */
   flex-shrink: 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
@@ -759,12 +774,12 @@ body {
 
 /* Inyección de Icono de Usuario con FontAwesome si no hay foto */
 .photo-preview::before {
-  content: "\f007";                    /* Código Unicode para el ícono de 'user' de FontAwesome */
+  content: "\f007"; /* Código Unicode para el ícono de 'user' de FontAwesome */
   font-family: "Font Awesome 6 Free";
   font-weight: 900;
   font-size: 42px;
   color: #c3c9dc;
-  position: absolute;                  /* Posicionamiento en el centro exacto */
+  position: absolute; /* Posicionamiento en el centro exacto */
 }
 
 /* Lógica condicional CSS pura: Si la etiqueta img posee atributo src cargado, esconde el pseudo-icono anterior */
@@ -814,7 +829,10 @@ body {
   resize: vertical;
   min-height: 130px;
   line-height: 1.6;
-  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background 0.2s;
 }
 
 .field textarea:focus {
@@ -836,7 +854,9 @@ body {
 /* ==========================================================================
    SISTEMA DE RESPONSIVIDAD GLOBAL (MEDIA QUERIES INTEGRADOS)
    ========================================================================== */
-html, body, .dashboard-container {
+html,
+body,
+.dashboard-container {
   width: 100%;
   overflow-x: hidden; /* Corta rígidamente todo desborde lateral en pantallas móviles */
 }
@@ -848,142 +868,426 @@ html, body, .dashboard-container {
   overflow-x: hidden;
 }
 
-img { max-width: 100%; height: auto; }
-input, select, textarea, button { max-width: 100%; }
+img {
+  max-width: 100%;
+  height: auto;
+}
+input,
+select,
+textarea,
+button {
+  max-width: 100%;
+}
+
+/* ==========================================================================
+   DISEÑO RESPONSIVO CORREGIDO (SIDEBAR COMPACTA EN MÓVIL)
+   ========================================================================== */
 
 /* ── MEDIAS GRANDES (Hasta 1400px) ── */
 @media screen and (max-width: 1400px) {
-  .main-content { padding: 24px; }
-  .topbar { gap: 18px; }
-  .search-box { max-width: 380px; }
-  .form-grid { gap: 20px 24px; }
-  .evaluation-item { gap: 18px; }
-  .evaluation-item .status-group { min-width: 250px; }
+  .main-content {
+    padding: 24px;
+  }
+  .topbar {
+    gap: 18px;
+  }
+  .search-box {
+    max-width: 380px;
+  }
+  .form-grid {
+    gap: 20px 24px;
+  }
+  .evaluation-item {
+    gap: 18px;
+  }
+  .evaluation-item .status-group {
+    min-width: 250px;
+  }
 }
 
 /* ── LAPTOPS (Hasta 1200px) ── */
 @media screen and (max-width: 1200px) {
-  .sidebar { width: 250px; min-width: 250px; max-width: 250px; }
+  .sidebar {
+    width: 240px;
+    min-width: 240px;
+    max-width: 240px;
+  }
   .main-content {
-    margin-left: 250px;
-    width: calc(100% - 250px);
+    margin-left: 240px;
+    width: calc(100% - 240px);
     padding: 22px;
   }
-  .topbar { align-items: flex-start; gap: 18px; }
-  .page-title { width: 100%; }
-  .search-box { flex: 1 1 100%; max-width: 100%; }
-  .topbar-actions { width: 100%; justify-content: flex-end; }
-  
-  /* Ajuste de Grid Fluido mediante Auto-Fit */
-  .form-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-  
-  /* Los criterios de evaluación se adaptan envolviéndose en bloque si no caben */
-  .evaluation-item { flex-wrap: wrap; }
-  .evaluation-item .status-group { width: 100%; justify-content: flex-start; }
+  .topbar {
+    align-items: flex-start;
+    gap: 18px;
+  }
+  .page-title {
+    width: 100%;
+  }
+  .search-box {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+  .topbar-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .form-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .evaluation-item {
+    flex-wrap: wrap;
+  }
+  .evaluation-item .status-group {
+    width: 100%;
+    justify-content: flex-start;
+  }
 }
 
 /* ── TABLETS (Hasta 992px) ── */
 @media screen and (max-width: 992px) {
-  .sidebar { width: 220px; min-width: 220px; max-width: 220px; padding: 18px 14px; }
-  .main-content { margin-left: 220px; width: calc(100% - 220px); padding: 18px; }
-  .logo-img { max-width: 180px; padding: 12px; }
-  .menu a, .logout a { font-size: 13px; padding: 12px; }
-  .menu a { gap: 10px; }
-  
-  .topbar { display: grid; grid-template-columns: 1fr; gap: 14px; align-items: stretch; }
-  .page-title h1 { font-size: 28px; }
-  .page-title p { font-size: 13px; }
-  .search-box { width: 100%; max-width: 100%; }
-  .topbar-actions { width: 100%; justify-content: flex-end; }
-  .user-profile { padding: 7px 10px; }
-  
-  .form-card-header { flex-direction: column; align-items: flex-start; }
-  .form-grid { grid-template-columns: 1fr; }
-  .form-body { padding: 22px; }
-  
-  /* Los bloques de evaluación rompen el flujo y se apilan de forma vertical */
-  .evaluation-item { flex-direction: column; align-items: flex-start; }
-  .evaluation-item .status-group { width: 100%; min-width: 100%; }
-  
-  /* El cargador de imágenes se transforma en formato apilado centrado */
-  .photo-upload { flex-direction: column; align-items: center; text-align: center; }
-  .photo-upload-controls { width: 100%; }
+  /* Reducimos la barra lateral a un formato de iconos compacto */
+  .sidebar {
+    width: 85px;
+    min-width: 85px;
+    max-width: 85px;
+    padding: 20px 10px;
+    align-items: center;
+  }
+  /* El contenido se expande para ocupar el espacio liberado */
+  .main-content {
+    margin-left: 85px;
+    width: calc(100% - 85px);
+    padding: 20px;
+  }
+  /* Optimizamos el logo para formato mini */
+  .logo-img {
+    max-width: 60px;
+    padding: 6px;
+    border-radius: 12px;
+  }
+
+  .menu {
+    width: 100%;
+    align-items: center;
+  }
+
+  /* Botones estilizados y proporcionados al nuevo ancho de la barra */
+  .menu a,
+  .logout a {
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 0;
+  }
+
+  .menu a i,
+  .logout a i {
+    font-size: 20px;
+    width: auto;
+    margin: 0;
+  }
+
+  .menu a span,
+  .logout a span {
+    display: none;
+  }
+
+  .topbar {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: stretch;
+  }
+  .page-title h1 {
+    font-size: 26px;
+  }
+  .page-title p {
+    font-size: 13px;
+  }
+  .search-box {
+    width: 100%;
+    max-width: 100%;
+  }
+  .topbar-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .user-profile {
+    padding: 7px 10px;
+  }
+
+  .form-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-body {
+    padding: 22px;
+  }
+
+  .evaluation-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .evaluation-item .status-group {
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .photo-upload {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .photo-upload-controls {
+    width: 100%;
+  }
 }
 
 /* ── SMARTPHONES GRANDES (Hasta 768px) ── */
 @media screen and (max-width: 768px) {
-  .sidebar { width: 190px; min-width: 190px; max-width: 190px; padding: 16px 10px; }
-  .main-content { margin-left: 190px; width: calc(100% - 190px); padding: 15px; }
-  .logo-img { max-width: 140px; padding: 10px; }
-  .logo span { font-size: 14px; letter-spacing: 3px; }
-  .menu { gap: 6px; }
-  .menu a, .logout a { font-size: 12px; padding: 11px 10px; }
-  .menu a { gap: 8px; }
-  .menu i { width: 16px; }
-  
-  .topbar { gap: 12px; }
-  .page-title h1 { font-size: 22px; }
-  .page-title p { font-size: 12px; }
-  .search-box input { padding: 12px 14px 12px 40px; font-size: 13px; }
-  .search-box i { left: 14px; }
-  .topbar-actions { justify-content: space-between; }
-  
-  .user-info { display: none; } /* Esconde los textos informativos de perfil para ahorrar espacio */
-  .user-profile { border-radius: 14px; padding: 6px 8px; }
-  .user-profile img { width: 36px; height: 36px; }
-  
-  .breadcrumb { font-size: 12px; gap: 6px; }
-  .form-card { border-radius: 14px; }
-  .form-body, .form-card-header { padding: 18px; }
-  .form-card-title { font-size: 18px; }
-  .form-card-subtitle { font-size: 12px; }
-  .field input, .field select, .field textarea { font-size: 13px; padding: 11px 12px; }
-  
-  /* Los custom radio buttons toman el 100% de la extensión horizontal de la pantalla */
-  .evaluation-item { padding: 18px; gap: 16px; }
-  .evaluation-item .status-group { flex-direction: column; gap: 10px; }
-  .evaluation-item .status-option, .evaluation-item .status-option label { width: 100%; }
-  
-  .form-footer { flex-direction: column; }
-  .btn { width: 100%; justify-content: center; }
+  /* Mantenemos la estructura compacta de la barra */
+  .sidebar {
+    width: 80px;
+    min-width: 80px;
+    max-width: 80px;
+    padding: 16px 8px;
+  }
+  .main-content {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+    padding: 15px;
+  }
+  .logo-img {
+    max-width: 55px;
+    padding: 6px;
+  }
+
+  .menu a,
+  .logout a {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+  }
+
+  .menu a i,
+  .logout a i {
+    font-size: 19px;
+  }
+
+  .topbar {
+    gap: 12px;
+  }
+  .page-title h1 {
+    font-size: 22px;
+  }
+  .page-title p {
+    font-size: 12px;
+  }
+  .search-box input {
+    padding: 12px 14px 12px 40px;
+    font-size: 13px;
+  }
+  .search-box i {
+    left: 14px;
+  }
+
+  .user-info {
+    display: none;
+  }
+  .user-profile {
+    border-radius: 50%; /* Transforma el perfil en un círculo limpio */
+    padding: 4px;
+  }
+  .user-profile img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .breadcrumb {
+    font-size: 12px;
+    gap: 6px;
+  }
+  .form-card {
+    border-radius: 14px;
+  }
+  .form-body,
+  .form-card-header {
+    padding: 18px;
+  }
+  .form-card-title {
+    font-size: 18px;
+  }
+  .form-card-subtitle {
+    font-size: 12px;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 13px;
+    padding: 11px 12px;
+  }
+
+  .evaluation-item {
+    padding: 18px;
+    gap: 16px;
+  }
+  .evaluation-item .status-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .evaluation-item .status-option,
+  .evaluation-item .status-option label {
+    width: 100%;
+  }
+
+  .form-footer {
+    flex-direction: column;
+  }
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* ── MÓVILES REGULARES (Hasta 576px) ── */
 @media screen and (max-width: 576px) {
-  .sidebar { width: 170px; min-width: 170px; max-width: 170px; padding: 14px 8px; }
-  .main-content { margin-left: 170px; width: calc(100% - 170px); padding: 12px; }
-  .logo-img { max-width: 120px; }
-  .menu a, .logout a { font-size: 11px; padding: 10px 8px; border-radius: 10px; }
-  
-  .page-title h1 { font-size: 20px; margin-bottom: 2px; }
-  .page-title p { font-size: 11px; }
-  .search-box input { font-size: 12px; }
-  .breadcrumb { font-size: 11px; }
-  
-  .form-card-header-left { gap: 10px; }
-  .form-card-icon { width: 42px; height: 42px; font-size: 18px; }
-  .form-card-title { font-size: 16px; }
-  .required-note, .form-section-title { font-size: 11px; }
-  .field label { font-size: 12px; }
-  .field input, .field select, .field textarea { font-size: 12px; padding: 10px 11px; }
-  
-  .evaluation-info h5 { font-size: 13px; }
-  .evaluation-info p { font-size: 12px; }
-  .evaluation-item .status-option label { font-size: 12px; padding: 10px; }
-  
-  .photo-preview { width: 95px; height: 95px; }
-  .btn { font-size: 12px; padding: 10px 14px; }
-  .footer { font-size: 11px; }
+  .sidebar {
+    width: 74px;
+    min-width: 74px;
+    max-width: 74px;
+    padding: 14px 6px;
+  }
+  .main-content {
+    margin-left: 74px;
+    width: calc(100% - 74px);
+    padding: 12px;
+  }
+  .logo-img {
+    max-width: 50px;
+  }
+  .menu a,
+  .logout a {
+    width: 42px;
+    height: 42px;
+  }
+
+  .menu a i,
+  .logout a i {
+    font-size: 18px;
+  }
+
+  .page-title h1 {
+    font-size: 20px;
+    margin-bottom: 2px;
+  }
+  .page-title p {
+    font-size: 11px;
+  }
+  .search-box input {
+    font-size: 12px;
+  }
+  .breadcrumb {
+    font-size: 11px;
+  }
+
+  .form-card-header-left {
+    gap: 10px;
+  }
+  .form-card-icon {
+    width: 42px;
+    height: 42px;
+    font-size: 18px;
+  }
+  .form-card-title {
+    font-size: 16px;
+  }
+  .required-note,
+  .form-section-title {
+    font-size: 11px;
+  }
+  .field label {
+    font-size: 12px;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 12px;
+    padding: 10px 11px;
+  }
+
+  .evaluation-info h5 {
+    font-size: 13px;
+  }
+  .evaluation-info p {
+    font-size: 12px;
+  }
+  .evaluation-item .status-option label {
+    font-size: 12px;
+    padding: 10px;
+  }
+
+  .photo-preview {
+    width: 95px;
+    height: 95px;
+  }
+  .btn {
+    font-size: 12px;
+    padding: 10px 14px;
+  }
+  .footer {
+    font-size: 11px;
+  }
 }
 
 /* ── SMARTPHONES MINIMALISTAS (Hasta 400px) ── */
 @media screen and (max-width: 400px) {
-  .sidebar { width: 155px; min-width: 155px; max-width: 155px; }
-  .main-content { margin-left: 155px; width: calc(100% - 155px); padding: 10px; }
-  .logo-img { max-width: 100px; }
-  .page-title h1 { font-size: 18px; }
-  .form-card-title { font-size: 15px; }
-  .evaluation-item { padding: 14px; }
-  .field input, .field select, .field textarea { font-size: 11px; }
-  .btn { font-size: 11px; padding: 9px 12px; }
+  .sidebar {
+    width: 68px;
+    min-width: 68px;
+    max-width: 68px;
+  }
+  .main-content {
+    margin-left: 68px;
+    width: calc(100% - 68px);
+    padding: 10px;
+  }
+
+  .menu a,
+  .logout a {
+    width: 38px;
+    height: 38px;
+  }
+  .menu a i,
+  .logout a i {
+    font-size: 16px;
+  }
+  .logo-img {
+    max-width: 44px;
+  }
+  .page-title h1 {
+    font-size: 18px;
+  }
+  .form-card-title {
+    font-size: 15px;
+  }
+  .evaluation-item {
+    padding: 14px;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 11px;
+  }
+  .btn {
+    font-size: 11px;
+    padding: 9px 12px;
+  }
 }
