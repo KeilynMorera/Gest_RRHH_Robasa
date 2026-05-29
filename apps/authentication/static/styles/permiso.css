@@ -1,89 +1,4 @@
 /* ==========================================================================
-   RADIO BUTTONS - APROBACIÓN DE PERMISO (Componente de Selección Avanzado)
-   ========================================================================== */
-
-/* Contenedor del grupo de opciones de estado */
-.status-group {
-  display: flex; /* Alinea los botones de radio adaptados horizontalmente */
-  gap: 12px; /* Separación entre cada botón de opción */
-  flex-wrap: wrap; /* Permite que las opciones bajen de línea si no tienen espacio */
-}
-
-/* Envoltorio individual para cada radio + label */
-.status-option {
-  flex: 1; /* Distribuye el ancho de forma equitativa entre las opciones */
-  position: relative; /* Define un eje de coordenadas para posicionar elementos internos si fuera necesario */
-  min-width: 180px; /* Evita que los botones se encojan demasiado antes de saltar de línea */
-}
-
-/* Ocultación del input nativo de tipo radio */
-.status-option input[type="radio"] {
-  position: absolute; /* Lo saca del flujo de renderizado */
-  opacity: 0; /* Lo vuelve completamente invisible */
-  width: 0; /* Elimina su ancho */
-  height: 0; /* Elimina su alto para que no interfiera en clics accidentales */
-}
-
-/* Estilización de la etiqueta que actuará como el "botón" visual */
-.status-option label {
-  display: flex; /* Permite alinear el texto y el punto indicador de forma interna */
-  align-items: center; /* Centrado vertical interno */
-  justify-content: center; /* Centrado horizontal interno */
-  gap: 8px; /* Espacio entre el punto indicador y el texto */
-  padding: 12px 16px;
-  border: 1.5px solid #dde2f0;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #6b7499;
-  background: #f7f8fc;
-  cursor: pointer; /* Cambia el puntero a mano indicando que es clickeable */
-  transition: all 0.2s ease; /* Transición suave para todos sus estados (hover, focus) */
-  user-select: none; /* Evita que el texto de la opción se sombree azul al hacer doble clic */
-}
-
-/* Estado Hover (Al pasar el mouse por encima) */
-.status-option label:hover {
-  border-color: #e8600a;
-  background: #fffaf6;
-  color: #e8600a;
-}
-
-/* Estado de Radio Seleccionado en variante general (Naranja) */
-/* Usa el selector de hermano adyacente (+) para modificar el label cuando el input previo está en :checked */
-.status-option input:checked + label {
-  border-color: #e8600a;
-  background: rgba(232, 96, 10, 0.08); /* Fondo naranja al 8% de opacidad */
-  color: #e8600a;
-  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12); /* Efecto halo de enfoque exterior */
-}
-
-/* Punto indicador circular dentro de la opción */
-.status-option .dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%; /* Hace el contenedor perfectamente redondo */
-  background: currentColor; /* Hereda de forma dinámica el valor de la propiedad 'color' del label parent */
-  flex-shrink: 0; /* Previene que el círculo se deforme si el texto es muy largo */
-}
-
-/* Variante especial cuando se selecciona la opción específica de "Aprobado" (Verde) */
-.status-option input#aprobado_si:checked + label {
-  border-color: #22a06b;
-  background: rgba(34, 160, 107, 0.1);
-  color: #22a06b;
-  box-shadow: 0 0 0 3px rgba(34, 160, 107, 0.12);
-}
-
-/* Variante especial cuando se selecciona la opción específica de "No aprobado" (Rojo) */
-.status-option input#aprobado_no:checked + label {
-  border-color: #e53935;
-  background: rgba(229, 57, 53, 0.08);
-  color: #e53935;
-  box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.1);
-}
-
-/* ==========================================================================
    RESET GENERAL Y COMPORTAMIENTO GLOBAL
    ========================================================================== */
 * {
@@ -593,6 +508,91 @@ body {
   border-top: 1.5px solid #e8ecf6;
   margin-top: 10px;
   flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   RADIO BUTTONS - APROBACIÓN DE PERMISO (Componente de Selección Avanzado)
+   ========================================================================== */
+
+/* Contenedor del grupo de opciones de estado */
+.status-group {
+  display: flex; /* Alinea los botones de radio adaptados horizontalmente */
+  gap: 12px; /* Separación entre cada botón de opción */
+  flex-wrap: wrap; /* Permite que las opciones bajen de línea si no tienen espacio */
+}
+
+/* Envoltorio individual para cada radio + label */
+.status-option {
+  flex: 1; /* Distribuye el ancho de forma equitativa entre las opciones */
+  position: relative; /* Define un eje de coordenadas para posicionar elementos internos si fuera necesario */
+  min-width: 180px; /* Evita que los botones se encojan demasiado antes de saltar de línea */
+}
+
+/* Ocultación del input nativo de tipo radio */
+.status-option input[type="radio"] {
+  position: absolute; /* Lo saca del flujo de renderizado */
+  opacity: 0; /* Lo vuelve completamente invisible */
+  width: 0; /* Elimina su ancho */
+  height: 0; /* Elimina su alto para que no interfiera en clics accidentales */
+}
+
+/* Estilización de la etiqueta que actuará como el "botón" visual */
+.status-option label {
+  display: flex; /* Permite alinear el texto y el punto indicador de forma interna */
+  align-items: center; /* Centrado vertical interno */
+  justify-content: center; /* Centrado horizontal interno */
+  gap: 8px; /* Espacio entre el punto indicador y el texto */
+  padding: 12px 16px;
+  border: 1.5px solid #dde2f0;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7499;
+  background: #f7f8fc;
+  cursor: pointer; /* Cambia el puntero a mano indicando que es clickeable */
+  transition: all 0.2s ease; /* Transición suave para todos sus estados (hover, focus) */
+  user-select: none; /* Evita que el texto de la opción se sombree azul al hacer doble clic */
+}
+
+/* Estado Hover (Al pasar el mouse por encima) */
+.status-option label:hover {
+  border-color: #e8600a;
+  background: #fffaf6;
+  color: #e8600a;
+}
+
+/* Estado de Radio Seleccionado en variante general (Naranja) */
+/* Usa el selector de hermano adyacente (+) para modificar el label cuando el input previo está en :checked */
+.status-option input:checked + label {
+  border-color: #e8600a;
+  background: rgba(232, 96, 10, 0.08); /* Fondo naranja al 8% de opacidad */
+  color: #e8600a;
+  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12); /* Efecto halo de enfoque exterior */
+}
+
+/* Punto indicador circular dentro de la opción */
+.status-option .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%; /* Hace el contenedor perfectamente redondo */
+  background: currentColor; /* Hereda de forma dinámica el valor de la propiedad 'color' del label parent */
+  flex-shrink: 0; /* Previene que el círculo se deforme si el texto es muy largo */
+}
+
+/* Variante especial cuando se selecciona la opción específica de "Aprobado" (Verde) */
+.status-option input#aprobado_si:checked + label {
+  border-color: #22a06b;
+  background: rgba(34, 160, 107, 0.1);
+  color: #22a06b;
+  box-shadow: 0 0 0 3px rgba(34, 160, 107, 0.12);
+}
+
+/* Variante especial cuando se selecciona la opción específica de "No aprobado" (Rojo) */
+.status-option input#aprobado_no:checked + label {
+  border-color: #e53935;
+  background: rgba(229, 57, 53, 0.08);
+  color: #e53935;
+  box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.1);
 }
 
 /* ==========================================================================

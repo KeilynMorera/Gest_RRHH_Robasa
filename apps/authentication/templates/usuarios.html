@@ -147,11 +147,27 @@
               corporativa
             </p>
           </div>
+
+          <div class="topbar-actions">
+            <div class="notification">
+              <i class="fas fa-bell"></i>
+              <span class="badge">3</span>
+            </div>
+
+            <div class="user-profile">
+              <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
+              <div class="user-info">
+                <strong>María Gómez</strong>
+                <span>Recursos Humanos</span>
+              </div>
+            </div>
+          </div>
         </header>
 
         <!-- Navegación interna (Breadcrumb) -->
         <div class="breadcrumb">
-          <a href="{% url 'inicio' %}">Inicio</a> <span style="color: #c5cbdf">/</span>
+          <a href="{% url 'inicio' %}">Inicio</a>
+          <span style="color: #c5cbdf">/</span>
           <a href="{% url 'usuarios' %}">Usuarios y Roles</a>
           <span style="color: #c5cbdf">/</span>
           <span class="current">Crear Usuario</span>
@@ -253,21 +269,39 @@
                 </select>
               </div>
 
-              <!-- Estado del Acceso (FK: idEstadoAdmin) -->
-              <div class="form-group">
-                <label for="idEstadoAdmin">
-                  <i class="fas fa-toggle-on"></i> Estado Inicial del Usuario
+              <!-- Campo: Estado de Acceso (Radio Buttons) -->
+              <div class="field">
+                <label>
+                  <i class="fas fa-circle-check field-icon"></i>
+                  Estado Inicial del Usuario <span class="req">*</span>
                 </label>
-                <select
-                  name="idEstadoAdmin"
-                  id="idEstadoAdmin"
-                  class="form-control"
-                  required
-                >
-                  <!-- Simulación visual de registros de la tabla Estado -->
-                  <option value="1" selected>Activo (Acceso inmediato)</option>
-                  <option value="2">Inactivo (Suspendido temporalmente)</option>
-                </select>
+
+                <div class="status-group">
+                  <div class="status-option">
+                    <input
+                      type="radio"
+                      id="aprobado_si"
+                      name="Aprobado"
+                      value="True"
+                      required
+                    />
+                    <label for="aprobado_si">
+                      <span class="dot"></span> Activo (Acceso inmediato)
+                    </label>
+                  </div>
+
+                  <div class="status-option">
+                    <input
+                      type="radio"
+                      id="aprobado_no"
+                      name="Aprobado"
+                      value="False"
+                    />
+                    <label for="aprobado_no">
+                      <span class="dot"></span> Inactivo (Suspendido temporalmente)
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
 
