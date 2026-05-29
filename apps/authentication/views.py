@@ -202,7 +202,7 @@ def registrar_persona(request):
 
         # Guardar en BD
         Persona.objects.create(
-            Nombre=nombre,
+            Nombre_Completo=nombre,
             Cedula=cedula,
             Fecha_Nacimiento=fecha_nacimiento,
             Telefono=telefono,
