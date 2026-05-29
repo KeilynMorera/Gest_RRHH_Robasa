@@ -301,7 +301,7 @@
           ====================================================== -->
           <div class="form-body">
             <!-- Formulario principal -->
-            <form method="POST" enctype="multipart/form-data">
+            <form method="POST" action="{% url 'personas' %}" enctype="multipart/form-data">
               <!--enctype="multipart/form-data" es para subir archivos -->
               <!-- Token de seguridad de Django -->
               {% csrf_token %}
@@ -399,7 +399,6 @@
                       Sexo <span class="req">*</span>
                     </label>
 
-                    <h1>{{ sexos }}</h1>
                     <select id="sexo" name="sexo" required>
                       <option value="" disabled selected>
                         Seleccione una opción…

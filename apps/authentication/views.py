@@ -213,6 +213,8 @@ def registrar_persona(request):
             idSexo=sexo
         )
 
+        print("PERSONA GUARDADA")
+
         # Redireccionar
         return redirect('per_emp')
 
