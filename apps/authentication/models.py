@@ -22,7 +22,7 @@ class PersonaSexo(models.Model): #Esta clase representa una tabla de la base de 
 class Persona(models.Model):
 
     idPersona = models.AutoField(primary_key=True)
-    Nombre = models.CharField(max_length=200)
+    Nombre_Completo = models.CharField(max_length=200)
     Cedula = models.CharField(max_length=20)
     Fecha_Nacimiento = models.DateField()
     Telefono = models.CharField(max_length=20)
