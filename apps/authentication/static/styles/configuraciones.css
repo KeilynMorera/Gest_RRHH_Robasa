@@ -1,137 +1,191 @@
 /* ==========================================================================
-   CONFIGURACIÓN GENERAL - ESTILO ADAPTADO
-   Compatible con el HTML enviado
-   Mantiene diseño corporativo Robasa
+   RESET & ESTILOS GLOBALES
+   Limpieza de márgenes por defecto y configuración base del documento.
    ========================================================================== */
-
-/* =========================================================
-   RESET GENERAL
-========================================================= */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  margin: 0; /* Elimina el margen por defecto de todos los elementos */
+  padding: 0; /* Elimina el relleno por defecto de todos los elementos */
+  box-sizing: border-box; /* Incluye el padding y border dentro del ancho/alto total del elemento */
 }
 
 body {
-  font-family: "Segoe UI", sans-serif;
-  background: #f4f7fb;
-  color: #1a2042;
+  font-family: "Segoe UI", sans-serif; /* Tipografía limpia y moderna */
+  background: #f4f7fb; /* Color de fondo gris claro azulado para el dashboard */
+  color: #d35b1a; /* Color principal de texto (tono naranja/óxido) */
 }
 
-/* =========================================================
-   LAYOUT PRINCIPAL
-========================================================= */
+/* ==========================================================================
+   LAYOUT GENERAL
+   Estructura contenedora principal que organiza el Dashboard.
+   ========================================================================== */
 .dashboard-container {
-  display: flex;
-  min-height: 100vh;
+  display: flex; /* Alinea la barra lateral y el contenido principal de forma horizontal */
+  min-height: 100vh; /* Asegura que el contenedor ocupe al menos el 100% de la altura de la pantalla */
 }
 
-/* =========================================================
-   SIDEBAR
-========================================================= */
+/* ==========================================================================
+   SIDEBAR (Barra Lateral)
+   Navegación fija en el lateral izquierdo.
+   ========================================================================== */
 .sidebar {
-  width: 280px;
-  background: #26317a;
-  color: white;
+  width: 280px; /* Ancho fijo de la barra lateral */
+  background: #26317a; /* Fondo azul oscuro institucional */
+  color: white; /* Texto interior blanco */
   display: flex;
-  flex-direction: column;
-  padding: 28px 18px;
-  position: fixed;
+  flex-direction: column; /* Organiza el logo, menú y logout verticalmente uno abajo del otro */
+  padding: 30px 20px; /* Espaciado interno (arriba/abajo izquierda/derecha) */
+  position: fixed; /* Deja la barra fija en pantalla al hacer scroll */
   top: 0;
   left: 0;
-  bottom: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
+  bottom: 0; /* Las tres propiedades anteriores la estiran de arriba a abajo */
+
+  /* Comportamiento de desbordamiento */
+  overflow-y: auto; /* Si hay muchos links, permite scroll vertical dentro de la barra */
+  overflow-x: hidden; /* Evita cualquier scroll horizontal accidental */
 }
 
-/* =========================================================
-   LOGO
-========================================================= */
-.logo-container {
-  text-align: center;
-  margin-bottom: 28px;
+/* ==========================================================================
+   LOGO ROBASA
+   Sección del logotipo dentro de la barra lateral con efectos visuales avanzados.
+   ========================================================================== */
+.logo {
+  text-align: center; /* Centra el texto y elementos inline en su interior */
+  margin-bottom: 35px; /* Separación respecto al menú inferior */
 }
 
+/* Imagen del Logo */
 .logo-img {
-  width: 260px;
-  max-width: 100%;
-  padding: 16px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(5px);
+  width: 320px;
+  max-width: 100%; /* Asegura que no se desborde si el contenedor es más pequeño */
+  height: auto; /* Mantiene la proporción de aspecto de la imagen */
 
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2)) brightness(1.15);
+  display: block; /* Se comporta como bloque para poder usar márgenes automáticos */
+  margin: 0 auto 25px; /* Centra horizontalmente y añade margen inferior */
 
-  transition: 0.3s ease;
+  /* Diseño de tarjeta de cristal (Glassmorphism) */
+  padding: 18px; /* Espacio alrededor de la imagen */
+  border-radius: 22px; /* Bordes muy redondeados y suaves */
+  background: rgba(
+    255,
+    255,
+    255,
+    0.08
+  ); /* Fondo blanco con alta transparencia */
+  border: 1px solid rgba(255, 255, 255, 0.12); /* Borde sutil semi-transparente */
+  backdrop-filter: blur(
+    6px
+  ); /* Desenfoca lo que esté detrás de la imagen (efecto esmerilado) */
+
+  /* Efecto de Resplandor (Glow) */
+  /* Aplica sombras múltiples directamente a la silueta de la imagen, sube brillo y contraste */
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25))
+    drop-shadow(0 0 25px rgba(255, 255, 255, 0.12)) brightness(1.18)
+    contrast(1.15);
+
+  transition: all 0.3s ease; /* Transición suave de 0.3 segundos para todas sus propiedades */
 }
 
+/* Hover elegante (Efecto al pasar el cursor sobre el logo) */
 .logo-img:hover {
-  transform: scale(1.03);
+  transform: scale(1.03); /* Agranda el logo un 3% simulando cercanía */
 
-  filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.35)) brightness(1.22);
+  /* Intensifica las sombras de luz, el brillo y el contraste al pasar el mouse */
+  filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))
+    drop-shadow(0 0 32px rgba(255, 255, 255, 0.18)) brightness(1.25)
+    contrast(1.2);
 }
 
-/* =========================================================
-   MENÚ
-========================================================= */
+/* Texto complementario debajo del logo */
+.logo span {
+  font-size: 18px;
+  letter-spacing: 6px; /* Espaciado entre letras para un estilo más elegante y legible */
+  color: #9bc0ff; /* Color azul claro que contrasta con el fondo */
+}
+
+/* Menú de Navegación */
 .menu {
-  flex: 1;
+  flex: 1; /* Hace que el menú crezca y ocupe todo el espacio disponible, empujando al logout al fondo */
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  flex-direction: column; /* Enlaces ordenados uno abajo del otro */
+  gap: 8px; /* Espacio de 8px entre cada enlace */
+  padding-right: 5px; /* Pequeño colchón derecho para que el texto no toque la barra de scroll */
 }
 
+/* Enlaces individuales del menú */
 .menu a {
-  color: #fff;
-  text-decoration: none;
-  padding: 14px 18px;
-  border-radius: 12px;
-
+  color: #fefefd; /* Color de texto casi blanco puro */
+  text-decoration: none; /* Elimina la línea subrayada típica de los enlaces */
+  padding: 14px 18px; /* Tamaño del área interactiva del botón */
+  border-radius: 12px; /* Bordes redondeados del botón */
   display: flex;
-  align-items: center;
-  gap: 12px;
-
-  transition: 0.3s ease;
-  font-size: 14px;
-  font-weight: 500;
+  align-items: center; /* Alinea verticalmente el icono y el texto al centro */
+  gap: 12px; /* Separación entre el icono y el texto */
+  transition: 0.3s; /* Transición suave para los cambios de color y fondo */
 }
 
-.menu a:hover {
-  background: #4567b7;
+/* Estado Hover y Activo del Menú */
+.menu a:hover,
+.menu a.active {
+  background: #4567b7; /* Cambia el fondo a un azul más claro */
+  color: white; /* Texto blanco puro */
 }
 
+/* Iconos del menú (ej. FontAwesome) */
 .menu i {
-  width: 20px;
-  text-align: center;
+  width: 20px; /* Ancho fijo para garantizar que todos los textos inicien en la misma columna */
 }
 
-/* =========================================================
-   LOGOUT
-========================================================= */
+/* Personalización de la barra de scroll de la Sidebar (Solo navegadores WebKit como Chrome, Edge, Safari) */
+.sidebar::-webkit-scrollbar {
+  width: 6px; /* Grosor de la barra de scroll vertical */
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent; /* Fondo del carril del scroll invisible */
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.25
+  ); /* Color de la barra de scroll (blanco translúcido) */
+  border-radius: 10px; /* Bordes completamente redondeados */
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.4
+  ); /* Se oscurece ligeramente al pasar el mouse */
+}
+
+/* Sección de Cierre de Sesión (Logout) */
 .logout {
   margin-top: 20px;
   padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.15); /* Línea divisoria superior delgada y sutil */
 }
 
 .logout a {
   color: white;
   text-decoration: none;
-
   display: flex;
-  align-items: center;
   gap: 12px;
-
   padding: 14px 18px;
   border-radius: 12px;
-
-  transition: 0.3s;
 }
 
 .logout a:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(
+    255,
+    255,
+    255,
+    0.08
+  ); /* Fondo sutil al posarse sobre cerrar sesión */
 }
 
 /* =========================================================
@@ -670,3 +724,420 @@ body {
   color: #7a8599;
 }
 
+/* =========================================================
+   RESPONSIVE DESIGN
+   Adaptación para pantallas grandes, medianas y pequeñas
+========================================================= */
+
+/* =========================================================
+   PANTALLAS GRANDES (<= 1400px)
+========================================================= */
+@media screen and (max-width: 1400px) {
+  .sidebar {
+    width: 250px;
+    padding: 24px 16px;
+  }
+
+  .main-content {
+    margin-left: 250px;
+    padding: 24px;
+  }
+
+  .logo-img {
+    width: 230px;
+  }
+
+  .page-title h1 {
+    font-size: 30px;
+  }
+
+  .search-box {
+    max-width: 360px;
+  }
+
+  .form-body {
+    padding: 24px;
+  }
+
+  .form-card-header {
+    padding: 22px 24px;
+  }
+
+  .results-table th,
+  .results-table td {
+    padding: 12px 14px;
+  }
+}
+
+/* =========================================================
+   TABLETS / LAPTOPS MEDIANAS (<= 1200px)
+========================================================= */
+@media screen and (max-width: 1200px) {
+  .sidebar {
+    width: 95px;
+    min-width: 95px;
+    padding: 20px 10px;
+    align-items: center;
+  }
+
+  .main-content {
+    margin-left: 95px;
+    width: calc(100% - 95px);
+    padding: 22px;
+  }
+
+  .logo-img {
+    width: 70px;
+    padding: 10px;
+  }
+
+  /* SOLO ICONOS */
+  .menu a,
+  .logout a {
+    justify-content: center;
+    padding: 14px;
+    font-size: 0;
+    gap: 0;
+  }
+
+  .menu a i,
+  .logout a i {
+    font-size: 18px;
+    width: auto;
+  }
+
+  .topbar {
+    gap: 16px;
+  }
+
+  .page-title {
+    width: 100%;
+  }
+
+  .page-title h1 {
+    font-size: 28px;
+  }
+
+  .search-box {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  .topbar-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .roles-preview {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .form-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .form-footer {
+    flex-wrap: wrap;
+  }
+}
+
+/* =========================================================
+   TABLETS Y MÓVILES GRANDES (<= 992px)
+========================================================= */
+@media screen and (max-width: 992px) {
+  .sidebar {
+    width: 80px;
+    min-width: 80px;
+    padding: 18px 8px;
+  }
+
+  .main-content {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+    padding: 18px;
+  }
+
+  .logo-img {
+    width: 58px;
+    padding: 8px;
+  }
+
+  /* SOLO ICONOS */
+  .menu a,
+  .logout a {
+    justify-content: center;
+    padding: 13px;
+    font-size: 0;
+    gap: 0;
+  }
+
+  .menu a i,
+  .logout a i {
+    font-size: 17px;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .page-title h1 {
+    font-size: 24px;
+  }
+
+  .page-title p {
+    font-size: 13px;
+  }
+
+  .search-box {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .topbar-actions {
+    justify-content: space-between;
+  }
+
+  .user-profile {
+    padding: 6px 10px;
+  }
+
+  .user-profile img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .user-info strong {
+    font-size: 12px;
+  }
+
+  .user-info span {
+    font-size: 11px;
+  }
+
+  .form-card-header,
+  .form-body {
+    padding: 20px;
+  }
+
+  .form-grid {
+    gap: 18px;
+  }
+
+  .roles-preview {
+    grid-template-columns: 1fr;
+  }
+
+  .results-table {
+    min-width: 760px;
+  }
+
+  .btn {
+    font-size: 13px;
+    padding: 11px 18px;
+  }
+}
+
+/* =========================================================
+   MÓVILES (<= 768px)
+========================================================= */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 68px;
+    min-width: 68px;
+    padding: 14px 6px;
+  }
+
+  .main-content {
+    margin-left: 68px;
+    width: calc(100% - 68px);
+    padding: 14px;
+  }
+
+  .logo-container {
+    margin-bottom: 18px;
+  }
+
+  .logo-img {
+    width: 48px;
+    padding: 6px;
+    border-radius: 14px;
+  }
+
+  /* SOLO ICONOS */
+  .menu a,
+  .logout a {
+    justify-content: center;
+    padding: 12px;
+    font-size: 0;
+    gap: 0;
+    border-radius: 10px;
+  }
+
+  .menu a i,
+  .logout a i {
+    font-size: 15px;
+  }
+
+  .page-title h1 {
+    font-size: 22px;
+  }
+
+  .page-title p {
+    font-size: 12px;
+  }
+
+  .search-box input {
+    font-size: 13px;
+    padding: 12px 14px 12px 42px;
+  }
+
+  .search-box i {
+    left: 14px;
+  }
+
+  .user-info {
+    display: none;
+  }
+
+  .user-profile {
+    padding: 5px 8px;
+  }
+
+  .user-profile img {
+    width: 34px;
+    height: 34px;
+  }
+
+  .breadcrumb {
+    font-size: 11px;
+  }
+
+  .form-card {
+    border-radius: 14px;
+  }
+
+  .form-card-header,
+  .form-body {
+    padding: 16px;
+  }
+
+  .form-card-title {
+    font-size: 16px;
+  }
+
+  .form-card-subtitle {
+    font-size: 11px;
+  }
+
+  .form-section-title {
+    font-size: 11px;
+  }
+
+  .field label {
+    font-size: 12px;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 12px;
+    padding: 10px 12px;
+  }
+
+  .results-table th,
+  .results-table td {
+    font-size: 12px;
+    padding: 10px 12px;
+  }
+
+  .form-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .footer {
+    font-size: 11px;
+  }
+}
+
+/* =========================================================
+   MÓVILES PEQUEÑOS (<= 576px)
+========================================================= */
+@media screen and (max-width: 576px) {
+  .sidebar {
+    width: 60px;
+    min-width: 60px;
+    padding: 12px 4px;
+  }
+
+  .main-content {
+    margin-left: 60px;
+    width: calc(100% - 60px);
+    padding: 10px;
+  }
+
+  .logo-img {
+    width: 42px;
+    padding: 5px;
+  }
+
+  /* SOLO ICONOS */
+  .menu a,
+  .logout a {
+    padding: 10px;
+    font-size: 0;
+  }
+
+  .menu a i,
+  .logout a i {
+    font-size: 14px;
+  }
+
+  .page-title h1 {
+    font-size: 19px;
+  }
+
+  .page-title p {
+    font-size: 11px;
+  }
+
+  .search-box input {
+    font-size: 12px;
+  }
+
+  .form-card-header,
+  .form-body {
+    padding: 14px;
+  }
+
+  .form-card-title {
+    font-size: 14px;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 11px;
+  }
+
+  .btn {
+    font-size: 11px;
+    padding: 10px;
+  }
+
+  .footer {
+    font-size: 10px;
+  }
+}
