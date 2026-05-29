@@ -165,14 +165,6 @@ body {
   flex-wrap: wrap;
 }
 
-.menu-toggle {
-  border: none;
-  background: none;
-  font-size: 26px;
-  cursor: pointer;
-  color: #293477;
-}
-
 .page-title {
   min-width: 260px;
 }

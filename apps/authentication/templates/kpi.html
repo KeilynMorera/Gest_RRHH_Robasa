@@ -6,7 +6,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard de KPIs - Gestión de Talento Humano</title>
+    <title>Resumen de KPIs - Gestión de Talento Humano</title>
 
     <link rel="stylesheet" href="{% static 'styles/kpi.css' %}" />
 
@@ -140,10 +140,6 @@
 
       <main class="main-content">
         <header class="topbar">
-          <button class="menu-toggle">
-            <i class="fas fa-bars"></i>
-          </button>
-
           <div class="page-title">
             <h1>Módulo de KPIs y Rendimiento</h1>
             <p>Monitoreo general de indicadores y asignación de incentivos</p>
@@ -169,7 +165,6 @@
                 <strong>María Gómez</strong>
                 <span>Recursos Humanos</span>
               </div>
-              <i class="fas fa-chevron-down"></i>
             </div>
           </div>
         </header>
@@ -469,22 +464,22 @@
 
                   <tbody>
                     <tr>
-                      <td>Carlos Méndez</td>
-                      <td>Cobro efectividad</td>
-                      <td>98%</td>
-                      <td>₡250,000</td>
-                      <td>Bono Oro</td>
-                      <td>
+                      <td data-label="Empleado">Carlos Méndez</td>
+                      <td data-label="Categoría">Cobro efectividad</td>
+                      <td data-label="% Alcanzado">98%</td>
+                      <td data-label="Monto">₡250,000</td>
+                      <td data-label="Premio">Bono Oro</td>
+                      <td data-label="Estado">
                         <span class="status-badge success"> Completado </span>
                       </td>
                     </tr>
 
                     <tr>
-                      <td>Ana Rodríguez</td>
-                      <td>Comisión</td>
-                      <td>92%</td>
-                      <td>₡180,000</td>
-                      <td>Incentivo Comercial</td>
+                      <td data-label="Empleado">Ana Rodríguez</td>
+                      <td data-label="Categoría">Comisión</td>
+                      <td data-label="% Alcanzado">92%</td>
+                      <td data-label="Monto">₡180,000</td>
+                      <td data-label="Premio">Incentivo Comercial</td>
                       <td>
                         <span class="status-badge pending"> En revisión </span>
                       </td>
