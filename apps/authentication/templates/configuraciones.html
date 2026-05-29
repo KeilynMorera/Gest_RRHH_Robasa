@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Configuración General - Gestión de Talento Humano</title>
 
-    <link rel="stylesheet" href="{% static 'styles/usuarios.css' %}" />
+    <link rel="stylesheet" href="{% static 'styles/configuraciones.css' %}" />
 
     <link
       rel="stylesheet"
@@ -140,10 +140,6 @@
 
       <main class="main-content">
         <header class="topbar">
-          <button class="menu-toggle">
-            <i class="fas fa-bars"></i>
-          </button>
-
           <div class="page-title">
             <h1>Configuración General</h1>
             <p>
@@ -168,15 +164,17 @@
                 <strong>María Gómez</strong>
                 <span>Administrador</span>
               </div>
-              <i class="fas fa-chevron-down"></i>
             </div>
           </div>
         </header>
 
+        <!-- Breadcrumb (Línea de tiempo / Ruta de navegación) -->
         <div class="breadcrumb">
           <a href="{% url 'inicio' %}"> <i class="fas fa-house"></i> Inicio </a>
           <i class="fas fa-chevron-right sep"></i>
-          <span class="current"> Configuración del Sistema </span>
+          <a href="{% url 'configuraciones' %}">Configuración</a>
+          <i class="fas fa-chevron-right sep"></i>
+          <span class="current">Configuración del Sistema</span>
         </div>
 
         <section class="form-card">
