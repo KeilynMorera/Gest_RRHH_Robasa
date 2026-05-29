@@ -140,10 +140,6 @@
 
       <main class="main-content">
         <header class="topbar">
-          <button class="menu-toggle">
-            <i class="fas fa-bars"></i>
-          </button>
-
           <div class="page-title">
             <h1>Panel de Control de KPIs</h1>
             <p>Seleccione la acción o consulta que desea realizar</p>
@@ -169,84 +165,102 @@
                 <strong>María Gómez</strong>
                 <span>Recursos Humanos</span>
               </div>
-              <i class="fas fa-chevron-down"></i>
             </div>
           </div>
         </header>
 
         <section class="action-cards-grid">
+          <!-- =========================================================
+       CARD: REGISTRO KPI
+  ========================================================= -->
           <div class="action-card">
             <div class="action-card-illustration">
-              <i class="fas fa-chart-pie"></i>
+              <!-- Ícono relacionado con métricas / rendimiento -->
+              <i class="fas fa-chart-line"></i>
             </div>
+
             <div class="action-card-body">
               <h3 class="action-card-title">Registrar KPI</h3>
+
               <p class="action-card-desc">
                 Registro mensual de KPIs por empleado y casa comercial.
               </p>
+
               <a href="{% url 'kpi_Registro' %}" class="action-card-btn">
-                <i class="fas fa-plus"></i> Registrar KPI
+                <i class="fas fa-plus"></i>
+                Registrar KPI
               </a>
             </div>
           </div>
 
+          <!-- =========================================================
+       CARD: PREMIOS KPI
+  ========================================================= -->
           <div class="action-card">
             <div class="action-card-illustration accent">
-              <i class="fas fa-clock-rotate-left"></i>
+              <!-- Ícono relacionado con premios/reconocimientos -->
+              <i class="fas fa-award"></i>
             </div>
-            <div class="action-card-body">
-              <h3 class="action-card-title">Historial KPI</h3>
-              <p class="action-card-desc">
-                Detalle de cada indicador dentro de un registro de KPI mensual.
-              </p>
-              <a href="{% url 'kpi_Detalle' %}" class="action-card-btn accent">
-                <i class="fas fa-magnifying-glass"></i> Ver Historial
-              </a>
-            </div>
-          </div>
 
-          <div class="action-card">
-            <div class="action-card-illustration">
-              <i class="fas fa-trophy"></i>
-            </div>
             <div class="action-card-body">
               <h3 class="action-card-title">Premios</h3>
+
               <p class="action-card-desc">
-                Relación entre un KPI mensual y los premios ganados.
+                Gestión de premios e incentivos relacionados a los KPIs
+                mensuales.
               </p>
-              <a href="{% url 'kpi_Premio' %}" class="action-card-btn">
-                <i class="fas fa-plus"></i> Premios KPIs
+
+              <a href="{% url 'kpi_Premio' %}" class="action-card-btn accent">
+                <i class="fas fa-gift"></i>
+                Gestionar Premios
               </a>
             </div>
           </div>
 
-          <div class="action-card">
-            <div class="action-card-illustration accent">
-              <i class="fas fa-table-list"></i>
-            </div>
-            <div class="action-card-body">
-              <h3 class="action-card-title">Asignar Premios</h3>
-              <p class="action-card-desc">
-                Relación entre un KPI mensual y los premios ganados
-              </p>
-              <a href="{% url 'kpi_AsigPremio' %}" class="action-card-btn accent">
-                <i class="fas fa-eye"></i> Asignar Premios
-              </a>
-            </div>
-          </div>
-
+          <!-- =========================================================
+       CARD: ASIGNAR PREMIOS
+  ========================================================= -->
           <div class="action-card">
             <div class="action-card-illustration">
-              <i class="fas fa-trophy"></i>
+              <!-- Ícono relacionado con asignación -->
+              <i class="fas fa-hand-holding-dollar"></i>
             </div>
+
+            <div class="action-card-body">
+              <h3 class="action-card-title">Asignar Premios</h3>
+
+              <p class="action-card-desc">
+                Relación entre un KPI mensual y los premios ganados por el
+                colaborador.
+              </p>
+
+              <a href="{% url 'kpi_AsigPremio' %}" class="action-card-btn">
+                <i class="fas fa-check"></i>
+                Asignar Premios
+              </a>
+            </div>
+          </div>
+
+          <!-- =========================================================
+       CARD: RESUMEN KPI
+  ========================================================= -->
+          <div class="action-card">
+            <div class="action-card-illustration accent">
+              <!-- Ícono relacionado con dashboard/resumen -->
+              <i class="fas fa-chart-column"></i>
+            </div>
+
             <div class="action-card-body">
               <h3 class="action-card-title">Resumen KPIs</h3>
+
               <p class="action-card-desc">
-                Visualización general del desempeño mensual, premios e
-                incentivos...
+                Visualización general del desempeño mensual, incentivos y
+                resultados obtenidos.
               </p>
-              <a href="{% url 'kpi' %}" class="action-card-btn">
-                <i class="fas fa-plus"></i> Ver Resumen
+
+              <a href="{% url 'kpi' %}" class="action-card-btn accent">
+                <i class="fas fa-eye"></i>
+                Ver Resumen
               </a>
             </div>
           </div>

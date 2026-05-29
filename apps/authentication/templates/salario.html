@@ -369,11 +369,32 @@
                 <h4 class="form-section-title">Componentes de Salario</h4>
 
                 <div class="form-grid">
+                  <!-- COMPONENTE -->
+                  <div class="field">
+                    <label for="componente">
+                      <i class="fas fa-money-bill-wave field-icon"></i>
+                      Componente Salarial
+                      <span class="req">*</span>
+                    </label>
+
+                    <select id="componente" name="idComponente" required>
+                      <option disabled selected value="">
+                        Seleccione componente
+                      </option>
+
+                      {% for componente in componentes %}
+                      <option value="{{ componente.idComponente }}">
+                        {{ componente.NombreComponente }}
+                      </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
                   <!-- Comisión -->
                   <div class="field">
                     <label for="comision_base">
                       <i class="fas fa-percent field-icon"></i>
-                      Comisión
+                      Monto componente
                     </label>
 
                     <input
@@ -386,81 +407,7 @@
                       placeholder="0.00"
                     />
                   </div>
-
-                  <!-- Variable -->
-                  <div class="field">
-                    <label for="variable_base">
-                      <i class="fas fa-chart-line field-icon"></i>
-                      Variable
-                    </label>
-
-                    <input
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      id="variable_base"
-                      name="variable_base"
-                      value="0.00"
-                      placeholder="0.00"
-                    />
-                  </div>
-
-                  <!-- Viáticos -->
-                  <div class="field">
-                    <label for="viaticos_alimenticios">
-                      <i class="fas fa-utensils field-icon"></i>
-                      Viáticos alimenticios
-                    </label>
-
-                    <input
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      id="viaticos_alimenticios"
-                      name="viaticos_alimenticios"
-                      value="0.00"
-                      placeholder="0.00"
-                    />
-                  </div>
-
-                  <!-- Kilometraje -->
-                  <div class="field">
-                    <label for="kilometraje_base">
-                      <i class="fas fa-route field-icon"></i>
-                      Kilometraje
-                    </label>
-
-                    <input
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      id="kilometraje_base"
-                      name="kilometraje_base"
-                      value="0.00"
-                      placeholder="0.00"
-                    />
-                  </div>
-
-                  <!-- Bono -->
-                  <div class="field">
-                    <label for="bono_base">
-                      <i class="fas fa-gift field-icon"></i>
-                      Bono
-                    </label>
-
-                    <input
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      id="bono_base"
-                      name="bono_base"
-                      value="0.00"
-                      placeholder="0.00"
-                    />
-                  </div>
-                </div>
-              </div>
-
+                  
               <!-- =====================================================
                    SECCIÓN: OBSERVACIONES
               ====================================================== -->
