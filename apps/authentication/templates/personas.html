@@ -301,7 +301,8 @@
           ====================================================== -->
           <div class="form-body">
             <!-- Formulario principal -->
-            <form method="POST" action="#">
+            <form method="POST" enctype="multipart/form-data">
+              <!--enctype="multipart/form-data" es para subir archivos -->
               <!-- Token de seguridad de Django -->
               {% csrf_token %}
 
@@ -327,8 +328,8 @@
                       <!-- Vista previa -->
                       <div class="photo-preview">
                         <img
-                          id="preview-image"
-                          src="{% static 'img/personas_img/default-user.png' %}"
+                          id="foto"
+                          src="{% static 'imagenes/fotos_personas/default-user.png' %}"
                           alt="Vista previa de la foto"
                         />
                       </div>
@@ -402,10 +403,10 @@
                       <option value="" disabled selected>
                         Seleccione una opción…
                       </option>
-                      <!-- Mapeado directo con los IDs de la tabla PersonaSexo -->
-                      <option value="1">Masculino</option>
-                      <option value="2">Femenino</option>
-                      <option value="3">No Especificado</option>
+
+                      {% for sexo in sexos %}
+                      <option value="{{ sexo.idSexo }}">{{ sexo.Sexo }}</option>
+                      {% endfor %}
                     </select>
                   </div>
 

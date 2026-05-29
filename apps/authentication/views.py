@@ -1,5 +1,8 @@
 #render() busca el archivo base.html.
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+
+#render() busca el arcchivo models.py para traer los datos de la base de datos.
+from .models import Persona, PersonaSexo
 
 #Se procesa. Lo envía al navegador como HTML.
 def home(request):
@@ -173,3 +176,54 @@ def checklist_off_view(request):
 #Pagina de Asignar Premios a KPIs
 def kpi_AsigPremio_view(request):   
     return render(request, 'kpi_AsigPremio.html')
+
+
+###################################### Enviar Registros ######################################
+
+def registrar_persona(request):
+
+    # Traer sexos desde la BD
+    sexos = PersonaSexo.objects.all()
+
+    # Si el formulario fue enviado
+    if request.method == 'POST':
+
+        nombre = request.POST.get('nombre_completo')
+        cedula = request.POST.get('cedula')
+        fecha_nacimiento = request.POST.get('fecha_nacimiento')
+        telefono = request.POST.get('telefono')
+        celular = request.POST.get('celular')
+        correo = request.POST.get('correo')
+        direccion = request.POST.get('direccion')
+
+        # Foreign Key
+        sexo_id = request.POST.get('sexo')
+        sexo = PersonaSexo.objects.get(idSexo=sexo_id)
+
+        # Foto
+        foto = request.FILES.get('foto')
+
+        # Guardar en BD
+        Persona.objects.create(
+            Nombre=nombre,
+            Cedula=cedula,
+            Fecha_Nacimiento=fecha_nacimiento,
+            Telefono=telefono,
+            Celular=celular,
+            Correo=correo,
+            Direccion=direccion,
+            Foto=foto,
+            idSexo=sexo
+        )
+
+        # Redireccionar
+        return redirect('per_emp')
+
+    # Mostrar formulario
+    return render(
+        request,
+        'personas/registro_persona.html',
+        {
+            'sexos': sexos
+        }
+    )
