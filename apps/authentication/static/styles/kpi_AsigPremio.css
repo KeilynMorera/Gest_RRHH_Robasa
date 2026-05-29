@@ -191,15 +191,6 @@ body {
   flex-wrap: wrap; /* Permite que los elementos se envuelvan si el espacio horizontal se reduce */
 }
 
-/* Botón destinado al colapso de la barra lateral (Hamburger Menu) */
-.menu-toggle {
-  border: none;
-  background: none;
-  font-size: 26px;
-  cursor: pointer;
-  color: #293477;
-}
-
 .page-title {
   min-width: 260px;
 }
@@ -569,6 +560,55 @@ body {
 }
 
 /* ==========================================================================
+   CONTENEDOR DE TABLA ADAPTIVA (Historial de Asignaciones)
+   ========================================================================== */
+
+.table-container {
+  width: 100%;
+  overflow-x: auto; /* Genera scroll horizontal si la tabla excede el ancho de la pantalla */
+  background: #ffffff;
+  border: 1.5px solid #e8ecf6;
+  border-radius: 12px;
+  margin-top: 5px;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse; /* Une los bordes de las celdas en uno solo */
+  text-align: left;
+  font-size: 13.5px;
+}
+
+/* Estilos de las celdas de encabezado */
+.results-table th {
+  background: #f7f8fc;
+  color: #1a2042;
+  font-weight: 700;
+  padding: 14px 18px;
+  border-bottom: 1.5px solid #e8ecf6;
+  white-space: nowrap; /* Evita que los encabezados de columna salten de línea */
+}
+
+/* Estilos de las celdas de datos */
+.results-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid #e8ecf6;
+  color: #6b7499;
+  white-space: nowrap; /* Mantiene los datos en una sola línea limpia */
+}
+
+/* Elimina la línea divisoria de la última fila de datos de la tabla */
+.results-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Resalte sutil al pasar el mouse sobre una fila completa */
+.results-table tbody tr:hover td {
+  background: #fdfdfe;
+  color: #1a2042;
+}
+
+/* ==========================================================================
    BOTONES Y ACCIONES DEL FORMULARIO
    ========================================================================== */
 
@@ -647,147 +687,316 @@ body {
   font-size: 13.5px;
 }
 
-/* ==========================================================================
-   DISEÑO RESPONSIVO COMPACTO (Media Queries Adaptados)
+/* ==========================================================================  
+   RESPONSIVE OPTIMIZADO — SIN SCROLL HORIZONTAL
+   Sidebar compacto + contenido centrado
    ========================================================================== */
 
-/* ── Pantallas de Laptops y Notebooks Medianas (Hasta 1199px) ── */
-@media screen and (max-width: 1199px) {
-  .sidebar {
-    width: 230px; /* Reduce el sidebar para optimizar el espacio de contenido */
-    padding: 25px 15px;
-  }
-  .main-content {
-    margin-left: 230px; /* Sincroniza el margen con la reducción del sidebar */
-    padding: 25px;
-  }
-  .logo-img {
-    max-width: 170px;
-  }
-  .menu a {
-    font-size: 13px;
-    padding: 10px 12px;
-  }
-  .page-title h1 {
-    font-size: 28px;
-  }
-}
-
-/* ── Pantallas de Tablets (Hasta 991px) ── */
+/* ==========================================================================  
+   TABLETS Y LAPTOPS PEQUEÑAS (<= 991px)
+   ========================================================================== */
 @media screen and (max-width: 991px) {
+  /* ===== SIDEBAR ===== */
   .sidebar {
-    width: 200px;
-    padding: 20px 12px;
+    width: 90px;
+    padding: 18px 8px;
+    align-items: center;
   }
-  .main-content {
-    margin-left: 200px;
-    padding: 20px;
-  }
-  .logo-img {
-    max-width: 140px;
-    padding: 10px;
-  }
-  .form-grid {
-    grid-template-columns: 1fr; /* Colapsa inputs a una sola columna vertical */
-  }
-}
 
-/* ── Dispositivos Móviles (Hasta 767px): Formato iconográfico e interactivo ── */
-@media screen and (max-width: 767px) {
-  .sidebar {
-    width: 80px; /* Cambia drásticamente a una barra ultra compacta */
-    padding: 15px 8px;
-    align-items: center; /* Centra los íconos del menú */
-  }
-  .main-content {
-    margin-left: 80px; /* Ajusta el contenido al sidebar de formato compacto */
-    padding: 15px;
-  }
   .logo-container {
-    margin-bottom: 20px;
-  }
-  .logo-img {
-    width: 50px;
-    padding: 6px;
-    border-radius: 10px;
+    margin-bottom: 22px;
   }
 
-  /* Oculta los textos de navegación reduciendo su fuente a 0, dejando solo los íconos visibles */
-  .menu a {
-    font-size: 0;
-    padding: 14px;
-    justify-content: center;
-    width: 100%;
+  .logo-img {
+    width: 55px;
+    max-width: 55px;
+    padding: 6px;
+    border-radius: 12px;
   }
-  .menu a i {
+
+  /* SOLO ICONOS */
+  .menu a,
+  .logout a {
+    justify-content: center;
+    padding: 14px 10px;
+    font-size: 0;
+    gap: 0;
+    border-radius: 12px;
+  }
+
+  .menu a i,
+  .logout a i {
+    width: auto;
     font-size: 18px;
     margin: 0;
-    width: auto;
   }
 
-  /* Oculta el texto de Cierre de Sesión */
-  .logout a {
-    font-size: 0;
-    padding: 14px;
-    justify-content: center;
-  }
-  .logout a i {
-    font-size: 18px;
+  /* ===== MAIN CONTENT ===== */
+  .main-content {
+    margin-left: 90px;
+    width: calc(100% - 90px);
+    padding: 18px;
+    overflow-x: hidden;
   }
 
-  /* Reestructura la barra superior transformándola en vertical */
+  /* ===== TOPBAR ===== */
   .topbar {
     flex-direction: column;
     align-items: stretch;
-    gap: 12px;
+    gap: 14px;
   }
-  .menu-toggle {
-    display: none !important;
-  } /* Oculta el botón hamburguesa */
+
+  .page-title {
+    min-width: 100%;
+  }
+
+  .page-title h1 {
+    font-size: 28px;
+  }
+
   .search-box {
     max-width: 100%;
-  } /* El buscador ocupa el total del ancho */
+    width: 100%;
+  }
+
   .topbar-actions {
     width: 100%;
-    justify-content: space-between;
     margin-left: 0;
+    justify-content: flex-end;
   }
-  .user-info {
-    display: none !important;
-  } /* Quita información textual de usuario */
 
-  /* Compactación del Header del Formulario */
+  .user-info {
+    display: none;
+  }
+
+  /* ===== FORMULARIOS ===== */
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
   .form-card-header {
-    padding: 16px 20px;
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
   }
+
   .form-body {
     padding: 20px;
   }
+
+  /* ===== TABLAS ===== */
+  .table-container {
+    overflow-x: hidden;
+  }
+
+  .results-table {
+    min-width: 100%;
+    table-layout: fixed;
+  }
+
+  .results-table th,
+  .results-table td {
+    white-space: normal;
+    word-break: break-word;
+    padding: 12px;
+    font-size: 12px;
+  }
+
+  /* ===== BOTONES ===== */
+  .form-footer {
+    flex-direction: column;
+  }
+
   .btn {
     width: 100%;
-  } /* Transforma los botones a bloques de ancho total (Fácil interacción táctil) */
+  }
 }
 
-/* ── Smartphones Muy Pequeños / Pantallas de Baja Resolución (Hasta 480px) ── */
-@media screen and (max-width: 480px) {
+/* ==========================================================================  
+   CELULARES (<= 767px)
+   ========================================================================== */
+@media screen and (max-width: 767px) {
+  /* ===== SIDEBAR MÁS COMPACTO ===== */
   .sidebar {
-    width: 65px;
-  } /* Máxima miniaturización del Sidebar */
+    width: 70px;
+    padding: 14px 6px;
+  }
+
   .main-content {
-    margin-left: 65px;
-    padding: 10px;
+    margin-left: 70px;
+    width: calc(100% - 70px);
+    padding: 14px;
   }
+
   .logo-img {
-    width: 40px;
+    width: 42px;
+    max-width: 42px;
+    padding: 5px;
   }
+
+  .menu a,
+  .logout a {
+    padding: 12px 6px;
+  }
+
   .menu a i,
   .logout a i {
     font-size: 16px;
   }
+
+  /* ===== TITULOS ===== */
   .page-title h1 {
-    font-size: 20px;
+    font-size: 22px;
+    text-align: center;
+  }
+
+  .page-title p {
+    text-align: center;
+    font-size: 13px;
+  }
+
+  /* ===== TOPBAR ===== */
+  .topbar-actions {
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .search-box input {
+    font-size: 13px;
+    padding: 12px 14px 12px 40px;
+  }
+
+  /* ===== TARJETAS ===== */
+  .form-card {
+    border-radius: 12px;
+  }
+
+  .form-card-header {
+    padding: 16px;
+  }
+
+  .form-body {
+    padding: 16px;
+  }
+
+  .form-card-title {
+    font-size: 16px;
+  }
+
+  .form-card-subtitle {
+    font-size: 12px;
+  }
+
+  /* ===== RESUMEN ===== */
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-card {
+    text-align: center;
+  }
+
+  /* ===== TABLAS RESPONSIVE ===== */
+  .results-table {
+    display: block;
+    width: 100%;
+  }
+
+  .results-table thead {
+    display: none;
+  }
+
+  .results-table tbody,
+  .results-table tr,
+  .results-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .results-table tr {
+    margin-bottom: 16px;
+    border: 1px solid #e8ecf6;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .results-table td {
+    text-align: left;
+    padding: 12px 14px;
+    border-bottom: 1px solid #eef1f7;
+    position: relative;
+  }
+
+  .results-table td:last-child {
+    border-bottom: none;
+  }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    text-align: center;
+    font-size: 12px;
+  }
+}
+
+/* ==========================================================================  
+   CELULARES MUY PEQUEÑOS (<= 480px)
+   ========================================================================== */
+@media screen and (max-width: 480px) {
+  .sidebar {
+    width: 60px;
+  }
+
+  .main-content {
+    margin-left: 60px;
+    width: calc(100% - 60px);
+    padding: 10px;
+  }
+
+  .logo-img {
+    width: 36px;
+    max-width: 36px;
+  }
+
+  .menu a i,
+  .logout a i {
+    font-size: 15px;
+  }
+
+  .page-title h1 {
+    font-size: 18px;
+  }
+
+  .page-title p {
+    font-size: 11px;
+  }
+
+  .form-card-header,
+  .form-body {
+    padding: 14px;
+  }
+
+  .field label {
+    font-size: 12px;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 12px;
+    padding: 10px;
+  }
+
+  .summary-card strong {
+    font-size: 18px;
+  }
+
+  .btn {
+    font-size: 12px;
+    padding: 10px;
+  }
+
+  .results-table td {
+    font-size: 11px;
+    padding: 10px 12px;
   }
 }

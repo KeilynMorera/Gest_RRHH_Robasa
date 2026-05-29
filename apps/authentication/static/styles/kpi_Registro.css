@@ -16,9 +16,9 @@
  */
 body {
   font-family:
-    "Segoe UI", sans-serif; /* Pila tipográfica optimizada para pantallas con renderizado ClearType */
-  background: #f4f7fb; /* Color de fondo hexadecimal de baja luminosidad para reducir la fatiga visual */
-  color: #d35b1a; /* Color primario del texto (Naranja de la paleta de marca) */
+    "Segoe UI", sans-serif; /* Tipografía del sistema limpia y legible */
+  background: #f4f7fb; /* Fondo gris azulado claro para el entorno de trabajo */
+  color: #d35b1a; /* Color principal del texto (Naranja quemado corporativo) */
 }
 
 /* ==========================================================================

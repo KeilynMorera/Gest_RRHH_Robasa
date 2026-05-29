@@ -77,17 +77,17 @@ body {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(6px);
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25)) 
-          drop-shadow(0 0 25px rgba(255, 255, 255, 0.12)) 
-          brightness(1.18) contrast(1.15);
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25))
+    drop-shadow(0 0 25px rgba(255, 255, 255, 0.12)) brightness(1.18)
+    contrast(1.15);
   transition: all 0.3s ease;
 }
 
 .logo-img:hover {
   transform: scale(1.03);
-  filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4)) 
-          drop-shadow(0 0 32px rgba(255, 255, 255, 0.18)) 
-          brightness(1.25) contrast(1.2);
+  filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))
+    drop-shadow(0 0 32px rgba(255, 255, 255, 0.18)) brightness(1.25)
+    contrast(1.2);
 }
 
 /* Navegación y Enlaces */
@@ -274,7 +274,6 @@ body {
   color: #7a8599;
 }
 
-
 /* ==========================================================================
    BREADCRUMB
    ========================================================================== */
@@ -442,7 +441,8 @@ body {
 }
 
 /* Inputs y Selects */
-.field select, .field input {
+.field select,
+.field input {
   width: 100%;
   border: 1.5px solid #dde2f0;
   border-radius: 8px;
@@ -464,7 +464,8 @@ body {
   cursor: pointer;
 }
 
-.field select:focus, .field input:focus {
+.field select:focus,
+.field input:focus {
   border-color: #e8600a;
   box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
 }
@@ -511,12 +512,14 @@ body {
   border: 1.5px solid #e8ecf6;
   border-radius: 12px;
   padding: 20px;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
 .stat-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.04);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.04);
 }
 
 .stat-top {
@@ -546,10 +549,18 @@ body {
 }
 
 /* Variaciones de Bordes de Color para Tarjetas */
-.stat-card.performance { border-left: 4px solid #26317a; }
-.stat-card.potential { border-left: 4px solid #e8600a; }
-.stat-card.semestral { border-left: 4px solid #4567b7; }
-.stat-card.cliente { border-left: 4px solid #2e3f8f; }
+.stat-card.performance {
+  border-left: 4px solid #26317a;
+}
+.stat-card.potential {
+  border-left: 4px solid #e8600a;
+}
+.stat-card.semestral {
+  border-left: 4px solid #4567b7;
+}
+.stat-card.cliente {
+  border-left: 4px solid #2e3f8f;
+}
 
 /* ==========================================================================
    RESULTS LAYOUT (Paneles Divididos)
@@ -561,7 +572,8 @@ body {
   margin-bottom: 30px;
 }
 
-.results-left, .results-right {
+.results-left,
+.results-right {
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -602,9 +614,18 @@ body {
   border-radius: 6px;
   text-transform: uppercase;
 }
-.status-badge.high { background: rgba(232, 96, 10, 0.12); color: #e8600a; }
-.status-badge.success { background: #e8f5e9; color: #2e7d32; }
-.status-badge.pending { background: #fff3e0; color: #ef6c00; }
+.status-badge.high {
+  background: rgba(232, 96, 10, 0.12);
+  color: #e8600a;
+}
+.status-badge.success {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+.status-badge.pending {
+  background: #fff3e0;
+  color: #ef6c00;
+}
 
 /* Lista de Rankings de Empleados */
 .ranking-list {
@@ -697,9 +718,15 @@ body {
   height: 100%;
   border-radius: 10px;
 }
-.progress-fill.performance { background: #26317a; }
-.progress-fill.potential { background: #e8600a; }
-.progress-fill.cliente { background: #4567b7; }
+.progress-fill.performance {
+  background: #26317a;
+}
+.progress-fill.potential {
+  background: #e8600a;
+}
+.progress-fill.cliente {
+  background: #4567b7;
+}
 
 /* Lista de Premios Otorgados */
 .awards-list {
@@ -715,7 +742,9 @@ body {
   padding: 10px 0;
   border-bottom: 1px solid #e8ecf6;
 }
-.award-item:last-child { border-bottom: none; }
+.award-item:last-child {
+  border-bottom: none;
+}
 
 .award-icon {
   width: 36px;
@@ -726,9 +755,18 @@ body {
   justify-content: center;
   font-size: 16px;
 }
-.award-icon.gold { background: #fff9db; color: #fab005; }
-.award-icon.silver { background: #f1f3f5; color: #868e96; }
-.award-icon.bronze { background: #fff0f6; color: #e64980; }
+.award-icon.gold {
+  background: #fff9db;
+  color: #fab005;
+}
+.award-icon.silver {
+  background: #f1f3f5;
+  color: #868e96;
+}
+.award-icon.bronze {
+  background: #fff0f6;
+  color: #e64980;
+}
 
 .award-content strong {
   font-size: 13.5px;
@@ -812,7 +850,7 @@ body {
    ========================================================================== */
 
 .footer {
-  margin-top: auto;       /* Técnica flexbox para empujar el pie de página siempre al fondo del contenedor */
+  margin-top: auto; /* Técnica flexbox para empujar el pie de página siempre al fondo del contenedor */
   padding-top: 20px;
   text-align: center;
   color: #7a8599;
@@ -828,7 +866,6 @@ body {
    PANTALLAS GRANDES / LAPTOPS (Hasta 1400px)
    ========================================================================== */
 @media screen and (max-width: 1400px) {
-
   .main-content {
     padding: 24px;
   }
@@ -858,7 +895,6 @@ body {
    LAPTOPS MEDIANAS / DESKTOPS PEQUEÑAS (Hasta 1200px)
    ========================================================================== */
 @media screen and (max-width: 1200px) {
-
   /* Sidebar más compacto */
   .sidebar {
     width: 250px;
@@ -880,13 +916,14 @@ body {
     gap: 16px;
   }
 
-  .page-title {
-    width: 100%;
-  }
-
   .search-box {
     flex: 1 1 100%;
     max-width: 100%;
+  }
+
+  /* Oculta texto del usuario */
+  .user-info {
+    display: none;
   }
 
   .topbar-actions {
@@ -913,66 +950,118 @@ body {
 }
 
 /* ==========================================================================
-   TABLETS / PANTALLAS MEDIANAS (Hasta 992px)
+   TABLETS Y MÓVILES
+   SOLO ICONOS EN EL SIDEBAR
    ========================================================================== */
 @media screen and (max-width: 992px) {
-
-  /* Sidebar reducido */
+  /* =========================
+     SIDEBAR COMPACTO
+  ========================= */
   .sidebar {
-    width: 220px;
-    min-width: 220px;
-    max-width: 220px;
-    padding: 20px 14px;
+    width: 78px;
+    min-width: 78px;
+    max-width: 78px;
+    padding: 18px 8px;
+    align-items: center;
   }
 
-  .main-content {
-    margin-left: 220px;
-    width: calc(100% - 220px);
-    padding: 18px;
+  /* =========================
+     LOGO
+  ========================= */
+  .logo-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
 
-  /* Logo */
   .logo-img {
-    max-width: 170px;
+    max-width: 48px;
+    padding: 6px;
   }
 
-  /* Menú */
+  /* =========================
+     MENÚ
+  ========================= */
+  .menu,
+  .logout {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .menu a,
   .logout a {
-    font-size: 13px;
-    padding: 11px 12px;
-    gap: 10px;
+    width: 52px;
+    height: 52px;
+    padding: 0;
+    border-radius: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0;
+
+    /* OCULTA EL TEXTO */
+    font-size: 0;
   }
 
-  /* Topbar en columna */
-  .topbar {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 14px;
-    align-items: stretch;
+  /* ÍCONOS */
+  .menu a i,
+  .logout a i {
+    width: auto;
+    font-size: 20px;
+    margin: 0;
   }
 
-  .page-title h1 {
-    font-size: 28px;
-  }
-
-  .search-box {
+  .page-title {
     width: 100%;
-    max-width: 100%;
+    text-align: center;
+  }
+
+  /* Oculta texto del usuario */
+  .user-info {
+    display: none;
+  }
+
+  /* =========================
+     MAIN CONTENT
+  ========================= */
+  .main-content {
+    margin-left: 78px;
+    width: calc(100% - 78px);
+    padding: 16px;
+  }
+
+  /* =========================
+     TOPBAR
+  ========================= */
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .topbar-actions {
     width: 100%;
-    justify-content: flex-end;
+    margin-left: 0;
+    justify-content: space-between;
   }
 
-  /* Header tarjeta */
-  .form-card-header {
-    flex-direction: column;
-    align-items: flex-start;
+  /* =========================
+     GRID Y LAYOUT
+  ========================= */
+  .results-layout {
+    grid-template-columns: 1fr;
   }
 
-  /* Filtros */
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* =========================
+     FILTROS
+  ========================= */
   .filter-bar {
     flex-direction: column;
     align-items: stretch;
@@ -982,336 +1071,54 @@ body {
     width: 100%;
   }
 
-  /* Tarjetas estadísticas */
-  .stats-grid {
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  }
-
-  /* Tabla */
-  .results-table {
-    min-width: 760px;
+  .btn {
+    width: 100%;
   }
 }
 
 /* ==========================================================================
-   CELULARES GRANDES / MÓVILES (Hasta 768px)
+   CELULARES PEQUEÑOS
    ========================================================================== */
-@media screen and (max-width: 768px) {
-
-  /* Sidebar compacto */
+@media screen and (max-width: 576px) {
   .sidebar {
-    width: 190px;
-    min-width: 190px;
-    max-width: 190px;
-    padding: 16px 10px;
+    width: 68px;
+    min-width: 68px;
+    max-width: 68px;
+    padding: 14px 6px;
   }
 
   .main-content {
-    margin-left: 190px;
-    width: calc(100% - 190px);
-    padding: 15px;
+    margin-left: 68px;
+    width: calc(100% - 68px);
+    padding: 12px;
   }
 
-  /* Logo */
-  .logo-img {
-    max-width: 140px;
-    padding: 10px;
+  .page-title {
+    width: 100%;
+    text-align: center;
   }
 
-  /* Menú */
-  .menu {
-    gap: 6px;
-  }
-
-  .menu a,
-  .logout a {
-    font-size: 12px;
-    padding: 10px;
-  }
-
-  .menu a i {
-    width: 16px;
-    font-size: 14px;
-  }
-
-  /* Títulos */
-  .page-title h1 {
-    font-size: 22px;
-  }
-
-  .page-title p {
-    font-size: 12px;
-  }
-
-  /* Buscador */
-  .search-box input {
-    padding: 12px 14px 12px 40px;
-    font-size: 13px;
-  }
-
-  .search-box i {
-    left: 14px;
-  }
-
-  /* Usuario */
+  /* Oculta texto del usuario */
   .user-info {
     display: none;
   }
 
-  .user-profile {
-    padding: 6px 8px;
-    border-radius: 14px;
-  }
-
-  .user-profile img {
-    width: 36px;
-    height: 36px;
-  }
-
-  /* Breadcrumb */
-  .breadcrumb {
-    font-size: 12px;
-    flex-wrap: wrap;
-  }
-
-  /* Form Card */
-  .form-card {
-    border-radius: 12px;
-  }
-
-  .form-card-header {
-    padding: 18px;
-  }
-
-  .form-body {
-    padding: 18px;
-  }
-
-  .form-card-title {
-    font-size: 16px;
-  }
-
-  .form-card-subtitle {
-    font-size: 12px;
-  }
-
-  /* Filtros */
-  .filter-bar {
-    padding: 16px;
-  }
-
-  /* Inputs */
-  .field input,
-  .field select {
-    font-size: 13px;
-    padding: 10px 12px;
-  }
-
-  /* Botones */
-  .btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  /* KPIs */
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  /* Rankings */
-  .ranking-item {
-    flex-wrap: wrap;
-    align-items: flex-start;
-  }
-
-  .ranking-score {
-    width: 100%;
-    text-align: right;
-  }
-
-  /* Tabla */
-  .results-table {
-    min-width: 700px;
-  }
-}
-
-/* ==========================================================================
-   CELULARES PEQUEÑOS (Hasta 576px)
-   ========================================================================== */
-@media screen and (max-width: 576px) {
-
-  /* Sidebar ultra compacto */
-  .sidebar {
-    width: 170px;
-    min-width: 170px;
-    max-width: 170px;
-    padding: 14px 8px;
-  }
-
-  .main-content {
-    margin-left: 170px;
-    width: calc(100% - 170px);
-    padding: 12px;
-  }
-
-  /* Logo */
-  .logo-img {
-    max-width: 120px;
-  }
-
-  /* Menú */
   .menu a,
   .logout a {
-    font-size: 11px;
-    padding: 9px 8px;
-    border-radius: 10px;
+    width: 44px;
+    height: 44px;
   }
 
-  /* Títulos */
-  .page-title h1 {
-    font-size: 18px;
-  }
-
-  .page-title p {
-    font-size: 11px;
-  }
-
-  /* Buscador */
-  .search-box input {
-    font-size: 12px;
-  }
-
-  /* Tarjetas */
-  .form-card-header-left {
-    gap: 10px;
-  }
-
-  .form-card-icon {
-    width: 38px;
-    height: 38px;
-    font-size: 15px;
-  }
-
-  .form-card-title {
-    font-size: 14px;
-  }
-
-  .form-card-subtitle {
-    font-size: 11px;
-  }
-
-  .dashboard-period {
-    font-size: 11px;
-    padding: 6px 10px;
-  }
-
-  /* Secciones */
-  .form-section-title {
-    font-size: 11px;
-  }
-
-  /* Inputs */
-  .field label {
-    font-size: 12px;
-  }
-
-  .field input,
-  .field select {
-    font-size: 12px;
-    padding: 9px 10px;
-  }
-
-  /* KPIs */
-  .stat-card {
-    padding: 16px;
-  }
-
-  .stat-card h2 {
-    font-size: 22px;
-  }
-
-  /* Paneles */
-  .result-panel {
-    padding: 16px;
-  }
-
-  .panel-header h3 {
-    font-size: 13px;
-  }
-
-  /* Rankings */
-  .ranking-user strong {
-    font-size: 12px;
-  }
-
-  .ranking-user span {
-    font-size: 10px;
-  }
-
-  /* Tabla */
-  .results-table {
-    min-width: 650px;
-    font-size: 12px;
-  }
-
-  .results-table th,
-  .results-table td {
-    padding: 12px 14px;
-  }
-}
-
-/* ==========================================================================
-   EXTRA SMALL DEVICES (Hasta 420px)
-   ========================================================================== */
-@media screen and (max-width: 420px) {
-
-  .sidebar {
-    width: 155px;
-    min-width: 155px;
-    max-width: 155px;
-  }
-
-  .main-content {
-    margin-left: 155px;
-    width: calc(100% - 155px);
-    padding: 10px;
+  .menu a i,
+  .logout a i {
+    font-size: 17px;
   }
 
   .logo-img {
-    max-width: 100px;
-  }
-
-  .menu a,
-  .logout a {
-    font-size: 10px;
-    gap: 6px;
-    padding: 8px 6px;
+    max-width: 40px;
   }
 
   .page-title h1 {
-    font-size: 16px;
-  }
-
-  .topbar-actions {
-    gap: 12px;
-  }
-
-  .notification {
-    font-size: 18px;
-  }
-
-  .user-profile img {
-    width: 32px;
-    height: 32px;
-  }
-
-  .form-card-header,
-  .form-body {
-    padding: 14px;
-  }
-
-  .btn {
-    font-size: 12px;
-    padding: 10px;
+    font-size: 20px;
   }
 }
