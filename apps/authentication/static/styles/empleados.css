@@ -791,14 +791,15 @@ body {
 
   /* Cambio drástico en la barra superior: se vuelve vertical/bloques */
   .topbar {
-    flex-direction: column;
-    align-items: stretch; /* Estira los componentes de lado a lado */
-    gap: 16px;
+    align-items: flex-start;
   }
 
   .topbar-actions {
-    justify-content: space-between; /* Deja la campana a un extremo y el perfil al otro */
+    width: auto;
     margin-left: 0;
+    justify-content: flex-start;
+    align-self: flex-start;
+    gap: 12px;
   }
 
   .page-title {
@@ -904,10 +905,13 @@ body {
   }
 
   .topbar-actions {
-    width: 100%;
-    justify-content: space-between;
+    width: auto;
+    justify-content: flex-start;
+    align-self: flex-start;
+    margin-left: 0;
+    gap: 10px;
   }
-
+  
   /* Oculta texto del usuario */
   .user-info {
     display: none;

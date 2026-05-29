@@ -2,140 +2,177 @@
    RESET & BASE - Limpieza de estilos del navegador y variables raíz
    ========================================================================== */
 * {
-  margin: 0;            /* Elimina márgenes por defecto */
-  padding: 0;           /* Elimina rellenos por defecto */
+  margin: 0; /* Elimina márgenes por defecto */
+  padding: 0; /* Elimina rellenos por defecto */
   box-sizing: border-box; /* Incluye el padding y bordes en el cálculo del ancho/alto total */
 }
 
 body {
-  font-family: "Segoe UI", sans-serif; /* Tipografía limpia para aplicaciones web corporativas */
-  background: #f4f7fb;                 /* Fondo gris-azulado claro para descansar la vista */
-  color: #1a2042;                      /* Color del texto base (Azul marino muy oscuro) */
+  font-family:
+    "Segoe UI", sans-serif; /* Tipografía limpia para aplicaciones web corporativas */
+  background: #f4f7fb; /* Fondo gris-azulado claro para descansar la vista */
+  color: #1a2042; /* Color del texto base (Azul marino muy oscuro) */
 }
 
 /* Contenedor padre que divide la pantalla en dos columnas principales */
 .dashboard-container {
-  display: flex;       /* Activa Flexbox para alinear la barra lateral y el contenido */
-  min-height: 100vh;   /* Asegura que ocupe todo el alto de la ventana del navegador */
-}
-
-/* Barral lateral de navegación (Modo Desktop) */
-.sidebar {
-  width: 280px;        /* Ancho fijo inicial */
-  background: #26317a; /* Color de identidad corporativa (Azul Rey Oscuro) */
-  color: #ffffff;      /* Contenido y texto en blanco */
-  display: flex;       
-  flex-direction: column; /* Organiza los hijos (Logo, Menú, Logout) en forma vertical */
-  padding: 30px 20px;  /* Espaciado interno generoso */
-  
-  /* Posicionamiento fijo para que la barra no se mueva al hacer scroll en el contenido */
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
+  display: flex; /* Activa Flexbox para alinear la barra lateral y el contenido */
+  min-height: 100vh; /* Asegura que ocupe todo el alto de la ventana del navegador */
 }
 
 /* ==========================================================================
-   LOGO ROBASA - Contenedor y efectos del escudo/marca
+   SIDEBAR (Barra Lateral)
+   Navegación fija en el lateral izquierdo.
    ========================================================================== */
-.logo {
-  text-align: center;  /* Centra el texto y la imagen del logotipo */
-  margin-bottom: 35px; /* Distancia hacia el primer elemento del menú */
+.sidebar {
+  width: 280px; /* Ancho fijo de la barra lateral */
+  background: #26317a; /* Fondo azul oscuro institucional */
+  color: white; /* Texto interior blanco */
+  display: flex;
+  flex-direction: column; /* Organiza el logo, menú y logout verticalmente uno abajo del otro */
+  padding: 30px 20px; /* Espaciado interno (arriba/abajo izquierda/derecha) */
+  position: fixed; /* Deja la barra fija en pantalla al hacer scroll */
+  top: 0;
+  left: 0;
+  bottom: 0; /* Las tres propiedades anteriores la estiran de arriba a abajo */
+
+  /* Comportamiento de desbordamiento */
+  overflow-y: auto; /* Si hay muchos links, permite scroll vertical dentro de la barra */
+  overflow-x: hidden; /* Evita cualquier scroll horizontal accidental */
 }
 
-/* Imagen del logotipo con técnicas avanzadas de Glassmorphism y Glow */
-.logo-img {
-  width: 320px;
-  max-width: 100%;     /* Evita que desborde si el contenedor es más pequeño */
-  height: auto;        /* Mantiene la proporción de aspecto */
-  display: block;
-  margin: 0 auto 25px; /* Centrado horizontal y margen inferior */
-  padding: 18px;       
-  border-radius: 22px; 
-  background: rgba(255, 255, 255, 0.08); /* Fondo blanco traslúcido (8% de opacidad) */
-  border: 1px solid rgba(255, 255, 255, 0.12); /* Borde sutil semi-transparente */
-  backdrop-filter: blur(6px); /* Efecto esmerilado/desenfocado de fondo */
+/* ==========================================================================
+   LOGO ROBASA
+   Sección del logotipo dentro de la barra lateral con efectos visuales avanzados.
+   ========================================================================== */
+.logo {
+  text-align: center; /* Centra el texto y elementos inline en su interior */
+  margin-bottom: 35px; /* Separación respecto al menú inferior */
+  padding: 0 15px; /* CORRECCIÓN: Evita que el contenedor pegue a los bordes de la barra lateral */
+  box-sizing: border-box;
+}
 
-  /* Combinación de filtros para generar un brillo sutil, realzar iluminación y contraste */
+/* Imagen del Logo */
+.logo-img {
+  /* CORRECCIÓN: Cambiamos 320px por un porcentaje controlado. 
+     Esto asegura que el logo ocupe el espacio óptimo de la barra sin salirse jamás. */
+  width: 85%;
+  max-width: 220px; /* Limita el tamaño máximo para que no se vea gigante en monitores enormes */
+  height: auto; /* Mantiene la proporción de aspecto de la imagen */
+
+  display: block; /* Se comporta como bloque para poder usar márgenes automáticos */
+  margin: 0 auto 25px; /* Centra horizontalmente y añade margen inferior */
+
+  /* Diseño de tarjeta de cristal (Glassmorphism) */
+  padding: 12px; /* CORRECCIÓN: Reducido ligeramente para dar más espacio útil a la imagen */
+  border-radius: 18px; /* Ajustado proporcionalmente al nuevo tamaño */
+  background: rgba(
+    255,
+    255,
+    255,
+    0.08
+  ); /* Fondo blanco con alta transparencia */
+  border: 1px solid rgba(255, 255, 255, 0.12); /* Borde sutil semi-transparente */
+  backdrop-filter: blur(
+    6px
+  ); /* Desenfoca lo que esté detrás de la imagen (efecto esmerilado) */
+
+  /* CORRECCIÓN INDUSTRIAL: Evita que el padding sume tamaño extra al ancho total */
+  box-sizing: border-box;
+
+  /* Efecto de Resplandor (Glow) */
+  /* Aplica sombras múltiples directamente a la silueta de la imagen, sube brillo y contraste */
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25))
     drop-shadow(0 0 25px rgba(255, 255, 255, 0.12)) brightness(1.18)
     contrast(1.15);
 
-  transition: all 0.3s ease; /* Transición suave de 300ms para cualquier cambio físico o de filtro */
+  transition: all 0.3s ease; /* Transición suave de 0.3 segundos para todas sus propiedades */
 }
 
-/* Efecto Hover interactivo para la imagen del logo */
+/* Hover elegante (Efecto al pasar el cursor sobre el logo) */
 .logo-img:hover {
-  transform: scale(1.03); /* Crece un 3% suavemente */
+  transform: scale(1.03); /* Agranda el logo un 3% simulando cercanía */
 
-  /* Intensifica el brillo blanco de fondo y el contraste al posicionar el cursor */
+  /* Intensifica las sombras de luz, el brillo y el contraste al pasar el mouse */
   filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))
     drop-shadow(0 0 32px rgba(255, 255, 255, 0.18)) brightness(1.25)
     contrast(1.2);
 }
 
-/* Texto secundario o siglas ubicadas bajo el logotipo */
+/* Texto complementario debajo del logo */
 .logo span {
-  font-size: 18px;
-  letter-spacing: 6px; /* Separación de caracteres estilo premium/moderno */
-  color: #9bc0ff;      /* Tonalidad azul clara complementaria */
+  font-size: 14px; /* CORRECCIÓN: Reducido de 18px a 14px para mantener balance con la barra lateral */
+  letter-spacing: 4px; /* Ajustado sutilmente para evitar que rompa en dos líneas */
+  color: #9bc0ff; /* Color azul claro que contrasta con el fondo */
+  display: block; /* Asegura que se comporte correctamente abajo de la imagen */
 }
 
-/* ==========================================================================
-   MENÚ DE NAVEGACIÓN - Enlaces del Sidebar
-   ========================================================================== */
+/* Menú de Navegación */
 .menu {
-  flex: 1;              /* Empuja dinámicamente al botón de Logout hacia la parte inferior */
+  flex: 1; /* Hace que el menú crezca y ocupe todo el espacio disponible, empujando al logout al fondo */
   display: flex;
-  flex-direction: column;
-  gap: 8px;             /* Separación fija de 8px entre enlaces */
-  padding-right: 5px;   /* Pequeño colchón para que el texto no choque con barras de scroll */
+  flex-direction: column; /* Enlaces ordenados uno abajo del otro */
+  gap: 8px; /* Espacio de 8px entre cada enlace */
+  padding-right: 5px; /* Pequeño colchón derecho para que el texto no toque la barra de scroll */
 }
 
 /* Enlaces individuales del menú */
 .menu a {
-  color: #fefefd;        /* Blanco hueso suave */
-  text-decoration: none; /* Elimina la línea inferior nativa de los enlaces */
-  padding: 14px 18px;    
-  border-radius: 12px;   
-  display: flex;         /* Activa flexbox para alinear horizontalmente icono + texto */
-  align-items: center;   /* Centrado vertical perfecto del icono con su texto */
-  gap: 12px;             /* Separación entre el icono y el texto */
-  transition: 0.3s;      /* Suavizado para cambios de color de fondo */
+  color: #fefefd; /* Color de texto casi blanco puro */
+  text-decoration: none; /* Elimina la línea subrayada típica de los enlaces */
+  padding: 14px 18px; /* Tamaño del área interactiva del botón */
+  border-radius: 12px; /* Bordes redondeados del botón */
+  display: flex;
+  align-items: center; /* Alinea verticalmente el icono y el texto al centro */
+  gap: 12px; /* Separación entre el icono y el texto */
+  transition: 0.3s; /* Transición suave para los cambios de color y fondo */
 }
 
-/* Estados interactivos del menú (Hover y pestaña activa) */
+/* Estado Hover y Activo del Menú */
 .menu a:hover,
 .menu a.active {
-  background: #4567b7;   /* Fondo azul intermedio */
-  color: white;
+  background: #4567b7; /* Cambia el fondo a un azul más claro */
+  color: white; /* Texto blanco puro */
 }
 
-/* Forzado de ancho en iconos para asegurar simetría y alineación vertical del texto */
+/* Iconos del menú (ej. FontAwesome) */
 .menu i {
-  width: 20px;
+  width: 20px; /* Ancho fijo para garantizar que todos los textos inicien en la misma columna */
 }
 
-/* Personalización estética del scroll nativo del Sidebar (Solo motores Webkit/Blink) */
+/* Personalización de la barra de scroll de la Sidebar (Solo navegadores WebKit como Chrome, Edge, Safari) */
 .sidebar::-webkit-scrollbar {
-  width: 6px;            /* Grosor del scroll vertical */
-}
-.sidebar::-webkit-scrollbar-track {
-  background: transparent; /* Fondo del riel invisible */
-}
-.sidebar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.25); /* Color de la barra con opacidad baja */
-  border-radius: 10px;
-}
-.sidebar::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.4);  /* Resalta un poco más la barra al pasar el mouse */
+  width: 6px; /* Grosor de la barra de scroll vertical */
 }
 
-/* Bloque contenedor del botón de Cerrar Sesión */
+.sidebar::-webkit-scrollbar-track {
+  background: transparent; /* Fondo del carril del scroll invisible */
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.25
+  ); /* Color de la barra de scroll (blanco translúcido) */
+  border-radius: 10px; /* Bordes completamente redondeados */
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.4
+  ); /* Se oscurece ligeramente al pasar el mouse */
+}
+
+/* Sección de Cierre de Sesión (Logout) */
 .logout {
   margin-top: 20px;
   padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.15); /* Línea sutil divisoria */
+  border-top: 1px solid rgba(255, 255, 255, 0.15); /* Línea divisoria superior delgada y sutil */
 }
 
 .logout a {
@@ -148,201 +185,185 @@ body {
 }
 
 .logout a:hover {
-  background: rgba(255, 255, 255, 0.08); /* Destello sutil al pasar el mouse por encima */
-}
-
-/* Nota: Este bloque ".menu" duplica propiedades previas agregando un margin-top. 
-   Es recomendable unificarlo en producción para mantener limpio el código */
-.menu {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 30px;
-}
-
-.menu a {
-  color: #fefefd;
-  text-decoration: none;
-  padding: 14px 18px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 14px;
-}
-
-.menu a.active {
-  background: #4567b7;
+  background: rgba(
+    255,
+    255,
+    255,
+    0.08
+  ); /* Fondo sutil al posarse sobre cerrar sesión */
 }
 
 /* ==========================================================================
-   MAIN CONTENT - Espacio de trabajo del Dashboard (Derecha)
+   CONTENIDO PRINCIPAL
+   El área derecha del dashboard donde se renderizan los formularios, tablas, etc.
    ========================================================================== */
 .main-content {
-  flex: 1;              /* Absorbe el resto del ancho de la pantalla */
-  margin-left: 280px;   /* Desplazamiento obligatorio idéntico al ancho del Sidebar fijo */
-  padding: 30px;        /* Espacio de separación interno general */
+  flex: 1; /* Ocupa todo el ancho restante del viewport */
+  margin-left: 280px; /* IMPORTANTE: Desplaza el contenido a la derecha para no quedar oculto bajo la sidebar fija */
+  padding: 30px; /* Espaciado general del contenido */
 }
 
-/* Header superior del área de trabajo */
+/* ==========================================================================
+   TOPBAR (Barra Superior de Acciones)
+   ========================================================================== */
 .topbar {
   display: flex;
-  align-items: center;
-  justify-content: space-between; /* Título a la izquierda, información o acciones a la derecha */
-  margin-bottom: 30px;
+  align-items: center; /* Alinea verticalmente buscador, título y perfil */
+  gap: 20px; /* Distancia entre componentes de la barra superior */
+  margin-bottom: 30px; /* Separación con el resto de la página */
+  flex-wrap: wrap; /* Permite que los elementos bajen de fila si no hay suficiente espacio */
+}
+
+/* Contenedor de Título de Página */
+.page-title {
+  min-width: 260px; /* Evita que se colapse demasiado en pantallas medianas */
 }
 
 .page-title h1 {
   font-size: 34px;
-  color: #d35b1a;       /* Título principal en naranja brillante corporativo */
+  margin-bottom: 5px;
+  color: #d35b1a; /* Color principal de la marca para el título */
 }
 
-/* Tarjeta informativa del empleado sujeto al proceso (Ficha de datos rápidos) */
-.employee-box {
-  background: #ffffff;
-  border-left: 5px solid #e8600a; /* Línea de acento naranja gruesa a la izquierda */
-  border-radius: 8px;
-  padding: 16px 24px;
-  margin-bottom: 25px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Sombra perimetral muy suave */
+.page-title p {
+  color: #7a8599; /* Gris neutro para texto secundario */
+  font-size: 15px;
+}
+
+/* Buscador de la barra superior */
+.search-box {
+  flex: 1; /* Intenta expandirse para ocupar el espacio central */
+  max-width: 420px; /* Pero limita su tamaño máximo para no verse gigante */
+  position: relative; /* Permite posicionar el icono de la lupa de forma absoluta en su interior */
+}
+
+/* Icono de Lupa dentro del Buscador */
+.search-box i {
+  position: absolute;
+  top: 50%; /* Centra el icono verticalmente */
+  left: 18px; /* Lo empuja un poco hacia la derecha de la caja */
+  transform: translateY(-50%); /* Ajuste perfecto de centrado vertical */
+  color: #8a94a6;
+}
+
+/* Input del Buscador */
+.search-box input {
+  width: 100%;
+  padding: 14px 18px 14px 48px; /* Padding izquierdo de 48px para dejar espacio y que el texto no pise la lupa */
+  border: 1px solid #dbe2ef;
+  border-radius: 12px;
+  font-size: 15px;
+  outline: none; /* Remueve el borde azul por defecto del navegador */
+}
+
+/* Efecto Focus del Buscador (Al hacer click dentro) */
+.search-box input:focus {
+  border-color: #0c45ca; /* Cambia a azul brillante */
+  box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1); /* Crea un halo de luz sutil alrededor de la caja */
+}
+
+/* Bloque derecho del Topbar (Notificaciones y Perfil) */
+.topbar-actions {
+  margin-left: auto; /* Truco de Flexbox para empujar este grupo completamente a la derecha */
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 25px;
 }
 
-.employee-box strong {
-  color: #26317a;       /* Resalta los nombres en color azul oscuro */
-  font-size: 16px;
+/* Icono de Campana de Notificación */
+.notification {
+  position: relative; /* Permite posicionar la burbuja (badge) roja encima */
+  font-size: 22px;
+  cursor: pointer;
+  color: #1b2b4b;
+}
+
+/* Burbuja de Alertas (ej: "3 mensajes") */
+.badge {
+  position: absolute;
+  top: -8px;
+  right: -10px; /* La saca un poco del borde superior derecho del icono */
+  background: #ff4d4f; /* Rojo brillante de alerta */
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%; /* Círculo perfecto */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centra el número exactamente en medio de la burbuja */
+}
+
+/* Píldora de Perfil de Usuario */
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  padding: 8px 14px;
+  border-radius: 50px; /* Extremos completamente redondeados (forma de píldora) */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Sombra muy suave para dar profundidad */
+  cursor: pointer;
+}
+
+/* Foto de Avatar */
+.user-profile img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%; /* Hace la foto redonda */
+  object-fit: cover; /* Evita que la foto se deforme si no es perfectamente cuadrada */
+}
+
+/* Textos informativos de usuario */
+.user-info {
+  display: flex;
+  flex-direction: column; /* Nombre arriba, Rol abajo */
+}
+
+.user-info strong {
+  font-size: 14px;
+}
+
+.user-info span {
+  font-size: 12px;
+  color: #7a8599;
 }
 
 /* ==========================================================================
-   CHECKLIST STYLES - Módulos de etapas y tareas (Offboarding)
+   BREADCRUMB (Migas de Pan)
+   Ubicación actual del usuario en la plataforma.
    ========================================================================== */
-
-/* Bloque contenedor que agrupa tareas de una misma fase */
-.stage-section {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(30, 42, 94, 0.05);
-  margin-bottom: 20px;
-  overflow: hidden;     /* Conserva las esquinas redondeadas tapando las esquinas de los hijos */
-  border: 1px solid #e8ecf6;
-}
-
-/* Encabezado o barra superior de la etapa */
-.stage-header {
-  background: #f7f8fc;  /* Fondo gris claro para diferenciarlo de las filas de tareas */
-  padding: 14px 20px;
-  font-weight: 700;     /* Texto en negrita */
-  color: #1a2042;
-  border-bottom: 1.5px solid #e8ecf6;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* Círculo indicador del número de la etapa (ej. 1, 2, 3...) */
-.stage-number {
-  background: #26317a;
-  color: white;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;   /* Convierte la caja en un círculo perfecto */
-  display: flex;
-  align-items: center;
-  justify-content: center; /* Centrado absoluto interno del número */
-  font-size: 12px;
-}
-
-/* Fila individual que representa una tarea específica */
-.task-row {
-  display: flex;
-  align-items: center;
-  padding: 16px 20px;
-  border-bottom: 1px solid #e8ecf6; /* Línea separadora horizontal */
-  gap: 20px;
-  flex-wrap: wrap;      /* Permite que los inputs bajen si no caben en la misma línea */
-}
-
-/* Elimina la línea divisoria inferior de la última tarea del bloque */
-.task-row:last-child {
-  border-bottom: none;
-}
-
-/* Caja de verificación (Checkbox) de la tarea */
-.task-check {
-  width: 20px;
-  height: 20px;
-  accent-color: #e8600a; /* Cambia el color nativo del "check" del navegador a Naranja */
-  cursor: pointer;
-}
-
-/* Texto de descripción de la tarea */
-.task-desc {
-  flex: 1;              /* Hace que la descripción ocupe todo el espacio central sobrante */
-  font-size: 14px;
-  color: #4f5774;       /* Tono grisáceo intermedio para lectura cómoda */
-  min-width: 200px;     /* Ancho mínimo para evitar que el texto colapse excesivamente */
-}
-
-/* Bloque contenedor de selectores de responsables y fechas (Metadatos) */
-.task-meta {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-/* Campos de entrada internos del área meta (Selectores e Inputs de tipo Fecha) */
-.task-meta select,
-.task-meta input {
-  border: 1px solid #dde2f0;
-  padding: 6px 10px;
-  font-size: 12px;
-  border-radius: 6px;
-  background: #f7f8fc;
-  outline: none;        /* Elimina el contorno azul por defecto del sistema operativo */
-}
-
-/* Efecto focus cuando el usuario interactúa con la fecha o el responsable */
-.task-meta select:focus,
-.task-meta input:focus {
-  border-color: #e8600a; /* Destaca el borde en color naranja */
-}
-
-/* Botón flotante para guardar los cambios del formulario */
-.btn-save {
-  background: #e8600a;
-  color: white;
-  border: none;
-  padding: 12px 28px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-family: inherit; /* Hereda la fuente 'Segoe UI' configurada en el body */
-  cursor: pointer;
-  display: block;
-  margin-left: auto;    /* Truco flex/block para empujar magnéticamente el botón a la derecha */
-  box-shadow: 0 4px 14px rgba(232, 96, 10, 0.3); /* Sombra difuminada naranja */
-}
-
-.btn-save:hover {
-  background: #f07530;  /* Aclara levemente el color naranja al pasar el mouse */
-}
-
-/* Ruta de navegación (Breadcrumb) */
 .breadcrumb {
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 18px 28px 0; /* Margen interno para alinearse con los bordes de la tarjeta inferior */
   font-size: 13px;
   color: #6b7499;
-  margin-bottom: 20px;
 }
 
 .breadcrumb a {
   color: #6b7499;
   text-decoration: none;
+  transition: color 0.15s;
+}
+
+/* Al pasar por encima, cambia al color naranja principal de la marca */
+.breadcrumb a:hover {
+  color: #e8600a;
+}
+
+/* Separadores (ej: "/" o ">") */
+.breadcrumb .sep {
+  font-size: 10px;
+  color: #c5cbdf;
+}
+
+/* Página actual (Último elemento no clickeable) */
+.breadcrumb .current {
+  color: #e8600a;
+  font-weight: 700; /* Resaltado en negrita y color corporativo naranja */
 }
 
 /* ==========================================================================
@@ -353,6 +374,170 @@ body {
   text-align: center;
   color: #7a8599;
   font-size: 14px;
+}
+
+/* =========================================================
+         ESTILOS PARA ADMINISTRACIÓN DEL CATÁLOGO (SPLIT VIEW)
+      ========================================================= */
+.admin-layout {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 25px;
+  align-items: start;
+  margin-top: 20px;
+}
+
+@media (max-width: 900px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card-panel {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(30, 42, 94, 0.05);
+  padding: 24px;
+  border: 1px solid #e8ecf6;
+}
+
+.panel-header {
+  border-bottom: 2px solid #f0f2fa;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.panel-header h3 {
+  font-size: 15px;
+  color: #26317a;
+  font-weight: 700;
+  margin: 0;
+}
+
+.panel-header i {
+  color: #e8600a;
+}
+
+.field-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.field-block label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a2042;
+}
+
+.field-block label .req {
+  color: #e8600a;
+}
+
+.input-style {
+  width: 100%;
+  border: 1.5px solid #dde2f0;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 13.5px;
+  background: #f7f8fc;
+  outline: none;
+  font-family: inherit;
+  color: #1a2042;
+  transition: all 0.3s ease;
+}
+
+.input-style:focus {
+  border-color: #26317a;
+  background-color: #ffffff;
+}
+
+.textarea-style {
+  width: 100%;
+  border: 1.5px solid #dde2f0;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 13.5px;
+  background: #f7f8fc;
+  outline: none;
+  font-family: inherit;
+  color: #1a2042;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.textarea-style:focus {
+  border-color: #26317a;
+  background-color: #ffffff;
+}
+
+/* Estilos de Tabla de Datos */
+.data-table-container {
+  overflow-x: auto;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+
+.custom-table th {
+  background: #f0f2fa;
+  color: #26317a;
+  padding: 12px;
+  font-weight: 700;
+  border-bottom: 2px solid #dde2f0;
+}
+
+.custom-table td {
+  padding: 12px;
+  border-bottom: 1px solid #f0f2fa;
+  color: #4a547a;
+  vertical-align: middle;
+}
+
+.custom-table tr:hover td {
+  background: #f8f9fd;
+}
+
+.badge-num {
+  background: #26317a;
+  color: #ffffff;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.btn-block {
+  width: 100%;
+  background: #e8600a;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 13.5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.btn-block:hover {
+  background: #cf5204;
 }
 
 /* ==========================================================================
@@ -366,10 +551,18 @@ body {
   .main-content {
     padding: 40px 50px; /* Incrementa los espacios para evitar que el diseño se vea vacío */
   }
-  .page-title h1 { font-size: 40px; }
-  .employee-box { padding: 20px 28px; }
-  .task-row { padding: 18px 24px; }
-  .task-desc { font-size: 15px; }
+  .page-title h1 {
+    font-size: 40px;
+  }
+  .employee-box {
+    padding: 20px 28px;
+  }
+  .task-row {
+    padding: 18px 24px;
+  }
+  .task-desc {
+    font-size: 15px;
+  }
 }
 
 /* =========================================================
@@ -377,19 +570,33 @@ body {
    ========================================================= */
 @media screen and (max-width: 1200px) {
   .sidebar {
-    width: 240px;        /* Reduce el ancho del menú para dar más espacio al contenido */
+    width: 240px; /* Reduce el ancho del menú para dar más espacio al contenido */
     padding: 25px 16px;
   }
   .main-content {
-    margin-left: 240px;  /* Sincronizado con el nuevo tamaño de la barra lateral */
+    margin-left: 240px; /* Sincronizado con el nuevo tamaño de la barra lateral */
     padding: 24px;
   }
-  .logo-img { max-width: 190px; }
-  .menu a { padding: 12px 14px; font-size: 13px; }
-  .page-title h1 { font-size: 30px; }
-  .employee-box { gap: 15px; flex-wrap: wrap; }
-  .task-row { gap: 16px; }
-  .task-meta { width: 100%; } /* Fuerza a que las fechas/responsables tomen toda la línea abajo */
+  .logo-img {
+    max-width: 190px;
+  }
+  .menu a {
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+  .page-title h1 {
+    font-size: 30px;
+  }
+  .employee-box {
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  .task-row {
+    gap: 16px;
+  }
+  .task-meta {
+    width: 100%;
+  } /* Fuerza a que las fechas/responsables tomen toda la línea abajo */
 }
 
 /* =========================================================
@@ -398,7 +605,7 @@ body {
    ========================================================= */
 @media screen and (max-width: 992px) {
   .sidebar {
-    width: 90px;         /* Barra lateral drásticamente delgada */
+    width: 90px; /* Barra lateral drásticamente delgada */
     padding: 20px 10px;
     align-items: center; /* Centra los iconos verticalmente */
     overflow-y: auto;
@@ -406,7 +613,7 @@ body {
   }
 
   .logo-img {
-    max-width: 58px;     /* Transforma el logo grande en una miniatura compacta */
+    max-width: 58px; /* Transforma el logo grande en una miniatura compacta */
     padding: 8px;
     border-radius: 12px;
   }
@@ -421,12 +628,12 @@ body {
     width: 100%;
     justify-content: center;
     padding: 14px 10px;
-    font-size: 0;        /* TRUCO: Esconde completamente el texto eliminando su tamaño */
+    font-size: 0; /* TRUCO: Esconde completamente el texto eliminando su tamaño */
     gap: 0;
   }
 
   .menu a i {
-    font-size: 20px;     /* Agranda el icono para que sea el protagonista táctil del botón */
+    font-size: 20px; /* Agranda el icono para que sea el protagonista táctil del botón */
   }
 
   /* Reajuste del contenedor principal debido al achicamiento del Sidebar */
@@ -437,14 +644,37 @@ body {
   }
 
   /* Cambios de alineación en cascada de los elementos a bloques verticales individuales */
-  .topbar { flex-direction: column; align-items: flex-start; gap: 15px; margin-bottom: 20px; }
-  .page-title { width: 100%; }
-  .page-title h1 { font-size: 28px; line-height: 1.2; }
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  .page-title {
+    width: 100%;
+  }
+  .page-title h1 {
+    font-size: 28px;
+    line-height: 1.2;
+  }
 
-  .employee-box { flex-direction: column; align-items: flex-start; gap: 12px; padding: 16px 18px; }
+  .employee-box {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 18px;
+  }
 
-  .task-row { flex-direction: column; align-items: flex-start; gap: 14px; padding: 16px; }
-  .task-desc { width: 100%; min-width: unset; }
+  .task-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px;
+  }
+  .task-desc {
+    width: 100%;
+    min-width: unset;
+  }
 
   /* Los metadatos de las tareas se organizan en una cuadrícula simétrica de 2 columnas */
   .task-meta {
@@ -453,55 +683,125 @@ body {
     grid-template-columns: 1fr 1fr;
     gap: 10px;
   }
-  .task-meta select, .task-meta input { width: 100%; }
+  .task-meta select,
+  .task-meta input {
+    width: 100%;
+  }
 
-  .btn-save { width: 100%; text-align: center; margin-top: 20px; }
+  .btn-save {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+  }
 }
 
 /* =========================================================
    CELULARES (Hasta 576px)
    ========================================================= */
 @media screen and (max-width: 576px) {
-  body, .dashboard-container {
-    overflow-x: hidden;  /* Medida de seguridad estricta contra desbordes horizontales accidentales */
+  body,
+  .dashboard-container {
+    overflow-x: hidden; /* Medida de seguridad estricta contra desbordes horizontales accidentales */
     width: 100%;
   }
 
   .sidebar {
-    width: 74px;         /* Ajuste milimétrico final de la barra lateral de iconos */
+    width: 74px; /* Ajuste milimétrico final de la barra lateral de iconos */
     padding: 14px 8px;
   }
 
-  .logo-img { max-width: 50px; padding: 6px; border-radius: 10px; }
-  .menu { margin-top: 18px; gap: 8px; }
-  .menu a { padding: 12px 6px; border-radius: 10px; }
-  .menu a i { font-size: 18px; }
+  .logo-img {
+    max-width: 50px;
+    padding: 6px;
+    border-radius: 10px;
+  }
+  .menu {
+    margin-top: 18px;
+    gap: 8px;
+  }
+  .menu a {
+    padding: 12px 6px;
+    border-radius: 10px;
+  }
+  .menu a i {
+    font-size: 18px;
+  }
 
   .main-content {
     margin-left: 74px;
     width: calc(100% - 74px);
-    padding: 14px;       /* Minimiza el padding al límite para aprovechar pantallas delgadas */
+    padding: 14px; /* Minimiza el padding al límite para aprovechar pantallas delgadas */
   }
 
-  .topbar { margin-bottom: 14px; gap: 10px; }
-  .page-title h1 { font-size: 22px; }
-  .breadcrumb { flex-wrap: wrap; gap: 5px; font-size: 12px; margin-bottom: 14px; }
-  .employee-box { padding: 14px; border-left-width: 4px; margin-bottom: 18px; }
-  .employee-box strong { font-size: 14px; }
+  .topbar {
+    margin-bottom: 14px;
+    gap: 10px;
+  }
+  .page-title h1 {
+    font-size: 22px;
+  }
+  .breadcrumb {
+    flex-wrap: wrap;
+    gap: 5px;
+    font-size: 12px;
+    margin-bottom: 14px;
+  }
+  .employee-box {
+    padding: 14px;
+    border-left-width: 4px;
+    margin-bottom: 18px;
+  }
+  .employee-box strong {
+    font-size: 14px;
+  }
 
-  .stage-section { border-radius: 10px; margin-bottom: 16px; }
-  .stage-header { padding: 12px 14px; font-size: 13px; line-height: 1.4; }
-  .stage-number { width: 22px; height: 22px; font-size: 11px; flex-shrink: 0; }
+  .stage-section {
+    border-radius: 10px;
+    margin-bottom: 16px;
+  }
+  .stage-header {
+    padding: 12px 14px;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .stage-number {
+    width: 22px;
+    height: 22px;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
 
-  .task-row { padding: 14px; gap: 12px; }
-  .task-desc { font-size: 13px; line-height: 1.5; }
+  .task-row {
+    padding: 14px;
+    gap: 12px;
+  }
+  .task-desc {
+    font-size: 13px;
+    line-height: 1.5;
+  }
 
   /* En celulares, los metadatos colapsan en una sola columna vertical pura */
-  .task-meta { grid-template-columns: 1fr; gap: 10px; }
-  .task-meta select, .task-meta input { width: 100%; font-size: 12px; padding: 9px 10px; }
+  .task-meta {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .task-meta select,
+  .task-meta input {
+    width: 100%;
+    font-size: 12px;
+    padding: 9px 10px;
+  }
 
-  .task-check { width: 18px; height: 18px; }
-  .btn-save { width: 100%; padding: 12px; font-size: 13px; border-radius: 10px; }
+  .task-check {
+    width: 18px;
+    height: 18px;
+  }
+  .btn-save {
+    width: 100%;
+    padding: 12px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
 }
 
 /* =========================================================
@@ -509,16 +809,46 @@ body {
    Ajustes minuciosos de tipografía para evitar desbordes en dispositivos viejos/pequeños
    ========================================================= */
 @media screen and (max-width: 400px) {
-  .sidebar { width: 68px; padding: 12px 6px; }
-  .main-content { margin-left: 68px; width: calc(100% - 68px); padding: 12px; }
-  .logo-img { max-width: 44px; }
-  .menu a i { font-size: 16px; }
-  .page-title h1 { font-size: 19px; }
-  .employee-box { padding: 12px; }
-  .employee-box strong { font-size: 13px; }
-  .stage-header { padding: 10px 12px; font-size: 12px; }
-  .task-row { padding: 12px; }
-  .task-desc { font-size: 12px; }
-  .task-meta select, .task-meta input { font-size: 11px; }
-  .btn-save { font-size: 12px; padding: 11px; }
+  .sidebar {
+    width: 68px;
+    padding: 12px 6px;
+  }
+  .main-content {
+    margin-left: 68px;
+    width: calc(100% - 68px);
+    padding: 12px;
+  }
+  .logo-img {
+    max-width: 44px;
+  }
+  .menu a i {
+    font-size: 16px;
+  }
+  .page-title h1 {
+    font-size: 19px;
+  }
+  .employee-box {
+    padding: 12px;
+  }
+  .employee-box strong {
+    font-size: 13px;
+  }
+  .stage-header {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+  .task-row {
+    padding: 12px;
+  }
+  .task-desc {
+    font-size: 12px;
+  }
+  .task-meta select,
+  .task-meta input {
+    font-size: 11px;
+  }
+  .btn-save {
+    font-size: 12px;
+    padding: 11px;
+  }
 }
