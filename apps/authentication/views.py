@@ -20,9 +20,6 @@ def per_emp_view(request):
 def empleados_view(request):
     return render(request, 'empleados.html')
 
-#Pagina de registro de personas
-def personas_view(request):
-    return render(request, 'personas.html')
 
 #Pagina de registro de pasantes
 def pasantes_view(request):
@@ -222,8 +219,9 @@ def registrar_persona(request):
     # Mostrar formulario
     return render(
         request,
-        'personas/registro_persona.html',
+        'templates/registro_persona.html',
         {
             'sexos': sexos
         }
     )
+
