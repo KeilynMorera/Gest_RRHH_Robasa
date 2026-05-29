@@ -125,7 +125,7 @@
             Configuración
           </a>
         </nav>
-        
+
         <div class="logout">
           <a href="#"><i class="fas fa-right-from-bracket"></i> Salir</a>
         </div>
@@ -137,19 +137,68 @@
             <h1>Desvinculación y Offboarding</h1>
             <p>Registro legal de egresos y desincorporación de personal</p>
           </div>
+
+          <!-- ======================================================
+               BARRA DE BÚSQUEDA
+          ====================================================== -->
+          <div class="search-box">
+            <!-- Icono de búsqueda -->
+            <i class="fas fa-search"></i>
+            <!-- Campo de búsqueda -->
+            <input
+              type="text"
+              placeholder="Buscar empleado, módulo, reporte..."
+            />
+          </div>
+
+          <!-- ======================================================
+               ACCIONES DEL HEADER
+          ====================================================== -->
           <div class="topbar-actions">
+            <!-- ======================================================
+                 NOTIFICACIONES
+            ====================================================== -->
+            <div class="notification">
+              <!-- Icono -->
+              <i class="fas fa-bell"></i>
+              <!-- Cantidad de notificaciones -->
+              <span class="badge">3</span>
+            </div>
+
+            <!-- ======================================================
+                 PERFIL DEL USUARIO
+            ====================================================== -->
             <div class="user-profile">
-              <img src="https://i.pravatar.cc/100?img=32" alt="Avatar" />
+              <!-- Imagen del usuario -->
+              <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
+
+              <!-- Información -->
               <div class="user-info">
-                <strong>María Gómez</strong><span>Recursos Humanos</span>
+                <strong>María Gómez</strong>
+                <span>Recursos Humanos</span>
               </div>
             </div>
           </div>
         </header>
 
+        <!-- ======================================================
+             BREADCRUMB / RUTA DE NAVEGACIÓN
+        ====================================================== -->
         <div class="breadcrumb">
-          <a href="#">Inicio</a> <span style="color: #c5cbdf">/</span>
-          <span class="current">Registrar Offboarding</span>
+          <!-- Inicio -->
+          <a href="{% url 'inicio' %}"> <i class="fas fa-house"></i> Inicio </a>
+
+          <!-- Separador -->
+          <i class="fas fa-chevron-right sep"></i>
+
+          <!-- Sección -->
+          <a href="{% url 'per_emp' %}"> Offboarding/Salidas </a>
+
+          <!-- Separador -->
+          <i class="fas fa-chevron-right sep"></i>
+
+          <!-- Página actual -->
+          <span class="current"> Registro de salida </span>
         </div>
 
         <section class="form-card">
