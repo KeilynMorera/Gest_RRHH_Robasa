@@ -164,12 +164,12 @@
           </div>
         </header>
 
-        <!-- Navegación interna (Breadcrumb) -->
+        <!-- Breadcrumb (Línea de tiempo / Ruta de navegación) -->
         <div class="breadcrumb">
-          <a href="{% url 'inicio' %}">Inicio</a>
-          <span style="color: #c5cbdf">/</span>
+          <a href="{% url 'inicio' %}"> <i class="fas fa-house"></i> Inicio </a>
+          <i class="fas fa-chevron-right sep"></i>
           <a href="{% url 'usuarios' %}">Usuarios y Roles</a>
-          <span style="color: #c5cbdf">/</span>
+          <i class="fas fa-chevron-right sep"></i>
           <span class="current">Crear Usuario</span>
         </div>
 
@@ -298,7 +298,8 @@
                       value="False"
                     />
                     <label for="aprobado_no">
-                      <span class="dot"></span> Inactivo (Suspendido temporalmente)
+                      <span class="dot"></span> Inactivo (Suspendido
+                      temporalmente)
                     </label>
                   </div>
                 </div>

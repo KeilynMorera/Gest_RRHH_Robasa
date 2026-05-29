@@ -301,7 +301,9 @@ body {
   color: #7a8599;
 }
 
-/* ── Breadcrumb (Migas de pan) ─────────────────────────────── */
+/* ==========================================================================
+   BREADCRUMB (Rutas de Navegación Estilo Miga de Pan)
+   ========================================================================== */
 .breadcrumb {
   display: flex;
   align-items: center;
@@ -321,13 +323,11 @@ body {
   color: #e8600a;
 }
 
-/* Separador (ej: ">" o "/") */
 .breadcrumb .sep {
   font-size: 10px;
   color: #c5cbdf;
 }
 
-/* Estado de la página actual */
 .breadcrumb .current {
   color: #e8600a;
   font-weight: 700;
@@ -1001,7 +1001,7 @@ select.form-control {
   .form-card,
   .breadcrumb {
     margin-left: 0;
-    margin-right: 0; /* Remueve márgenes laterales excedentes */
+    margin-right: 0;
   }
 
   .form-grid {
@@ -1016,33 +1016,57 @@ select.form-control {
 /* ── PANTALLAS MEDIANAS - TABLETS / LAPTOPS PEQUEÑAS (Hasta 1200px) ───── */
 @media screen and (max-width: 1200px) {
   .sidebar {
-    width: 230px;
-    min-width: 230px;
-    max-width: 230px;
-    padding: 22px 14px;
+    width: 90px;
+    min-width: 90px;
+    max-width: 90px;
+    padding: 22px 10px;
+    align-items: center;
   }
 
   .main-content {
-    margin-left: 230px;
-    width: calc(100% - 230px);
+    margin-left: 90px;
+    width: calc(100% - 90px);
     padding: 20px;
   }
 
   .logo-img {
-    width: 210px;
-    padding: 14px;
+    width: 55px;
+    padding: 8px;
   }
 
+  /* OCULTAR TEXTO DEL LOGO */
   .logo span {
-    font-size: 15px;
-    letter-spacing: 4px;
+    display: none;
+  }
+
+  /* MENÚ SOLO ICONOS */
+  .menu {
+    align-items: center;
   }
 
   .menu a,
   .logout a {
-    padding: 12px 14px;
-    font-size: 13px;
-    gap: 10px;
+    width: 55px;
+    height: 55px;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    font-size: 0; /* OCULTA EL TEXTO */
+  }
+
+  /* OCULTAR TEXTO */
+  .menu a span,
+  .logout a span {
+    display: none;
+  }
+
+  /* CENTRAR ICONOS */
+  .menu i,
+  .logout i {
+    width: auto;
+    font-size: 18px;
+    margin: 0;
   }
 
   .topbar {
@@ -1051,7 +1075,7 @@ select.form-control {
   }
 
   .page-title {
-    width: 100%; /* El título toma todo el ancho superior */
+    width: 100%;
   }
 
   .page-title h1 {
@@ -1059,17 +1083,17 @@ select.form-control {
   }
 
   .search-box {
-    flex: 1 1 100%; /* El buscador salta de línea y se expande al 100% */
+    flex: 1 1 100%;
     max-width: 100%;
   }
 
   .topbar-actions {
     width: 100%;
-    justify-content: flex-end; /* Acciones de usuario van al extremo derecho inferior */
+    justify-content: flex-end;
   }
 
   .form-grid {
-    grid-template-columns: 1fr; /* El grid del formulario pasa a 1 sola columna */
+    grid-template-columns: 1fr;
     gap: 18px;
   }
 
@@ -1078,7 +1102,7 @@ select.form-control {
   }
 
   .form-card-header {
-    flex-direction: column; /* Apila título del form e información requerida */
+    flex-direction: column;
     align-items: flex-start;
     gap: 16px;
   }
@@ -1091,41 +1115,51 @@ select.form-control {
 /* ── TABLETS Y MÓVILES GRANDES (Hasta 992px) ─────────────────────────── */
 @media screen and (max-width: 992px) {
   .sidebar {
-    width: 200px;
-    min-width: 200px;
-    max-width: 200px;
-    padding: 18px 12px;
+    width: 80px;
+    min-width: 80px;
+    max-width: 80px;
+    padding: 18px 8px;
+    align-items: center;
   }
 
   .main-content {
-    margin-left: 200px;
-    width: calc(100% - 200px);
+    margin-left: 80px;
+    width: calc(100% - 80px);
     padding: 18px;
   }
 
   .logo-img {
-    width: 170px;
-    padding: 12px;
-  }
-
-  .logo span {
-    font-size: 13px;
-    letter-spacing: 3px;
+    width: 50px;
+    padding: 6px;
   }
 
   .menu {
     gap: 6px;
+    align-items: center;
   }
 
   .menu a,
   .logout a {
-    font-size: 12px;
-    padding: 11px 10px;
-    border-radius: 10px;
+    width: 55px;
+    height: 55px;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    font-size: 0; /* OCULTA EL TEXTO */
   }
 
-  .menu i {
-    width: 16px;
+  /* SOLO ICONOS */
+  .menu a span,
+  .logout a span {
+    display: none;
+  }
+
+  .menu i,
+  .logout i {
+    width: auto;
+    font-size: 16px;
+    margin: 0;
   }
 
   .topbar {
@@ -1150,7 +1184,7 @@ select.form-control {
 
   .topbar-actions {
     width: 100%;
-    justify-content: space-between; /* Separa notificaciones de perfil */
+    justify-content: space-between;
   }
 
   .user-profile {
@@ -1200,7 +1234,6 @@ select.form-control {
     font-size: 13px;
   }
 
-  /* Los contenedores de botones se vuelven verticales para facilitar pulsaciones táctiles */
   .btn-container,
   .form-footer {
     flex-direction: column;
@@ -1209,7 +1242,7 @@ select.form-control {
 
   .btn-container .btn,
   .form-footer .btn {
-    width: 100%; /* Botones a ancho completo en móviles */
+    width: 100%;
     justify-content: center;
   }
 }
@@ -1217,15 +1250,16 @@ select.form-control {
 /* ── MÓVILES PEQUEÑOS (Hasta 768px) ──────────────────────────────────── */
 @media screen and (max-width: 768px) {
   .sidebar {
-    width: 170px;
-    min-width: 170px;
-    max-width: 170px;
-    padding: 14px 8px;
+    width: 70px;
+    min-width: 70px;
+    max-width: 70px;
+    padding: 14px 6px;
+    align-items: center;
   }
 
   .main-content {
-    margin-left: 170px;
-    width: calc(100% - 170px);
+    margin-left: 70px;
+    width: calc(100% - 70px);
     padding: 14px;
   }
 
@@ -1234,26 +1268,37 @@ select.form-control {
   }
 
   .logo-img {
-    width: 135px;
-    padding: 10px;
-    border-radius: 16px;
+    width: 42px;
+    padding: 5px;
+    border-radius: 12px;
   }
 
-  .logo span {
-    font-size: 11px;
-    letter-spacing: 2px;
+  .menu {
+    align-items: center;
   }
 
   .menu a,
   .logout a {
-    padding: 10px 8px;
-    font-size: 11px;
-    gap: 8px;
+    width: 55px;
+    height: 55px;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    font-size: 0; /* OCULTA EL TEXTO */
   }
 
-  .menu i {
-    width: 14px;
-    font-size: 12px;
+  /* SOLO ICONOS */
+  .menu a span,
+  .logout a span {
+    display: none;
+  }
+
+  .menu i,
+  .logout i {
+    width: auto;
+    font-size: 14px;
+    margin: 0;
   }
 
   .page-title h1 {
@@ -1274,7 +1319,7 @@ select.form-control {
   }
 
   .user-info {
-    display: none; /* Se oculta el texto del usuario para ahorrar espacio, queda solo el avatar */
+    display: none;
   }
 
   .user-profile {
@@ -1348,26 +1393,49 @@ select.form-control {
 /* ── MÓVILES ULTRA PEQUEÑOS (Hasta 576px) ─────────────────────────────── */
 @media screen and (max-width: 576px) {
   .sidebar {
-    width: 150px;
-    min-width: 150px;
-    max-width: 150px;
+    width: 60px;
+    min-width: 60px;
+    max-width: 60px;
+    align-items: center;
   }
 
   .main-content {
-    margin-left: 150px;
-    width: calc(100% - 150px);
+    margin-left: 60px;
+    width: calc(100% - 60px);
     padding: 10px;
   }
 
   .logo-img {
-    width: 110px;
-    padding: 8px;
+    width: 36px;
+    padding: 4px;
+  }
+
+  .menu {
+    align-items: center;
   }
 
   .menu a,
   .logout a {
-    font-size: 10px;
-    padding: 9px 7px;
+    width: 55px;
+    height: 55px;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    font-size: 0; /* OCULTA EL TEXTO */
+  }
+
+  /* SOLO ICONOS */
+  .menu a span,
+  .logout a span {
+    display: none;
+  }
+
+  .menu i,
+  .logout i {
+    width: auto;
+    font-size: 13px;
+    margin: 0;
   }
 
   .page-title h1 {
