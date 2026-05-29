@@ -18,23 +18,28 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from django.conf import settings, views
+from django.conf import settings
+from apps.authentication import views
 from django.conf.urls.static import static
 
-
+#Importar vistas
+from apps.authentication import views
 
 #La URL principal / utilizará las rutas de authentication.
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    # URLs de authentication
     path('', include('apps.authentication.urls')),
 
-    #Pagina de registro de personas
+    # Registro de personas
     path('personas/', views.registrar_persona, name='personas'),
-
 ]
+
+########## Archivos multimedia (imágenes) ##########
 
 # Si estoy en modo desarrollo (DEBUG=True),
 # entonces permite acceder desde el navegador
 # a los archivos guardados en la carpeta media/”.
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+ urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

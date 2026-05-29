@@ -219,7 +219,7 @@ def registrar_persona(request):
     # Mostrar formulario
     return render(
         request,
-        'templates/registro_persona.html',
+        'personas.html',
         {
             'sexos': sexos
         }

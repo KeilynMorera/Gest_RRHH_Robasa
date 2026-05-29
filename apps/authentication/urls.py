@@ -12,8 +12,7 @@ urlpatterns = [
     path('per_emp.html/', views.per_emp_view, name='per_emp'),
     # Ruta para el dashboard (pantalla de registro de empleado)
     path('empleados.html/', views.empleados_view, name='empleados'),
-    # Ruta para el dashboard (pantalla de registro de empleado)
-    path('personas.html/', views.personas_view, name='personas'),
+  
     # Ruta para el dashboard (pantalla de registro de pasantes)
     path('pasantes.html/', views.pasantes_view, name='pasantes'),
     # Ruta para el dashboard (pantalla de registro de empresas)
