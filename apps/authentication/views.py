@@ -177,6 +177,8 @@ def kpi_AsigPremio_view(request):
 
 ###################################### Enviar Registros ######################################
 
+#Registrar personas. Recibe los datos del formulario de personas.html,
+# los guarda en la base de datos y redirecciona a per_emp.html
 def registrar_persona(request):
 
     # Traer sexos desde la BD
