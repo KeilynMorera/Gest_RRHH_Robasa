@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Persona, PersonaSexo
+from .models import Persona, PersonaSexo, Empresa
 
 # =========================================================
 # Vista: Login
@@ -128,13 +128,69 @@ def editar_persona(request, id_persona):
 )
 
 
+# =========================================================
+# Vista: Empresas — registro, modificación y listado
+# NOTA: esta función reemplaza tanto 'registrar_empresa'
+#       como 'empresas_view'. En urls.py debe quedar
+#       una sola ruta apuntando aquí con name='empresas'.
+# =========================================================
+def empresas(request):
 
+    # ─────────────────────────────────────────────
+    # POST → Crear o Modificar empresa
+    # ─────────────────────────────────────────────
+    if request.method == 'POST':
+
+        accion = request.POST.get('accion')
+        empresa_id = request.POST.get('empresa_id')
+
+        nombre_empresa = request.POST.get('nombre_empresa')
+        descripcion_empresa = request.POST.get('descripcion_empresa')
+
+        # ==========================
+        # CREAR EMPRESA
+        # ==========================
+        if accion == 'crear' or not accion:
+
+            Empresa.objects.create(
+                Nombre=nombre_empresa,
+                Descripcion=descripcion_empresa
+            )
+
+        # ==========================
+        # MODIFICAR EMPRESA
+        # ==========================
+        elif accion == 'modificar' and empresa_id:
+
+            empresa = Empresa.objects.get(pk=empresa_id)
+
+            empresa.Nombre = nombre_empresa
+            empresa.Descripcion = descripcion_empresa
+
+            empresa.save()
+
+        return redirect('empresas')
+
+    # ─────────────────────────────────────────────
+    # GET → Mostrar formulario + listado
+    # ─────────────────────────────────────────────
+    return render(request, 'empresas.html', {
+        'empresas': Empresa.objects.all().order_by('Nombre')
+    })
+
+
+def editar_empresa(request, idEmpresa):
+
+    empresa = get_object_or_404(Empresa, pk=idEmpresa)
+
+    return render(request, 'empresas.html', {
+        'empresa_editar': empresa,
+        'empresas': Empresa.objects.all().order_by('Nombre')
+    })
 
 # =========================================================
 # Resto de vistas (sin cambios)
 # =========================================================
-def empleados_view(request):
-    return render(request, 'empleados.html')
 
 def pasantes_view(request):
     return render(request, 'pasantes.html')

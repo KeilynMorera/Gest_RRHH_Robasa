@@ -43,3 +43,19 @@ class Persona(models.Model):
 
     def __str__(self):
         return self.Nombre_Completo   # ← era self.Nombre (no existe ese campo)
+    
+
+# =========================================================
+# TABLA: Empresas
+# =========================================================
+class Empresa(models.Model):
+    idEmpresa = models.AutoField(primary_key=True)
+    Nombre = models.CharField(max_length=150)
+    Descripcion = models.CharField(max_length=1000)
+    
+
+    class Meta:
+        db_table = 'Empresas'
+
+    def __str__(self):
+        return self.Nombre
