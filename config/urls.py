@@ -41,6 +41,8 @@ urlpatterns = [
     path('empresas/', views.registrar_empresa, name='empresas'),
 
     path('empresas/editar/<int:idEmpresa>/', views.editar_empresa, name='editar_empresa'),
+
+    path('empresas/eliminar/<int:idEmpresa>/', views.eliminar_empresa, name='eliminar_empresa'),
 ]
 
 

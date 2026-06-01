@@ -208,9 +208,9 @@ body {
 
 /* Contenedor del Buscador */
 .search-box {
-  flex: 1; /* Crece dinámicamente en el espacio intermedio */
-  max-width: 420px; /* Limita la anchura máxima para que no se vea desproporcionado */
-  position: relative; /* Permite posicionar el icono absoluto con respecto a esta caja */
+  flex: 1;
+  min-width: 0;
+  max-width: 420px;
 }
 
 /* Icono dentro del Buscador */
@@ -629,118 +629,6 @@ body {
   margin-top: 4px;
 }
 
-/* ======================================================
-   TARJETA DE TABLA
-====================================================== */
-.table-card {
-  margin-top: 30px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-}
-
-/* ======================================================
-   ENCABEZADO DE LA TABLA
-====================================================== */
-.table-card-header {
-  padding: 18px 25px;
-  background: #f8f9fc;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.table-card-header h3 {
-  margin: 0;
-  color: #d45a00;
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-/* ======================================================
-   CONTENEDOR RESPONSIVE
-====================================================== */
-.table-wrapper {
-  overflow-x: auto;
-}
-
-/* ======================================================
-   TABLA
-====================================================== */
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 700px;
-}
-
-/* ======================================================
-   CABECERA
-====================================================== */
-.data-table thead {
-  background: #d45a00;
-}
-
-.data-table thead th {
-  color: white;
-  padding: 14px;
-  text-align: left;
-  font-size: 0.95rem;
-  font-weight: 600;
-}
-
-/* ======================================================
-   FILAS
-====================================================== */
-.data-table tbody tr {
-  border-bottom: 1px solid #eeeeee;
-  transition: 0.3s;
-}
-
-.data-table tbody tr:hover {
-  background-color: #fff4eb;
-}
-
-/* ======================================================
-   CELDAS
-====================================================== */
-.data-table td {
-  padding: 14px;
-  color: #444;
-  font-size: 0.95rem;
-  vertical-align: middle;
-}
-
-/* ======================================================
-   MENSAJE TABLA VACÍA
-====================================================== */
-.tabla-vacia {
-  text-align: center;
-  color: #888;
-  font-style: italic;
-  padding: 25px !important;
-}
-
-/* ======================================================
-   BOTÓN EDITAR
-====================================================== */
-.btn-editar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 8px;
-  background: #fff4eb;
-  color: #d45a00;
-  text-decoration: none;
-  transition: 0.3s;
-}
-
-.btn-editar:hover {
-  background: #d45a00;
-  color: white;
-  transform: scale(1.05);
-}
-
 /* ============================================================
    ESTILOS ADICIONALES — Tabla de consulta y modificación
    Agregar al final de personas.css
@@ -838,11 +726,11 @@ textarea:focus {
 }
 
 /* ── Buscador de la tabla ────────────────────────────────────── */
-.table-search {
-  position: relative;
-  display: flex;
-  align-items: center;
+.table-search input {
+  width: 100%;
+  min-width: 180px;
 }
+
 .table-search i {
   position: absolute;
   left: 12px;
@@ -982,180 +870,132 @@ textarea:focus {
   transform: scale(1.1);
 }
 
+/* ── Columna acción ───────────────────────────────────────── */
+.col-accion {
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* ── Botones de acción (Editar / Eliminar) ────────────────── */
+.col-accion .btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  margin: 0 3px;
+  transition: all 0.2s ease;
+}
+
+/* Botón editar */
+.col-accion .btn-warning {
+  background: rgba(240, 165, 0, 0.12);
+  color: #f0a500;
+  border: 1px solid rgba(240, 165, 0, 0.25);
+}
+
+.col-accion .btn-warning:hover {
+  background: #f0a500;
+  color: #ffffff;
+  transform: scale(1.08);
+  box-shadow: 0 4px 10px rgba(240, 165, 0, 0.35);
+}
+
+/* Botón eliminar */
+.col-accion .btn-danger {
+  background: rgba(220, 53, 69, 0.12);
+  color: #dc3545;
+  border: 1px solid rgba(220, 53, 69, 0.25);
+}
+
+.col-accion .btn-danger:hover {
+  background: #dc3545;
+  color: #ffffff;
+  transform: scale(1.08);
+  box-shadow: 0 4px 10px rgba(220, 53, 69, 0.35);
+}
+
+/* Tamaño de iconos */
+.col-accion .btn i {
+  font-size: 14px;
+}
+
 /* ======================================================
    RESPONSIVE
 ====================================================== */
-@media (max-width: 768px) {
-  .data-table thead th,
-  .data-table td {
-    padding: 10px;
-    font-size: 0.85rem;
-  }
+/* ==========================================================
+   RESPONSIVE DESIGN
+   ========================================================== */
 
-  .btn-editar {
-    width: 32px;
-    height: 32px;
-  }
-}
-
-/* ==========================================================================
-   DISEÑO RESPONSIVO (MEDIA QUERIES)
-   ========================================================================== */
-
-/* ── PANTALLAS GRANDES (Escritorios robustos de más de 1200px) ── */
-@media screen and (min-width: 1200px) {
+/* ==========================================================
+   PANTALLAS GRANDES (Desktop)
+   ========================================================== */
+@media (min-width: 1200px) {
   .main-content {
-    padding: 40px; /* Mayor margen de respiración */
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
-  .form-card {
-    max-width: 1400px; /* Pone un límite de seguridad para que la tarjeta no sea infinitamente ancha */
-    margin: 20px auto; /* Centra la tarjeta horizontalmente */
-  }
-
-  .page-title h1 {
-    font-size: 38px;
-  }
-
-  .logo-img {
-    width: 280px;
-  }
-}
-
-/* ── LAPTOPS Y TABLETS HORIZONTALES (Entre 992px y 1199px) ── */
-@media screen and (max-width: 1199px) {
-  /* Compactación de la barra lateral */
-  .sidebar {
-    width: 230px;
-    padding: 25px 15px;
-  }
-
-  /* Reducción del margen izquierdo en sintonía con la barra lateral */
-  .main-content {
-    margin-left: 230px;
-    padding: 25px;
-  }
-
-  .logo-img {
-    width: 200px;
-  }
-
-  .menu a {
-    font-size: 14px;
-    padding: 12px 14px;
-  }
-
-  .page-title h1 {
-    font-size: 30px;
+  .form-card,
+  .table-card {
+    width: 100%;
   }
 
   .form-grid {
-    gap: 20px; /* Ajuste menor de separación en el grid */
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* ── TABLETS VERTICALES (Entre 768px y 991px) ── */
-@media screen and (max-width: 991px) {
+/* ==========================================================
+   PANTALLAS MEDIANAS (Tablets)
+   ========================================================== */
+@media (max-width: 992px) {
+  /* Sidebar reducido */
   .sidebar {
-    width: 200px;
-    padding: 20px 12px;
+    width: 80px;
+    padding: 20px 10px;
+    align-items: center;
   }
 
+  /* Ajusta contenido */
   .main-content {
-    margin-left: 200px;
+    margin-left: 80px;
     padding: 20px;
   }
 
-  .logo-img {
-    width: 160px;
-    padding: 12px;
-  }
-
-  .menu a {
-    font-size: 13px;
-    padding: 11px;
-    gap: 10px;
-  }
-
-  .page-title {
-    min-width: auto;
-    text-align: center;
-  }
-  .page-title h1 {
-    font-size: 22px;
-  }
-  .page-title p {
-    font-size: 13px;
-  }
-
-  .search-box {
-    max-width: 100%;
-  }
-
-  .user-profile {
-    padding: 7px 10px;
-  }
-
-  /* ¡Cambio Importante!: El formulario rompe el layout de dos columnas y pasa a 1 sola */
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .field-full {
-    grid-column: auto; /* Desactiva la instrucción de extenderse horizontalmente */
-  }
-
-  .form-card-header {
-    flex-direction: column; /* Apila el título y las notas complementarias verticalmente */
-    align-items: flex-start;
-  }
-
-  .form-footer {
-    justify-content: center; /* Centra los botones en el footer del formulario */
-  }
-}
-
-/* ── CELULARES / DISPOSITIVOS MÓVILES (Menos de 767px) ── */
-@media screen and (max-width: 767px) {
-  /* Transformación de la Sidebar a un formato Ultra Compacto */
-  .sidebar {
-    width: 85px; /* Barra muy delgada */
-    padding: 15px 8px;
-    align-items: center;
-  }
-
-  .main-content {
-    margin-left: 85px; /* Se ajusta de nuevo el colchón izquierdo */
-    padding: 15px;
-  }
-
-  .logo-img {
-    width: 60px; /* El logo pasa a convertirse casi en una insignia de icono */
-    padding: 6px;
-    border-radius: 12px;
-  }
-
-  .menu {
-    width: 100%;
-    align-items: center;
-  }
-
-  /* Estrategia de Ocultado de Texto sin JS: font-size: 0 */
+  /* Oculta texto del menú */
   .menu a {
     justify-content: center;
-    padding: 12px;
-    font-size: 0; /* Hack inteligente: Al dar tamaño cero, las letras desaparecen del renderizado */
-    width: 100%;
+    padding: 14px 0;
   }
 
-  /* Mostrar solo iconos a un tamaño cómodo para pantallas táctiles */
-  .menu a i {
-    font-size: 18px; /* Mantiene el icono visible a pesar del font-size: 0 del padre */
+  .menu a span,
+  .menu a::after {
+    display: none;
+  }
+
+  .menu a {
+    font-size: 0;
+  }
+
+  .menu i {
+    font-size: 18px;
     width: auto;
-    margin: 0;
   }
 
-  /* Oculta el texto del Logout */
+  /* Logo más pequeño */
+  .logo-img {
+    width: 60px;
+    padding: 8px;
+  }
+
+  .logo span {
+    display: none;
+  }
+
+  /* Logout solo icono */
   .logout a {
     justify-content: center;
     font-size: 0;
@@ -1165,113 +1005,249 @@ textarea:focus {
     font-size: 18px;
   }
 
-  /* Cabecera general de la aplicación en bloques */
+  /* Formularios en una sola columna */
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .field-full {
+    grid-column: auto;
+  }
+
+  /* Topbar centrada */
   .topbar {
     flex-direction: column;
     align-items: stretch;
-    gap: 15px;
-  }
-
-  .page-title {
-    min-width: auto;
-    text-align: center;
-  }
-  .page-title h1 {
-    font-size: 22px;
-  }
-  .page-title p {
-    font-size: 13px;
   }
 
   .search-box {
-    max-width: 100%; /* Buscador toma toda la extensión de la pantalla */
+    max-width: 100%;
   }
 
   .topbar-actions {
-    width: 100%;
-    justify-content: space-between; /* Distribuye el perfil y alertas balanceadamente */
     margin-left: 0;
+    justify-content: flex-end;
   }
 
-  .user-info {
-    display: none;
+  /* Tabla ocupa todo */
+  .table-wrapper {
+    overflow-x: auto;
   }
 
-  .user-profile {
-    border-radius: 14px;
-    padding: 6px 8px;
+  .data-table {
+    min-width: 700px;
   }
 
-  .user-profile img {
-    width: 36px;
-    height: 36px;
+  /* Contenido principal */
+  .main-content {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+    overflow-x: hidden;
   }
 
-  .breadcrumb {
-    font-size: 12px;
+  /* Topbar */
+  .topbar {
+    width: 100%;
   }
 
-  .form-card-header {
-    padding: 18px;
+  /* Barra de búsqueda superior */
+  .search-box {
+    width: 100%;
+    max-width: 100%;
+    flex: none;
   }
 
-  .form-body {
-    padding: 18px;
+  .search-box input {
+    width: 100%;
   }
 
-  .form-grid {
-    grid-template-columns: 1fr;
-    gap: 18px;
+  /* Buscador de tabla */
+  .table-search {
+    width: 100%;
   }
 
-  .field input,
-  .field select,
-  .field textarea {
-    font-size: 14px;
+  .table-search input {
+    width: 100%;
   }
 
-  /* Los botones en móviles se transforman en bloques apilados */
-  .form-footer {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .btn {
-    width: 100%; /* Botones de lado a lado facilitando el toque táctil */
-    justify-content: center;
+  /* Evita que tarjetas se desborden */
+  .form-card,
+  .table-card {
+    width: 100%;
+    max-width: 100%;
   }
 }
 
-/* ── CELULARES MUY PEQUEÑOS (Menos de 480px, ej: iPhone SE) ── */
-@media screen and (max-width: 480px) {
+/* ==========================================================
+   PANTALLAS PEQUEÑAS (Móviles)
+   ========================================================== */
+@media (max-width: 768px) {
+  /* Sidebar ultra compacto */
   .sidebar {
-    width: 70px; /* Última reducción tolerable de ancho */
+    width: 65px;
+    padding: 15px 5px;
   }
 
   .main-content {
-    margin-left: 70px;
-    padding: 12px;
+    margin-left: 65px;
+    padding: 15px;
   }
 
+  /* Ocultar completamente textos */
+  .menu a,
+  .logout a {
+    font-size: 0;
+    justify-content: center;
+  }
+
+  .menu i,
+  .logout i {
+    font-size: 20px;
+  }
+
+  /* Logo */
   .logo-img {
     width: 50px;
+    padding: 5px;
   }
 
-  .page-title h1 {
-    font-size: 20px;
+  /* Breadcrumb */
+  .breadcrumb {
+    font-size: 11px;
+  }
+
+  /* Encabezado formulario */
+  .form-card-header {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .form-card-title {
     font-size: 18px;
   }
 
-  .user-profile img {
-    width: 36px;
-    height: 36px; /* Foto del avatar reducida */
+  /* Inputs */
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 13px;
   }
 
-  .btn {
+  /* Botones formulario */
+  .form-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-footer .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Buscador tabla */
+  .table-search {
+    width: 100%;
+  }
+
+  .table-search input {
+    width: 100%;
+  }
+
+  /* Encabezado tabla */
+  .table-card-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* Tabla adaptable */
+  .data-table {
+    min-width: 600px;
+  }
+
+  /* Perfil usuario */
+  .user-profile {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .user-info {
+    display: none;
+  }
+
+  /* Títulos */
+  .page-title h1 {
+    font-size: 24px;
+  }
+
+  .page-title p {
     font-size: 13px;
-    padding: 10px 12px;
+  }
+
+  .main-content {
+    margin-left: 65px;
+    width: calc(100% - 65px);
+    overflow-x: hidden;
+  }
+
+  /* Barra superior */
+  .topbar {
+    width: 100%;
+  }
+
+  /* Buscador principal */
+  .search-box {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .search-box input {
+    width: 100%;
+  }
+
+  /* Buscador de la tabla */
+  .table-search {
+    width: 100%;
+  }
+
+  .table-search input {
+    width: 100%;
+  }
+
+  /* Tarjetas */
+  .form-card,
+  .table-card {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* ==========================================================
+   PANTALLAS MUY PEQUEÑAS
+   ========================================================== */
+@media (max-width: 480px) {
+  .sidebar {
+    width: 60px;
+  }
+
+  .main-content {
+    margin-left: 60px;
+    padding: 10px;
+  }
+
+  .logo-img {
+    width: 45px;
+  }
+
+  .form-body {
+    padding: 15px;
+  }
+
+  .table-card-header,
+  .form-card-header {
+    padding: 15px;
+  }
+
+  .page-title h1 {
+    font-size: 20px;
   }
 }

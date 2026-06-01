@@ -197,7 +197,19 @@ def editar_empresa(request, idEmpresa):
     )
 
 
+# =========================================================
+# Eliminar empresa
+# =========================================================
+def eliminar_empresa(request, idEmpresa):
 
+    empresa = get_object_or_404(
+        Empresa,
+        pk=idEmpresa
+    )
+
+    empresa.delete()
+
+    return redirect('empresas')
 
 
 

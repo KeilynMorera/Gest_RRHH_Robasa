@@ -49,15 +49,14 @@ class Persona(models.Model):
 # TABLA: Empresas
 # =========================================================
 class Empresa(models.Model):
-    idEmpresa = models.AutoField(
-        primary_key=True
-    )
+    idEmpresa = models.AutoField(primary_key=True)
 
-    Nombre = models.CharField(
-        max_length=150
-    )
+    Nombre = models.CharField(max_length=150)
 
     Descripcion = models.TextField()
+
+    class Meta:
+        db_table = 'Empresas'
 
     def __str__(self):
         return self.Nombre

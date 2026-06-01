@@ -278,7 +278,7 @@
             <form
               method="POST"
               enctype="multipart/form-data"
-              action="{% if empresa_editar %}{% url 'editar_empresa' empresa_editar.idEmpresa %}{% else %}{% url 'empresas' %}{% endif %}"
+              action="{% url 'empresas' %}"
             >
               <!-- Token de seguridad CSRF -->
               {% csrf_token %}
@@ -389,8 +389,8 @@
           </div>
 
           <!-- ======================================================
-     TARJETA: TABLA DE EMPRESAS
-====================================================== -->
+                TARJETA: TABLA DE EMPRESAS
+          ====================================================== -->
           <section class="table-card">
             <div class="table-card-header">
               <div class="table-card-header-left">
@@ -444,8 +444,20 @@
                       <a
                         href="{% url 'editar_empresa' empresa.idEmpresa %}"
                         class="btn btn-warning btn-sm"
+                        title="Editar empresa"
                       >
-                        Editar
+                        <i class="fas fa-pen"></i>
+                      </a>
+
+                      <a
+                        href="{% url 'eliminar_empresa' empresa.idEmpresa %}"
+                        class="btn btn-danger btn-sm"
+                        title="Eliminar empresa"
+                        onclick="
+                          return confirm('¿Desea eliminar esta empresa?');
+                        "
+                      >
+                        <i class="fas fa-trash"></i>
                       </a>
                     </td>
                   </tr>
@@ -474,5 +486,11 @@
         </footer>
       </main>
     </div>
+
+    <!-- ======================================================
+         ARCHIVO JS LOCAL
+         Funcionalidades interactivas personalizadas
+    ====================================================== -->
+    <script src="{% static 'js/empresa.js' %}"></script>
   </body>
 </html>
