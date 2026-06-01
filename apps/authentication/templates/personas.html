@@ -545,104 +545,104 @@
             </form>
           </div>
           <!-- Fin form-body -->
-        </section>
 
-        <!-- ======================================================
+          <!-- ======================================================
              TARJETA: TABLA DE CONSULTA Y MODIFICACIÓN
         ====================================================== -->
-        <section class="table-card">
-          <div class="table-card-header">
-            <div class="table-card-header-left">
-              <div class="table-card-icon">
-                <i class="fas fa-list"></i>
+          <section class="table-card">
+            <div class="table-card-header">
+              <div class="table-card-header-left">
+                <div class="table-card-icon">
+                  <i class="fas fa-list"></i>
+                </div>
+                <div>
+                  <h2 class="table-card-title">Personas registradas</h2>
+                  <p class="table-card-subtitle">
+                    Buscá por nombre o cédula y seleccioná el ícono de edición
+                    para modificar
+                  </p>
+                </div>
               </div>
-              <div>
-                <h2 class="table-card-title">Personas registradas</h2>
-                <p class="table-card-subtitle">
-                  Buscá por nombre o cédula y seleccioná el ícono de edición
-                  para modificar
-                </p>
+
+              <!-- Filtro de búsqueda en la tabla -->
+              <div class="table-search">
+                <i class="fas fa-search"></i>
+                <input
+                  type="text"
+                  id="filtro-tabla"
+                  placeholder="Buscar por nombre o cédula…"
+                />
               </div>
             </div>
 
-            <!-- Filtro de búsqueda en la tabla -->
-            <div class="table-search">
-              <i class="fas fa-search"></i>
-              <input
-                type="text"
-                id="filtro-tabla"
-                placeholder="Buscar por nombre o cédula…"
-              />
+            <div class="table-wrapper">
+              <table class="data-table" id="tabla-personas">
+                <thead>
+                  <tr>
+                    <th>Foto</th>
+                    <th>Nombre completo</th>
+                    <th>Cédula</th>
+                    <th>Sexo</th>
+                    <th>Fecha nacimiento</th>
+                    <th>Teléfono</th>
+                    <th>Celular</th>
+                    <th>Correo</th>
+                    <th>Dirección</th>
+                    <th class="col-accion">Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for persona in personas %}
+                  <tr
+                    data-id="{{ persona.idPersona }}"
+                    data-nombre="{{ persona.Nombre_Completo }}"
+                    data-cedula="{{ persona.Cedula }}"
+                    data-sexo="{{ persona.idSexo.idSexo }}"
+                    data-nacimiento="{{ persona.Fecha_Nacimiento|date:'Y-m-d' }}"
+                    data-telefono="{{ persona.Telefono }}"
+                    data-celular="{{ persona.Celular }}"
+                    data-correo="{{ persona.Correo }}"
+                    data-direccion="{{ persona.Direccion }}"
+                    data-foto="{{ persona.foto.url|default:'' }}"
+                  >
+                    <td>
+                      <img
+                        src="{% if persona.foto %}{{ persona.foto.url }}{% else %}{% static 'imagenes/fotos_personas/default-user.png' %}{% endif %}"
+                        alt="Foto"
+                        class="tabla-foto"
+                      />
+                    </td>
+                    <td>{{ persona.Nombre_Completo }}</td>
+                    <td>{{ persona.Cedula }}</td>
+                    <td>{{ persona.idSexo.Sexo }}</td>
+                    <td>{{ persona.Fecha_Nacimiento|date:"d/m/Y" }}</td>
+                    <td>{{ persona.Telefono }}</td>
+                    <td>{{ persona.Celular }}</td>
+                    <td>{{ persona.Correo }}</td>
+                    <td class="col-direccion">{{ persona.Direccion }}</td>
+                    <td class="col-accion">
+                      <!-- Botón editar: carga datos en el formulario -->
+                      <button
+                        type="button"
+                        class="btn-editar"
+                        title="Editar esta persona"
+                      >
+                        <i class="fas fa-pen-to-square"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="10" class="tabla-vacia">
+                      <i class="fas fa-users-slash"></i>
+                      No hay personas registradas aún
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
             </div>
-          </div>
-
-          <div class="table-wrapper">
-            <table class="data-table" id="tabla-personas">
-              <thead>
-                <tr>
-                  <th>Foto</th>
-                  <th>Nombre completo</th>
-                  <th>Cédula</th>
-                  <th>Sexo</th>
-                  <th>Fecha nacimiento</th>
-                  <th>Teléfono</th>
-                  <th>Celular</th>
-                  <th>Correo</th>
-                  <th>Dirección</th>
-                  <th class="col-accion">Acción</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for persona in personas %}
-                <tr
-                  data-id="{{ persona.idPersona }}"
-                  data-nombre="{{ persona.Nombre_Completo }}"
-                  data-cedula="{{ persona.Cedula }}"
-                  data-sexo="{{ persona.idSexo.idSexo }}"
-                  data-nacimiento="{{ persona.Fecha_Nacimiento|date:'Y-m-d' }}"
-                  data-telefono="{{ persona.Telefono }}"
-                  data-celular="{{ persona.Celular }}"
-                  data-correo="{{ persona.Correo }}"
-                  data-direccion="{{ persona.Direccion }}"
-                  data-foto="{{ persona.foto.url|default:'' }}"
-                >
-                  <td>
-                    <img
-                      src="{% if persona.foto %}{{ persona.foto.url }}{% else %}{% static 'imagenes/fotos_personas/default-user.png' %}{% endif %}"
-                      alt="Foto"
-                      class="tabla-foto"
-                    />
-                  </td>
-                  <td>{{ persona.Nombre_Completo }}</td>
-                  <td>{{ persona.Cedula }}</td>
-                  <td>{{ persona.idSexo.Sexo }}</td>
-                  <td>{{ persona.Fecha_Nacimiento|date:"d/m/Y" }}</td>
-                  <td>{{ persona.Telefono }}</td>
-                  <td>{{ persona.Celular }}</td>
-                  <td>{{ persona.Correo }}</td>
-                  <td class="col-direccion">{{ persona.Direccion }}</td>
-                  <td class="col-accion">
-                    <!-- Botón editar: carga datos en el formulario -->
-                    <button
-                      type="button"
-                      class="btn-editar"
-                      title="Editar esta persona"
-                    >
-                      <i class="fas fa-pen-to-square"></i>
-                    </button>
-                  </td>
-                </tr>
-                {% empty %}
-                <tr>
-                  <td colspan="10" class="tabla-vacia">
-                    <i class="fas fa-users-slash"></i>
-                    No hay personas registradas aún
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
+          </section>
         </section>
         <!-- Fin form-card -->
 
