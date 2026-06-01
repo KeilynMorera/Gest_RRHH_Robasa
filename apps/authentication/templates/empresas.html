@@ -310,7 +310,6 @@
                       name="nombre_empresa"
                       class="form-control"
                       maxlength="150"
-                      placeholder="Ingrese el nombre de la empresa"
                       required
                       value="{{ empresa_editar.Nombre|default:'' }}"
                     />
@@ -336,11 +335,9 @@
                       class="form-control"
                       maxlength="1000"
                       rows="3"
-                      placeholder="Descripción sobre la empresa, su actividad comercial, ubicación, historia, servicios y cualquier información relevante."
                       required
                     >
-                    {{ empresa_editar.Descripcion|default:'' }}
-                  </textarea
+                    {{ empresa_editar.Descripcion|default:'' }}</textarea
                     >
 
                     <!-- Texto de ayuda -->
@@ -367,36 +364,68 @@
 
                 {% if empresa_editar %}
                 <input type="hidden" name="accion" value="modificar" />
+
                 <input
                   type="hidden"
                   name="empresa_id"
                   value="{{ empresa_editar.idEmpresa }}"
                 />
+
                 {% else %}
+
                 <input type="hidden" name="accion" value="crear" />
+
                 {% endif %}
 
                 <button type="submit" class="btn btn-primary">
+                  {% if empresa_editar %}
+                  <i class="fas fa-pen"></i>
+                  Actualizar empresa {% else %}
                   <i class="fas fa-floppy-disk"></i>
-                  Guardar empresa
+                  Guardar empresa {% endif %}
                 </button>
               </div>
             </form>
           </div>
 
+          <!-- ======================================================
+     TARJETA: TABLA DE EMPRESAS
+====================================================== -->
           <section class="table-card">
             <div class="table-card-header">
-              <h3>Empresas Registradas</h3>
+              <div class="table-card-header-left">
+                <div class="table-card-icon">
+                  <i class="fas fa-building"></i>
+                </div>
+
+                <div>
+                  <h2 class="table-card-title">Empresas registradas</h2>
+                  <p class="table-card-subtitle">
+                    Busque una empresa y seleccione el ícono de edición para
+                    modificar sus datos.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Filtro de búsqueda -->
+              <div class="table-search">
+                <i class="fas fa-search"></i>
+                <input
+                  type="text"
+                  id="filtro-tabla"
+                  placeholder="Buscar empresa..."
+                />
+              </div>
             </div>
 
             <div class="table-wrapper">
-              <table class="data-table">
+              <table class="data-table" id="tabla-empresas">
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Empresa</th>
+                    <th>Nombre Empresa</th>
                     <th>Descripción</th>
-                    <th>Acciones</th>
+                    <th class="col-accion">Acción</th>
                   </tr>
                 </thead>
 
@@ -404,21 +433,27 @@
                   {% for empresa in empresas %}
                   <tr>
                     <td>{{ empresa.idEmpresa }}</td>
-                    <td>{{ empresa.Nombre }}</td>
-                    <td>{{ empresa.Descripcion }}</td>
 
                     <td>
+                      <strong>{{ empresa.Nombre }}</strong>
+                    </td>
+
+                    <td class="col-descripcion">{{ empresa.Descripcion }}</td>
+
+                    <td class="col-accion">
                       <a
                         href="{% url 'editar_empresa' empresa.idEmpresa %}"
-                        class="btn-editar"
+                        class="btn btn-warning btn-sm"
                       >
-                        <i class="fas fa-pen"></i>
+                        Editar
                       </a>
                     </td>
                   </tr>
+
                   {% empty %}
                   <tr>
                     <td colspan="4" class="tabla-vacia">
+                      <i class="fas fa-building-circle-xmark"></i>
                       No existen empresas registradas.
                     </td>
                   </tr>

@@ -129,7 +129,10 @@ def editar_persona(request, id_persona):
 #       como 'empresas_view'. En urls.py debe quedar
 #       una sola ruta apuntando aquí con name='empresas'.
 # =========================================================
-def registrar_empresas(request):
+# =========================================================
+# Vista: Empresas — registro, modificación y listado
+# =========================================================
+def registrar_empresa(request):
 
     # ─────────────────────────────────────────────
     # POST → Crear o Modificar empresa
@@ -142,9 +145,9 @@ def registrar_empresas(request):
         nombre_empresa = request.POST.get('nombre_empresa')
         descripcion_empresa = request.POST.get('descripcion_empresa')
 
-        # ==========================
+        # =====================================
         # CREAR EMPRESA
-        # ==========================
+        # =====================================
         if accion == 'crear' or not accion:
 
             Empresa.objects.create(
@@ -152,9 +155,9 @@ def registrar_empresas(request):
                 Descripcion=descripcion_empresa
             )
 
-        # ==========================
+        # =====================================
         # MODIFICAR EMPRESA
-        # ==========================
+        # =====================================
         elif accion == 'modificar' and empresa_id:
 
             empresa = Empresa.objects.get(pk=empresa_id)
@@ -167,30 +170,35 @@ def registrar_empresas(request):
         return redirect('empresas')
 
     # ─────────────────────────────────────────────
-    # GET → Mostrar formulario + listado
+    # GET → Mostrar formulario + tabla
     # ─────────────────────────────────────────────
     return render(request, 'empresas.html', {
         'empresas': Empresa.objects.all().order_by('Nombre')
     })
 
 
+# =========================================================
+# Cargar empresa para edición
+# =========================================================
 def editar_empresa(request, idEmpresa):
 
-    empresa = get_object_or_404(Empresa, pk=idEmpresa)
+    empresa = get_object_or_404(
+        Empresa,
+        pk=idEmpresa
+    )
 
-    if request.method == 'POST':
+    return render(
+        request,
+        'empresas.html',
+        {
+            'empresa_editar': empresa,
+            'empresas': Empresa.objects.all().order_by('Nombre')
+        }
+    )
 
-        empresa.Nombre = request.POST.get('nombre_empresa')
-        empresa.Descripcion = request.POST.get('descripcion_empresa')
 
-        empresa.save()
 
-        return redirect('empresas')
 
-    return render(request, 'empresas.html', {
-        'empresa_editar': empresa,
-        'empresas': Empresa.objects.all().order_by('Nombre')
-    })
 
 
 # =========================================================
