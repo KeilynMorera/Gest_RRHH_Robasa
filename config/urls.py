@@ -34,6 +34,8 @@ urlpatterns = [
 
     # Registro de personas
     path('personas/', views.registrar_persona, name='personas'),
+    #Modificar personas
+    path('personas/editar/<int:id_persona>/', views.editar_persona, name='editar_persona'),
 ]
 
 ########## Archivos multimedia (imágenes) ##########

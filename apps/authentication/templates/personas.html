@@ -301,20 +301,14 @@
           ====================================================== -->
           <div class="form-body">
             <!-- Formulario principal -->
-            <form
-              method="POST"
-              action="{% url 'personas' %}"
-              enctype="multipart/form-data"
-            >
-              <!--enctype="multipart/form-data" es para subir archivos -->
-              <!-- Token de seguridad de Django -->
+            <form method="POST" enctype="multipart/form-data" action="{% if persona_editar %}{% url 'editar_persona' persona_editar.idPersona %}{% else %}{% url 'personas' %}{% endif %}">
               {% csrf_token %}
 
               <!-- ======================================================
                     SECCIÓN: INFORMACIÓN PERSONAL
               ====================================================== -->
               <div class="form-section">
-                <!-- Título de sección -->
+                <!-- Título de  sección -->
                 <h4 class="form-section-title">Información Personal</h4>
 
                 <!-- Grid del formulario -->
@@ -367,11 +361,12 @@
 
                     <input
                       type="text"
-                      id="nombre_completo"
                       name="nombre_completo"
+                      class="form-control"
                       maxlength="200"
                       placeholder="Ingrese el nombre completo"
                       required
+                      value="{{ persona_editar.Nombre_Completo|default:'' }}"
                     />
                   </div>
 
@@ -386,11 +381,12 @@
 
                     <input
                       type="text"
-                      id="cedula"
                       name="cedula"
+                      class="form-control"
                       maxlength="20"
                       placeholder="Ej: 1-1234-5678"
                       required
+                      value="{{ persona_editar.Cedula|default:'' }}"
                     />
                   </div>
 
@@ -409,7 +405,9 @@
                       </option>
 
                       {% for sexo in sexos %}
-                      <option value="{{ sexo.idSexo }}">{{ sexo.Sexo }}</option>
+                      <option value="{{ sexo.idSexo }}" {% if persona_editar.idSexo.idSexo == sexo.idSexo %}selected{% endif %}>
+                        {{ sexo.Sexo }}
+                      </option>
                       {% endfor %}
                     </select>
                   </div>
@@ -425,9 +423,10 @@
 
                     <input
                       type="date"
-                      id="fecha_nacimiento"
                       name="fecha_nacimiento"
+                      class="form-control"
                       required
+                      value="{{ persona_editar.Fecha_Nacimiento|date:'Y-m-d' }}"
                     />
                   </div>
 
@@ -442,11 +441,12 @@
 
                     <input
                       type="tel"
-                      id="telefono"
                       name="telefono"
+                      class="form-control"
                       maxlength="20"
                       placeholder="Ej: 2222-3333"
                       required
+                      value="{{ persona_editar.Telefono|default:'' }}"
                     />
                   </div>
 
@@ -461,11 +461,12 @@
 
                     <input
                       type="tel"
-                      id="celular"
                       name="celular"
+                      class="form-control"
                       maxlength="20"
                       placeholder="Ej: 8888-9999"
                       required
+                      value="{{ persona_editar.Celular|default:'' }}"
                     />
                   </div>
 
@@ -480,11 +481,12 @@
 
                     <input
                       type="email"
-                      id="correo"
                       name="correo"
+                      class="form-control"
                       maxlength="200"
                       placeholder="ejemplo@correo.com"
                       required
+                      value="{{ persona_editar.Correo|default:'' }}"
                     />
                   </div>
 
@@ -496,27 +498,8 @@
                       <i class="fas fa-location-dot field-icon"></i>
                       Dirección De Habitación <span class="req">*</span>
                     </label>
-
-                    <textarea
-                      id="direccion"
-                      name="direccion"
-                      maxlength="400"
-                      rows="3"
-                      placeholder="Provincia, Cantón, Distrito y señas exactas..."
-                      style="
-                        width: 100%;
-                        border: 1.5px solid #dde2f0;
-                        border-radius: 8px;
-                        padding: 12px 14px;
-                        font-size: 14px;
-                        background: #f7f8fc;
-                        outline: none;
-                        font-family: inherit;
-                        resize: vertical;
-                      "
-                      required
-                    ></textarea>
-                  </div>
+                    
+                    <textarea id="direccion" name="direccion" class="form-control" maxlength="400" rows="3" placeholder="Provincia, Cantón, Distrito y señas exactas..." required>{{ persona_editar.Direccion|default:'' }}</textarea>
                 </div>
               </div>
 
@@ -537,10 +520,19 @@
                 </button>
 
                 <!-- Botón guardar -->
-                <button type="submit" class="btn btn-primary">
-                  <i class="fas fa-floppy-disk"></i>
-                  Guardar persona
-                </button>
+                {% if persona_editar %}
+                  <button
+                    type="submit"
+                    class="btn btn-warning">
+                    Actualizar Persona
+                  </button>
+                {% else %}
+                  <button
+                    type="submit"
+                    class="btn btn-primary">
+                    Guardar Persona
+                  </button>
+                {% endif %}
               </div>
             </form>
           </div>
@@ -603,11 +595,11 @@
                     data-celular="{{ persona.Celular }}"
                     data-correo="{{ persona.Correo }}"
                     data-direccion="{{ persona.Direccion }}"
-                    data-foto="{{ persona.foto.url|default:'' }}"
+                    data-foto="{{ persona.Foto.url|default:'' }}"
                   >
                     <td>
                       <img
-                        src="{% if persona.foto %}{{ persona.foto.url }}{% else %}{% static 'imagenes/fotos_personas/default-user.png' %}{% endif %}"
+                        src="{% if persona.Foto %} {{ persona.Foto.url }} {% else %}{% endif %}"
                         alt="Foto"
                         class="tabla-foto"
                       />
@@ -622,13 +614,12 @@
                     <td class="col-direccion">{{ persona.Direccion }}</td>
                     <td class="col-accion">
                       <!-- Botón editar: carga datos en el formulario -->
-                      <button
-                        type="button"
-                        class="btn-editar"
-                        title="Editar esta persona"
+                      <a
+                        href="{% url 'editar_persona' persona.idPersona %}"
+                        class="btn btn-warning btn-sm"
                       >
-                        <i class="fas fa-pen-to-square"></i>
-                      </button>
+                        Editar
+                      </a>
                     </td>
                   </tr>
                   {% empty %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Persona, PersonaSexo
 
 # =========================================================
@@ -85,6 +85,49 @@ def registrar_persona(request):
                                    .all()
                                    .order_by('Nombre_Completo'),
     })
+
+
+
+def editar_persona(request, id_persona):
+
+    persona = get_object_or_404(
+        Persona,
+        pk=id_persona
+    )
+
+    if request.method == 'POST':
+
+        persona.Nombre_Completo = request.POST.get('nombre_completo')
+        persona.Cedula = request.POST.get('cedula')
+
+        sexo_id = request.POST.get('sexo')
+        persona.idSexo = PersonaSexo.objects.get(pk=sexo_id)
+
+        persona.Fecha_Nacimiento = request.POST.get('fecha_nacimiento')
+        persona.Telefono = request.POST.get('telefono')
+        persona.Celular = request.POST.get('celular')
+        persona.Correo = request.POST.get('correo')
+        persona.Direccion = request.POST.get('direccion')
+
+        if request.FILES.get('foto'):
+            persona.Foto = request.FILES['foto']
+
+        persona.save()
+
+        return redirect('personas')
+
+    personas = Persona.objects.all()
+    sexos = PersonaSexo.objects.all()
+    
+    return render(
+        request, 'personas.html', {
+            'persona_editar': persona,
+            'personas': personas,
+            'sexos': sexos
+    }
+)
+
+
 
 
 # =========================================================
