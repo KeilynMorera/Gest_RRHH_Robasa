@@ -301,7 +301,11 @@
           ====================================================== -->
           <div class="form-body">
             <!-- Formulario principal -->
-            <form method="POST" enctype="multipart/form-data" action="{% if persona_editar %}{% url 'editar_persona' persona_editar.idPersona %}{% else %}{% url 'personas' %}{% endif %}">
+            <form
+              method="POST"
+              enctype="multipart/form-data"
+              action="{% if persona_editar %}{% url 'editar_persona' persona_editar.idPersona %}{% else %}{% url 'personas' %}{% endif %}"
+            >
               {% csrf_token %}
 
               <!-- ======================================================
@@ -326,20 +330,15 @@
                       <!-- Vista previa -->
                       <div class="photo-preview">
                         <img
-                          id="foto"
-                          src="{% static 'imagenes/fotos_personas/default-user.png' %}"
+                          id="foto-preview"
+                          src="..."
                           alt="Vista previa de la foto"
                         />
                       </div>
 
                       <!-- Selector de archivo -->
                       <div class="photo-upload-controls">
-                        <input
-                          type="file"
-                          id="foto"
-                          name="foto"
-                          accept="image/png, image/jpeg, image/jpg, image/webp"
-                        />
+                        <input type="file" id="foto" name="foto" />
 
                         <!-- Texto de ayuda -->
                         <small class="help-text">
@@ -405,7 +404,18 @@
                       </option>
 
                       {% for sexo in sexos %}
-                      <option value="{{ sexo.idSexo }}" {% if persona_editar.idSexo.idSexo == sexo.idSexo %}selected{% endif %}>
+                      <option
+                        value="{{ sexo.idSexo }}"
+                        {%
+                        if
+                        persona_editar.idSexo.idSexo=""
+                        ="sexo.idSexo"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
                         {{ sexo.Sexo }}
                       </option>
                       {% endfor %}
@@ -498,8 +508,20 @@
                       <i class="fas fa-location-dot field-icon"></i>
                       Dirección De Habitación <span class="req">*</span>
                     </label>
-                    
-                    <textarea id="direccion" name="direccion" class="form-control" maxlength="400" rows="3" placeholder="Provincia, Cantón, Distrito y señas exactas..." required>{{ persona_editar.Direccion|default:'' }}</textarea>
+
+                    <textarea
+                      id="direccion"
+                      name="direccion"
+                      class="form-control"
+                      maxlength="400"
+                      rows="3"
+                      placeholder="Provincia, Cantón, Distrito y señas exactas..."
+                      required
+                    >
+                    {{ persona_editar.Direccion|default:'' }}
+                  </textarea
+                    >
+                  </div>
                 </div>
               </div>
 
@@ -521,17 +543,13 @@
 
                 <!-- Botón guardar -->
                 {% if persona_editar %}
-                  <button
-                    type="submit"
-                    class="btn btn-warning">
-                    Actualizar Persona
-                  </button>
+                <button type="submit" class="btn btn-warning">
+                  Actualizar Persona
+                </button>
                 {% else %}
-                  <button
-                    type="submit"
-                    class="btn btn-primary">
-                    Guardar Persona
-                  </button>
+                <button type="submit" class="btn btn-primary">
+                  Guardar Persona
+                </button>
                 {% endif %}
               </div>
             </form>
@@ -599,7 +617,7 @@
                   >
                     <td>
                       <img
-                        src="{% if persona.Foto %} {{ persona.Foto.url }} {% else %}{% endif %}"
+                        src="{% if persona.Foto %}{{ persona.Foto.url }}{% else %}{% static 'imagenes/fotos_personas/default-user.png' %}{% endif %}"
                         alt="Foto"
                         class="tabla-foto"
                       />
