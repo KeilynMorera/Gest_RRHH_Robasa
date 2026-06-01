@@ -771,11 +771,11 @@ textarea:focus {
 }
 
 /* ── Buscador de la tabla ────────────────────────────────────── */
-.table-search {
-  position: relative;
-  display: flex;
-  align-items: center;
+.table-search input {
+  width: 100%;
+  min-width: 180px;
 }
+
 .table-search i {
   position: absolute;
   left: 12px;
@@ -915,6 +915,99 @@ textarea:focus {
   transform: scale(1.1);
 }
 
+/* ── Columna acción ───────────────────────────────────────── */
+.col-accion {
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* ── Botones de acción (Editar / Eliminar) ────────────────── */
+.col-accion .btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  margin: 0 3px;
+  transition: all 0.2s ease;
+}
+
+/* Botón editar */
+.col-accion .btn-warning {
+  background: rgba(240, 165, 0, 0.12);
+  color: #f0a500;
+  border: 1px solid rgba(240, 165, 0, 0.25);
+}
+
+.col-accion .btn-warning:hover {
+  background: #f0a500;
+  color: #ffffff;
+  transform: scale(1.08);
+  box-shadow: 0 4px 10px rgba(240, 165, 0, 0.35);
+}
+
+/* Tamaño de iconos */
+.col-accion .btn i {
+  font-size: 14px;
+}
+
+/* ==========================================================================
+   BOTONES
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Botón fantasma (Bordes grises, usado comúnmente para cancelar) */
+.btn-ghost {
+  background: transparent;
+  border: 1.5px solid #dde2f0;
+  color: #6b7499;
+}
+
+.btn-ghost:hover {
+  background: #f0f2f8;
+  color: #1e2a5e;
+  border-color: #1e2a5e;
+}
+
+/* Botón Secundario (Azul oscuro profundo) */
+.btn-secondary {
+  background: #1e2a5e;
+  color: #ffffff;
+}
+
+.btn-secondary:hover {
+  background: #2f438f;
+}
+
+/* Botón Primario (Naranja de acción con sombra paralela) */
+.btn-primary {
+  background: #e8600a;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(232, 96, 10, 0.25);
+}
+
+.btn-primary:hover {
+  background: #f07530;
+  transform: translateY(
+    -1px
+  ); /* Crea una sensación de levitación al pasar el cursor */
+  box-shadow: 0 6px 18px rgba(232, 96, 10, 0.35); /* Incrementa la sombra */
+}
+
 /* =====================================================
    RESPONSIVE GENERAL
 ===================================================== */
@@ -963,7 +1056,6 @@ body {
 ===================================================== */
 
 @media (min-width: 1400px) {
-
   .main-content {
     padding: 35px;
   }
@@ -983,7 +1075,6 @@ body {
 ===================================================== */
 
 @media (max-width: 1200px) {
-
   .sidebar {
     width: 240px;
   }
@@ -1013,7 +1104,6 @@ body {
 ===================================================== */
 
 @media (max-width: 992px) {
-
   .sidebar {
     width: 200px;
   }
@@ -1079,7 +1169,6 @@ body {
 ===================================================== */
 
 @media (max-width: 768px) {
-
   .sidebar {
     width: 80px;
     padding: 15px 8px;
@@ -1198,7 +1287,6 @@ body {
 ===================================================== */
 
 @media (max-width: 480px) {
-
   .sidebar {
     width: 70px;
   }

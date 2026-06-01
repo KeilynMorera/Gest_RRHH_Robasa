@@ -518,7 +518,8 @@
                       required
                     >
                     {{ persona_editar.Direccion|default:'' }}
-                  </textarea>
+                  </textarea
+                    >
                   </div>
                 </div>
               </div>
@@ -633,8 +634,9 @@
                       <a
                         href="{% url 'editar_persona' persona.idPersona %}"
                         class="btn btn-warning btn-sm"
+                        title="Editar persona"
                       >
-                        Editar
+                        <i class="fas fa-pen"></i>
                       </a>
                     </td>
                   </tr>
@@ -667,6 +669,5 @@
          Funcionalidades interactivas personalizadas
     ====================================================== -->
     <script src="{% static 'js/personas.js' %}"></script>
-
   </body>
 </html>

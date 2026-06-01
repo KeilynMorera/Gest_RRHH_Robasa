@@ -989,385 +989,361 @@ textarea:focus {
   font-size: 14px;
 }
 
+
 /* ==========================================================================
-   DISEÑO RESPONSIVO (RESPONSIVE DESIGN)
+   RESPONSIVE.CSS — Diseño adaptativo ROBASA
+   Incluir DESPUÉS de pasantes.css en el <head>
    ========================================================================== */
 
 /* ==========================================================================
-   PANTALLAS GRANDES / MONITORES (Desde 1400px en adelante)
+   CORRECCIÓN BASE — evita scroll horizontal global
    ========================================================================== */
-@media screen and (min-width: 1400px) {
-  .main-content {
-    padding: 40px;
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
-  .form-card {
-    max-width: 1400px;
-    margin: 25px auto; /* Centra el contenedor en monitores ultra-wide */
-  }
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+}
 
-  .form-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 28px 36px;
-  }
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
 
-  .page-title h1 {
-    font-size: 38px;
-  }
-
-  .search-box {
-    max-width: 520px;
-  }
-
+/* ==========================================================================
+   PANTALLAS GRANDES (≥ 1024px)
+   Layout normal: sidebar 280px + contenido al lado
+   ========================================================================== */
+@media (min-width: 1024px) {
   .sidebar {
-    width: 300px;
+    width: 280px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
   }
 
   .main-content {
-    margin-left: 300px;
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    padding: 30px;
+    overflow-x: hidden;
   }
 }
 
 /* ==========================================================================
-   PANTALLAS MEDIANAS / LAPTOPS COMPACTAS (Hasta 1199px)
+   PANTALLAS MEDIANAS Y PEQUEÑAS (< 1024px)
+   Sidebar colapsado a solo iconos (72px)
    ========================================================================== */
-@media screen and (max-width: 1199px) {
+@media (max-width: 1023px) {
+  /* ── Sidebar: fijo, solo iconos ── */
   .sidebar {
-    width: 240px;
-    padding: 24px 16px;
+    width: 68px;
+    min-width: 68px;
+    padding: 16px 8px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 100;
+    overflow: visible; /* Para que el tooltip no quede recortado */
+    overflow-y: auto;
   }
 
-  .main-content {
-    margin-left: 240px;
-    padding: 24px;
-  }
-
-  .logo-img {
-    width: 220px;
-    padding: 14px;
-  }
-
-  .topbar {
-    gap: 16px;
-  }
-
-  .page-title h1 {
-    font-size: 30px;
-  }
-
-  .page-title p {
-    font-size: 14px;
-  }
-
-  .search-box {
-    max-width: 100%;
-  }
-
-  .topbar-actions {
-    gap: 16px;
-  }
-
-  .form-card {
-    margin: 18px 0;
-  }
-
-  .form-card-header,
-  .form-body {
-    padding: 24px;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-
-  .form-footer {
-    flex-wrap: wrap;
-  }
-}
-
-/* ==========================================================================
-   TABLETS (Hasta 991px)
-   ========================================================================== */
-@media screen and (max-width: 991px) {
-  .sidebar {
-    width: 210px;
-    padding: 20px 14px;
-  }
-
-  .main-content {
-    margin-left: 210px;
-    padding: 20px;
-  }
-
-  .menu a {
-    padding: 12px 14px;
-    font-size: 14px;
-  }
-
-  .logo-img {
-    width: 180px;
-  }
-
-  /* La barra superior pasa de Flexbox horizontal a estructuración en bloque vertical */
-  .topbar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 16px;
-  }
-
-  .topbar-actions {
-    justify-content: space-between;
-    margin-left: 0;
-  }
-
-  .page-title {
-    min-width: auto;
-    text-align: center;
-  }
-  .page-title h1 {
-    font-size: 22px;
-  }
-  .page-title p {
-    font-size: 13px;
-  }
-
-  .search-box {
-    max-width: 100%;
-  }
-
-  .breadcrumb {
-    padding: 10px 0 0;
-    flex-wrap: wrap;
-  }
-
-  .form-card-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 18px;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr; /* El formulario colapsa por completo a 1 sola columna */
-  }
-
-  .form-footer {
-    justify-content: flex-start;
-  }
-}
-
-/* ==========================================================================
-   MÓVILES GRANDES (Hasta 767px)
-   ========================================================================== */
-@media screen and (max-width: 767px) {
-  /* La barra lateral colapsa a modo de Iconos unificados sin textos */
-  .sidebar {
-    width: 90px;
-    padding: 20px 10px;
-    align-items: center;
-  }
-
-  /* Ocultación de texto en enlaces mediante reajuste de tamaño de fuentes */
-  .menu a {
+  /* ── Logo: solo imagen pequeña centrada ── */
+  .logo-container {
+    display: flex;
     justify-content: center;
-    padding: 14px 10px;
+    margin-bottom: 16px;
+  }
+
+  .logo-img {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    padding: 4px;
+    border-radius: 8px;
+  }
+
+  /* ── Menú: colapsar texto, centrar icono ── */
+  .menu {
+    gap: 4px;
+    padding-right: 0;
+  }
+
+  .menu a {
+    padding: 12px 0;
+    justify-content: center;
+    position: relative;
+    overflow: visible;
+
+    /* Colapsa el texto dejando solo el icono */
     font-size: 0;
+    color: transparent;
+    gap: 0;
   }
 
   .menu a i {
-    font-size: 18px;
-    margin: 0;
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.8);
     width: auto;
+    flex-shrink: 0;
+  }
+
+  .menu a:hover i,
+  .menu a.active i {
+    color: #ffffff;
+  }
+
+  /* Tooltip que aparece al hacer hover */
+  .menu a[data-label]::after {
+    content: attr(data-label);
+    position: fixed;
+    left: 76px;
+    background: #1e2a5e;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s;
+    z-index: 9999;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  }
+
+  .menu a[data-label]:hover::after {
+    opacity: 1;
+  }
+
+  /* ── Logout: solo icono ── */
+  .logout {
+    margin-top: 16px;
+    padding-top: 16px;
   }
 
   .logout a {
     justify-content: center;
     font-size: 0;
+    color: transparent;
+    gap: 0;
+    padding: 12px 0;
+    position: relative;
   }
 
   .logout a i {
-    font-size: 18px;
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.8);
   }
 
-  .logo-img {
-    width: 65px;
-    padding: 10px;
-    border-radius: 16px;
+  .logout a[data-label]::after {
+    content: attr(data-label);
+    position: fixed;
+    left: 76px;
+    background: #1e2a5e;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s;
+    z-index: 9999;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
   }
 
+  .logout a[data-label]:hover::after {
+    opacity: 1;
+  }
+
+  /* ── Contenido principal: margen igual al sidebar colapsado ── */
   .main-content {
-    margin-left: 90px; /* Adapta el margen al nuevo tamaño compacto del sidebar */
+    margin-left: 68px;
+    width: calc(100% - 68px);
     padding: 16px;
+    overflow-x: hidden;
+  }
+
+  /* ── Topbar: todo cabe en el ancho disponible ── */
+  .topbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    width: 100%;
   }
 
   .page-title {
-    min-width: auto;
-    text-align: center;
+    flex: 1;
+    min-width: 0; /* Permite que el texto se comprima */
   }
+
   .page-title h1 {
-    font-size: 22px;
+    font-size: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
+
   .page-title p {
     font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
+  /* Buscador debajo en pantallas medianas */
   .search-box {
-    max-width: 100%;
-  }
-
-  .topbar {
-    gap: 14px;
-  }
-
-  .topbar-actions {
+    order: 4;
     width: 100%;
-    justify-content: space-between;
+    max-width: 100%;
+    flex: none;
   }
 
-  /* Oculta texto del usuario */
-  .user-info {
-    display: none;
+  .search-box input {
+    width: 100%;
   }
 
-  .breadcrumb {
-    font-size: 12px;
-    gap: 6px;
+  /* Acciones a la derecha del título */
+  .topbar-actions {
+    margin-left: auto;
+    gap: 12px;
+    flex-shrink: 0;
   }
 
-  .form-card {
-    margin: 16px 0;
-    border-radius: 12px;
+  /* ── Formulario: 1 columna ── */
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 
-  .form-card-header,
-  .form-body {
-    padding: 20px;
+  .field-full {
+    grid-column: 1;
   }
 
-  .form-card-title {
-    font-size: 18px;
+  /* ── Tarjetas sin margen lateral ── */
+  .form-card,
+  .table-card {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 16px;
   }
 
-  .form-card-subtitle {
-    font-size: 12px;
-  }
-
-  .field > label {
-    font-size: 12px;
-  }
-
-  .field input,
-  .field select {
-    font-size: 13px;
-    padding: 10px 12px;
-  }
-
-  .status-group {
-    flex-direction: column; /* Las opciones de estado se apilan verticalmente */
-  }
-
-  .form-footer {
+  /* ── Encabezado tarjeta en columna ── */
+  .form-card-header {
     flex-direction: column;
-    align-items: stretch; /* Estira los botones ocupando el 100% para una mejor experiencia táctil */
+    align-items: flex-start;
+    gap: 8px;
+    padding: 16px;
+  }
+
+  .table-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 16px;
+  }
+
+  /* Buscador de tabla ocupa todo el ancho */
+  .table-search {
+    width: 100%;
+  }
+
+  .table-search input {
+    width: 100%;
+  }
+
+  /* ── Botones del footer se apilan ── */
+  .form-footer {
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
   .form-footer .btn {
-    width: 100%;
+    flex: 1;
+    min-width: 110px;
     justify-content: center;
+  }
+
+  /* ── Breadcrumb compacto ── */
+  .breadcrumb {
+    padding: 10px 0 0;
+    font-size: 12px;
+    flex-wrap: wrap;
+    gap: 4px;
   }
 }
 
 /* ==========================================================================
-   MÓVILES PEQUEÑOS (Hasta 480px)
+   PANTALLAS MUY PEQUEÑAS (< 480px)
+   Ajustes extra para móviles pequeños
    ========================================================================== */
-@media screen and (max-width: 480px) {
-  /* Ultra-reducción de espacios y tamaños de fuentes */
-  .sidebar {
-    width: 72px;
-    padding: 16px 8px;
-  }
-
+@media (max-width: 479px) {
   .main-content {
-    margin-left: 72px;
-    padding: 12px;
-  }
-
-  .logo-img {
-    width: 52px;
-    padding: 8px;
-  }
-
-  .menu {
-    gap: 6px;
-  }
-
-  .menu a {
-    padding: 12px 8px;
-  }
-
-  .menu a i {
-    font-size: 16px;
+    padding: 10px;
   }
 
   .page-title h1 {
-    font-size: 22px;
+    font-size: 18px;
   }
 
-  .page-title p {
-    font-size: 12px;
-  }
-
-  .search-box input {
-    padding: 12px 14px 12px 42px;
-    font-size: 13px;
+  /* Ocultar info del usuario, mostrar solo avatar */
+  .user-info {
+    display: none;
   }
 
   .user-profile {
-    gap: 8px;
-    padding: 6px 8px;
+    padding: 6px;
+    border-radius: 50%;
   }
 
-  .user-profile img {
-    width: 38px;
-    height: 38px;
+  /* Status group en columna */
+  .status-group {
+    flex-direction: column;
   }
 
-  .user-info {
-    display: none; /* Oculta completamente el texto del usuario para evitar desbordamiento */
+  /* Foto upload en columna */
+  .photo-upload {
+    flex-direction: column;
+    align-items: flex-start;
   }
+}
 
-  .form-card-header,
-  .form-body {
-    padding: 16px;
-  }
+/* ==========================================================================
+   TABLA — scroll interno, nunca rompe el layout
+   ========================================================================== */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
 
-  .form-card-title {
-    font-size: 16px;
-  }
+.data-table {
+  width: 100%;
+  min-width: 600px; /* Activa el scroll horizontal de .table-wrapper */
+}
 
-  .form-card-subtitle {
-    font-size: 11px;
-  }
+/* Texto largo no rompe columnas */
+.data-table td {
+  word-break: break-word;
+  max-width: 200px;
+}
 
-  .form-card-icon {
-    width: 40px;
-    height: 40px;
-    font-size: 16px;
-  }
-
-  .field input,
-  .field select {
-    font-size: 12px;
-    padding: 9px 10px;
-  }
-
-  .btn {
-    font-size: 13px;
-    padding: 10px 14px;
-  }
-
-  .footer {
-    font-size: 12px;
-    margin-top: 20px;
-  }
+.col-direccion {
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

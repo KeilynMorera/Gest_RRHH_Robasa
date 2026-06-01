@@ -287,8 +287,9 @@
                       <!-- Editar: redirige a la misma página con el ID -->
                       <a
                         href="{% url 'editar_gerencia' gerencia.idGerencia %}"
-                        class="btn-editar"
+                        class="btn btn-warning btn-sm"
                         title="Editar gerencia"
+                       
                       >
                         <i class="fas fa-pen-to-square"></i>
                       </a>
@@ -296,7 +297,7 @@
                       <!-- Eliminar -->
                       <a
                         href="{% url 'eliminar_gerencia' gerencia.idGerencia %}"
-                        class="btn-eliminar"
+                         class="btn btn-danger btn-sm"
                         title="Eliminar gerencia"
                         onclick="
                           return confirm('¿Desea eliminar esta gerencia?');
