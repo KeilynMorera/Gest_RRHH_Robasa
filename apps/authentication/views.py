@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Persona, PersonaSexo, Empresa
+from .models import Persona, PersonaSexo, Empresa, Gerencia
 
 # =========================================================
 # Vista: Login
@@ -214,6 +214,61 @@ def eliminar_empresa(request, idEmpresa):
 
 
 # =========================================================
+# Vista: Gerencias — registro, edición y listado
+# =========================================================
+def gerencias_view(request):
+ 
+    if request.method == 'POST':
+        gerencia_id  = request.POST.get('gerencia_id')  # vacío = nuevo registro
+        nombre       = request.POST.get('nombre_gerencia')
+        empresa_id   = request.POST.get('empresa')
+        empresa_obj  = Empresa.objects.get(pk=empresa_id)
+ 
+        if gerencia_id:
+            # Modificar registro existente
+            gerencia = Gerencia.objects.get(pk=gerencia_id)
+            gerencia.Nombre    = nombre
+            gerencia.idEmpresa = empresa_obj
+            gerencia.save()
+        else:
+            # Crear nuevo registro
+            Gerencia.objects.create(
+                Nombre    = nombre,
+                idEmpresa = empresa_obj,
+            )
+ 
+        return redirect('gerencias')
+ 
+    # GET normal: formulario vacío + tabla
+    return render(request, 'gerencia.html', {
+        'empresas'       : Empresa.objects.all(),
+        'gerencias'      : Gerencia.objects.select_related('idEmpresa').order_by('Nombre'),
+        'gerencia_editar': None,
+    })
+ 
+ 
+# =========================================================
+# Vista: Editar gerencia — recarga el formulario con datos
+# =========================================================
+def editar_gerencia_view(request, pk):
+    gerencia = Gerencia.objects.get(pk=pk)
+ 
+    return render(request, 'gerencia.html', {
+        'empresas'       : Empresa.objects.all(),
+        'gerencias'      : Gerencia.objects.select_related('idEmpresa').order_by('Nombre'),
+        'gerencia_editar': gerencia,   # ← rellena el formulario
+    })
+ 
+ 
+# =========================================================
+# Vista: Eliminar gerencia
+# =========================================================
+def eliminar_gerencia_view(request, pk):
+    Gerencia.objects.filter(pk=pk).delete()
+    return redirect('gerencias')
+
+
+# =========================================================
 # Resto de vistas (sin cambios)
 # =========================================================
 def empleados_view(request):
@@ -225,8 +280,6 @@ def pasantes_view(request):
 def comple_Empresa_view(request):
     return render(request, 'comple_Empresa.html')
 
-def gerencia_view(request):
-    return render(request, 'gerencia.html')
 
 def departamento_view(request):
     return render(request, 'departamento.html')

@@ -19,14 +19,18 @@ urlpatterns = [
     # Ruta para el dashboard (pantalla de registro de empresas)
     path('empresas/', views.registrar_empresa, name='empresas'),
 
+    # Ruta para el dashboard (pantalla de registro de gerencia)
+    path('gerencias/', views.gerencias_view, name='gerencias'),
+
+
 
 
     # Ruta para el dashboard (pantalla de registro de pasantes)
     path('pasantes.html/', views.pasantes_view, name='pasantes'),
     # Ruta para el dashboard (pantalla de eleccion (Gerencia, Departamento y Puesto))
     path('comple_Empresa.html/', views.comple_Empresa_view, name='comple_Empresa'),
-    # Ruta para el dashboard (pantalla de registro de gerencia)
-    path('gerencia.html/', views.gerencia_view, name='gerencia'),
+   
+
     # Ruta para el dashboard (pantalla de registro de departamento)
     path('departamento.html/', views.departamento_view, name='departamento'),
     # Ruta para el dashboard (pantalla de registro de puesto)

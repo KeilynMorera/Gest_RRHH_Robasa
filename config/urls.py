@@ -39,10 +39,17 @@ urlpatterns = [
 
     # Registro de empresas
     path('empresas/', views.registrar_empresa, name='empresas'),
-
+    #  Modificar empresas
     path('empresas/editar/<int:idEmpresa>/', views.editar_empresa, name='editar_empresa'),
-
+    # Eliminar empresas
     path('empresas/eliminar/<int:idEmpresa>/', views.eliminar_empresa, name='eliminar_empresa'),
+
+    # =========================================================
+    # Agregar estas rutas a tu urls.py
+    # =========================================================
+    path('gerencias/',                   views.gerencias_view,        name='gerencias'),
+    path('gerencias/editar/<int:pk>/',   views.editar_gerencia_view,  name='editar_gerencia'),
+    path('gerencias/eliminar/<int:pk>/', views.eliminar_gerencia_view, name='eliminar_gerencia'),
 ]
 
 

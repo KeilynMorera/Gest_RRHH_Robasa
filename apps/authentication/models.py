@@ -60,3 +60,28 @@ class Empresa(models.Model):
 
     def __str__(self):
         return self.Nombre
+    
+
+# =========================================================
+# TABLA: Gerencia
+# =========================================================
+class Gerencia(models.Model):
+    idGerencia = models.AutoField(
+        primary_key=True
+    )
+
+    Nombre = models.CharField(
+        max_length=150
+    )
+
+    idEmpresa = models.ForeignKey(
+        Empresa,
+        on_delete=models.CASCADE, #on_delete=models.CASCADE significa que si se elimina una empresa, también se eliminarán las gerencias asociadas a esa empresa.
+        db_column='idEmpresa'
+    )
+
+    class Meta:
+        db_table = 'Gerencia'
+
+    def __str__(self):
+        return self.Nombre
