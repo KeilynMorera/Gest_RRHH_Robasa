@@ -355,31 +355,31 @@
                    BOTONES DE ACCIÓN
               ====================================================== -->
               <div class="form-footer">
-                <!-- Botón cancelar -->
                 <a href="{% url 'inicio' %}" class="btn btn-ghost">
                   <i class="fas fa-arrow-left"></i>
                   Cancelar
                 </a>
 
-                <!-- Botón limpiar formulario -->
                 <button type="reset" class="btn btn-secondary">
                   <i class="fas fa-rotate-left"></i>
                   Limpiar
                 </button>
 
-                <!-- Botón guardar -->
                 {% if empresa_editar %}
                 <input type="hidden" name="accion" value="modificar" />
-
                 <input
                   type="hidden"
                   name="empresa_id"
                   value="{{ empresa_editar.idEmpresa }}"
                 />
-
                 {% else %}
                 <input type="hidden" name="accion" value="crear" />
                 {% endif %}
+
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-floppy-disk"></i>
+                  Guardar empresa
+                </button>
               </div>
             </form>
           </div>

@@ -99,11 +99,8 @@ def editar_persona(request, id_persona):
 
         persona.Nombre_Completo = request.POST.get('nombre_completo')
         persona.Cedula = request.POST.get('cedula')
-
-        sexo_id = request.POST.get('sexo')
-        persona.idSexo = PersonaSexo.objects.get(pk=sexo_id)
-
-        persona.Fecha_Nacimiento = request.POST.get('fecha_nacimiento')
+        persona.Sexo = request.POST.get('sexo')
+        persona.FechaNacimiento = request.POST.get('fecha_nacimiento')
         persona.Telefono = request.POST.get('telefono')
         persona.Celular = request.POST.get('celular')
         persona.Correo = request.POST.get('correo')
@@ -122,11 +119,9 @@ def editar_persona(request, id_persona):
     return render(
         request, 'personas.html', {
             'persona_editar': persona,
-            'personas': personas,
-            'sexos': sexos
+            'personas': personas,'sexos': sexos
     }
 )
-
 
 # =========================================================
 # Vista: Empresas — registro, modificación y listado
@@ -134,7 +129,7 @@ def editar_persona(request, id_persona):
 #       como 'empresas_view'. En urls.py debe quedar
 #       una sola ruta apuntando aquí con name='empresas'.
 # =========================================================
-def empresas(request):
+def registrar_empresa(request):
 
     # ─────────────────────────────────────────────
     # POST → Crear o Modificar empresa
@@ -188,15 +183,15 @@ def editar_empresa(request, idEmpresa):
         'empresas': Empresa.objects.all().order_by('Nombre')
     })
 
+
 # =========================================================
 # Resto de vistas (sin cambios)
 # =========================================================
+def empleados_view(request):
+    return render(request, 'empleados.html')
 
 def pasantes_view(request):
     return render(request, 'pasantes.html')
-
-def empresas_view(request):
-    return render(request, 'empresas.html')
 
 def comple_Empresa_view(request):
     return render(request, 'comple_Empresa.html')
