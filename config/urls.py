@@ -38,7 +38,7 @@ urlpatterns = [
     path('personas/editar/<int:id_persona>/', views.editar_persona, name='editar_persona'),
 
     # Registro de empresas
-    path('empresas/', views.registrar_empresa, name='empresas'),
+    path('empresas/', views.registrar_empresas, name='empresas'),
     # Modificar empresas
     path('empresas/editar/<int:idEmpresa>/', views.editar_empresa, name='editar_empresa'),
 ]

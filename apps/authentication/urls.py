@@ -16,12 +16,12 @@ urlpatterns = [
     # Ruta para el dashboard (pantalla de registro de personas)
     path('personas/', views.registrar_persona, name='personas'), #Listo para registrar personas, se llama a la función registrar_persona en views.py
 
-
+    # Ruta para el dashboard (pantalla de registro de empresas)
+    path('empresas/', views.registrar_empresas, name='empresas'),
 
     # Ruta para el dashboard (pantalla de registro de pasantes)
     path('pasantes.html/', views.pasantes_view, name='pasantes'),
-    # Ruta para el dashboard (pantalla de registro de empresas)
-    path('empresas.html/', views.empresas_view, name='empresas'),
+
     # Ruta para el dashboard (pantalla de eleccion (Gerencia, Departamento y Puesto))
     path('comple_Empresa.html/', views.comple_Empresa_view, name='comple_Empresa'),
     # Ruta para el dashboard (pantalla de registro de gerencia)

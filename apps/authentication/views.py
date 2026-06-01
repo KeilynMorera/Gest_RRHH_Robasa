@@ -129,7 +129,7 @@ def editar_persona(request, id_persona):
 #       como 'empresas_view'. En urls.py debe quedar
 #       una sola ruta apuntando aquí con name='empresas'.
 # =========================================================
-def registrar_empresa(request):
+def registrar_empresas(request):
 
     # ─────────────────────────────────────────────
     # POST → Crear o Modificar empresa
@@ -177,6 +177,15 @@ def registrar_empresa(request):
 def editar_empresa(request, idEmpresa):
 
     empresa = get_object_or_404(Empresa, pk=idEmpresa)
+
+    if request.method == 'POST':
+
+        empresa.Nombre = request.POST.get('nombre_empresa')
+        empresa.Descripcion = request.POST.get('descripcion_empresa')
+
+        empresa.save()
+
+        return redirect('empresas')
 
     return render(request, 'empresas.html', {
         'empresa_editar': empresa,
