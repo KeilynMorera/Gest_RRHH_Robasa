@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Persona, PersonaSexo, Empresa, Gerencia, Departamento, Puesto
+from .models import Compensacion_Puesto
 
 # =========================================================
 # Vista: Login
@@ -470,10 +471,158 @@ def eliminar_puesto_view(request, pk):
     return redirect('puestos')
 
 
+# =========================================================
+# Vista: Compensaciones
+# =========================================================
+def compensaciones_view(request):
+
+    if request.method == 'POST':
+
+        compensacion_id = request.POST.get(
+            'compensacion_id'
+        )
+
+        salario_bruto = request.POST.get(
+            'salario_bruto'
+        )
+
+        salario_neto = request.POST.get(
+            'salario_neto'
+        )
+
+        comision = request.POST.get(
+            'comision'
+        )
+
+        variable = request.POST.get(
+            'variable'
+        )
+
+        viaticos = request.POST.get(
+            'viaticos'
+        )
+
+        kilometraje = request.POST.get(
+            'kilometraje'
+        )
+
+        bono = request.POST.get(
+            'bono'
+        )
+
+        vigencia = request.POST.get(
+            'vigencia'
+        )
+
+        puesto_id = request.POST.get(
+            'puesto'
+        )
+
+        puesto_obj = Puesto.objects.get(
+            pk=puesto_id
+        )
+
+        if compensacion_id:
+
+            compensacion = (
+                Compensacion_Puesto.objects.get(
+                    pk=compensacion_id
+                )
+            )
+
+            compensacion.Salario_Bruto = salario_bruto
+            compensacion.Salario_Sem_Neto = salario_neto
+            compensacion.Comision_Base = comision
+            compensacion.Variable_Base = variable
+            compensacion.Viaticos_Alimenticios = viaticos
+            compensacion.Kilometraje_Base = kilometraje
+            compensacion.Bono_Base = bono
+            compensacion.Vigencia = vigencia
+            compensacion.idPuesto = puesto_obj
+
+            compensacion.save()
+
+        else:
+
+            Compensacion_Puesto.objects.create(
+                Salario_Bruto=salario_bruto,
+                Salario_Sem_Neto=salario_neto,
+                Comision_Base=comision,
+                Variable_Base=variable,
+                Viaticos_Alimenticios=viaticos,
+                Kilometraje_Base=kilometraje,
+                Bono_Base=bono,
+                Vigencia=vigencia,
+                idPuesto=puesto_obj
+            )
+
+        return redirect(
+            'compensaciones'
+        )
+
+    return render(
+        request,
+        'compensacion.html',
+        {
+            'puestos': Puesto.objects.order_by(
+                'Nombre'
+            ),
+
+            'compensaciones':
+            Compensacion_Puesto.objects.select_related(
+                'idPuesto'
+            ).order_by(
+                'idPuesto__Nombre'
+            ),
+
+            'compensacion_editar': None,
+        }
+    )
 
 
+def editar_compensacion_view(
+    request,
+    pk
+):
+
+    compensacion = (
+        Compensacion_Puesto.objects.get(
+            pk=pk
+        )
+    )
+
+    return render(
+        request,
+        'compensacion.html',
+        {
+            'puestos':
+                Puesto.objects.order_by(
+                    'Nombre'
+                ),
+
+            'compensaciones':
+                Compensacion_Puesto.objects.select_related(
+                    'idPuesto'
+                ),
+
+            'compensacion_editar':
+                compensacion,
+        }
+    )
 
 
+def eliminar_compensacion_view(
+    request,
+    pk
+):
+
+    Compensacion_Puesto.objects.filter(
+        pk=pk
+    ).delete()
+
+    return redirect(
+        'compensaciones'
+    )
 
 
 
@@ -493,11 +642,8 @@ def comple_Empresa_view(request):
 
 
 
-def puesto_view(request):
-    return render(request, 'puesto.html')
 
-def confi_Puesto_view(request):
-    return render(request, 'confi_Puesto.html')
+
 
 def salario_view(request):
     return render(request, 'salario.html')

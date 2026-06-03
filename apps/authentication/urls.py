@@ -21,6 +21,9 @@ urlpatterns = [
     # Ruta para el dashboard (pantalla de registro de empresas)
     path('empresas/', views.registrar_empresa, name='empresas'),
 
+    # Ruta para el dashboard (pantalla de eleccion (Gerencia, Departamento y Puesto))
+    path('comple_Empresa.html/', views.comple_Empresa_view, name='comple_Empresa'),
+
     # Ruta para el dashboard (pantalla de registro de gerencia)
     path('gerencias/', views.gerencias_view, name='gerencias'),
 
@@ -28,20 +31,24 @@ urlpatterns = [
     path('departamentos/', views.departamentos_view, name='departamentos'),
 
     # Ruta para el dashboard (pantalla de registro de puesto)
-    path('puestos/', views.puesto_view, name='puestos'),
+    path('puestos/', views.puestos_view, name='puestos'),
 
+    # Ruta para el dashboard (pantalla de registro de puesto)
+    path('compensaciones/', views.compensaciones_view, name='compensaciones'),
 
-
+    
+    
+    
+    
+    
     # Ruta para el dashboard (pantalla de registro de pasantes)
     path('pasantes.html/', views.pasantes_view, name='pasantes'),
-    # Ruta para el dashboard (pantalla de eleccion (Gerencia, Departamento y Puesto))
-    path('comple_Empresa.html/', views.comple_Empresa_view, name='comple_Empresa'),
+    
    
 
     
     
-    # Ruta para el dashboard (pantalla de registro de puesto)
-    path('confi_Puesto.html/', views.confi_Puesto_view, name='confi_Puesto'),
+    
     # Ruta para el dashboard (pantalla de registro de salario)
     path('salario.html/', views.salario_view, name='salario'),
     # Ruta para el dashboard (pantalla de eleccion (Solicitud o Consulta de Vacaciones))

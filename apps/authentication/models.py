@@ -144,3 +144,62 @@ class Puesto(models.Model):
 
     def __str__(self):
         return self.Nombre
+    
+
+# =========================================================
+# MODELO: Compensacion_Puesto
+# =========================================================
+class Compensacion_Puesto(models.Model):
+
+    idCompensacion = models.AutoField(
+        primary_key=True
+    )
+
+    Salario_Bruto = models.DecimalField(
+        max_digits=12,
+        decimal_places=2
+    )
+
+    Salario_Sem_Neto = models.DecimalField(
+        max_digits=12,
+        decimal_places=2
+    )
+
+    Comision_Base = models.DecimalField(
+        max_digits=12,
+        decimal_places=2
+    )
+
+    Variable_Base = models.DecimalField(
+        max_digits=12,
+        decimal_places=2
+    )
+
+    Viaticos_Alimenticios = models.DecimalField(
+        max_digits=12,
+        decimal_places=2
+    )
+
+    Kilometraje_Base = models.DecimalField(
+        max_digits=12,
+        decimal_places=2
+    )
+
+    Bono_Base = models.DecimalField(
+        max_digits=12,
+        decimal_places=2
+    )
+
+    Vigencia = models.DateField()
+
+    idPuesto = models.ForeignKey(
+        Puesto,
+        on_delete=models.CASCADE,
+        db_column='idPuesto'
+    )
+
+    class Meta:
+        db_table = 'Compensacion_Puesto'
+
+    def __str__(self):
+        return f"{self.idPuesto.Nombre}"
