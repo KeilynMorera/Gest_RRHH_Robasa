@@ -372,29 +372,18 @@
 
                     <!-- Select dinámico -->
                     <select id="departamento" name="departamento" required>
-                      <option
-                        value=""
-                        disabled
-                        {%
-                        if
-                        not
-                        puesto_editar
-                        %}selected{%
-                        endif
-                        %}
-                      >
-                        Seleccione un departamento...
-                      </option>
+                      <option value="">Seleccione un departamento...</option>
 
                       {% for departamento in departamentos %}
+
                       <option
-                        value="{{ departamento.id_Departamento }}"
+                        value="{{ departamento.pk }}"
                         {%
                         if
                         puesto_editar
                         and
-                        puesto_editar.idDepartamento.id_Departamento=""
-                        ="departamento.id_Departamento"
+                        puesto_editar.idDepartamento.pk=""
+                        ="departamento.pk"
                         %}
                         selected
                         {%
@@ -403,8 +392,11 @@
                       >
                         {{ departamento.Nombre }}
                       </option>
+
                       {% empty %}
+
                       <option value="">No hay departamentos registrados</option>
+
                       {% endfor %}
                     </select>
                   </div>
