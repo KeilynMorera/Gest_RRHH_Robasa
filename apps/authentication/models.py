@@ -140,8 +140,7 @@ class Puesto(models.Model):
 
     class Meta:
         db_table = 'Puesto'
-        verbose_name = 'Puesto'
-        verbose_name_plural = 'Puestos'
+        
 
     def __str__(self):
         return self.Nombre

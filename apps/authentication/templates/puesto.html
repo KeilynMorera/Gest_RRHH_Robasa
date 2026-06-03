@@ -268,11 +268,15 @@
 
               <!-- Título y descripción -->
               <div>
-                <h2 class="form-card-title">Registro de un Puesto</h2>
+                <h1 class="table-card-title">Puestos registrados</h1>
+                <h2 class="form-card-title">
+                  {% if puesto_editar %} Editar Puesto {% else %} Registro de un
+                  Puesto {% endif %}
+                </h2>
 
-                <p class="form-card-subtitle">
-                  Complete los campos requeridos para crear el perfil del puesto
-                  laboral
+                <p class="table-card-subtitle">
+                  Busque un puesto y seleccione el ícono de edición para
+                  modificar sus datos.
                 </p>
               </div>
             </div>
@@ -350,7 +354,6 @@
                     >
                     {{ puesto_editar.Descripcion|default:'' }}</textarea
                     >
-
                     <!-- Texto de ayuda -->
                     <small class="field-help">
                       Puede ingresar hasta 1000 caracteres.
@@ -388,6 +391,8 @@
                         value="{{ departamento.id_Departamento }}"
                         {%
                         if
+                        puesto_editar
+                        and
                         puesto_editar.idDepartamento.id_Departamento=""
                         ="departamento.id_Departamento"
                         %}
@@ -398,6 +403,8 @@
                       >
                         {{ departamento.Nombre }}
                       </option>
+                      {% empty %}
+                      <option value="">No hay departamentos registrados</option>
                       {% endfor %}
                     </select>
                   </div>
@@ -456,7 +463,7 @@
                 <input
                   type="text"
                   id="filtro-tabla"
-                  placeholder="Buscar departamento..."
+                  placeholder="Buscar puesto..."
                 />
               </div>
             </div>
@@ -467,6 +474,7 @@
                   <tr>
                     <th>ID</th>
                     <th>Nombre Puesto</th>
+                    <th>Descripción</th>
                     <th>Departamento</th>
                     <th class="col-accion">Acción</th>
                   </tr>

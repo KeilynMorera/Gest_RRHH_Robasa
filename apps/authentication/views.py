@@ -369,23 +369,25 @@ def puestos_view(request):
     if request.method == 'POST':
 
         puesto_id = request.POST.get('puesto_id')
+
         nombre = request.POST.get('nombre_puesto')
         descripcion = request.POST.get('descripcion')
 
         departamento_id = request.POST.get('departamento')
-        departamento_obj = Departamento.objects.get(
+
+        departamento = Departamento.objects.get(
             pk=departamento_id
         )
 
         if puesto_id:
-            # Modificar
+            # Editar
             puesto = Puesto.objects.get(
                 pk=puesto_id
             )
 
             puesto.Nombre = nombre
             puesto.Descripcion = descripcion
-            puesto.idDepartamento = departamento_obj
+            puesto.idDepartamento = departamento
 
             puesto.save()
 
@@ -394,29 +396,29 @@ def puestos_view(request):
             Puesto.objects.create(
                 Nombre=nombre,
                 Descripcion=descripcion,
-                idDepartamento=departamento_obj
+                idDepartamento=departamento
             )
 
         return redirect('puestos')
 
-    # GET
     return render(
         request,
         'puesto.html',
         {
-            'departamentos': Departamento.objects.select_related(
-                'idGerencia'
-            ).order_by('Nombre'),
+            'departamentos': Departamento.objects.all().order_by(
+                'Nombre'
+            ),
 
             'puestos': Puesto.objects.select_related(
                 'idDepartamento',
                 'idDepartamento__idGerencia'
-            ).order_by('Nombre'),
+            ).order_by(
+                'Nombre'
+            ),
 
             'puesto_editar': None,
         }
     )
-
 
 # =========================================================
 # Vista: Editar puesto
@@ -431,14 +433,16 @@ def editar_puesto_view(request, pk):
         request,
         'puesto.html',
         {
-            'departamentos': Departamento.objects.select_related(
-                'idGerencia'
-            ).order_by('Nombre'),
+            'departamentos': Departamento.objects.all().order_by(
+                'Nombre'
+            ),
 
             'puestos': Puesto.objects.select_related(
                 'idDepartamento',
                 'idDepartamento__idGerencia'
-            ).order_by('Nombre'),
+            ).order_by(
+                'Nombre'
+            ),
 
             'puesto_editar': puesto,
         }
@@ -455,7 +459,6 @@ def eliminar_puesto_view(request, pk):
     ).delete()
 
     return redirect('puestos')
-
 
 
 
