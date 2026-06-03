@@ -27,7 +27,8 @@ urlpatterns = [
     # Ruta para el dashboard (pantalla de registro de departamento)
     path('departamentos/', views.departamentos_view, name='departamentos'),
 
-
+    # Ruta para el dashboard (pantalla de registro de puesto)
+    path('puestos/', views.puesto_view, name='puestos'),
 
 
 
@@ -38,8 +39,7 @@ urlpatterns = [
    
 
     
-    # Ruta para el dashboard (pantalla de registro de puesto)
-    path('puesto.html/', views.puesto_view, name='puesto'),
+    
     # Ruta para el dashboard (pantalla de registro de puesto)
     path('confi_Puesto.html/', views.confi_Puesto_view, name='confi_Puesto'),
     # Ruta para el dashboard (pantalla de registro de salario)

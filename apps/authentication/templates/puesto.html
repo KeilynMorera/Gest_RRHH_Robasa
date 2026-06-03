@@ -288,7 +288,7 @@
           ====================================================== -->
           <div class="form-body">
             <!-- Formulario principal -->
-            <form method="POST" action="#">
+            <form method="POST" action="{% url 'puestos' %}">
               <!-- Token de seguridad CSRF -->
               {% csrf_token %}
 
@@ -301,6 +301,12 @@
 
                 <!-- Grid de campos -->
                 <div class="form-grid">
+                  <input
+                    type="hidden"
+                    name="puesto_id"
+                    value="{{ puesto_editar.idPuesto|default:'' }}"
+                  />
+
                   <!-- ======================================================
                        NOMBRE DEL PUESTO
                   ====================================================== -->
@@ -315,8 +321,9 @@
                       type="text"
                       id="nombre_puesto"
                       name="nombre_puesto"
-                      maxlength="200"
+                      maxlength="150"
                       placeholder="Ingrese el nombre del puesto"
+                      value="{{ puesto_editar.Nombre|default:'' }}"
                       required
                     />
                   </div>
@@ -334,13 +341,15 @@
 
                     <!-- Área de texto -->
                     <textarea
-                      id="descripcion_puesto"
-                      name="descripcion_puesto"
+                      id="descripcion"
+                      name="descripcion"
                       rows="5"
-                      maxlength="1000"
-                      placeholder="Ingrese una descripción detallada de las funciones y responsabilidades del puesto."
+                      maxlength="150"
+                      placeholder="Ingrese una descripción del puesto"
                       required
-                    ></textarea>
+                    >
+                    {{ puesto_editar.Descripcion|default:'' }}</textarea
+                    >
 
                     <!-- Texto de ayuda -->
                     <small class="field-help">
@@ -360,20 +369,35 @@
 
                     <!-- Select dinámico -->
                     <select id="departamento" name="departamento" required>
-                      <option value="" disabled selected>
-                        Seleccione un departamento…
+                      <option
+                        value=""
+                        disabled
+                        {%
+                        if
+                        not
+                        puesto_editar
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        Seleccione un departamento...
                       </option>
 
-                      <!-- 
-                        Recorre la lista de departamentos enviada
-                        desde la vista de Django.
-                      -->
-                      {% for departamento in departamento %}
-
-                      <option value="{{ departamento.id_Departamento }}">
-                        {{ departamento.Nombre_Departamento }}
+                      {% for departamento in departamentos %}
+                      <option
+                        value="{{ departamento.id_Departamento }}"
+                        {%
+                        if
+                        puesto_editar.idDepartamento.id_Departamento=""
+                        ="departamento.id_Departamento"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        {{ departamento.Nombre }}
                       </option>
-
                       {% endfor %}
                     </select>
                   </div>
@@ -402,11 +426,97 @@
                 <button type="submit" class="btn btn-primary">
                   <i class="fas fa-floppy-disk"></i>
 
-                  Guardar puesto
+                  {% if puesto_editar %} Guardar cambios {% else %} Guardar
+                  puesto {% endif %}
                 </button>
               </div>
             </form>
           </div>
+
+          <!-- ======================================================
+               TARJETA: TABLA DE GERENCIAS
+          ====================================================== -->
+          <section class="table-card">
+            <div class="table-card-header">
+              <div class="table-card-header-left">
+                <div class="table-card-icon">
+                  <i class="fas fa-sitemap"></i>
+                </div>
+                <div>
+                  <h2 class="table-card-title">Departamentos registrados</h2>
+                  <p class="table-card-subtitle">
+                    Busque un departamento y seleccione el ícono de edición para
+                    modificar sus datos.
+                  </p>
+                </div>
+              </div>
+
+              <div class="table-search">
+                <i class="fas fa-search"></i>
+                <input
+                  type="text"
+                  id="filtro-tabla"
+                  placeholder="Buscar departamento..."
+                />
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="data-table" id="tabla-puestos">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nombre Puesto</th>
+                    <th>Departamento</th>
+                    <th class="col-accion">Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for puesto in puestos %}
+                  <tr>
+                    <td>{{ puesto.idPuesto }}</td>
+
+                    <td>
+                      <strong>{{ puesto.Nombre }}</strong>
+                    </td>
+
+                    <td>{{ puesto.Descripcion }}</td>
+
+                    <td>{{ puesto.idDepartamento.Nombre }}</td>
+
+                    <td class="col-accion">
+                      <a
+                        href="{% url 'editar_puesto' puesto.idPuesto %}"
+                        class="btn btn-warning btn-sm"
+                        title="Editar puesto"
+                      >
+                        <i class="fas fa-pen-to-square"></i>
+                      </a>
+
+                      <a
+                        href="{% url 'eliminar_puesto' puesto.idPuesto %}"
+                        class="btn btn-danger btn-sm"
+                        title="Eliminar puesto"
+                        onclick="
+                          return confirm('¿Desea eliminar este puesto?');
+                        "
+                      >
+                        <i class="fas fa-trash"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="5" class="tabla-vacia">
+                      <i class="fas fa-briefcase"></i>
+                      No existen puestos registrados.
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </section>
         </section>
 
         <!-- ======================================================

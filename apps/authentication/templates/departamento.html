@@ -193,9 +193,18 @@
           <div class="page-title">
             <!-- Nombre del módulo -->
             <h1>Departamento</h1>
+            <h2 class="form-card-title">
+              {% if departamento_editar %} Edición de Departamento {% else %}
+              Registro de un Departamento {% endif %}
+            </h2>
 
             <!-- Descripción -->
             <p>Registro de un nuevo departamento</p>
+            <p class="form-card-subtitle">
+              {% if departamento_editar %} Modifique los datos del departamento
+              seleccionado {% else %} Complete los campos requeridos para crear
+              el perfil del departamento {% endif %}
+            </p>
           </div>
 
           <!-- ======================================================
@@ -307,7 +316,7 @@
             <!-- ======================================================
                  FORMULARIO
             ====================================================== -->
-            <form method="POST" action="#">
+            <form method="POST" action="{% url 'departamentos' %}">
               <!-- Token de seguridad CSRF -->
               {% csrf_token %}
 
@@ -320,6 +329,13 @@
 
                 <!-- Grid del formulario -->
                 <div class="form-grid">
+                  <!-- ── Campo oculto: ID al editar ── -->
+                  <input
+                    type="hidden"
+                    name="departamento_id"
+                    value="{{ departamento_editar.idDepartamento|default:'' }}"
+                  />
+
                   <!-- ======================================================
                        CAMPO: NOMBRE DEL DEPARTAMENTO
                   ====================================================== -->
@@ -339,6 +355,7 @@
                       name="nombre_departamento"
                       maxlength="200"
                       placeholder="Ingrese el nombre del departamento"
+                      value="{{ departamento_editar.Nombre|default:'' }}"
                       required
                     />
                   </div>
@@ -357,26 +374,35 @@
 
                     <!-- Select -->
                     <select id="gerencia" name="gerencia" required>
-                      <!-- Opción inicial -->
-                      <option value="" disabled selected>
+                      <option
+                        value=""
+                        disabled
+                        {%
+                        if
+                        not
+                        departamento_editar
+                        %}selected{%
+                        endif
+                        %}
+                      >
                         Seleccione una gerencia…
                       </option>
 
-                      <!-- ======================================================
-                           LISTADO DINÁMICO DE GERENCIAS
-                      ====================================================== -->
-
-                      <!-- 
-                        Recorre todas las gerencias enviadas
-                        desde la vista de Django
-                      -->
-                      {% for gerencia in gerencia %}
-
-                      <!-- Opción dinámica -->
-                      <option value="{{ gerencia.idGerencia }}">
-                        {{ gerencia.Nombre_Gerencia }}
+                      {% for gerencia in gerencias %}
+                      <option
+                        value="{{ gerencia.idGerencia }}"
+                        {%
+                        if
+                        departamento_editar.idGerencia.idGerencia=""
+                        ="gerencia.idGerencia"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        {{ gerencia.Nombre }}
                       </option>
-
                       {% endfor %}
                     </select>
                   </div>
@@ -402,7 +428,9 @@
                 <!-- Botón guardar -->
                 <button type="submit" class="btn btn-primary">
                   <i class="fas fa-floppy-disk"></i>
-                  Guardar departamento
+
+                  {% if departamento_editar %} Guardar cambios {% else %}
+                  Guardar departamento {% endif %}
                 </button>
               </div>
             </form>
@@ -418,9 +446,9 @@
                   <i class="fas fa-sitemap"></i>
                 </div>
                 <div>
-                  <h2 class="table-card-title">Gerencias registradas</h2>
+                  <h2 class="table-card-title">Departamentos registrados</h2>
                   <p class="table-card-subtitle">
-                    Busque una gerencia y seleccione el ícono de edición para
+                    Busque un departamento y seleccione el ícono de edición para
                     modificar sus datos.
                   </p>
                 </div>
@@ -431,13 +459,13 @@
                 <input
                   type="text"
                   id="filtro-tabla"
-                  placeholder="Buscar gerencia..."
+                  placeholder="Buscar departamento..."
                 />
               </div>
             </div>
 
             <div class="table-wrapper">
-              <table class="data-table" id="tabla-gerencias">
+              <table class="data-table" id="tabla-departamentos">
                 <thead>
                   <tr>
                     <th>ID</th>
@@ -455,7 +483,7 @@
                     <td class="col-accion">
                       <!-- Editar: redirige a la misma página con el ID -->
                       <a
-                        href="{% url 'editar_departamento' departamento.idDepartamento %}"
+                        href="{% url 'editar_departamento' departamento.id_Departamento %}"
                         class="btn btn-warning btn-sm"
                         title="Editar departamento"
                       >
@@ -464,7 +492,7 @@
 
                       <!-- Eliminar -->
                       <a
-                        href="{% url 'eliminar_departamento' departamento.idDepartamento %}"
+                        href="{% url 'eliminar_departamento' departamento.id_Departamento %}"
                         class="btn btn-danger btn-sm"
                         title="Eliminar departamento"
                         onclick="
@@ -498,5 +526,11 @@
         </footer>
       </main>
     </div>
+
+    <!-- ======================================================
+         ARCHIVO JS LOCAL
+         Funcionalidades interactivas personalizadas
+    ====================================================== -->
+    <script src="{% static 'js/departamento.js' %}"></script>
   </body>
 </html>

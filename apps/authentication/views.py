@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Persona, PersonaSexo, Empresa, Gerencia, Departamento
+from .models import Persona, PersonaSexo, Empresa, Gerencia, Departamento, Puesto
 
 # =========================================================
 # Vista: Login
@@ -361,6 +361,108 @@ def eliminar_departamento_view(request, pk):
 
 
 
+# =========================================================
+# Vista: Puestos — registro, edición y listado
+# =========================================================
+def puestos_view(request):
+
+    if request.method == 'POST':
+
+        puesto_id = request.POST.get('puesto_id')
+        nombre = request.POST.get('nombre_puesto')
+        descripcion = request.POST.get('descripcion')
+
+        departamento_id = request.POST.get('departamento')
+        departamento_obj = Departamento.objects.get(
+            pk=departamento_id
+        )
+
+        if puesto_id:
+            # Modificar
+            puesto = Puesto.objects.get(
+                pk=puesto_id
+            )
+
+            puesto.Nombre = nombre
+            puesto.Descripcion = descripcion
+            puesto.idDepartamento = departamento_obj
+
+            puesto.save()
+
+        else:
+            # Crear
+            Puesto.objects.create(
+                Nombre=nombre,
+                Descripcion=descripcion,
+                idDepartamento=departamento_obj
+            )
+
+        return redirect('puestos')
+
+    # GET
+    return render(
+        request,
+        'puesto.html',
+        {
+            'departamentos': Departamento.objects.select_related(
+                'idGerencia'
+            ).order_by('Nombre'),
+
+            'puestos': Puesto.objects.select_related(
+                'idDepartamento',
+                'idDepartamento__idGerencia'
+            ).order_by('Nombre'),
+
+            'puesto_editar': None,
+        }
+    )
+
+
+# =========================================================
+# Vista: Editar puesto
+# =========================================================
+def editar_puesto_view(request, pk):
+
+    puesto = Puesto.objects.get(
+        pk=pk
+    )
+
+    return render(
+        request,
+        'puesto.html',
+        {
+            'departamentos': Departamento.objects.select_related(
+                'idGerencia'
+            ).order_by('Nombre'),
+
+            'puestos': Puesto.objects.select_related(
+                'idDepartamento',
+                'idDepartamento__idGerencia'
+            ).order_by('Nombre'),
+
+            'puesto_editar': puesto,
+        }
+    )
+
+
+# =========================================================
+# Vista: Eliminar puesto
+# =========================================================
+def eliminar_puesto_view(request, pk):
+
+    Puesto.objects.filter(
+        pk=pk
+    ).delete()
+
+    return redirect('puestos')
+
+
+
+
+
+
+
+
 
 
 
@@ -378,8 +480,7 @@ def comple_Empresa_view(request):
     return render(request, 'comple_Empresa.html')
 
 
-def departamento_view(request):
-    return render(request, 'departamento.html')
+
 
 def puesto_view(request):
     return render(request, 'puesto.html')

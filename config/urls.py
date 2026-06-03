@@ -57,6 +57,13 @@ urlpatterns = [
     path('departamentos/', views.departamentos_view, name='departamentos'),
     path('departamentos/editar/<int:pk>/', views.editar_departamento_view, name='editar_departamento'),
     path('departamentos/eliminar/<int:pk>/', views.eliminar_departamento_view, name='eliminar_departamento'),
+
+    # =========================================================
+    # Registro de puestos
+    # =========================================================
+    path('puestos/', views.puestos_view, name='puestos'),
+    path('puestos/editar/<int:pk>/', views.editar_puesto_view, name='editar_puesto'),
+    path('puestos/eliminar/<int:pk>/', views.eliminar_puesto_view, name='eliminar_puesto'),
 ]
 
 

@@ -93,25 +93,55 @@ class Gerencia(models.Model):
 # =========================================================
 class Departamento(models.Model):
 
-    idDepartamento = models.AutoField(
+    id_Departamento = models.AutoField(
         primary_key=True,
-        db_column='id_Departamento'
+        db_column='id_Depertamento'
+    )
+
+    Nombre = models.CharField(max_length=150)
+
+    idGerencia = models.ForeignKey(
+        Gerencia,
+        on_delete=models.CASCADE,
+        db_column='idGerencia'
+    )
+
+    class Meta:
+        db_table = 'Departamento'
+
+    def __str__(self):
+        return self.Nombre
+
+
+
+# =========================================================
+# MODELO: Puesto
+# Catálogo de puestos de la organización
+# =========================================================
+class Puesto(models.Model):
+
+    idPuesto = models.AutoField(
+        primary_key=True
     )
 
     Nombre = models.CharField(
         max_length=150
     )
 
-    idGerencia = models.ForeignKey(
-        'Gerencia',
-        on_delete=models.CASCADE, #on_delete=models.CASCADE significa que si se elimina una gerencia, también se eliminarán los departamentos asociados a esa gerencia.
-        db_column='idGerencia'
+    Descripcion = models.CharField(
+        max_length=150
+    )
+
+    idDepartamento = models.ForeignKey(
+        Departamento,
+        on_delete=models.CASCADE,
+        db_column='id_Depertamento'
     )
 
     class Meta:
-        db_table = 'Departamento'
-        verbose_name = 'Departamento'
-        verbose_name_plural = 'Departamentos'
+        db_table = 'Puesto'
+        verbose_name = 'Puesto'
+        verbose_name_plural = 'Puestos'
 
     def __str__(self):
         return self.Nombre
