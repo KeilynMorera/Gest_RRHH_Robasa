@@ -533,7 +533,7 @@ def compensacion_puesto_view(request):
     # GET
     return render(
         request,
-        'compensacion_puesto.html',
+        'confi_Puesto.html',
         {
             'puestos': Puesto.objects.select_related(
                 'idDepartamento'
@@ -559,7 +559,7 @@ def editar_compensacion_puesto_view(request, pk):
 
     return render(
         request,
-        'compensacion_puesto.html',
+         'confi_Puesto.html',
         {
             'puestos': Puesto.objects.select_related(
                 'idDepartamento'
@@ -578,12 +578,14 @@ def editar_compensacion_puesto_view(request, pk):
 # Vista: Eliminar compensación
 # =========================================================
 def eliminar_compensacion_puesto_view(request, pk):
+    Compensacion_Puesto.objects.filter(pk=pk).delete()
+    return redirect('compensacion_puesto')   # ← mismo name que usás arriba
 
-    Compensacion_Puesto.objects.filter(
-        pk=pk
-    ).delete()
 
-    return redirect('compensacion_puesto')
+
+
+
+
 
 
 # =========================================================

@@ -590,261 +590,610 @@ body {
   font-size: 14px;
 }
 
+/* ============================================================
+   ESTILOS ADICIONALES — Tabla de consulta y modificación
+   Agregar al final de personas.css
+   ============================================================ */
+
+/* ── Textarea del formulario ─────────────────────────────────── */
+textarea {
+  width: 100%;
+  border: 1.5px solid #dde2f0;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 14px;
+  background: #f7f8fc;
+  outline: none;
+  font-family: inherit;
+  resize: vertical;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+textarea:focus {
+  border-color: #e8600a;
+  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
+  background: #fff;
+}
+
+/* ── Botón Guardar Cambios (naranja suave / warning) ─────────── */
+.btn-warning {
+  background: #f0a500;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(240, 165, 0, 0.3);
+}
+.btn-warning:hover {
+  background: #d4900a;
+  box-shadow: 0 6px 16px rgba(240, 165, 0, 0.38);
+  transform: translateY(-1px);
+}
+
+/* Clase para ocultar / mostrar elementos */
+.oculto {
+  display: none !important;
+}
+
+/* ── Tarjeta de la tabla ─────────────────────────────────────── */
+.table-card {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(30, 42, 94, 0.1);
+  width: 100%;
+  margin: 30px auto;
+  overflow: hidden;
+}
+
+/* ── Encabezado de la tarjeta tabla ─────────────────────────── */
+.table-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 26px;
+  border-bottom: 1.5px solid #e8ecf6;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.table-card-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.table-card-icon {
+  width: 42px;
+  height: 42px;
+  background: rgba(30, 42, 94, 0.1);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1e2a5e;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+.table-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a2042;
+  margin: 0 0 3px;
+}
+
+.table-card-subtitle {
+  font-size: 12px;
+  color: #6b7499;
+  margin: 0;
+}
+
+/* ── Buscador de la tabla ────────────────────────────────────── */
+.table-search {
+  position: relative; /* Necesario para anclar el ícono con position absolute */
+  display: inline-flex;
+  align-items: center;
+}
+
+.table-search i {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%); /* Centrado vertical exacto */
+  color: #6b7499;
+  font-size: 13px;
+  pointer-events: none; /* El ícono no interfiere con el clic en el input */
+  z-index: 1;
+}
+
+.table-search input {
+  border: 1.5px solid #dde2f0;
+  border-radius: 24px;
+  padding: 9px 18px 9px 38px; /* Espacio izquierdo para el ícono */
+  font-size: 13px;
+  font-family: inherit;
+  color: #1a2042;
+  background: #f7f8fc;
+  outline: none;
+  width: 280px;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    width 0.25s ease;
+}
+
+/* Se expande levemente al enfocar */
+.table-search input:focus {
+  border-color: #e8600a;
+  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.1);
+  background: #ffffff;
+  width: 320px;
+}
+
+.table-search input::placeholder {
+  color: #9aa4b8;
+}
+
+/* ── Contenedor con scroll horizontal ───────────────────────── */
+.table-wrapper {
+  overflow-x: auto;
+  padding: 0 0 8px;
+}
+
+/* ── Tabla ───────────────────────────────────────────────────── */
+.data-table {
+  width: 100%;
+  min-width: 0;
+}
+
+.data-table thead tr {
+  background: #f0f2f8;
+  border-bottom: 2px solid #dde2f0;
+}
+
+.data-table th {
+  padding: 13px 16px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1e2a5e;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+}
+
+.data-table tbody tr {
+  border-bottom: 1px solid #f0f2f8;
+  transition: background 0.15s;
+}
+
+.data-table tbody tr:hover {
+  background: #fdf4ee;
+}
+
+/* Fila activa (seleccionada para editar) */
+.data-table tbody tr.fila-activa {
+  background: rgba(232, 96, 10, 0.07);
+  outline: 2px solid rgba(232, 96, 10, 0.3);
+  outline-offset: -1px;
+}
+
+.data-table td {
+  padding: 11px 16px;
+  color: #3a4060;
+  vertical-align: middle;
+}
+
+/* Foto miniatura en la tabla */
+.tabla-foto {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #dde2f0;
+  display: block;
+}
+
+/* Columna dirección: recorta texto largo */
+.col-direccion {
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Columna acción: centrada */
+.col-accion {
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Celda vacía */
+.tabla-vacia {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6b7499;
+  font-size: 14px;
+}
+.tabla-vacia i {
+  display: block;
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #c5cbdf;
+}
+
+/* ── Botón editar en la tabla ────────────────────────────────── */
+.btn-editar {
+  background: rgba(30, 42, 94, 0.08);
+  border: none;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #1e2a5e;
+  font-size: 15px;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    transform 0.15s;
+}
+.btn-editar:hover {
+  background: #e8600a;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+/* ── Columna acción ───────────────────────────────────────── */
+.col-accion {
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* ── Botones de acción (Editar / Eliminar) ────────────────── */
+.col-accion .btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  margin: 0 3px;
+  transition: all 0.2s ease;
+}
+
+/* Botón editar */
+.col-accion .btn-warning {
+  background: rgba(240, 165, 0, 0.12);
+  color: #f0a500;
+  border: 1px solid rgba(240, 165, 0, 0.25);
+}
+
+.col-accion .btn-warning:hover {
+  background: #f0a500;
+  color: #ffffff;
+  transform: scale(1.08);
+  box-shadow: 0 4px 10px rgba(240, 165, 0, 0.35);
+}
+
+/* Botón eliminar */
+.col-accion .btn-danger {
+  background: rgba(220, 53, 69, 0.12);
+  color: #dc3545;
+  border: 1px solid rgba(220, 53, 69, 0.25);
+}
+
+.col-accion .btn-danger:hover {
+  background: #dc3545;
+  color: #ffffff;
+  transform: scale(1.08);
+  box-shadow: 0 4px 10px rgba(220, 53, 69, 0.35);
+}
+
+/* Tamaño de iconos */
+.col-accion .btn i {
+  font-size: 14px;
+}
+
 /* ==========================================================================
-   RESPONSIVE DESIGN - MEDIA QUERIES (ADAPTABILIDAD)
+   RESPONSIVE — confi_Puesto.css
+   Agregar al FINAL del archivo confi_Puesto.css
    ========================================================================== */
 
-/* =====================================================
-   PANTALLAS GRANDES (Escritorios Pro o de Alta Resolución)
-   ===================================================== */
-@media screen and (min-width: 1200px) {
-  .main-content {
-    padding: 40px;
-  }
-  .form-card {
-    max-width: 1400px;
-    margin: 20px auto;
-  } /* Centra el formulario limitando su estiramiento */
-  .page-title h1 {
-    font-size: 38px;
-  }
-  .logo-img {
+/* ==========================================================================
+   BASE GLOBAL — Previene scroll horizontal en todos los tamaños
+   ========================================================================== */
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.dashboard-container {
+  overflow-x: hidden;
+}
+
+/* ==========================================================================
+   PANTALLAS GRANDES (≥ 1024px) — Layout normal sin cambios
+   ========================================================================== */
+@media (min-width: 1024px) {
+  .sidebar {
     width: 280px;
   }
-}
 
-/* =====================================================
-   LAPTOPS Y MINI DESKTOPS (Hasta 1199px)
-   ===================================================== */
-@media screen and (max-width: 1199px) {
-  .sidebar {
-    width: 230px;
-    padding: 25px 15px;
-  } /* Reduce la anchura del sidebar */
   .main-content {
-    margin-left: 230px;
-    padding: 25px;
-  } /* Ajusta el margen al nuevo tamaño de la barra */
-  .logo-img {
-    width: 200px;
-  }
-  .menu a {
-    font-size: 14px;
-    padding: 12px 14px;
-  }
-  .page-title h1 {
-    font-size: 30px;
-  }
-  .form-grid {
-    gap: 20px;
+    margin-left: 280px;
+    width: calc(100% - 280px);
   }
 }
 
-/* =====================================================
-   TABLETS EN MODO VERTICAL (Hasta 991px)
-   ===================================================== */
-@media screen and (max-width: 991px) {
+/* ==========================================================================
+   PANTALLAS MEDIANAS Y PEQUEÑAS (< 1024px)
+   Sidebar colapsado a 68px — solo iconos
+   ========================================================================== */
+@media (max-width: 1023px) {
+  /* ── Sidebar reducido ── */
   .sidebar {
-    width: 200px;
-    padding: 20px 12px;
-  }
-  .main-content {
-    margin-left: 200px;
-    padding: 20px;
-  }
-  .logo-img {
-    width: 160px;
-    padding: 12px;
-  }
-  .menu a {
-    font-size: 13px;
-    padding: 11px;
-    gap: 10px;
-  }
-  .page-title h1 {
-    font-size: 26px;
+    width: 68px;
+    min-width: 68px;
+    padding: 20px 8px;
+    overflow: visible; /* Para que el tooltip no quede cortado */
+    overflow-y: auto;
   }
 
-  /* Transformación radical del layout: Pasa de 2 columnas a 1 columna vertical pura */
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-  .field-full {
-    grid-column: auto;
-  }
-  .form-card-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-  .form-footer {
-    justify-content: center;
-  } /* Centra los botones */
-}
-
-/* =====================================================
-   CELULARES (Hasta 767px)
-   Estrategia: El menú lateral se vuelve una barra minimalista permanente de iconos
-   ===================================================== */
-@media screen and (max-width: 767px) {
-  .sidebar {
-    width: 85px; /* Anchura ultra-compacta */
-    padding: 15px 8px;
-    align-items: center; /* Centra los componentes internamente */
-  }
-
-  .main-content {
-    margin-left: 85px; /* Ajuste simétrico para el canvas derecho */
-    padding: 15px;
-  }
-
+  /* ── Logo: solo imagen pequeña centrada ── */
   .logo-container {
-    margin-bottom: 20px;
-  }
-  .logo-img {
-    width: 60px;
-    padding: 6px;
-    border-radius: 12px;
-    margin-bottom: 0;
-  }
-  .menu {
-    width: 100%;
-    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
   }
 
-  /* Ocultación táctica del texto de navegación */
+  .logo-img {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    padding: 4px;
+    border-radius: 8px;
+    margin: 0;
+  }
+
+  /* ── Menú: colapsa texto, centra icono ── */
+  .menu {
+    gap: 4px;
+    padding-right: 0;
+  }
+
   .menu a {
     justify-content: center;
-    padding: 14px;
-    font-size: 0; /* Oculta los strings de texto eliminando sus dimensiones */
-    width: 100%;
+    padding: 13px 0;
+    gap: 0;
+    font-size: 0; /* Colapsa el texto */
+    color: transparent;
+    position: relative;
+    overflow: visible;
+    border-radius: 10px;
   }
-  .menu a i {
-    font-size: 20px;
-    width: auto;
-    margin: 0;
-  } /* Resalta los iconos independientes */
 
-  /* Salida/Cierre compactado */
-  .logout {
-    width: 100%;
-    margin-top: auto;
-    padding-top: 15px;
+  .menu a i {
+    font-size: 19px; /* Restaura tamaño del icono */
+    color: rgba(255, 255, 255, 0.8);
+    width: auto;
   }
+
+  .menu a:hover i,
+  .menu a.active i {
+    color: #ffffff;
+  }
+
+  /* Tooltip al hacer hover */
+  .menu a[data-label]::after {
+    content: attr(data-label);
+    position: fixed;
+    left: 76px;
+    background: #1e2a5e;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s;
+    z-index: 9999;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  }
+
+  .menu a[data-label]:hover::after {
+    opacity: 1;
+  }
+
+  /* ── Logout: solo icono ── */
   .logout a {
     justify-content: center;
     font-size: 0;
-    padding: 14px;
-  }
-  .logout a i {
-    font-size: 20px;
+    color: transparent;
+    gap: 0;
+    padding: 13px 0;
+    position: relative;
   }
 
-  /* Reorganización de elementos superiores */
-  .topbar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 15px;
+  .logout a i {
+    font-size: 19px;
+    color: rgba(255, 255, 255, 0.8);
   }
-  .menu-toggle {
-    display: none !important;
-  } /* Oculta la hamburguesa innecesaria */
+
+  .logout a[data-label]::after {
+    content: attr(data-label);
+    position: fixed;
+    left: 76px;
+    background: #1e2a5e;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s;
+    z-index: 9999;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  }
+
+  .logout a[data-label]:hover::after {
+    opacity: 1;
+  }
+
+  /* ── Contenido principal: margen exacto al sidebar colapsado ── */
+  .main-content {
+    margin-left: 68px;
+    width: calc(100% - 68px);
+    padding: 16px;
+    overflow-x: hidden;
+  }
+
+  /* ── Topbar ── */
+  .topbar {
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    width: 100%;
+  }
 
   .page-title {
-    min-width: auto;
-    text-align: center;
+    flex: 1;
+    min-width: 0;
   }
+
   .page-title h1 {
     font-size: 22px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
+
   .page-title p {
     font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
+  /* Buscador ocupa toda la segunda fila */
   .search-box {
-    max-width: 100%;
-  }
-  .topbar-actions {
+    order: 4;
     width: 100%;
-    justify-content: space-between;
-    margin-left: 0;
-    gap: 15px;
-  }
-  .user-info {
-    display: none !important;
-  } /* Remueve el nombre/rol del usuario para salvar espacio horizontal */
-  .user-profile {
-    padding: 6px 10px;
+    max-width: 100%;
+    flex: none;
   }
 
-  /* Reducción de márgenes y espaciados generales en el formulario móvil */
-  .breadcrumb {
-    padding: 10px 15px 0;
-    font-size: 12px;
-    flex-wrap: wrap;
+  .search-box input {
+    width: 100%;
   }
-  .form-card {
-    margin: 15px 5px;
+
+  .topbar-actions {
+    margin-left: auto;
+    flex-shrink: 0;
+    gap: 14px;
   }
-  .form-card-header {
-    padding: 18px;
-  }
-  .form-body {
-    padding: 18px;
-  }
+
+  /* ── Formulario: 1 columna ── */
   .form-grid {
     grid-template-columns: 1fr;
-    gap: 18px;
-  }
-  .field input,
-  .field select,
-  .field textarea {
-    font-size: 14px;
+    gap: 14px;
   }
 
-  /* Apilamiento vertical e invertido de botones de acción (Cancelar abajo, Guardar arriba) */
-  .form-footer {
-    flex-direction: column-reverse;
-    align-items: stretch;
-    gap: 10px;
+  .field-full {
+    grid-column: 1;
   }
-  .btn {
+
+  /* ── Tarjetas sin margen excesivo ── */
+  .form-card,
+  .table-card {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* ── Encabezado del formulario en columna ── */
+  .form-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 16px;
+  }
+
+  /* ── Encabezado tabla en columna ── */
+  .table-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 16px;
+  }
+
+  /* Buscador de tabla ocupa todo el ancho */
+  .table-search {
     width: 100%;
+  }
+
+  .table-search input {
+    width: 100%;
+  }
+
+  .table-search input:focus {
+    width: 100%;
+  }
+
+  /* ── Botones del footer ── */
+  .form-footer {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .form-footer .btn {
+    flex: 1;
+    min-width: 110px;
     justify-content: center;
+  }
+
+  /* ── Breadcrumb ── */
+  .breadcrumb {
+    padding: 10px 0 0;
+    font-size: 12px;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  /* ── Tabla con scroll interno ── */
+  .table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .data-table {
+    min-width: 520px;
   }
 }
 
-/* =====================================================
-   CELULARES ULTRA PEQUEÑOS (Hasta 480px)
-   Ajustes micrométricos para pantallas de baja resolución (ej. iPhone SE)
-   ===================================================== */
-@media screen and (max-width: 480px) {
-  .sidebar {
-    width: 70px;
-  }
+/* ==========================================================================
+   PANTALLAS MUY PEQUEÑAS (< 480px)
+   ========================================================================== */
+@media (max-width: 479px) {
   .main-content {
-    margin-left: 70px;
-    padding: 12px;
+    padding: 10px;
   }
-  .logo-img {
-    width: 50px;
-  }
-  .menu a i,
-  .logout a i {
-    font-size: 18px;
-  }
+
   .page-title h1 {
-    font-size: 20px;
-  }
-  .form-card-title {
     font-size: 18px;
   }
-  .user-profile img {
-    width: 36px;
-    height: 36px;
+
+  /* Ocultar nombre del usuario */
+  .user-info {
+    display: none;
   }
-  .btn {
-    font-size: 13px;
-    padding: 10px 12px;
+
+  .user-profile {
+    padding: 6px;
   }
 }

@@ -34,7 +34,7 @@ urlpatterns = [
     path('puestos/', views.puestos_view, name='puestos'),
 
     # Ruta para el dashboard (pantalla de registro de puesto)
-    path('compensacion-puesto/', views.compensacion_puesto_view, name='compensacion_puesto'),
+     path('compensacion-puesto/', views.compensacion_puesto_view, name='compensacion_puesto'),
 
     
     

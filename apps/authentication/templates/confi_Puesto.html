@@ -234,6 +234,11 @@
              TARJETA PRINCIPAL DEL FORMULARIO
         ========================================================= -->
         <section class="form-card">
+          <input
+            type="hidden"
+            name="compensacion_id"
+            value="{{ compensacion_editar.idCompensacion|default:'' }}"
+          />
           <!-- =========================================================
                ENCABEZADO DEL FORMULARIO
           ========================================================= -->
@@ -268,9 +273,14 @@
           ========================================================= -->
           <div class="form-body">
             <!-- Formulario principal -->
-            <form method="POST" action="#">
-              <!-- Token de seguridad CSRF de Django -->
+            <form method="POST" action="{% url 'compensacion_puesto' %}">
               {% csrf_token %}
+
+              <input
+                type="hidden"
+                name="compensacion_id"
+                value="{{ compensacion_editar.idCompensacion|default:'' }}"
+              />
 
               <!-- =========================================================
                    SECCIÓN: DATOS GENERALES
@@ -287,14 +297,36 @@
                     </label>
 
                     <select id="puesto" name="puesto" required>
-                      <option value="" disabled selected>
-                        Seleccione un puesto…
+                      <option
+                        value=""
+                        disabled
+                        {%
+                        if
+                        not
+                        compensacion_editar
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        Seleccione un puesto...
                       </option>
 
-                      <!-- Lista dinámica de puestos -->
                       {% for puesto in puestos %}
-                      <option value="{{ puesto.idPuesto }}">
-                        {{ puesto.Nombre_Puesto }}
+                      <option
+                        value="{{ puesto.idPuesto }}"
+                        {%
+                        if
+                        compensacion_editar
+                        and
+                        compensacion_editar.idPuesto.idPuesto=""
+                        ="puesto.idPuesto"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        {{ puesto.Nombre }}
                       </option>
                       {% endfor %}
                     </select>
@@ -309,8 +341,9 @@
 
                     <input
                       type="date"
-                      id="vigencia_desde"
-                      name="vigencia_desde"
+                      id="vigencia"
+                      name="vigencia"
+                      value="{{ compensacion_editar.Vigencia|date:'Y-m-d' }}"
                       required
                     />
                   </div>
@@ -337,7 +370,7 @@
                       min="0"
                       id="salario_bruto"
                       name="salario_bruto"
-                      placeholder="0.00"
+                      value="{{ compensacion_editar.Salario_Bruto|default:'0.00' }}"
                       required
                     />
                   </div>
@@ -354,8 +387,9 @@
                       step="0.01"
                       min="0"
                       id="salario_semanal_neto"
-                      name="salario_semanal_neto"
+                      name="salario_sem_neto"
                       placeholder="0.00"
+                      value="{{ compensacion_editar.Salario_Sem_Neto|default:'0.00' }}"
                       required
                     />
                   </div>
@@ -382,7 +416,7 @@
                       min="0"
                       id="comision_base"
                       name="comision_base"
-                      value="0.00"
+                      value="{{ compensacion_editar.Comision_Base|default:'0.00' }}"
                       placeholder="0.00"
                     />
                   </div>
@@ -400,7 +434,7 @@
                       min="0"
                       id="variable_base"
                       name="variable_base"
-                      value="0.00"
+                      value="{{ compensacion_editar.Variable_Base|default:'0.00' }}"
                       placeholder="0.00"
                     />
                   </div>
@@ -418,7 +452,7 @@
                       min="0"
                       id="bono_base"
                       name="bono_base"
-                      value="0.00"
+                      value="{{ compensacion_editar.Bono_Base|default:'0.00' }}"
                       placeholder="0.00"
                     />
                   </div>
@@ -445,7 +479,7 @@
                       min="0"
                       id="viaticos_alimenticios"
                       name="viaticos_alimenticios"
-                      value="0.00"
+                      value="{{ compensacion_editar.Viaticos_Alimenticios|default:'0.00' }}"
                       placeholder="0.00"
                     />
                   </div>
@@ -463,7 +497,7 @@
                       min="0"
                       id="kilometraje_base"
                       name="kilometraje_base"
-                      value="0.00"
+                      value="{{ compensacion_editar.Kilometraje_Base|default:'0.00' }}"
                       placeholder="0.00"
                     />
                   </div>
@@ -486,10 +520,12 @@
                   Limpiar
                 </button>
 
-                <!-- Botón Guardar -->
+                <!-- Botón guardar -->
                 <button type="submit" class="btn btn-primary">
                   <i class="fas fa-floppy-disk"></i>
-                  Guardar compensación
+
+                  {% if compensacion_editar %} Guardar cambios {% else %}
+                  Guardar compensación {% endif %}
                 </button>
               </div>
             </form>
@@ -513,66 +549,66 @@
                 </div>
               </div>
 
+              <!-- Buscador DENTRO del header, a la derecha -->
               <div class="table-search">
                 <i class="fas fa-search"></i>
                 <input
                   type="text"
                   id="filtro-tabla"
-                  placeholder="Buscar puesto..."
+                  placeholder="Buscar Compensación..."
                 />
               </div>
             </div>
 
             <div class="table-wrapper">
-              <table class="data-table" id="tabla-puestos">
+              <table class="data-table" id="tabla-compensaciones">
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Nombre Puesto</th>
-                    <th>Descripción</th>
-                    <th>Departamento</th>
-                    <th class="col-accion">Acción</th>
+                    <th>Puesto</th>
+                    <th>Salario Bruto</th>
+                    <th>Salario Neto</th>
+                    <th>Vigencia</th>
+                    <th>Acción</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {% for puesto in puestos %}
+                  {% for compensacion in compensaciones %}
                   <tr>
-                    <td>{{ puesto.idPuesto }}</td>
+                    <td>{{ compensacion.idCompensacion }}</td>
 
-                    <td>
-                      <strong>{{ puesto.Nombre }}</strong>
-                    </td>
+                    <td>{{ compensacion.idPuesto.Nombre }}</td>
 
-                    <td>{{ puesto.Descripcion }}</td>
+                    <td>₡{{ compensacion.Salario_Bruto }}</td>
 
-                    <td>{{ puesto.idDepartamento.Nombre }}</td>
+                    <td>₡{{ compensacion.Salario_Sem_Neto }}</td>
+
+                    <td>{{ compensacion.Vigencia }}</td>
 
                     <td class="col-accion">
                       <a
-                        href="{% url 'editar_puesto' puesto.idPuesto %}"
+                        href="{% url 'editar_compensacion_puesto' compensacion.idCompensacion %}"
                         class="btn btn-warning btn-sm"
-                        title="Editar puesto"
                       >
                         <i class="fas fa-pen-to-square"></i>
                       </a>
 
                       <a
-                        href="{% url 'eliminar_puesto' puesto.idPuesto %}"
+                        href="{% url 'eliminar_compensacion_puesto' compensacion.idCompensacion %}"
                         class="btn btn-danger btn-sm"
-                        title="Eliminar puesto"
                         onclick="
-                          return confirm('¿Desea eliminar este puesto?');
+                          return confirm('¿Desea eliminar esta compensación?');
                         "
                       >
                         <i class="fas fa-trash"></i>
                       </a>
                     </td>
                   </tr>
+
                   {% empty %}
                   <tr>
-                    <td colspan="5" class="tabla-vacia">
-                      <i class="fas fa-briefcase"></i>
-                      No existen puestos registrados.
+                    <td colspan="6" class="tabla-vacia">
+                      No existen compensaciones registradas.
                     </td>
                   </tr>
                   {% endfor %}
@@ -590,5 +626,11 @@
         </footer>
       </main>
     </div>
+
+    <!-- ======================================================
+         ARCHIVO JS LOCAL
+         Funcionalidades interactivas personalizadas
+    ====================================================== -->
+    <script src="{% static 'js/compensaciones.js' %}"></script>
   </body>
 </html>
