@@ -8,8 +8,10 @@ urlpatterns = [
 
     # Ruta para el dashboard (pantalla de inicio después del login)
     path('inicio.html/', views.inicio_view, name='inicio'),
+
     # Ruta para el dashboard (pantalla de eleccion (Personas o Empleado))
     path('per_emp.html/', views.per_emp_view, name='per_emp'),
+
     # Ruta para el dashboard (pantalla de registro de empleado)
     path('empleados.html/', views.empleados_view, name='empleados'),
 
@@ -22,6 +24,10 @@ urlpatterns = [
     # Ruta para el dashboard (pantalla de registro de gerencia)
     path('gerencias/', views.gerencias_view, name='gerencias'),
 
+    # Ruta para el dashboard (pantalla de registro de departamento)
+    path('departamentos/', views.departamentos_view, name='departamentos'),
+
+
 
 
 
@@ -31,8 +37,7 @@ urlpatterns = [
     path('comple_Empresa.html/', views.comple_Empresa_view, name='comple_Empresa'),
    
 
-    # Ruta para el dashboard (pantalla de registro de departamento)
-    path('departamento.html/', views.departamento_view, name='departamento'),
+    
     # Ruta para el dashboard (pantalla de registro de puesto)
     path('puesto.html/', views.puesto_view, name='puesto'),
     # Ruta para el dashboard (pantalla de registro de puesto)

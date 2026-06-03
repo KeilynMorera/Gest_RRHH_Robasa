@@ -407,6 +407,86 @@
               </div>
             </form>
           </div>
+
+          <!-- ======================================================
+               TARJETA: TABLA DE GERENCIAS
+          ====================================================== -->
+          <section class="table-card">
+            <div class="table-card-header">
+              <div class="table-card-header-left">
+                <div class="table-card-icon">
+                  <i class="fas fa-sitemap"></i>
+                </div>
+                <div>
+                  <h2 class="table-card-title">Gerencias registradas</h2>
+                  <p class="table-card-subtitle">
+                    Busque una gerencia y seleccione el ícono de edición para
+                    modificar sus datos.
+                  </p>
+                </div>
+              </div>
+
+              <div class="table-search">
+                <i class="fas fa-search"></i>
+                <input
+                  type="text"
+                  id="filtro-tabla"
+                  placeholder="Buscar gerencia..."
+                />
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="data-table" id="tabla-gerencias">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nombre Departamento</th>
+                    <th>Gerencia</th>
+                    <th class="col-accion">Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for departamento in departamentos %}
+                  <tr>
+                    <td>{{ departamento.idDepartamento }}</td>
+                    <td><strong>{{ departamento.Nombre }}</strong></td>
+                    <td>{{ departamento.idGerencia.Nombre }}</td>
+                    <td class="col-accion">
+                      <!-- Editar: redirige a la misma página con el ID -->
+                      <a
+                        href="{% url 'editar_departamento' departamento.idDepartamento %}"
+                        class="btn btn-warning btn-sm"
+                        title="Editar departamento"
+                      >
+                        <i class="fas fa-pen-to-square"></i>
+                      </a>
+
+                      <!-- Eliminar -->
+                      <a
+                        href="{% url 'eliminar_departamento' departamento.idDepartamento %}"
+                        class="btn btn-danger btn-sm"
+                        title="Eliminar departamento"
+                        onclick="
+                          return confirm('¿Desea eliminar este departamento?');
+                        "
+                      >
+                        <i class="fas fa-trash"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="4" class="tabla-vacia">
+                      <i class="fas fa-sitemap"></i>
+                      No existen departamentos registrados.
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </section>
         </section>
 
         <!-- ======================================================

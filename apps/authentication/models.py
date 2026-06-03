@@ -85,3 +85,33 @@ class Gerencia(models.Model):
 
     def __str__(self):
         return self.Nombre
+    
+
+# =========================================================
+# MODELO: Departamento
+# Departamentos que pertenecen a una Gerencia
+# =========================================================
+class Departamento(models.Model):
+
+    idDepartamento = models.AutoField(
+        primary_key=True,
+        db_column='id_Departamento'
+    )
+
+    Nombre = models.CharField(
+        max_length=150
+    )
+
+    idGerencia = models.ForeignKey(
+        'Gerencia',
+        on_delete=models.CASCADE, #on_delete=models.CASCADE significa que si se elimina una gerencia, también se eliminarán los departamentos asociados a esa gerencia.
+        db_column='idGerencia'
+    )
+
+    class Meta:
+        db_table = 'Departamento'
+        verbose_name = 'Departamento'
+        verbose_name_plural = 'Departamentos'
+
+    def __str__(self):
+        return self.Nombre

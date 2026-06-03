@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Persona, PersonaSexo, Empresa, Gerencia
+from .models import Persona, PersonaSexo, Empresa, Gerencia, Departamento
 
 # =========================================================
 # Vista: Login
@@ -266,6 +266,103 @@ def editar_gerencia_view(request, pk):
 def eliminar_gerencia_view(request, pk):
     Gerencia.objects.filter(pk=pk).delete()
     return redirect('gerencias')
+
+
+
+# =========================================================
+# Vista: Departamentos — registro, edición y listado
+# =========================================================
+def departamentos_view(request):
+
+    if request.method == 'POST':
+
+        departamento_id = request.POST.get('departamento_id')
+        nombre = request.POST.get('nombre_departamento')
+
+        gerencia_id = request.POST.get('gerencia')
+        gerencia_obj = Gerencia.objects.get(pk=gerencia_id)
+
+        if departamento_id:
+            # Modificar
+            departamento = Departamento.objects.get(
+                pk=departamento_id
+            )
+
+            departamento.Nombre = nombre
+            departamento.idGerencia = gerencia_obj
+
+            departamento.save()
+
+        else:
+            # Crear
+            Departamento.objects.create(
+                Nombre=nombre,
+                idGerencia=gerencia_obj
+            )
+
+        return redirect('departamentos')
+
+    # GET
+    return render(
+        request,
+        'departamento.html',
+        {
+            'gerencias': Gerencia.objects.select_related(
+                'idEmpresa'
+            ).order_by('Nombre'),
+
+            'departamentos': Departamento.objects.select_related(
+                'idGerencia',
+                'idGerencia__idEmpresa'
+            ).order_by('Nombre'),
+
+            'departamento_editar': None,
+        }
+    )
+
+
+# =========================================================
+# Vista: Editar departamento
+# =========================================================
+def editar_departamento_view(request, pk):
+
+    departamento = Departamento.objects.get(
+        pk=pk
+    )
+
+    return render(
+        request,
+        'departamento.html',
+        {
+            'gerencias': Gerencia.objects.select_related(
+                'idEmpresa'
+            ).order_by('Nombre'),
+
+            'departamentos': Departamento.objects.select_related(
+                'idGerencia',
+                'idGerencia__idEmpresa'
+            ).order_by('Nombre'),
+
+            'departamento_editar': departamento,
+        }
+    )
+
+
+# =========================================================
+# Vista: Eliminar departamento
+# =========================================================
+def eliminar_departamento_view(request, pk):
+
+    Departamento.objects.filter(
+        pk=pk
+    ).delete()
+
+    return redirect('departamentos')
+
+
+
+
+
 
 
 # =========================================================
