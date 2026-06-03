@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Persona, PersonaSexo, Empresa, Gerencia, Departamento, Puesto
-from .models import Compensacion_Puesto
+from .models import Compensacion_Puesto, Contrato, Empleado
 
 # =========================================================
 # Vista: Login
@@ -612,6 +612,108 @@ def eliminar_persona(request, id_persona):
     persona = get_object_or_404(Persona, pk=id_persona)
     persona.delete()
     return redirect('personas')
+
+
+
+# =========================================================
+# Vista: Empleados — registro, modificación y listado
+# =========================================================
+def registrar_empleado(request):
+
+    # ── POST: crear o modificar ────────────────────────────
+    if request.method == 'POST':
+        accion      = request.POST.get('accion')       # 'crear' o 'modificar'
+        empleado_id = request.POST.get('empleado_id')  # vacío si es nuevo
+
+        persona_id    = request.POST.get('persona')
+        puesto_id     = request.POST.get('puesto')
+        contrato_id   = request.POST.get('contrato')
+        fecha_ingreso = request.POST.get('fecha_ingreso')
+        activo        = request.POST.get('activo')     # '1' o '0'
+
+        persona_obj  = Persona.objects.get(pk=persona_id)
+        puesto_obj   = Puesto.objects.get(pk=puesto_id)
+        contrato_obj = Contrato.objects.get(pk=contrato_id)
+        activo_bool  = activo == '1'
+
+        if accion == 'crear' or not accion:
+            Empleado.objects.create(
+                idPersona     = persona_obj,
+                idPuesto      = puesto_obj,
+                idContrato    = contrato_obj,
+                Fecha_Ingreso = fecha_ingreso,
+                Activo        = activo_bool,
+            )
+
+        elif accion == 'modificar' and empleado_id:
+            empleado = Empleado.objects.get(pk=empleado_id)
+            empleado.idPersona     = persona_obj
+            empleado.idPuesto      = puesto_obj
+            empleado.idContrato    = contrato_obj
+            empleado.Fecha_Ingreso = fecha_ingreso
+            empleado.Activo        = activo_bool
+            empleado.save()
+
+        # Patrón PRG: evita reenvío del form al recargar
+        return redirect('empleados')
+
+    # ── GET: mostrar formulario + tabla ───────────────────
+    return render(request, 'empleados.html', {
+        'personas' : Persona.objects.order_by('Nombre_Completo'),
+        'puestos'  : Puesto.objects.select_related('idDepartamento').order_by('Nombre'),
+        'contratos': Contrato.objects.all(),
+        'empleados': Empleado.objects.select_related(
+                         'idPersona',
+                         'idPuesto',
+                         'idContrato'
+                     ).order_by('idPersona__Nombre_Completo'),
+    })
+
+
+# =========================================================
+# Vista: Editar Empleado
+# Carga el formulario con los datos del empleado seleccionado
+# =========================================================
+def editar_empleado(request, id_empleado):
+
+    empleado = get_object_or_404(Empleado, pk=id_empleado)
+
+    if request.method == 'POST':
+        empleado.idPersona     = Persona.objects.get(pk=request.POST.get('persona'))
+        empleado.idPuesto      = Puesto.objects.get(pk=request.POST.get('puesto'))
+        empleado.idContrato    = Contrato.objects.get(pk=request.POST.get('contrato'))
+        empleado.Fecha_Ingreso = request.POST.get('fecha_ingreso')
+        empleado.Activo        = request.POST.get('activo') == '1'
+        empleado.save()
+
+        return redirect('empleados')
+
+    # GET: pre-rellena el formulario con los datos actuales
+    return render(request, 'empleados.html', {
+        'empleado_editar': empleado,
+        'personas' : Persona.objects.order_by('Nombre_Completo'),
+        'puestos'  : Puesto.objects.select_related('idDepartamento').order_by('Nombre'),
+        'contratos': Contrato.objects.all(),
+        'empleados': Empleado.objects.select_related(
+                         'idPersona',
+                         'idPuesto',
+                         'idContrato'
+                     ).order_by('idPersona__Nombre_Completo'),
+    })
+
+
+# =========================================================
+# Vista: Eliminar Empleado
+# =========================================================
+def eliminar_empleado(request, id_empleado):
+    empleado = get_object_or_404(Empleado, pk=id_empleado)
+    empleado.delete()
+    return redirect('empleados')
+
+
+
+
+
 
 
 
