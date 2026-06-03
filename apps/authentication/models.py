@@ -148,6 +148,7 @@ class Puesto(models.Model):
 
 # =========================================================
 # MODELO: Compensacion_Puesto
+# Historial de compensaciones por puesto
 # =========================================================
 class Compensacion_Puesto(models.Model):
 
@@ -167,27 +168,32 @@ class Compensacion_Puesto(models.Model):
 
     Comision_Base = models.DecimalField(
         max_digits=12,
-        decimal_places=2
+        decimal_places=2,
+        default=0
     )
 
     Variable_Base = models.DecimalField(
         max_digits=12,
-        decimal_places=2
+        decimal_places=2,
+        default=0
     )
 
     Viaticos_Alimenticios = models.DecimalField(
         max_digits=12,
-        decimal_places=2
+        decimal_places=2,
+        default=0
     )
 
     Kilometraje_Base = models.DecimalField(
         max_digits=12,
-        decimal_places=2
+        decimal_places=2,
+        default=0
     )
 
     Bono_Base = models.DecimalField(
         max_digits=12,
-        decimal_places=2
+        decimal_places=2,
+        default=0
     )
 
     Vigencia = models.DateField()
@@ -199,7 +205,26 @@ class Compensacion_Puesto(models.Model):
     )
 
     class Meta:
+
         db_table = 'Compensacion_Puesto'
 
+        ordering = ['-Vigencia']
+
+        constraints = [
+
+            models.UniqueConstraint(
+                fields=[
+                    'idPuesto',
+                    'Vigencia'
+                ],
+                name='uq_puesto_vigencia'
+            )
+
+        ]
+
     def __str__(self):
-        return f"{self.idPuesto.Nombre}"
+
+        return (
+            f'{self.idPuesto.Nombre}'
+            f' - {self.Vigencia}'
+        )

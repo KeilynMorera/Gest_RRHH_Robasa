@@ -69,9 +69,11 @@ urlpatterns = [
     # =========================================================
     # Registro de compensaciones
     # =========================================================
-    path('compensaciones/', views.compensaciones_view, name='compensaciones'),
-    path('compensaciones/editar/<int:pk>/', views.editar_compensacion_view, name='editar_compensacion'),
-    path('compensaciones/eliminar/<int:pk>/', views.eliminar_compensacion_view, name='eliminar_compensacion'),
+    path('compensacion-puesto/', views.compensacion_puesto_view, name='compensacion_puesto'),
+    path('compensacion-puesto/editar/<int:pk>/', views.editar_compensacion_puesto_view, name='editar_compensacion_puesto'),
+    path('compensacion-puesto/eliminar/<int:pk>/', views.eliminar_compensacion_puesto_view, name='eliminar_compensacion_puesto'),
+
+    
 ]
 
 

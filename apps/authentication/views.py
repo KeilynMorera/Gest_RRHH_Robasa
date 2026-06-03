@@ -472,71 +472,42 @@ def eliminar_puesto_view(request, pk):
 
 
 # =========================================================
-# Vista: Compensaciones
+# Vista: Compensación de Puestos — registro, edición y listado
 # =========================================================
-def compensaciones_view(request):
+def compensacion_puesto_view(request):
 
     if request.method == 'POST':
 
-        compensacion_id = request.POST.get(
-            'compensacion_id'
-        )
+        compensacion_id = request.POST.get('compensacion_id')
 
-        salario_bruto = request.POST.get(
-            'salario_bruto'
-        )
+        salario_bruto = request.POST.get('salario_bruto')
+        salario_sem_neto = request.POST.get('salario_sem_neto')
+        comision_base = request.POST.get('comision_base')
+        variable_base = request.POST.get('variable_base')
+        viaticos_alimenticios = request.POST.get('viaticos_alimenticios')
+        kilometraje_base = request.POST.get('kilometraje_base')
+        bono_base = request.POST.get('bono_base')
+        vigencia = request.POST.get('vigencia')
 
-        salario_neto = request.POST.get(
-            'salario_neto'
-        )
-
-        comision = request.POST.get(
-            'comision'
-        )
-
-        variable = request.POST.get(
-            'variable'
-        )
-
-        viaticos = request.POST.get(
-            'viaticos'
-        )
-
-        kilometraje = request.POST.get(
-            'kilometraje'
-        )
-
-        bono = request.POST.get(
-            'bono'
-        )
-
-        vigencia = request.POST.get(
-            'vigencia'
-        )
-
-        puesto_id = request.POST.get(
-            'puesto'
-        )
-
+        puesto_id = request.POST.get('puesto')
         puesto_obj = Puesto.objects.get(
             pk=puesto_id
         )
 
         if compensacion_id:
 
-            compensacion = (
-                Compensacion_Puesto.objects.get(
-                    pk=compensacion_id
-                )
+            # Modificar
+            compensacion = Compensacion_Puesto.objects.get(
+                pk=compensacion_id
             )
 
             compensacion.Salario_Bruto = salario_bruto
-            compensacion.Salario_Sem_Neto = salario_neto
-            compensacion.Comision_Base = comision
-            compensacion.Variable_Base = variable
-            compensacion.Viaticos_Alimenticios = viaticos
-            compensacion.Kilometraje_Base = kilometraje
-            compensacion.Bono_Base = bono
+            compensacion.Salario_Sem_Neto = salario_sem_neto
+            compensacion.Comision_Base = comision_base
+            compensacion.Variable_Base = variable_base
+            compensacion.Viaticos_Alimenticios = viaticos_alimenticios
+            compensacion.Kilometraje_Base = kilometraje_base
+            compensacion.Bono_Base = bono_base
             compensacion.Vigencia = vigencia
             compensacion.idPuesto = puesto_obj
 
@@ -544,87 +515,75 @@ def compensaciones_view(request):
 
         else:
 
+            # Crear
             Compensacion_Puesto.objects.create(
                 Salario_Bruto=salario_bruto,
-                Salario_Sem_Neto=salario_neto,
-                Comision_Base=comision,
-                Variable_Base=variable,
-                Viaticos_Alimenticios=viaticos,
-                Kilometraje_Base=kilometraje,
-                Bono_Base=bono,
+                Salario_Sem_Neto=salario_sem_neto,
+                Comision_Base=comision_base,
+                Variable_Base=variable_base,
+                Viaticos_Alimenticios=viaticos_alimenticios,
+                Kilometraje_Base=kilometraje_base,
+                Bono_Base=bono_base,
                 Vigencia=vigencia,
                 idPuesto=puesto_obj
             )
 
-        return redirect(
-            'compensaciones'
-        )
+        return redirect('compensacion_puesto')
 
+    # GET
     return render(
         request,
-        'compensacion.html',
+        'compensacion_puesto.html',
         {
-            'puestos': Puesto.objects.order_by(
-                'Nombre'
-            ),
+            'puestos': Puesto.objects.select_related(
+                'idDepartamento'
+            ).order_by('Nombre'),
 
-            'compensaciones':
-            Compensacion_Puesto.objects.select_related(
-                'idPuesto'
-            ).order_by(
-                'idPuesto__Nombre'
-            ),
+            'compensaciones': Compensacion_Puesto.objects.select_related(
+                'idPuesto',
+                'idPuesto__idDepartamento'
+            ).order_by('-Vigencia'),
 
             'compensacion_editar': None,
         }
     )
 
+# =========================================================
+# Vista: Editar compensación
+# =========================================================
+def editar_compensacion_puesto_view(request, pk):
 
-def editar_compensacion_view(
-    request,
-    pk
-):
-
-    compensacion = (
-        Compensacion_Puesto.objects.get(
-            pk=pk
-        )
+    compensacion = Compensacion_Puesto.objects.get(
+        pk=pk
     )
 
     return render(
         request,
-        'compensacion.html',
+        'compensacion_puesto.html',
         {
-            'puestos':
-                Puesto.objects.order_by(
-                    'Nombre'
-                ),
+            'puestos': Puesto.objects.select_related(
+                'idDepartamento'
+            ).order_by('Nombre'),
 
-            'compensaciones':
-                Compensacion_Puesto.objects.select_related(
-                    'idPuesto'
-                ),
+            'compensaciones': Compensacion_Puesto.objects.select_related(
+                'idPuesto',
+                'idPuesto__idDepartamento'
+            ).order_by('-Vigencia'),
 
-            'compensacion_editar':
-                compensacion,
+            'compensacion_editar': compensacion,
         }
     )
 
-
-def eliminar_compensacion_view(
-    request,
-    pk
-):
+# =========================================================
+# Vista: Eliminar compensación
+# =========================================================
+def eliminar_compensacion_puesto_view(request, pk):
 
     Compensacion_Puesto.objects.filter(
         pk=pk
     ).delete()
 
-    return redirect(
-        'compensaciones'
-    )
-
-
+    return redirect('compensacion_puesto')
 
 
 # =========================================================

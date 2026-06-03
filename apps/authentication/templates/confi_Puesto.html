@@ -494,6 +494,92 @@
               </div>
             </form>
           </div>
+
+          <!-- ======================================================
+               TARJETA: TABLA DE PUESTOS
+          ====================================================== -->
+          <section class="table-card">
+            <div class="table-card-header">
+              <div class="table-card-header-left">
+                <div class="table-card-icon">
+                  <i class="fas fa-sitemap"></i>
+                </div>
+                <div>
+                  <h2 class="table-card-title">Puestos registrados</h2>
+                  <p class="table-card-subtitle">
+                    Busque un puesto y seleccione el ícono de edición para
+                    modificar sus datos.
+                  </p>
+                </div>
+              </div>
+
+              <div class="table-search">
+                <i class="fas fa-search"></i>
+                <input
+                  type="text"
+                  id="filtro-tabla"
+                  placeholder="Buscar puesto..."
+                />
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="data-table" id="tabla-puestos">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nombre Puesto</th>
+                    <th>Descripción</th>
+                    <th>Departamento</th>
+                    <th class="col-accion">Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for puesto in puestos %}
+                  <tr>
+                    <td>{{ puesto.idPuesto }}</td>
+
+                    <td>
+                      <strong>{{ puesto.Nombre }}</strong>
+                    </td>
+
+                    <td>{{ puesto.Descripcion }}</td>
+
+                    <td>{{ puesto.idDepartamento.Nombre }}</td>
+
+                    <td class="col-accion">
+                      <a
+                        href="{% url 'editar_puesto' puesto.idPuesto %}"
+                        class="btn btn-warning btn-sm"
+                        title="Editar puesto"
+                      >
+                        <i class="fas fa-pen-to-square"></i>
+                      </a>
+
+                      <a
+                        href="{% url 'eliminar_puesto' puesto.idPuesto %}"
+                        class="btn btn-danger btn-sm"
+                        title="Eliminar puesto"
+                        onclick="
+                          return confirm('¿Desea eliminar este puesto?');
+                        "
+                      >
+                        <i class="fas fa-trash"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="5" class="tabla-vacia">
+                      <i class="fas fa-briefcase"></i>
+                      No existen puestos registrados.
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </section>
         </section>
 
         <!-- =========================================================
