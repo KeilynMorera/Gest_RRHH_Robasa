@@ -228,3 +228,54 @@ class Compensacion_Puesto(models.Model):
             f'{self.idPuesto.Nombre}'
             f' - {self.Vigencia}'
         )
+
+
+
+# =========================================================
+# TABLA: Contrato
+# Solo lectura — los datos vienen definidos en la BD.
+# No se registran desde el sistema.
+# =========================================================
+class Contrato(models.Model):
+
+    idContrato    = models.AutoField(primary_key=True)
+    Tipo_Contrato = models.CharField(max_length=50)   # VARCHAR(50) en SQL
+
+    class Meta:
+        db_table = 'Contrato'
+        managed  = False   # Django no toca esta tabla (no crea ni altera)
+
+    def __str__(self):
+        return self.Tipo_Contrato
+
+
+# =========================================================
+# TABLA: Empleado
+# =========================================================
+class Empleado(models.Model):
+
+    idEmpleado    = models.AutoField(primary_key=True)
+    Fecha_Ingreso = models.DateField()
+    Activo        = models.BooleanField(default=True)  # BIT: True=1 Activo, False=0 Inactivo
+
+    idContrato    = models.ForeignKey(
+                        Contrato,
+                        on_delete=models.CASCADE,
+                        db_column='idContrato'
+                    )
+    idPersona     = models.ForeignKey(
+                        Persona,
+                        on_delete=models.CASCADE,
+                        db_column='idPersona'
+                    )
+    idPuesto      = models.ForeignKey(
+                        Puesto,
+                        on_delete=models.CASCADE,
+                        db_column='idPuesto'
+                    )
+
+    class Meta:
+        db_table = 'Empleado'
+
+    def __str__(self):
+        return f"{self.idPersona.Nombre_Completo} — {self.idPuesto.Nombre}"
