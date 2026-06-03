@@ -948,64 +948,23 @@ textarea:focus {
   box-shadow: 0 4px 10px rgba(240, 165, 0, 0.35);
 }
 
+/* Botón eliminar */
+.col-accion .btn-danger {
+  background: rgba(220, 53, 69, 0.12);
+  color: #dc3545;
+  border: 1px solid rgba(220, 53, 69, 0.25);
+}
+
+.col-accion .btn-danger:hover {
+  background: #dc3545;
+  color: #ffffff;
+  transform: scale(1.08);
+  box-shadow: 0 4px 10px rgba(220, 53, 69, 0.35);
+}
+
 /* Tamaño de iconos */
 .col-accion .btn i {
   font-size: 14px;
-}
-
-/* ==========================================================================
-   BOTONES
-   ========================================================================== */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 11px 22px;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-/* Botón fantasma (Bordes grises, usado comúnmente para cancelar) */
-.btn-ghost {
-  background: transparent;
-  border: 1.5px solid #dde2f0;
-  color: #6b7499;
-}
-
-.btn-ghost:hover {
-  background: #f0f2f8;
-  color: #1e2a5e;
-  border-color: #1e2a5e;
-}
-
-/* Botón Secundario (Azul oscuro profundo) */
-.btn-secondary {
-  background: #1e2a5e;
-  color: #ffffff;
-}
-
-.btn-secondary:hover {
-  background: #2f438f;
-}
-
-/* Botón Primario (Naranja de acción con sombra paralela) */
-.btn-primary {
-  background: #e8600a;
-  color: #ffffff;
-  box-shadow: 0 4px 14px rgba(232, 96, 10, 0.25);
-}
-
-.btn-primary:hover {
-  background: #f07530;
-  transform: translateY(
-    -1px
-  ); /* Crea una sensación de levitación al pasar el cursor */
-  box-shadow: 0 6px 18px rgba(232, 96, 10, 0.35); /* Incrementa la sombra */
 }
 
 /* =====================================================
@@ -1050,268 +1009,375 @@ body {
   gap: 20px;
 }
 
-/* =====================================================
-   PANTALLAS GRANDES
-   1400px+
-===================================================== */
+/* ==========================================================================
+   RESPONSIVE — personas.css
+   Pegar al FINAL del archivo personas.css
+   ========================================================================== */
 
-@media (min-width: 1400px) {
-  .main-content {
-    padding: 35px;
+/* ==========================================================================
+   BASE GLOBAL — Previene scroll horizontal
+   ========================================================================== */
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* ==========================================================================
+   PANTALLAS GRANDES (≥ 1024px) — Layout normal
+   ========================================================================== */
+@media (min-width: 1024px) {
+  .sidebar {
+    width: 280px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
   }
 
-  .form-card,
-  .table-card,
-  .topbar,
-  .breadcrumb,
-  .footer {
-    max-width: 1450px;
+  .main-content {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    padding: 30px;
+    overflow-x: hidden;
   }
 }
 
-/* =====================================================
-   LAPTOPS
-   1200px ↓
-===================================================== */
-
-@media (max-width: 1200px) {
+/* ==========================================================================
+   PANTALLAS MEDIANAS Y PEQUEÑAS (< 1024px)
+   Sidebar colapsado a solo iconos (68px)
+   ========================================================================== */
+@media (max-width: 1023px) {
+  /* ── Sidebar reducido ── */
   .sidebar {
-    width: 240px;
+    width: 68px;
+    min-width: 68px;
+    padding: 16px 8px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 100;
+    overflow: visible;
+    overflow-y: auto;
   }
 
-  .main-content {
-    width: calc(100% - 240px);
-    margin-left: 240px;
-    padding: 25px;
+  /* ── Logo pequeño centrado ── */
+  .logo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
   }
 
   .logo-img {
-    width: 220px;
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    padding: 4px;
+    border-radius: 8px;
+    margin: 0;
+    filter: none; /* Quita el glow en tamaño pequeño para que no se vea recortado */
   }
 
-  .form-grid {
-    grid-template-columns: repeat(2, 1fr);
+  /* ── Menú: solo iconos ── */
+  .menu {
+    gap: 4px;
+    padding-right: 0;
   }
 
-  .topbar {
-    gap: 15px;
-  }
-}
-
-/* =====================================================
-   TABLETS
-   992px ↓
-===================================================== */
-
-@media (max-width: 992px) {
-  .sidebar {
-    width: 200px;
+  .menu a {
+    padding: 12px 0;
+    justify-content: center;
+    position: relative;
+    overflow: visible;
+    font-size: 0; /* Colapsa el texto */
+    color: transparent;
+    gap: 0;
+    border-radius: 10px;
   }
 
+  .menu a i {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.8);
+    width: auto;
+    flex-shrink: 0;
+  }
+
+  .menu a:hover i,
+  .menu a.active i {
+    color: #ffffff;
+  }
+
+  /* Tooltip al hacer hover */
+  .menu a[data-label]::after {
+    content: attr(data-label);
+    position: fixed;
+    left: 76px;
+    background: #1e2a5e;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s;
+    z-index: 9999;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  }
+
+  .menu a[data-label]:hover::after {
+    opacity: 1;
+  }
+
+  /* ── Logout: solo icono ── */
+  .logout {
+    margin-top: 16px;
+    padding-top: 16px;
+  }
+
+  .logout a {
+    justify-content: center;
+    font-size: 0;
+    color: transparent;
+    gap: 0;
+    padding: 12px 0;
+    position: relative;
+  }
+
+  .logout a i {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .logout a[data-label]::after {
+    content: attr(data-label);
+    position: fixed;
+    left: 76px;
+    background: #1e2a5e;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s;
+    z-index: 9999;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  }
+
+  .logout a[data-label]:hover::after {
+    opacity: 1;
+  }
+
+  /* ── Contenido principal ── */
   .main-content {
-    width: calc(100% - 200px);
-    margin-left: 200px;
-    padding: 20px;
+    margin-left: 68px;
+    width: calc(100% - 68px);
+    padding: 16px;
+    overflow-x: hidden;
+    align-items: stretch; /* Anula el align-items: center del base en móvil */
   }
 
-  .logo-img {
-    width: 170px;
-  }
-
+  /* ── Topbar ── */
   .topbar {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .search-box {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    width: 100%;
     max-width: 100%;
   }
 
-  .topbar-actions {
-    margin-left: 0;
-    justify-content: space-between;
+  .page-title {
+    flex: 1;
+    min-width: 0;
+    min-width: unset;
+  }
+
+  .page-title h1 {
+    font-size: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .page-title p {
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Buscador pasa a segunda fila */
+  .search-box {
+    order: 4;
+    width: 100%;
+    max-width: 100%;
+    flex: none;
+  }
+
+  .search-box input {
     width: 100%;
   }
 
-  .form-grid {
-    grid-template-columns: 1fr;
+  .topbar-actions {
+    margin-left: auto;
+    gap: 12px;
+    flex-shrink: 0;
   }
 
-  .photo-upload {
+  /* ── Breadcrumb ── */
+  .breadcrumb {
+    font-size: 12px;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 12px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* ── Tarjetas ── */
+  .form-card,
+  .table-card {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 12px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* ── Encabezado tarjeta formulario ── */
+  .form-card-header {
     flex-direction: column;
-    align-items: center;
-    text-align: center;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 16px;
   }
 
+  /* ── Encabezado tarjeta tabla ── */
   .table-card-header {
     flex-direction: column;
-    align-items: stretch;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 16px;
+  }
+
+  /* ── Formulario: 1 columna ── */
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .field-full {
+    grid-column: 1;
+  }
+
+  /* ── Foto upload en columna ── */
+  .photo-upload {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .photo-preview {
+    width: 90px;
+    height: 90px;
+  }
+
+  .photo-upload-controls {
+    width: 100%;
+  }
+
+  /* ── Buscador de tabla ── */
+  .table-search {
+    width: 100%;
+    position: relative;
   }
 
   .table-search input {
     width: 100%;
   }
 
-  /* Elimina scroll horizontal de tabla */
-  .table-wrapper {
-    overflow-x: visible;
+  .table-search input:focus {
+    width: 100%;
   }
 
-  .data-table {
-    min-width: auto;
-    width: 100%;
+  /* ── Botones del footer ── */
+  .form-footer {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .form-footer .btn {
+    flex: 1;
+    min-width: 110px;
+    justify-content: center;
   }
 }
 
-/* =====================================================
-   MÓVILES
-   768px ↓
-===================================================== */
-
-@media (max-width: 768px) {
-  .sidebar {
-    width: 80px;
-    padding: 15px 8px;
-  }
-
+/* ==========================================================================
+   PANTALLAS MUY PEQUEÑAS (< 480px)
+   ========================================================================== */
+@media (max-width: 479px) {
   .main-content {
-    width: calc(100% - 80px);
-    margin-left: 80px;
-    padding: 15px;
-  }
-
-  .logo-img {
-    width: 50px;
-    padding: 5px;
-  }
-
-  .menu a {
-    justify-content: center;
-    font-size: 0;
-    padding: 14px;
-  }
-
-  .menu a i {
-    font-size: 18px;
-    width: auto;
-  }
-
-  .logout a {
-    justify-content: center;
-    font-size: 0;
-  }
-
-  .logout a i {
-    font-size: 18px;
-  }
-
-  .page-title {
-    text-align: center;
+    padding: 10px;
   }
 
   .page-title h1 {
-    font-size: 28px;
+    font-size: 18px;
   }
 
-  .page-title p {
-    font-size: 13px;
-  }
-
+  /* Ocultar nombre del usuario */
   .user-info {
     display: none;
   }
 
-  .form-card-header {
-    padding: 18px;
+  .user-profile {
+    padding: 6px;
+    border-radius: 50%;
   }
 
-  .form-body {
-    padding: 18px;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .field-full {
-    grid-column: auto;
-  }
-
-  .form-footer {
-    flex-direction: column;
-  }
-
-  .form-footer .btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  /* TABLA RESPONSIVE */
-  .data-table,
-  .data-table thead,
-  .data-table tbody,
-  .data-table tr,
-  .data-table td,
-  .data-table th {
-    display: block;
-    width: 100%;
-  }
-
-  .data-table thead {
-    display: none;
-  }
-
-  .data-table tr {
-    margin-bottom: 15px;
-    border: 1px solid #dde2f0;
-    border-radius: 12px;
-    background: white;
-    padding: 10px;
-  }
-
-  .data-table td {
-    text-align: left;
-    padding: 8px;
-    border: none;
-  }
-
-  .col-direccion {
-    max-width: 100%;
-    white-space: normal;
+  /* Foto aún más pequeña */
+  .photo-preview {
+    width: 70px;
+    height: 70px;
   }
 }
 
-/* =====================================================
-   MÓVILES PEQUEÑOS
-   480px ↓
-===================================================== */
+/* ==========================================================================
+   TABLA — scroll interno, nunca rompe el layout
+   ========================================================================== */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
 
-@media (max-width: 480px) {
-  .sidebar {
-    width: 70px;
-  }
+.data-table {
+  width: 100%;
+  min-width: 600px; /* Activa scroll horizontal en .table-wrapper */
+}
 
-  .main-content {
-    width: calc(100% - 70px);
-    margin-left: 70px;
-    padding: 12px;
-  }
+.data-table td {
+  word-break: break-word;
+  max-width: 200px;
+}
 
-  .page-title h1 {
-    font-size: 24px;
-  }
-
-  .form-card-title {
-    font-size: 18px;
-  }
-
-  .photo-preview {
-    width: 80px;
-    height: 80px;
-  }
-
-  .btn {
-    width: 100%;
-    justify-content: center;
-  }
+.col-direccion {
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

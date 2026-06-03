@@ -36,6 +36,8 @@ urlpatterns = [
     path('personas/', views.registrar_persona, name='personas'),
     #Modificar personas
     path('personas/editar/<int:id_persona>/', views.editar_persona, name='editar_persona'),
+    # Eliminar personas
+    path('personas/eliminar/<int:id_persona>/', views.eliminar_persona, name='eliminar_persona'),
 
     # Registro de empresas
     path('empresas/', views.registrar_empresa, name='empresas'),
@@ -73,7 +75,7 @@ urlpatterns = [
     path('compensacion-puesto/editar/<int:pk>/', views.editar_compensacion_puesto_view, name='editar_compensacion_puesto'),
     path('compensacion-puesto/eliminar/<int:pk>/', views.eliminar_compensacion_puesto_view, name='eliminar_compensacion_puesto'),
 
-    
+
 ]
 
 

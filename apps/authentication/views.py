@@ -15,114 +15,13 @@ def inicio_view(request):
     return render(request, 'inicio.html')
 
 # =========================================================
-# Vista: Elección Personas o Empleados
+# Vista: Elección Complementos de la Empresa: Gerencia, Departamento y Puesto
 # =========================================================
-def per_emp_view(request):
-    return render(request, 'per_emp.html')
 
-# =========================================================
-# Vista: Personas — registro, modificación y listado
-# NOTA: esta función reemplaza tanto 'registrar_persona'
-#       como 'personas_view'. En urls.py debe quedar
-#       una sola ruta apuntando aquí con name='personas'.
-# =========================================================
-def registrar_persona(request):
-
-    # ── POST: crear o modificar ────────────────────────────
-    if request.method == 'POST':
-        accion     = request.POST.get('accion')      # 'crear' o 'modificar'
-        persona_id = request.POST.get('persona_id')  # vacío si es nuevo
-
-        nombre     = request.POST.get('nombre_completo')
-        cedula     = request.POST.get('cedula')
-        sexo_id    = request.POST.get('sexo')
-        nacimiento = request.POST.get('fecha_nacimiento')
-        telefono   = request.POST.get('telefono')
-        celular    = request.POST.get('celular')
-        correo     = request.POST.get('correo')
-        direccion  = request.POST.get('direccion')
-        foto       = request.FILES.get('foto')
-
-        sexo_obj = PersonaSexo.objects.get(pk=sexo_id)
-
-        if accion == 'crear' or not accion:
-            # 'not accion' mantiene compatibilidad si el botón
-            # anterior no enviaba el campo 'accion'
-            nueva = Persona(
-                Nombre_Completo  = nombre,
-                Cedula           = cedula,
-                idSexo           = sexo_obj,
-                Fecha_Nacimiento = nacimiento,
-                Telefono         = telefono,
-                Celular          = celular,
-                Correo           = correo,
-                Direccion        = direccion,
-            )
-            if foto:
-                nueva.Foto = foto
-            nueva.save()
-
-        elif accion == 'modificar' and persona_id:
-            persona = Persona.objects.get(pk=persona_id)
-            persona.Nombre_Completo  = nombre
-            persona.Cedula           = cedula
-            persona.idSexo           = sexo_obj
-            persona.Fecha_Nacimiento = nacimiento
-            persona.Telefono         = telefono
-            persona.Celular          = celular
-            persona.Correo           = correo
-            persona.Direccion        = direccion
-            if foto:                  # solo reemplaza si se subió una nueva
-                persona.Foto = foto
-            persona.save()
-
-        # Patrón PRG: redirige para evitar reenvío del form al recargar
-        return redirect('personas')
-
-    # ── GET: mostrar formulario + tabla con todos los registros ──
-    return render(request, 'personas.html', {
-        'sexos'   : PersonaSexo.objects.all(),
-        'personas': Persona.objects.select_related('idSexo')
-                                   .all()
-                                   .order_by('Nombre_Completo'),
-    })
+def comple_Empresa_view(request):
+    return render(request, 'comple_Empresa.html')
 
 
-
-def editar_persona(request, id_persona):
-
-    persona = get_object_or_404(
-        Persona,
-        pk=id_persona
-    )
-
-    if request.method == 'POST':
-
-        persona.Nombre_Completo = request.POST.get('nombre_completo')
-        persona.Cedula = request.POST.get('cedula')
-        persona.Sexo = request.POST.get('sexo')
-        persona.FechaNacimiento = request.POST.get('fecha_nacimiento')
-        persona.Telefono = request.POST.get('telefono')
-        persona.Celular = request.POST.get('celular')
-        persona.Correo = request.POST.get('correo')
-        persona.Direccion = request.POST.get('direccion')
-
-        if request.FILES.get('foto'):
-            persona.Foto = request.FILES['foto']
-
-        persona.save()
-
-        return redirect('personas')
-
-    personas = Persona.objects.all()
-    sexos = PersonaSexo.objects.all()
-    
-    return render(
-        request, 'personas.html', {
-            'persona_editar': persona,
-            'personas': personas,'sexos': sexos
-    }
-)
 
 # =========================================================
 # Vista: Empresas — registro, modificación y listado
@@ -583,7 +482,11 @@ def eliminar_compensacion_puesto_view(request, pk):
 
 
 
-
+# =========================================================
+# Vista: Elección Personas, Empleados o Pasantes
+# =========================================================
+def per_emp_view(request):
+    return render(request, 'per_emp.html')
 
 
 
@@ -597,12 +500,118 @@ def empleados_view(request):
 def pasantes_view(request):
     return render(request, 'pasantes.html')
 
-def comple_Empresa_view(request):
-    return render(request, 'comple_Empresa.html')
 
 
+# =========================================================
+# Vista: Personas — registro, modificación y listado
+# NOTA: esta función reemplaza tanto 'registrar_persona'
+#       como 'personas_view'. En urls.py debe quedar
+#       una sola ruta apuntando aquí con name='personas'.
+# =========================================================
+def registrar_persona(request):
+
+    # ── POST: crear o modificar ────────────────────────────
+    if request.method == 'POST':
+        accion     = request.POST.get('accion')      # 'crear' o 'modificar'
+        persona_id = request.POST.get('persona_id')  # vacío si es nuevo
+
+        nombre     = request.POST.get('nombre_completo')
+        cedula     = request.POST.get('cedula')
+        sexo_id    = request.POST.get('sexo')
+        nacimiento = request.POST.get('fecha_nacimiento')
+        telefono   = request.POST.get('telefono')
+        celular    = request.POST.get('celular')
+        correo     = request.POST.get('correo')
+        direccion  = request.POST.get('direccion')
+        foto       = request.FILES.get('foto')
+
+        sexo_obj = PersonaSexo.objects.get(pk=sexo_id)
+
+        if accion == 'crear' or not accion:
+            # 'not accion' mantiene compatibilidad si el botón
+            # anterior no enviaba el campo 'accion'
+            nueva = Persona(
+                Nombre_Completo  = nombre,
+                Cedula           = cedula,
+                idSexo           = sexo_obj,
+                Fecha_Nacimiento = nacimiento,
+                Telefono         = telefono,
+                Celular          = celular,
+                Correo           = correo,
+                Direccion        = direccion,
+            )
+            if foto:
+                nueva.Foto = foto
+            nueva.save()
+
+        elif accion == 'modificar' and persona_id:
+            persona = Persona.objects.get(pk=persona_id)
+            persona.Nombre_Completo  = nombre
+            persona.Cedula           = cedula
+            persona.idSexo           = sexo_obj
+            persona.Fecha_Nacimiento = nacimiento
+            persona.Telefono         = telefono
+            persona.Celular          = celular
+            persona.Correo           = correo
+            persona.Direccion        = direccion
+            if foto:                  # solo reemplaza si se subió una nueva
+                persona.Foto = foto
+            persona.save()
+
+        # Patrón PRG: redirige para evitar reenvío del form al recargar
+        return redirect('personas')
+
+    # ── GET: mostrar formulario + tabla con todos los registros ──
+    return render(request, 'personas.html', {
+        'sexos'   : PersonaSexo.objects.all(),
+        'personas': Persona.objects.select_related('idSexo')
+                                   .all()
+                                   .order_by('Nombre_Completo'),
+    })
 
 
+def editar_persona(request, id_persona):
+
+    persona = get_object_or_404(
+        Persona,
+        pk=id_persona
+    )
+
+    if request.method == 'POST':
+
+        persona.Nombre_Completo = request.POST.get('nombre_completo')
+        persona.Cedula = request.POST.get('cedula')
+        persona.Sexo = request.POST.get('sexo')
+        persona.FechaNacimiento = request.POST.get('fecha_nacimiento')
+        persona.Telefono = request.POST.get('telefono')
+        persona.Celular = request.POST.get('celular')
+        persona.Correo = request.POST.get('correo')
+        persona.Direccion = request.POST.get('direccion')
+
+        if request.FILES.get('foto'):
+            persona.Foto = request.FILES['foto']
+
+        persona.save()
+
+        return redirect('personas')
+
+    personas = Persona.objects.all()
+    sexos = PersonaSexo.objects.all()
+    
+    return render(
+        request, 'personas.html', {
+            'persona_editar': persona,
+            'personas': personas,'sexos': sexos
+    }
+)
+
+# =========================================================
+# Vista: Eliminar Persona
+# =========================================================
+def eliminar_persona(request, id_persona):
+    persona = get_object_or_404(Persona, pk=id_persona)
+    persona.delete()
+    return redirect('personas')
 
 
 
