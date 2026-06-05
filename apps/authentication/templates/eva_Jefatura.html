@@ -140,8 +140,6 @@
 
       <main class="main-content">
         <header class="topbar">
-          
-
           <div class="page-title">
             <h1>Evaluación de Jefatura</h1>
             <p>Análisis de competencias directivas y potencial de liderazgo</p>
@@ -167,7 +165,6 @@
                 <strong>María Gómez</strong>
                 <span>Recursos Humanos</span>
               </div>
-              
             </div>
           </div>
         </header>
@@ -203,18 +200,34 @@
             <form method="POST" action="">
               {% csrf_token %}
 
+              <!-- =====================================================
+                   SECCIÓN: INFORMACIÓN GENERAL
+                   ===================================================== -->
               <div class="form-section">
-                <h4 class="form-section-title">Información General</h4>
+                <!-- Título -->
+                <h4 class="form-section-title">
+                  Información General del Periodo
+                </h4>
+
+                <!-- Grid -->
                 <div class="form-grid">
+                  <!-- ==============================================
+                       EMPLEADO EVALUADO
+                       ============================================== -->
                   <div class="field">
                     <label for="idEmpleado">
                       <i class="fas fa-user field-icon"></i>
                       Empleado Evaluado <span class="req">*</span>
                     </label>
+
+                    <!-- Select de empleados -->
                     <select id="idEmpleado" name="idEmpleado" required>
+                      <!-- Opción por defecto -->
                       <option value="" disabled selected>
                         Seleccione un empleado...
                       </option>
+
+                      <!-- Recorre la lista de empleados -->
                       {% for empleado in empleados %}
                       <option value="{{ empleado.idEmpleado }}">
                         {{ empleado.Primer_Nombre }} {{ empleado.Primer_Apellido
@@ -224,15 +237,23 @@
                     </select>
                   </div>
 
+                  <!-- ==============================================
+                       EVALUADOR
+                       ============================================== -->
                   <div class="field">
                     <label for="idEvaluador">
                       <i class="fas fa-user-tie field-icon"></i>
-                      Evaluador / Jefatura <span class="req">*</span>
+                      Evaluador / Jefatura Inmediata
+                      <span class="req">*</span>
                     </label>
+
+                    <!-- Select de evaluadores -->
                     <select id="idEvaluador" name="idEvaluador" required>
                       <option value="" disabled selected>
                         Seleccione un evaluador...
                       </option>
+
+                      <!-- Recorre evaluadores -->
                       {% for jefe in evaluadores %}
                       <option value="{{ jefe.idEmpleado }}">
                         {{ jefe.Primer_Nombre }} {{ jefe.Primer_Apellido }}
@@ -241,11 +262,13 @@
                     </select>
                   </div>
 
+                  <!-- Fecha -->
                   <div class="field">
                     <label for="Fecha_Evaluacion">
                       <i class="fas fa-calendar-day field-icon"></i>
-                      Fecha de evaluación <span class="req">*</span>
+                      Fecha de Aplicación <span class="req">*</span>
                     </label>
+
                     <input
                       type="date"
                       id="Fecha_Evaluacion"
@@ -254,29 +277,18 @@
                     />
                   </div>
 
-                  <div class="field">
-                    <label for="Periodo">
-                      <i class="fas fa-calendar-alt field-icon"></i>
-                      Periodo evaluado <span class="req">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="Periodo"
-                      name="Periodo"
-                      placeholder="Ej: Año 2026"
-                      required
-                    />
-                  </div>
-
+                  <!-- Tipo de periodo -->
                   <div class="field">
                     <label for="Tipo_Periodo">
                       <i class="fas fa-clock-rotate-left field-icon"></i>
-                      Tipo de periodo <span class="req">*</span>
+                      Tipo de Periodo <span class="req">*</span>
                     </label>
+
                     <select id="Tipo_Periodo" name="Tipo_Periodo" required>
                       <option value="" disabled selected>
                         Seleccione el tipo...
                       </option>
+
                       <option value="Mensual">Mensual</option>
                       <option value="Trimestral">Trimestral</option>
                       <option value="Semestral">Semestral</option>

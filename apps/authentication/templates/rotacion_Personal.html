@@ -25,111 +25,61 @@
           />
         </div>
 
-        <!-- ======================================================
-             MENÚ DE NAVEGACIÓN
-        ====================================================== -->
         <nav class="menu">
-          <!-- Opción Inicio -->
-          <a href="{% url 'inicio' %}">
-            <i class="fas fa-house"></i>
-            Inicio
-          </a>
-
-          <!-- Opción Personas o Empleados -->
-          <a href="{% url 'per_emp' %}">
-            <i class="fas fa-user-group"></i>
-            Personas o Empleados
-          </a>
-
-          <!-- Opción Onboarding -->
-          <a href="{% url 'onboarding' %}">
-            <i class="fas fa-rocket"></i>
-            Onboarding / Entradas
-          </a>
-
-          <!-- Opción Empresas -->
-          <a href="{% url 'empresas' %}">
-            <i class="fas fa-building"></i>
-            Empresas
-          </a>
-
-          <!-- Opción Gerencias, Departamentos y Puestos -->
-          <a href="{% url 'comple_Empresa' %}">
-            <i class="fas fa-briefcase"></i>
-            Gerencias, Departamentos y Puestos
-          </a>
-
-          <!-- Opción Salarios -->
-          <a href="{% url 'salario' %}">
-            <i class="fas fa-money-bill-wave"></i>
-            Salarios
-          </a>
-
-          <!-- Opción Reclutamiento -->
-          <a href="{% url 'reclutamiento' %}">
-            <i class="fas fa-wallet"></i>
-            Reclutamiento
-          </a>
-
-          <!-- Opción Vacaciones -->
-          <a href="{% url 'vacaciones' %}">
-            <i class="fas fa-umbrella-beach"></i>
-            Vacaciones
-          </a>
-
-          <!-- Opción Asistencia y Permisos -->
-          <a href="{% url 'elec_Asistencia' %}">
-            <i class="fas fa-clock"></i>
-            Asistencia y Permiso
-          </a>
-
-          <!-- Acción o Rotación de Personal -->
-          <a href="{% url 'accion_rotacion' %}">
-            <i class="fas fa-clipboard-list"></i>
-            Acciones o Rotaciones del Personal
-          </a>
-
-          <!-- Opción Evaluaciones -->
-          <a href="{% url 'evaluaciones' %}">
-            <i class="fas fa-chart-line"></i>
-            Evaluación de Desempeño
-          </a>
-
-          <!-- Opción KPIs -->
-          <a href="{% url 'elec_KPI' %}">
-            <i class="fas fa-file-lines"></i>
-            KPIs
-          </a>
-
-          <!-- Opción Offboarding -->
-          <a href="{% url 'elec_Offboarding' %}">
-            <i class="fas fa-door-open"></i>
-            Offboarding / Salidas
-          </a>
-
-          <!-- Opción Reportes -->
-          <a href="{% url 'reportes' %}">
-            <i class="fas fa-file-lines"></i>
-            Reportes
-          </a>
-
-          <!-- Opción Usuarios y Roles -->
-          <a href="{% url 'usuarios' %}">
-            <i class="fas fa-users-cog"></i>
-            Usuarios y Roles
-          </a>
-
-          <!-- Opción Configuración -->
-          <a href="{% url 'configuraciones' %}">
-            <i class="fas fa-gear"></i>
-            Configuración
-          </a>
+          <a href="{% url 'inicio' %}"><i class="fas fa-house"></i> Inicio</a>
+          <a href="{% url 'per_emp' %}"
+            ><i class="fas fa-user-group"></i> Personas o Empleados</a
+          >
+          <a href="{% url 'onboarding' %}"
+            ><i class="fas fa-rocket"></i> Onboarding / Entradas</a
+          >
+          <a href="{% url 'empresas' %}"
+            ><i class="fas fa-building"></i> Empresas</a
+          >
+          <a href="{% url 'comple_Empresa' %}"
+            ><i class="fas fa-briefcase"></i> Gerencias, Departamentos y
+            Puestos</a
+          >
+          <a href="{% url 'salario' %}"
+            ><i class="fas fa-money-bill-wave"></i> Salarios</a
+          >
+          <a href="{% url 'reclutamiento' %}"
+            ><i class="fas fa-wallet"></i> Reclutamiento</a
+          >
+          <a href="{% url 'vacaciones' %}"
+            ><i class="fas fa-umbrella-beach"></i> Vacaciones</a
+          >
+          <a href="{% url 'elec_Asistencia' %}"
+            ><i class="fas fa-clock"></i> Asistencia y Permiso</a
+          >
+          <a href="{% url 'accion_rotacion' %}"
+            ><i class="fas fa-clipboard-list"></i> Acciones o Rotaciones del
+            Personal</a
+          >
+          <a href="{% url 'evaluaciones' %}"
+            ><i class="fas fa-chart-line"></i> Evaluación de Desempeño</a
+          >
+          <a href="{% url 'elec_KPI' %}"
+            ><i class="fas fa-file-lines"></i> KPIs</a
+          >
+          <a href="{% url 'elec_Offboarding' %}"
+            ><i class="fas fa-door-open"></i> Offboarding / Salidas</a
+          >
+          <a href="{% url 'reportes' %}"
+            ><i class="fas fa-file-lines"></i> Reportes</a
+          >
+          <a href="{% url 'usuarios' %}"
+            ><i class="fas fa-users-cog"></i> Usuarios y Roles</a
+          >
+          <a href="{% url 'configuraciones' %}"
+            ><i class="fas fa-gear"></i> Configuración</a
+          >
         </nav>
 
         <div class="logout">
-          <a href="login.html">
-            <i class="fas fa-right-from-bracket"></i> Cerrar sesión
-          </a>
+          <a href="login.html"
+            ><i class="fas fa-right-from-bracket"></i> Cerrar sesión</a
+          >
         </div>
       </aside>
 
@@ -165,26 +115,11 @@
           </div>
         </header>
 
-        <!-- =================================================
-             BREADCRUMB / RUTA DE NAVEGACIÓN
-        ================================================== -->
         <div class="breadcrumb">
-          <!-- Inicio -->
-          <a href="{% url 'inicio' %}">
-            <i class="fas fa-house"></i>
-            Inicio
-          </a>
-
-          <!-- Separador -->
+          <a href="{% url 'inicio' %}"><i class="fas fa-house"></i> Inicio</a>
           <i class="fas fa-chevron-right sep"></i>
-
-          <!-- Módulo -->
           <a href="{% url 'accion_rotacion' %}"> Acciones de Rotación </a>
-
-          <!-- Separador -->
           <i class="fas fa-chevron-right sep"></i>
-
-          <!-- Página actual -->
           <span class="current"> Rotación de Personal </span>
         </div>
 
@@ -204,49 +139,46 @@
                 </p>
               </div>
             </div>
-            <span class="system-notice"
-              ><i class="fas fa-robot"></i> Valores Calculados
-              Automáticamente</span
-            >
+            <span class="system-notice">
+              <i class="fas fa-robot"></i> Valores Calculados Automáticamente
+            </span>
           </div>
 
           <div class="form-body">
-            <form action="#" method="POST">
+            <form action="#" method="POST" id="form-irp">
               {% csrf_token %}
 
               <div class="form-section">
                 <h4 class="form-section-title">
-                  <i class="fas fa-users-gear"></i>
-                  2. Registro Técnico de Rotación del Personal
+                  <i class="fas fa-users-gear"></i> 1. Selección del Período a
+                  Evaluar
                 </h4>
 
                 <div class="form-grid">
-                  <!-- ID Rotación -->
                   <div class="field">
                     <label for="idRotacion">
-                      <i class="fas fa-id-badge field-icon"></i>
-                      ID Rotación
+                      <i class="fas fa-id-badge field-icon"></i> ID Rotación
                     </label>
-
                     <input
                       type="number"
                       id="idRotacion"
+                      name="idRotacion"
+                      value="{{ registro.idRotacion|default:'' }}"
                       placeholder="Generado automáticamente"
                       readonly
                     />
                   </div>
 
-                  <!-- Año -->
                   <div class="field">
                     <label for="Anio">
-                      <i class="fas fa-calendar field-icon"></i>
-                      Año <span class="req">*</span>
+                      <i class="fas fa-calendar field-icon"></i> Año
+                      <span class="req">*</span>
                     </label>
-
                     <input
                       type="number"
                       id="Anio"
                       name="Anio"
+                      value="{{ registro.Anio|default:'2026' }}"
                       placeholder="Ej: 2026"
                       min="2020"
                       max="2035"
@@ -254,199 +186,386 @@
                     />
                   </div>
 
-                  <!-- Mes -->
                   <div class="field">
                     <label for="Mes">
-                      <i class="fas fa-calendar-days field-icon"></i>
-                      Mes
+                      <i class="fas fa-calendar-days field-icon"></i> Mes
                     </label>
-
                     <select id="Mes" name="Mes">
-                      <option value="" selected>Seleccione el mes...</option>
-                      <option value="1">Enero</option>
-                      <option value="2">Febrero</option>
-                      <option value="3">Marzo</option>
-                      <option value="4">Abril</option>
-                      <option value="5">Mayo</option>
-                      <option value="6">Junio</option>
-                      <option value="7">Julio</option>
-                      <option value="8">Agosto</option>
-                      <option value="9">Septiembre</option>
-                      <option value="10">Octubre</option>
-                      <option value="11">Noviembre</option>
-                      <option value="12">Diciembre</option>
+                      <option value="">Seleccione el mes...</option>
+                      <option
+                        value="1"
+                        {%
+                        if
+                        registro.Mes=""
+                        ="1"
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        Enero
+                      </option>
+                      <option
+                        value="2"
+                        {%
+                        if
+                        registro.Mes=""
+                        ="2"
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        Febrero
+                      </option>
+                      <option
+                        value="3"
+                        {%
+                        if
+                        registro.Mes=""
+                        ="3"
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        Marzo
+                      </option>
+                      <option
+                        value="4"
+                        {%
+                        if
+                        registro.Mes=""
+                        ="4"
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        Abril
+                      </option>
+                      <option
+                        value="5"
+                        {%
+                        if
+                        registro.Mes=""
+                        ="5"
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        Mayo
+                      </option>
+                      <option
+                        value="6"
+                        {%
+                        if
+                        registro.Mes=""
+                        ="6"
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        Junio
+                      </option>
+                      <option
+                        value="7"
+                        {%
+                        if
+                        registro.Mes=""
+                        ="7"
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        Julio
+                      </option>
+                      <option
+                        value="8"
+                        {%
+                        if
+                        registro.Mes=""
+                        ="8"
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        Agosto
+                      </option>
+                      <option
+                        value="9"
+                        {%
+                        if
+                        registro.Mes=""
+                        ="9"
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        Septiembre
+                      </option>
+                      <option
+                        value="10"
+                        {%
+                        if
+                        registro.Mes=""
+                        ="10"
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        Octubre
+                      </option>
+                      <option
+                        value="11"
+                        {%
+                        if
+                        registro.Mes=""
+                        ="11"
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        Noviembre
+                      </option>
+                      <option
+                        value="12"
+                        {%
+                        if
+                        registro.Mes=""
+                        ="12"
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        Diciembre
+                      </option>
                     </select>
                   </div>
 
-                  <!-- Tipo Periodo -->
                   <div class="field">
                     <label for="Tipo_Periodo">
-                      <i class="fas fa-business-time field-icon"></i>
-                      Tipo de Período <span class="req">*</span>
+                      <i class="fas fa-business-time field-icon"></i> Tipo de
+                      Período <span class="req">*</span>
                     </label>
-
                     <select id="Tipo_Periodo" name="Tipo_Periodo" required>
-                      <option value="" disabled selected>
-                        Seleccione el período...
+                      <option
+                        value="Mensual"
+                        {%
+                        if
+                        registro.Tipo_Periodo=""
+                        ="Mensual"
+                        or
+                        not
+                        registro.Tipo_Periodo
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        Mensual
                       </option>
-
-                      <option value="Mensual">Mensual</option>
-                      <option value="Trimestral">Trimestral</option>
-                      <option value="Semestral">Semestral</option>
-                      <option value="Anual">Anual</option>
+                      <option
+                        value="Trimestral"
+                        {%
+                        if
+                        registro.Tipo_Periodo=""
+                        ="Trimestral"
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        Trimestral
+                      </option>
+                      <option
+                        value="Semestral"
+                        {%
+                        if
+                        registro.Tipo_Periodo=""
+                        ="Semestral"
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        Semestral
+                      </option>
+                      <option
+                        value="Anual"
+                        {%
+                        if
+                        registro.Tipo_Periodo=""
+                        ="Anual"
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        Anual
+                      </option>
                     </select>
                   </div>
+                </div>
 
-                  <!-- Contratados -->
+                <div style="margin-top: 20px; text-align: right">
+                  <button
+                    type="submit"
+                    name="action"
+                    value="calcular"
+                    class="btn btn-primary"
+                    style="background-color: #2563eb; padding: 10px 18px"
+                  >
+                    <i class="fas fa-calculator"></i> Procesar y Calcular
+                    Período
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-section" style="margin-top: 30px">
+                <h4 class="form-section-title">
+                  <i class="fas fa-square-poll-vertical"></i> 2. Métricas y
+                  Resultados Obtenidos
+                </h4>
+
+                <div class="form-grid">
                   <div class="field">
                     <label for="A_Contratados">
-                      <i class="fas fa-user-plus field-icon"></i>
-                      A. Contratados <span class="req">*</span>
+                      <i class="fas fa-user-plus field-icon"></i> A. Contratados
                     </label>
-
                     <input
                       type="number"
                       id="A_Contratados"
                       name="A_Contratados"
-                      placeholder="Total contratados"
-                      required
+                      value="{{ data_calculada.A_Contratados|default:'0' }}"
+                      placeholder="Sincronizado desde Empleados"
                       readonly
                     />
                   </div>
 
-                  <!-- Desvinculados -->
                   <div class="field">
                     <label for="D_Desvinculados">
-                      <i class="fas fa-user-minus field-icon"></i>
-                      D. Desvinculados <span class="req">*</span>
+                      <i class="fas fa-user-minus field-icon"></i> D.
+                      Desvinculados
                     </label>
-
                     <input
                       type="number"
                       id="D_Desvinculados"
                       name="D_Desvinculados"
-                      placeholder="Total desvinculados"
-                      required
+                      value="{{ data_calculada.D_Desvinculados|default:'0' }}"
+                      placeholder="Sincronizado desde Offboarding"
                       readonly
                     />
                   </div>
 
-                  <!-- Jubilaciones -->
                   <div class="field">
                     <label for="D_Jubilaciones_Defuncionales">
-                      <i class="fas fa-user-clock field-icon"></i>
-                      Jubilaciones / Defunciones <span class="req">*</span>
+                      <i class="fas fa-user-clock field-icon"></i> Jubilaciones
+                      / Defunciones
                     </label>
-
                     <input
                       type="number"
                       id="D_Jubilaciones_Defuncionales"
                       name="D_Jubilaciones_Defuncionales"
-                      placeholder="Total jubilaciones"
-                      required
+                      value="{{ data_calculada.D_Jubilaciones_Defuncionales|default:'0' }}"
+                      placeholder="Sincronizado desde Causa Salida"
                       readonly
                     />
                   </div>
 
-                  <!-- Total Bajas -->
                   <div class="field">
                     <label for="D_Total_Bajas">
-                      <i class="fas fa-arrow-trend-down field-icon"></i>
-                      D. Total Bajas <span class="req">*</span>
+                      <i class="fas fa-arrow-trend-down field-icon"></i> D.
+                      Total Bajas
                     </label>
-
                     <input
                       type="number"
                       id="D_Total_Bajas"
                       name="D_Total_Bajas"
-                      placeholder="Total de bajas"
-                      required
+                      value="{{ data_calculada.D_Total_Bajas|default:'0' }}"
+                      placeholder="Suma automática de bajas"
                       readonly
                     />
                   </div>
 
-                  <!-- Inicio -->
                   <div class="field">
                     <label for="F1_Inicio">
-                      <i class="fas fa-users field-icon"></i>
-                      F1. Personal Inicial <span class="req">*</span>
+                      <i class="fas fa-users field-icon"></i> F1. Personal
+                      Inicial
                     </label>
-
                     <input
                       type="number"
                       id="F1_Inicio"
                       name="F1_Inicio"
-                      placeholder="Inicio del período"
-                      required
+                      value="{{ data_calculada.F1_Inicio|default:'0' }}"
+                      placeholder="Activos al inicio"
                       readonly
                     />
                   </div>
 
-                  <!-- Final -->
                   <div class="field">
                     <label for="F2_Final">
-                      <i class="fas fa-users-viewfinder field-icon"></i>
-                      F2. Personal Final <span class="req">*</span>
+                      <i class="fas fa-users-viewfinder field-icon"></i> F2.
+                      Personal Final
                     </label>
-
                     <input
                       type="number"
                       id="F2_Final"
                       name="F2_Final"
-                      placeholder="Final del período"
-                      required
+                      value="{{ data_calculada.F2_Final|default:'0' }}"
+                      placeholder="Activos al cierre"
                       readonly
                     />
                   </div>
 
-                  <!-- IRP -->
-                  <div class="field">
-                    <label for="IRP">
-                      <i class="fas fa-chart-line field-icon"></i>
-                      Índice IRP (%) <span class="req">*</span>
+                  <div
+                    class="field"
+                    style="
+                      background-color: rgba(37, 99, 235, 0.04);
+                      border-radius: 6px;
+                      padding: 4px;
+                    "
+                  >
+                    <label for="IRP" style="color: #2563eb; font-weight: 600">
+                      <i class="fas fa-chart-line field-icon"></i> Índice IRP
+                      (%)
                     </label>
-
                     <input
                       type="number"
                       step="0.01"
                       id="IRP"
-                      name="IRP"
+                      name="irp"
+                      value="{{ data_calculada.irp|default:'0.00' }}"
                       placeholder="Resultado IRP"
-                      required
+                      style="
+                        border-color: #2563eb;
+                        font-weight: bold;
+                        color: #2563eb;
+                      "
                       readonly
                     />
                   </div>
 
-                  <!-- IRP Min -->
                   <div class="field">
                     <label for="IRP_Sugerido_Min">
-                      <i class="fas fa-arrow-down field-icon"></i>
-                      IRP Sugerido Mínimo
+                      <i class="fas fa-arrow-down field-icon"></i> IRP Sugerido
+                      Mínimo
                     </label>
-
                     <input
                       type="number"
                       step="0.01"
                       id="IRP_Sugerido_Min"
-                      name="IRP_Sugerido_Min"
-                      placeholder="Límite mínimo"
+                      name="irp_Sugerido_min"
+                      value="{{ data_calculada.irp_Sugerido_min|default:'1.00' }}"
+                      placeholder="Límite mínimo (1%)"
                       readonly
                     />
                   </div>
 
-                  <!-- IRP Max -->
                   <div class="field">
                     <label for="IRP_Sugerido_Max">
-                      <i class="fas fa-arrow-up field-icon"></i>
-                      IRP Sugerido Máximo
+                      <i class="fas fa-arrow-up field-icon"></i> IRP Sugerido
+                      Máximo
                     </label>
-
                     <input
                       type="number"
                       step="0.01"
                       id="IRP_Sugerido_Max"
-                      name="IRP_Sugerido_Max"
-                      placeholder="Límite máximo"
+                      name="irp_Sugerido_max"
+                      value="{{ data_calculada.irp_Sugerido_max|default:'4.00' }}"
+                      placeholder="Límite máximo (4%)"
                       readonly
                     />
                   </div>
@@ -462,8 +581,14 @@
                   <i class="fas fa-rotate-left"></i> Limpiar
                 </button>
 
-                <button type="submit" class="btn btn-primary">
-                  <i class="fas fa-floppy-disk"></i> Guardar Asistencia
+                <button
+                  type="submit"
+                  name="action"
+                  value="guardar"
+                  class="btn btn-primary"
+                >
+                  <i class="fas fa-floppy-disk"></i> Guardar Historial del
+                  Período
                 </button>
               </div>
             </form>
