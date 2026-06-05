@@ -6,7 +6,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registro de Empleado - Gestión de Talento Humano</title>
+
     <link rel="stylesheet" href="{% static 'styles/empleados.css' %}" />
+    
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
@@ -114,7 +116,7 @@
           <div class="page-title">
             <h1>Empleados</h1>
             <p>
-              {% if empleado_editar %} Modificar datos del empleado {% else %}
+              {% if editar_empleado %} Modificar datos del empleado {% else %}
               Registro de un nuevo empleado {% endif %}
             </p>
           </div>
@@ -147,7 +149,7 @@
           <a href="{% url 'per_emp' %}">Registro Personal</a>
           <i class="fas fa-chevron-right sep"></i>
           <span class="current">
-            {% if empleado_editar %} Modificar empleado {% else %} Registro de
+            {% if editar_empleado %} Modificar empleado {% else %} Registro de
             nuevo empleado {% endif %}
           </span>
         </div>
@@ -161,15 +163,18 @@
               <div class="form-card-icon">
                 <i class="fas fa-user-plus"></i>
               </div>
+
               <div>
                 <h2 class="form-card-title">
                   {% if empleado_editar %} Modificar Empleado {% else %}
                   Registro de un nuevo Empleado {% endif %}
                 </h2>
-                {# ✅ BIEN — todo en una sola línea #}
                 <p class="form-card-subtitle">
-                  Complete los campos requeridos para {% if empleado_editar
-                  %}actualizar{% else %}crear{% endif %} el perfil del empleado
+                  {% if empleado_editar %} Actualice los datos del empleado y
+                  haga clic en "Modificar empleado" para guardar los cambios. {%
+                  else %} Complete el formulario con los datos del nuevo
+                  empleado y haga clic en "Guardar empleado" para registrarlo.
+                  {% endif %}
                 </p>
               </div>
             </div>
@@ -179,26 +184,19 @@
           </div>
 
           <div class="form-body">
-            <form
-              method="POST"
-              {#
-              ✅
-              BIEN
-              #}
-              action="{% if empleado_editar %}{% url 'editar_empleado' empleado_editar.idEmpleado %}{% else %}{% url 'empleados' %}{% endif %}"
-            >
+            <form method="POST" action="{% url 'empleados' %}">
               {% csrf_token %}
 
-              <!-- Campo oculto: diferencia crear vs modificar -->
-              <input
-                type="hidden"
-                name="accion"
-                value="{% if empleado_editar %}modificar{% else %}crear{% endif %}"
-              />
               <input
                 type="hidden"
                 name="empleado_id"
                 value="{{ empleado_editar.idEmpleado|default:'' }}"
+              />
+
+              <input
+                type="hidden"
+                name="accion"
+                value="{% if empleado_editar %}modificar{% else %}crear{% endif %}"
               />
 
               <!-- ── Datos del empleado ── -->
@@ -223,8 +221,9 @@
                         endif
                         %}
                       >
-                        Seleccione una persona…
+                        Seleccione una persona...
                       </option>
+
                       {% for persona in personas %}
                       <option
                         value="{{ persona.idPersona }}"
@@ -264,8 +263,9 @@
                         endif
                         %}
                       >
-                        Seleccione un puesto…
+                        Seleccione un puesto...
                       </option>
+
                       {% for puesto in puestos %}
                       <option
                         value="{{ puesto.idPuesto }}"
@@ -305,8 +305,9 @@
                         endif
                         %}
                       >
-                        Seleccione tipo…
+                        Seleccione un contrato...
                       </option>
+
                       {% for contrato in contratos %}
                       <option
                         value="{{ contrato.idContrato }}"
@@ -322,7 +323,7 @@
                         endif
                         %}
                       >
-                        {{ contrato.Tipo_Contrato }}
+                        {{ contrato.Nombre_Contrato }}
                       </option>
                       {% endfor %}
                     </select>
@@ -404,9 +405,11 @@
                   <i class="fas fa-rotate-left"></i> Limpiar
                 </button>
                 <button type="submit" class="btn btn-primary">
+                  {% if editar_empleado %}
+                  <i class="fas fa-pen"></i>
+                  Modificar empleado {% else %}
                   <i class="fas fa-floppy-disk"></i>
-                  {% if empleado_editar %}Guardar cambios{% else %}Guardar
-                  empleado{% endif %}
+                  Guardar empleado {% endif %}
                 </button>
               </div>
             </form>

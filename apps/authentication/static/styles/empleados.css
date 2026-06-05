@@ -668,6 +668,299 @@ body {
   font-size: 14px;
 }
 
+/* ============================================================
+   ESTILOS ADICIONALES — Tabla de consulta y modificación
+   Agregar al final de personas.css
+   ============================================================ */
+
+/* ── Textarea del formulario ─────────────────────────────────── */
+textarea {
+  width: 100%;
+  border: 1.5px solid #dde2f0;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 14px;
+  background: #f7f8fc;
+  outline: none;
+  font-family: inherit;
+  resize: vertical;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+textarea:focus {
+  border-color: #e8600a;
+  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
+  background: #fff;
+}
+
+/* ── Botón Guardar Cambios (naranja suave / warning) ─────────── */
+.btn-warning {
+  background: #f0a500;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(240, 165, 0, 0.3);
+}
+.btn-warning:hover {
+  background: #d4900a;
+  box-shadow: 0 6px 16px rgba(240, 165, 0, 0.38);
+  transform: translateY(-1px);
+}
+
+/* Clase para ocultar / mostrar elementos */
+.oculto {
+  display: none !important;
+}
+
+/* ── Tarjeta de la tabla ─────────────────────────────────────── */
+.table-card {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(30, 42, 94, 0.1);
+  width: 100%;
+  margin: 30px auto;
+  overflow: hidden;
+}
+
+/* ── Encabezado de la tarjeta tabla ─────────────────────────── */
+.table-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 26px;
+  border-bottom: 1.5px solid #e8ecf6;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.table-card-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.table-card-icon {
+  width: 42px;
+  height: 42px;
+  background: rgba(30, 42, 94, 0.1);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1e2a5e;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+.table-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a2042;
+  margin: 0 0 3px;
+}
+
+.table-card-subtitle {
+  font-size: 12px;
+  color: #6b7499;
+  margin: 0;
+}
+
+/* ── Buscador de la tabla ────────────────────────────────────── */
+.table-search input {
+  width: 100%;
+  min-width: 180px;
+}
+
+.table-search i {
+  position: absolute;
+  left: 12px;
+  color: #6b7499;
+  font-size: 13px;
+  pointer-events: none;
+}
+.table-search input {
+  border: 1.5px solid #dde2f0;
+  border-radius: 24px;
+  padding: 9px 16px 9px 36px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #1a2042;
+  background: #f7f8fc;
+  outline: none;
+  width: 260px;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.table-search input:focus {
+  border-color: #e8600a;
+  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.1);
+  background: #fff;
+}
+
+/* ── Contenedor con scroll horizontal ───────────────────────── */
+.table-wrapper {
+  overflow-x: auto;
+  padding: 0 0 8px;
+}
+
+/* ── Tabla ───────────────────────────────────────────────────── */
+.data-table {
+  width: 100%;
+  min-width: 0;
+}
+
+.data-table thead tr {
+  background: #f0f2f8;
+  border-bottom: 2px solid #dde2f0;
+}
+
+.data-table th {
+  padding: 13px 16px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1e2a5e;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+}
+
+.data-table tbody tr {
+  border-bottom: 1px solid #f0f2f8;
+  transition: background 0.15s;
+}
+
+.data-table tbody tr:hover {
+  background: #fdf4ee;
+}
+
+/* Fila activa (seleccionada para editar) */
+.data-table tbody tr.fila-activa {
+  background: rgba(232, 96, 10, 0.07);
+  outline: 2px solid rgba(232, 96, 10, 0.3);
+  outline-offset: -1px;
+}
+
+.data-table td {
+  padding: 11px 16px;
+  color: #3a4060;
+  vertical-align: middle;
+}
+
+/* Foto miniatura en la tabla */
+.tabla-foto {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #dde2f0;
+  display: block;
+}
+
+/* Columna dirección: recorta texto largo */
+.col-direccion {
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Columna acción: centrada */
+.col-accion {
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Celda vacía */
+.tabla-vacia {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6b7499;
+  font-size: 14px;
+}
+.tabla-vacia i {
+  display: block;
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #c5cbdf;
+}
+
+/* ── Botón editar en la tabla ────────────────────────────────── */
+.btn-editar {
+  background: rgba(30, 42, 94, 0.08);
+  border: none;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #1e2a5e;
+  font-size: 15px;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    transform 0.15s;
+}
+.btn-editar:hover {
+  background: #e8600a;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+/* ── Columna acción ───────────────────────────────────────── */
+.col-accion {
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* ── Botones de acción (Editar / Eliminar) ────────────────── */
+.col-accion .btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  margin: 0 3px;
+  transition: all 0.2s ease;
+}
+
+/* Botón editar */
+.col-accion .btn-warning {
+  background: rgba(240, 165, 0, 0.12);
+  color: #f0a500;
+  border: 1px solid rgba(240, 165, 0, 0.25);
+}
+
+.col-accion .btn-warning:hover {
+  background: #f0a500;
+  color: #ffffff;
+  transform: scale(1.08);
+  box-shadow: 0 4px 10px rgba(240, 165, 0, 0.35);
+}
+
+/* Botón eliminar */
+.col-accion .btn-danger {
+  background: rgba(220, 53, 69, 0.12);
+  color: #dc3545;
+  border: 1px solid rgba(220, 53, 69, 0.25);
+}
+
+.col-accion .btn-danger:hover {
+  background: #dc3545;
+  color: #ffffff;
+  transform: scale(1.08);
+  box-shadow: 0 4px 10px rgba(220, 53, 69, 0.35);
+}
+
+/* Tamaño de iconos */
+.col-accion .btn i {
+  font-size: 14px;
+}
+
 /* ==========================================================================
    DISEÑO RESPONSIVO (MEDIA QUERIES)
    Controla la adaptabilidad de la app en múltiples tamaños de dispositivos.
@@ -911,7 +1204,7 @@ body {
     margin-left: 0;
     gap: 10px;
   }
-  
+
   /* Oculta texto del usuario */
   .user-info {
     display: none;

@@ -615,6 +615,12 @@ def eliminar_persona(request, id_persona):
 
 
 
+
+
+
+
+
+
 # =========================================================
 # Vista: Empleados — registro, modificación y listado
 # =========================================================
