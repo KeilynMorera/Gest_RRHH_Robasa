@@ -36,6 +36,9 @@ urlpatterns = [
     # Ruta para el dashboard (pantalla de registro de empleado)
     path('empleados/', views.registrar_empleado, name='empleados'),
 
+    # Ruta para el dashboard (pantalla de registro de pasantes)
+    path('pasantes/', views.registrar_pasante, name='pasantes'),
+
     
     
     

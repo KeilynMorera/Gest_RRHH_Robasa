@@ -73,7 +73,7 @@ urlpatterns = [
     # =========================================================
     path('compensacion-puesto/', views.compensacion_puesto_view, name='compensacion_puesto'),
     path('compensacion-puesto/editar/<int:pk>/', views.editar_compensacion_puesto_view, name='editar_compensacion_puesto'),
-    path('compensacion-puesto/eliminar/<int:pk>/', views.eliminar_compensacion_puesto_view, name='eliminar_compensacion_puesto'),
+    path('compensacion-puesto/eliminar/<int:pk>/', views.eliminar_compensacion_puesto_view, name='eliminar_compensacion_puesto'), #Se puede quitar más adelante
 
 
     # =========================================================
@@ -81,7 +81,15 @@ urlpatterns = [
     # =========================================================
     path('empleados/', views.registrar_empleado, name='empleados'),
     path('empleados/editar/<int:id_empleado>/', views.editar_empleado, name='editar_empleado'),
-    path('empleados/eliminar/<int:id_empleado>/', views.eliminar_empleado, name='eliminar_empleado'),
+    path('empleados/eliminar/<int:id_empleado>/', views.eliminar_empleado, name='eliminar_empleado'), #Se puede quitar
+
+
+    # =========================================================
+    # Registro de pasantes
+    # =========================================================
+    path('pasantes/', views.registrar_pasante, name='pasantes'),
+    path('pasantes/editar/<int:id_pasante>/', views.editar_pasante, name='editar_pasante'),
+
 
 ]
 

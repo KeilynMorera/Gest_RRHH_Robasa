@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Persona, PersonaSexo, Empresa, Gerencia, Departamento, Puesto
-from .models import Compensacion_Puesto, Contrato, Empleado
+from .models import Compensacion_Puesto, Contrato, Empleado, Pasante
 
 # =========================================================
 # Vista: Login
@@ -712,7 +712,112 @@ def eliminar_empleado(request, id_empleado):
 
 
 
+# =========================================================
+# Vista: Pasantes — registro, modificación y listado
+# =========================================================
+def registrar_pasante(request):
 
+    # ── POST: crear o modificar ────────────────────────────
+    if request.method == 'POST':
+        accion      = request.POST.get('accion')       # 'crear' o 'modificar'
+        pasante_id  = request.POST.get('pasante_id')   # vacío si es nuevo
+
+        persona_id      = request.POST.get('persona')
+        puesto_id       = request.POST.get('puesto')
+        supervisor_id   = request.POST.get('empleado_sup')
+        fecha_inicio    = request.POST.get('fecha_inicio')
+        fecha_fin       = request.POST.get('fecha_fin') or None # Maneja el null si viene vacío
+        universidad     = request.POST.get('universidad')
+        carrera         = request.POST.get('carrera')
+        tutor_univ      = request.POST.get('tutor_universitario')
+        activo          = request.POST.get('activo')           # '1' o '0'
+
+        # Obtención de los objetos relacionados a través de las LLaves Foráneas
+        persona_obj    = Persona.objects.get(pk=persona_id)
+        puesto_obj     = Puesto.objects.get(pk=puesto_id)
+        supervisor_obj = Empleado.objects.get(pk=supervisor_id)
+        activo_bool    = activo == '1'
+
+        if accion == 'crear' or not accion:
+            Pasante.objects.create(
+                idPersona           = persona_obj,
+                idPuesto            = puesto_obj,
+                idEmpleado_Sup      = supervisor_obj,
+                Fecha_Inicio        = fecha_inicio,
+                Fecha_Fin           = fecha_fin,
+                Univercidad         = universidad, # Respetando la escritura exacta de tu modelo
+                Carrera             = carrera,
+                Tutor_Univercitario = tutor_univ,  # Respetando la escritura exacta de tu modelo
+                Activo              = activo_bool,
+            )
+
+        elif accion == 'modificar' and pasante_id:
+            pasante = Pasante.objects.get(pk=pasante_id)
+            pasante.idPersona           = persona_obj
+            pasante.idPuesto            = puesto_obj
+            pasante.idEmpleado_Sup      = supervisor_obj
+            pasante.Fecha_Inicio        = fecha_inicio
+            pasante.Fecha_Fin           = fecha_fin
+            pasante.Univercidad         = universidad
+            pasante.Carrera             = carrera
+            pasante.Tutor_Univercitario = tutor_univ
+            pasante.Activo              = activo_bool
+            pasante.save()
+
+        # Patrón PRG: Redirección limpia para evitar duplicar el envío del formulario
+        return redirect('pasantes')
+
+    # ── GET: mostrar formulario + tabla ───────────────────
+    return render(request, 'pasantes.html', {
+        'personas': Persona.objects.order_by('Nombre_Completo'),
+        'puestos' : Puesto.objects.order_by('Nombre'),
+        
+        # OBTENCIÓN DE SUPERVISORES: Trae todos los empleados con sus nombres para el select
+        'supervisores': Empleado.objects.select_related('idPersona').order_by('idPersona__Nombre_Completo'),
+        
+        # LISTADO DE LA TABLA: Optimizado con select_related para evitar consultas lentas (N+1)
+        'pasantes': Pasante.objects.select_related(
+                        'idPersona', 
+                        'idPuesto', 
+                        'idEmpleado_Sup__idPersona' # Trae directamente la persona ligada al empleado supervisor
+                    ).order_by('idPersona__Nombre_Completo'),
+    })
+
+
+# =========================================================
+# Vista: Editar Pasante
+# Carga el formulario con los datos del pasante seleccionado
+# =========================================================
+def editar_pasante(request, id_pasante):
+
+    pasante = get_object_or_404(Pasante, pk=id_pasante)
+
+    if request.method == 'POST':
+        pasante.idPersona           = Persona.objects.get(pk=request.POST.get('persona'))
+        pasante.idPuesto            = Puesto.objects.get(pk=request.POST.get('puesto'))
+        pasante.idEmpleado_Sup      = Empleado.objects.get(pk=request.POST.get('empleado_sup'))
+        pasante.Fecha_Inicio        = request.POST.get('fecha_inicio')
+        pasante.Fecha_Fin           = request.POST.get('fecha_fin') or None
+        pasante.Univercidad         = request.POST.get('universidad')
+        pasante.Carrera             = request.POST.get('carrera')
+        pasante.Tutor_Univercitario = request.POST.get('tutor_universitario')
+        pasante.Activo              = request.POST.get('activo') == '1'
+        pasante.save()
+
+        return redirect('pasantes')
+
+    # GET: Reutiliza la misma plantilla, inyectando 'pasante_editar' para rellenar los inputs
+    return render(request, 'pasantes.html', {
+        'pasante_editar': pasante,
+        'personas'      : Persona.objects.order_by('Nombre_Completo'),
+        'puestos'       : Puesto.objects.order_by('Nombre'),
+        'supervisores'  : Empleado.objects.select_related('idPersona').order_by('idPersona__Nombre_Completo'),
+        'pasantes'      : Pasante.objects.select_related(
+                            'idPersona', 
+                            'idPuesto', 
+                            'idEmpleado_Sup__idPersona'
+                        ).order_by('idPersona__Nombre_Completo'),
+    })
 
 
 

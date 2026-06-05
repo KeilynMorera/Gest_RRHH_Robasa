@@ -1,26 +1,16 @@
-<!-- ======================================================
-     CARGA DE LIBRERÍAS Y ARCHIVOS ESTÁTICOS
-====================================================== -->
-
-<!-- Permite utilizar archivos estáticos de Django -->
 {% load static %}
 
 <!doctype html>
 <html lang="es">
   <head>
-    <!-- Configuración de caracteres -->
     <meta charset="UTF-8" />
 
-    <!-- Hace que el diseño sea responsive en dispositivos móviles -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Título de la pestaña -->
     <title>Registro de Pasante - Gestión de Talento Humano</title>
 
-    <!-- Archivo CSS principal -->
     <link rel="stylesheet" href="{% static 'styles/pasantes.css' %}" />
 
-    <!-- Librería de iconos Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
@@ -28,19 +18,9 @@
   </head>
 
   <body>
-    <!-- ======================================================
-         CONTENEDOR PRINCIPAL DEL DASHBOARD
-    ====================================================== -->
     <div class="dashboard-container">
-      <!-- ======================================================
-           SIDEBAR / MENÚ LATERAL
-      ====================================================== -->
       <aside class="sidebar">
-        <!-- ======================================================
-             LOGO DE LA EMPRESA
-        ====================================================== -->
         <div class="logo-container">
-          <!-- Imagen del logo cargada desde archivos estáticos -->
           <img
             src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
             alt="Logo Robasa"
@@ -48,110 +28,88 @@
           />
         </div>
 
-        <!-- ======================================================
-             MENÚ DE NAVEGACIÓN
-        ====================================================== -->
         <nav class="menu">
-          <!-- Opción Inicio -->
           <a href="{% url 'inicio' %}">
             <i class="fas fa-house"></i>
             Inicio
           </a>
 
-          <!-- Opción Personas o Empleados -->
           <a href="{% url 'per_emp' %}">
             <i class="fas fa-user-group"></i>
             Personas o Empleados
           </a>
 
-          <!-- Opción Onboarding -->
           <a href="{% url 'onboarding' %}">
             <i class="fas fa-rocket"></i>
             Onboarding / Entradas
           </a>
 
-          <!-- Opción Empresas -->
           <a href="{% url 'empresas' %}">
             <i class="fas fa-building"></i>
             Empresas
           </a>
 
-          <!-- Opción Gerencias, Departamentos y Puestos -->
           <a href="{% url 'comple_Empresa' %}">
             <i class="fas fa-briefcase"></i>
             Gerencias, Departamentos y Puestos
           </a>
 
-          <!-- Opción Salarios -->
           <a href="{% url 'salario' %}">
             <i class="fas fa-money-bill-wave"></i>
             Salarios
           </a>
 
-          <!-- Opción Reclutamiento -->
           <a href="{% url 'reclutamiento' %}">
             <i class="fas fa-wallet"></i>
             Reclutamiento
           </a>
 
-          <!-- Opción Vacaciones -->
           <a href="{% url 'vacaciones' %}">
             <i class="fas fa-umbrella-beach"></i>
             Vacaciones
           </a>
 
-          <!-- Opción Asistencia y Permisos -->
           <a href="{% url 'elec_Asistencia' %}">
             <i class="fas fa-clock"></i>
             Asistencia y Permiso
           </a>
 
-          <!-- Acción o Rotación de Personal -->
           <a href="{% url 'accion_rotacion' %}">
             <i class="fas fa-clipboard-list"></i>
             Acciones o Rotaciones del Personal
           </a>
 
-          <!-- Opción Evaluaciones -->
           <a href="{% url 'evaluaciones' %}">
             <i class="fas fa-chart-line"></i>
             Evaluación de Desempeño
           </a>
 
-          <!-- Opción KPIs -->
           <a href="{% url 'elec_KPI' %}">
             <i class="fas fa-file-lines"></i>
             KPIs
           </a>
 
-          <!-- Opción Offboarding -->
           <a href="{% url 'elec_Offboarding' %}">
             <i class="fas fa-door-open"></i>
             Offboarding / Salidas
           </a>
 
-          <!-- Opción Reportes -->
           <a href="{% url 'reportes' %}">
             <i class="fas fa-file-lines"></i>
             Reportes
           </a>
 
-          <!-- Opción Usuarios y Roles -->
           <a href="{% url 'usuarios' %}">
             <i class="fas fa-users-cog"></i>
             Usuarios y Roles
           </a>
 
-          <!-- Opción Configuración -->
           <a href="{% url 'configuraciones' %}">
             <i class="fas fa-gear"></i>
             Configuración
           </a>
         </nav>
 
-        <!-- ======================================================
-             BOTÓN DE CERRAR SESIÓN
-        ====================================================== -->
         <div class="logout">
           <a href="login.html">
             <i class="fas fa-right-from-bracket"></i>
@@ -160,44 +118,30 @@
         </div>
       </aside>
 
-      <!-- ======================================================
-           CONTENIDO PRINCIPAL
-      ====================================================== -->
       <main class="main-content">
-        <!-- ======================================================
-             BARRA SUPERIOR
-        ====================================================== -->
         <header class="topbar">
-          <!-- Título de la página -->
           <div class="page-title">
             <h1>Pasantes</h1>
             <p>Registro de un nuevo pasante</p>
           </div>
 
-          <!-- Barra de búsqueda -->
           <div class="search-box">
             <i class="fas fa-search"></i>
-
             <input
               type="text"
               placeholder="Buscar empleado, módulo, reporte..."
             />
           </div>
 
-          <!-- Acciones rápidas -->
           <div class="topbar-actions">
-            <!-- Notificaciones -->
             <div class="notification">
               <i class="fas fa-bell"></i>
               <span class="badge">3</span>
             </div>
 
-            <!-- Información del usuario -->
             <div class="user-profile">
-              <!-- Imagen del usuario -->
               <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
 
-              <!-- Nombre y departamento -->
               <div class="user-info">
                 <strong>María Gómez</strong>
                 <span>Recursos Humanos</span>
@@ -206,45 +150,28 @@
           </div>
         </header>
 
-        <!-- ======================================================
-             BREADCRUMB / RUTA DE NAVEGACIÓN
-        ====================================================== -->
         <div class="breadcrumb">
-          <!-- Inicio -->
           <a href="{% url 'inicio' %}">
             <i class="fas fa-house"></i>
             Inicio
           </a>
 
-          <!-- Separador -->
           <i class="fas fa-chevron-right sep"></i>
 
-          <!-- Sección -->
           <a href="{% url 'per_emp' %}"> Registro Personal </a>
 
-          <!-- Separador -->
           <i class="fas fa-chevron-right sep"></i>
 
-          <!-- Página actual -->
           <span class="current"> Registro de nuevo pasante </span>
         </div>
 
-        <!-- ======================================================
-             TARJETA PRINCIPAL DEL FORMULARIO
-        ====================================================== -->
         <section class="form-card">
-          <!-- ======================================================
-               ENCABEZADO DEL FORMULARIO
-          ====================================================== -->
           <div class="form-card-header">
-            <!-- Lado izquierdo -->
             <div class="form-card-header-left">
-              <!-- Icono -->
               <div class="form-card-icon">
                 <i class="fas fa-user-plus"></i>
               </div>
 
-              <!-- Título y descripción -->
               <div>
                 <h2 class="form-card-title">Registro de un nuevo Pasante</h2>
                 <p class="form-card-subtitle">
@@ -254,33 +181,33 @@
               </div>
             </div>
 
-            <!-- Nota de campos obligatorios -->
             <p class="required-note">
               Los campos marcados con <span>*</span> son obligatorios
             </p>
           </div>
 
-          <!-- ======================================================
-               CUERPO DEL FORMULARIO
-          ====================================================== -->
           <div class="form-body">
-            <!-- Formulario principal -->
-            <form method="POST" action="#">
-              <!-- Token de seguridad CSRF de Django -->
+            <form method="POST" action="{% url 'pasantes' %}">
               {% csrf_token %}
 
-              <!-- ======================================================
-                   SECCIÓN: DATOS DEL PASANTE
-              ====================================================== -->
+              <input
+                type="hidden"
+                name="accion"
+                value="{% if pasante_editar %}modificar{% else %}crear{% endif %}"
+              />
+
+              {% if pasante_editar %}
+              <input
+                type="hidden"
+                name="pasante_id"
+                value="{{ pasante_editar.idPasante }}"
+              />
+              {% endif %}
+
               <div class="form-section">
-                <!-- Título de la sección -->
                 <h4 class="form-section-title">Datos del Pasante</h4>
 
-                <!-- Grid de campos -->
                 <div class="form-grid">
-                  <!-- ======================================================
-                       CAMPO: PERSONA
-                  ====================================================== -->
                   <div class="field">
                     <label for="persona">
                       <i class="fas fa-user field-icon"></i>
@@ -292,18 +219,27 @@
                         Seleccione una persona…
                       </option>
 
-                      <!-- Lista dinámica de personas -->
                       {% for persona in personas %}
-                      <option value="{{ persona.idPersona }}">
-                        {{ persona.Nombre }}
+                      <option
+                        value="{{ persona.idPersona }}"
+                        {%
+                        if
+                        pasante_editar
+                        and
+                        pasante_editar.idPersona.idPersona=""
+                        ="persona.idPersona"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        {{ persona.Nombre_Completo }}
                       </option>
                       {% endfor %}
                     </select>
                   </div>
 
-                  <!-- ======================================================
-                       CAMPO: PUESTO
-                  ====================================================== -->
                   <div class="field">
                     <label for="puesto">
                       <i class="fas fa-briefcase field-icon"></i>
@@ -315,74 +251,107 @@
                         Seleccione un puesto…
                       </option>
 
-                      <!-- Lista dinámica de puestos -->
                       {% for puesto in puestos %}
-                      <option value="{{ puesto.idPuesto }}">
-                        {{ puesto.Nombre_Puesto }}
+                      <option
+                        value="{{ puesto.idPuesto }}"
+                        {%
+                        if
+                        pasante_editar
+                        and
+                        pasante_editar.idPuesto.idPuesto=""
+                        ="puesto.idPuesto"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        {{ puesto.Nombre }}
                       </option>
                       {% endfor %}
                     </select>
                   </div>
 
-                  <!-- ======================================================
-                       CAMPO: SUPERVISOR
-                  ====================================================== -->
                   <div class="field field-full">
                     <label for="supervisor">
                       <i class="fas fa-user-tie field-icon"></i>
                       Empleado supervisor <span class="req">*</span>
                     </label>
 
-                    <select id="supervisor" name="supervisor" required>
+                    <select id="supervisor" name="empleado_sup" required>
                       <option value="" disabled selected>
                         Seleccione un supervisor…
                       </option>
-
-                      <!-- Lista dinámica de empleados -->
-                      {% for empleado in empleados %}
-                      <option value="{{ empleado.idEmpleado }}">
-                        {{ empleado.persona.Nombre }}
+                      {% for empleado in supervisores %}
+                      <option
+                        value="{{ empleado.idEmpleado }}"
+                        {%
+                        if
+                        pasante_editar
+                        and
+                        pasante_editar.idEmpleado_Sup.idEmpleado=""
+                        ="empleado.idEmpleado"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        {{ empleado.idPersona.Nombre_Completo }}
                       </option>
                       {% endfor %}
                     </select>
                   </div>
 
-                  <!-- ======================================================
-                       CAMPO: ESTADO
-                  ====================================================== -->
                   <div class="field">
                     <label>
                       <i class="fas fa-circle-dot field-icon"></i>
                       Estado <span class="req">*</span>
                     </label>
 
-                    <!-- Grupo de radios -->
                     <div class="status-group">
-                      <!-- Activo -->
                       <div class="status-option">
                         <input
                           type="radio"
-                          name="estado"
+                          name="activo"
                           id="estadoActivo"
                           value="1"
+                          {%
+                          if
+                          not
+                          pasante_editar
+                          or
+                          pasante_editar.Activo
+                          %}
                           checked
+                          {%
+                          endif
+                          %}
                         />
-
                         <label for="estadoActivo">
                           <span class="dot"></span>
                           Activo
                         </label>
                       </div>
 
-                      <!-- Inactivo -->
                       <div class="status-option">
                         <input
                           type="radio"
-                          name="estado"
+                          name="activo"
                           id="estadoInactivo"
-                          value="2"
+                          value="0"
+                          {%
+                          if
+                          pasante_editar
+                          and
+                          not
+                          pasante_editar.Activo
+                          %}
+                          checked
+                          {%
+                          endif
+                          %}
                         />
-
                         <label for="estadoInactivo">
                           <span class="dot"></span>
                           Inactivo
@@ -391,9 +360,6 @@
                     </div>
                   </div>
 
-                  <!-- ======================================================
-                       CAMPO: UNIVERSIDAD
-                  ====================================================== -->
                   <div class="field">
                     <label for="universidad">
                       <i class="fas fa-university field-icon"></i>
@@ -405,14 +371,11 @@
                       id="universidad"
                       name="universidad"
                       maxlength="200"
-                      placeholder="Nombre de la universidad"
+                      value="{% if pasante_editar %}{{ pasante_editar.Univercidad }}{% endif %}"
                       required
                     />
                   </div>
 
-                  <!-- ======================================================
-                       CAMPO: CARRERA
-                  ====================================================== -->
                   <div class="field">
                     <label for="carrera">
                       <i class="fas fa-book field-icon"></i>
@@ -424,14 +387,11 @@
                       id="carrera"
                       name="carrera"
                       maxlength="200"
-                      placeholder="Nombre de la carrera"
+                      value="{% if pasante_editar %}{{ pasante_editar.Carrera }}{% endif %}"
                       required
                     />
                   </div>
 
-                  <!-- ======================================================
-                       CAMPO: TUTOR UNIVERSITARIO
-                  ====================================================== -->
                   <div class="field">
                     <label for="tutor_universitario">
                       <i class="fas fa-chalkboard-teacher field-icon"></i>
@@ -443,14 +403,11 @@
                       id="tutor_universitario"
                       name="tutor_universitario"
                       maxlength="200"
-                      placeholder="Nombre del tutor"
+                      value="{% if pasante_editar %}{{ pasante_editar.Tutor_Univercitario }}{% endif %}"
                       required
                     />
                   </div>
 
-                  <!-- ======================================================
-                       CAMPO: FECHA DE INICIO
-                  ====================================================== -->
                   <div class="field">
                     <label for="fecha_inicio">
                       <i class="fas fa-calendar-day field-icon"></i>
@@ -461,62 +418,138 @@
                       type="date"
                       id="fecha_inicio"
                       name="fecha_inicio"
+                      value="{% if pasante_editar %}{{ pasante_editar.Fecha_Inicio|date:'Y-m-d' }}{% endif %}"
                       required
                     />
                   </div>
 
-                  <!-- ======================================================
-                       CAMPO: FECHA FINAL
-                  ====================================================== -->
                   <div class="field">
                     <label for="fecha_fin">
                       <i class="fas fa-calendar-check field-icon"></i>
-                      Fecha de finalización <span class="req">*</span>
+                      Fecha de finalización
                     </label>
 
                     <input
                       type="date"
                       id="fecha_fin"
                       name="fecha_fin"
-                      required
+                      value="{% if pasante_editar and pasante_editar.Fecha_Fin %}{{ pasante_editar.Fecha_Fin|date:'Y-m-d' }}{% endif %}"
                     />
                   </div>
                 </div>
               </div>
 
-              <!-- ======================================================
-                   BOTONES DEL FORMULARIO
-              ====================================================== -->
               <div class="form-footer">
-                <!-- Botón cancelar -->
-                <a href="{% url 'per_emp' %}" class="btn btn-ghost">
+                <a href="{% url 'pasantes' %}" class="btn btn-ghost">
                   <i class="fas fa-arrow-left"></i>
                   Cancelar
                 </a>
 
-                <!-- Botón limpiar -->
                 <button type="reset" class="btn btn-secondary">
                   <i class="fas fa-rotate-left"></i>
                   Limpiar
                 </button>
 
-                <!-- Botón guardar -->
                 <button type="submit" class="btn btn-primary">
+                  {% if pasante_editar %}
+                  <i class="fas fa-pen"></i>
+                  Modificar pasante {% else %}
                   <i class="fas fa-floppy-disk"></i>
-                  Guardar pasante
+                  Guardar pasante {% endif %}
                 </button>
               </div>
             </form>
           </div>
+
+          <section class="table-card">
+            <div class="table-card-header">
+              <div class="table-card-header-left">
+                <div class="table-card-icon">
+                  <i class="fas fa-users"></i>
+                </div>
+                <div>
+                  <h2 class="table-card-title">Pasantes registrados</h2>
+                  <p class="table-card-subtitle">
+                    Busque un pasante y seleccione el ícono de edición para
+                    modificar sus datos.
+                  </p>
+                </div>
+              </div>
+              <div class="table-search">
+                <i class="fas fa-search"></i>
+                <input
+                  type="text"
+                  id="filtro-tabla"
+                  placeholder="Buscar pasante..."
+                />
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="data-table" id="tabla-pasantes">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Persona</th>
+                    <th>Universidad</th>
+                    <th>Carrera</th>
+                    <th>Puesto</th>
+                    <th>Supervisor</th>
+                    <th>Estado</th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for pasante in pasantes %}
+                  <tr>
+                    <td>{{ pasante.idPasante }}</td>
+                    <td>{{ pasante.idPersona.Nombre_Completo }}</td>
+                    <td>{{ pasante.Univercidad }}</td>
+                    <td>{{ pasante.Carrera }}</td>
+                    <td>{{ pasante.idPuesto.Nombre }}</td>
+                    <td>
+                      {{ pasante.idEmpleado_Sup.idPersona.Nombre_Completo }}
+                    </td>
+                    <td>
+                      {% if pasante.Activo %}
+                      <span class="estado-activo">
+                        <i class="fas fa-circle"></i> Activo
+                      </span>
+                      {% else %}
+                      <span class="estado-inactivo">
+                        <i class="fas fa-circle"></i> Inactivo
+                      </span>
+                      {% endif %}
+                    </td>
+
+                    <td class="col-accion">
+                      <a
+                        href="{% url 'editar_pasante' pasante.idPasante %}"
+                        class="btn btn-warning btn-sm"
+                      >
+                        <i class="fas fa-pen-to-square"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="8" class="tabla-vacia">
+                      No existen pasantes registrados.
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </section>
         </section>
 
-        <!-- ======================================================
-             FOOTER
-        ====================================================== -->
         <footer class="footer">
           © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
         </footer>
       </main>
     </div>
+
+    <script src="{% static 'js/pasante.js' %}"></script>
   </body>
 </html>

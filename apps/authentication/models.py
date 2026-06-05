@@ -284,3 +284,41 @@ class Empleado(models.Model):
 
     def __str__(self):
         return f"{self.idPersona.Nombre_Completo} — {self.idPuesto.Nombre}"
+    
+
+
+# =========================================================
+# TABLA: Pasante
+# =========================================================
+class Pasante(models.Model):
+
+    idPasante            = models.AutoField(primary_key=True)
+    Fecha_Inicio         = models.DateField()
+    Fecha_Fin            = models.DateField(null=True, blank=True)  # NULL permitido
+    Univercidad          = models.CharField(max_length=200)
+    Carrera              = models.CharField(max_length=200)
+    Tutor_Univercitario  = models.CharField(max_length=200)
+    Activo               = models.BooleanField(default=True)  # BIT: True=1 Activo, False=0 Inactivo
+
+    idPersona            = models.ForeignKey(
+                               Persona,
+                               on_delete=models.CASCADE,
+                               db_column='idPersona'
+                           )
+    idPuesto             = models.ForeignKey(
+                               Puesto,
+                               on_delete=models.CASCADE,
+                               db_column='idPuesto'
+                           )
+    idEmpleado_Sup       = models.ForeignKey(
+                               Empleado,
+                               on_delete=models.CASCADE,
+                               db_column='idEmpleado_Sup',
+                               related_name='pasantes_supervisados'
+                           )
+
+    class Meta:
+        db_table = 'Pasante'
+
+    def __str__(self):
+        return f"{self.idPersona.Nombre_Completo} — {self.idPuesto.Nombre}"
