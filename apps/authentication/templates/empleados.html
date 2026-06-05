@@ -166,6 +166,7 @@
                   {% if empleado_editar %} Modificar Empleado {% else %}
                   Registro de un nuevo Empleado {% endif %}
                 </h2>
+                {# ✅ BIEN — todo en una sola línea #}
                 <p class="form-card-subtitle">
                   Complete los campos requeridos para {% if empleado_editar
                   %}actualizar{% else %}crear{% endif %} el perfil del empleado
@@ -180,6 +181,10 @@
           <div class="form-body">
             <form
               method="POST"
+              {#
+              ✅
+              BIEN
+              #}
               action="{% if empleado_editar %}{% url 'editar_empleado' empleado_editar.idEmpleado %}{% else %}{% url 'empleados' %}{% endif %}"
             >
               {% csrf_token %}

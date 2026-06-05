@@ -422,7 +422,6 @@
               <table class="data-table" id="tabla-empresas">
                 <thead>
                   <tr>
-                    <th>ID</th>
                     <th>Nombre Empresa</th>
                     <th>Descripción</th>
                     <th class="col-accion">Acción</th>
@@ -432,8 +431,6 @@
                 <tbody>
                   {% for empresa in empresas %}
                   <tr>
-                    <td>{{ empresa.idEmpresa }}</td>
-
                     <td>
                       <strong>{{ empresa.Nombre }}</strong>
                     </td>

@@ -468,7 +468,6 @@
               <table class="data-table" id="tabla-departamentos">
                 <thead>
                   <tr>
-                    <th>ID</th>
                     <th>Nombre Departamento</th>
                     <th>Gerencia</th>
                     <th class="col-accion">Acción</th>
@@ -477,7 +476,6 @@
                 <tbody>
                   {% for departamento in departamentos %}
                   <tr>
-                    <td>{{ departamento.idDepartamento }}</td>
                     <td><strong>{{ departamento.Nombre }}</strong></td>
                     <td>{{ departamento.idGerencia.Nombre }}</td>
                     <td class="col-accion">

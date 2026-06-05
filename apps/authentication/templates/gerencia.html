@@ -271,7 +271,6 @@
               <table class="data-table" id="tabla-gerencias">
                 <thead>
                   <tr>
-                    <th>ID</th>
                     <th>Nombre Gerencia</th>
                     <th>Empresa</th>
                     <th class="col-accion">Acción</th>
@@ -280,7 +279,6 @@
                 <tbody>
                   {% for gerencia in gerencias %}
                   <tr>
-                    <td>{{ gerencia.idGerencia }}</td>
                     <td><strong>{{ gerencia.Nombre }}</strong></td>
                     <td>{{ gerencia.idEmpresa.Nombre }}</td>
                     <td class="col-accion">
@@ -289,7 +287,6 @@
                         href="{% url 'editar_gerencia' gerencia.idGerencia %}"
                         class="btn btn-warning btn-sm"
                         title="Editar gerencia"
-                       
                       >
                         <i class="fas fa-pen-to-square"></i>
                       </a>
@@ -297,7 +294,7 @@
                       <!-- Eliminar -->
                       <a
                         href="{% url 'eliminar_gerencia' gerencia.idGerencia %}"
-                         class="btn btn-danger btn-sm"
+                        class="btn btn-danger btn-sm"
                         title="Eliminar gerencia"
                         onclick="
                           return confirm('¿Desea eliminar esta gerencia?');

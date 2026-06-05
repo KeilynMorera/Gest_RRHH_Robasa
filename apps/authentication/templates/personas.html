@@ -500,12 +500,12 @@
                   </div>
 
                   <!-- ======================================================
-                        DIRECCIÓN DE HABITACIÓN (Campo: Direccion) -- NUEVO
+                        DIRECCIÓN
                   ====================================================== -->
                   <div class="field field-full">
                     <label for="direccion">
                       <i class="fas fa-location-dot field-icon"></i>
-                      Dirección De Habitación <span class="req">*</span>
+                      Dirección <span class="req">*</span>
                     </label>
 
                     <textarea
@@ -603,7 +603,6 @@
                 <tbody>
                   {% for persona in personas %}
                   <tr
-                    data-id="{{ persona.idPersona }}"
                     data-nombre="{{ persona.Nombre_Completo }}"
                     data-cedula="{{ persona.Cedula }}"
                     data-sexo="{{ persona.idSexo.idSexo }}"
