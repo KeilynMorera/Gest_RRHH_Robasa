@@ -196,6 +196,8 @@ body {
   flex: 1; /* Ocupa todo el ancho restante del viewport */
   margin-left: 280px; /* IMPORTANTE: Desplaza el contenido a la derecha para no quedar oculto bajo la sidebar fija */
   padding: 30px; /* Espaciado general del contenido */
+  width: calc(100% - 280px);
+  overflow-x: hidden;
 }
 
 /* ==========================================================================
@@ -961,396 +963,219 @@ textarea:focus {
   font-size: 14px;
 }
 
-/* ==========================================================================
-   DISEÑO RESPONSIVO (MEDIA QUERIES)
-   Controla la adaptabilidad de la app en múltiples tamaños de dispositivos.
-   ========================================================================== */
-
-/* --------------------------------------------------------------------------
-   PANTALLAS GRANDES (Laptops de alta resolución y monitores de escritorio)
-   -------------------------------------------------------------------------- */
-@media screen and (min-width: 1400px) {
-  .main-content {
-    padding: 40px; /* Más espaciado en pantallas amplias */
-  }
-
-  .form-card {
-    max-width: 1400px; /* Evita que el formulario se estire infinitamente a lo ancho */
-    margin: 25px auto; /* Centra la tarjeta horizontalmente */
-  }
-
-  .form-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 28px 36px; /* Mayor separación entre inputs */
-  }
-
-  .page-title h1 {
-    font-size: 38px; /* Título más imponente */
-  }
-
-  .search-box {
-    max-width: 520px; /* Buscador más ancho */
-  }
-
+/* ==========================================================
+   RESPONSIVE - TABLETS
+   ========================================================== */
+@media (max-width: 1200px) {
   .sidebar {
-    width: 300px; /* Barra lateral un poco más robusta */
+    width: 230px;
   }
 
   .main-content {
-    margin-left: 300px; /* Ajuste correspondiente al nuevo ancho de sidebar */
-  }
-}
-
-/* --------------------------------------------------------------------------
-   PANTALLAS MEDIANAS (Tablets horizontales y laptops pequeñas)
-   -------------------------------------------------------------------------- */
-@media screen and (max-width: 1199px) {
-  .sidebar {
-    width: 240px; /* Se reduce el ancho lateral */
-    padding: 24px 16px;
-  }
-
-  .main-content {
-    margin-left: 240px; /* Reajuste de margen izquierdo */
-    padding: 24px;
-  }
-
-  .logo-img {
-    width: 220px; /* Encoge el logo */
-    padding: 14px;
-  }
-
-  .topbar {
-    gap: 16px;
-  }
-
-  .page-title h1 {
-    font-size: 30px;
-  }
-
-  .page-title p {
-    font-size: 14px;
-  }
-
-  .search-box {
-    max-width: 100%; /* Permite que el buscador use lo necesario */
-  }
-
-  .topbar-actions {
-    gap: 16px;
-  }
-
-  .form-card {
-    margin: 18px 0;
-  }
-
-  .form-card-header,
-  .form-body {
-    padding: 24px;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-
-  .form-footer {
-    flex-wrap: wrap; /* En caso extremo de falta de espacio, permite bajar botones */
-  }
-}
-
-/* --------------------------------------------------------------------------
-   TABLETS VERTICALES (Dispositivos medianos)
-   -------------------------------------------------------------------------- */
-@media screen and (max-width: 991px) {
-  .sidebar {
-    width: 210px; /* Estrechamiento de la barra lateral al máximo legible */
-    padding: 20px 14px;
-  }
-
-  .main-content {
-    margin-left: 210px;
+    margin-left: 230px;
     padding: 20px;
   }
 
-  .menu a {
-    padding: 12px 14px;
-    font-size: 14px;
-  }
-
   .logo-img {
-    width: 180px;
+    width: 220px;
   }
 
-  /* Cambio drástico en la barra superior: se vuelve vertical/bloques */
-  .topbar {
-    align-items: flex-start;
-  }
-
-  .topbar-actions {
-    width: auto;
-    margin-left: 0;
-    justify-content: flex-start;
-    align-self: flex-start;
-    gap: 12px;
-  }
-
-  .page-title {
-    min-width: auto;
-    text-align: center;
-  }
-  .page-title h1 {
-    font-size: 22px;
-  }
-  .page-title p {
-    font-size: 13px;
-  }
-
-  .search-box {
-    max-width: 100%;
-  }
-
-  .breadcrumb {
-    padding: 10px 0 0;
-    flex-wrap: wrap; /* Envuelve textos largos de migas de pan */
-  }
-
-  .form-card-header {
-    flex-direction: column; /* Título arriba, indicador requerido abajo */
-    align-items: flex-start;
-    gap: 18px;
-  }
-
-  /* El Grid pasa a tener 1 SOLA COLUMNA. Los inputs ahora van uno abajo del otro */
   .form-grid {
     grid-template-columns: 1fr;
   }
 
-  .form-footer {
-    justify-content: flex-start; /* Alinea botones a la izquierda en tablets */
-  }
-}
-
-/* --------------------------------------------------------------------------
-   MÓVILES GRANDES / SMARTPHONES (Modo vertical común)
-   Aquí el diseño hace una transformación inteligente para ahorrar espacio.
-   -------------------------------------------------------------------------- */
-@media screen and (max-width: 767px) {
-  .sidebar {
-    width: 90px; /* La barra lateral se vuelve Ultra Estrecha */
-    padding: 20px 10px;
-    align-items: center; /* Centra los iconos */
-  }
-
-  /* Ocultar texto del menú: Truco usando font-size: 0 */
-  .menu a {
-    justify-content: center;
-    padding: 14px 10px;
-    font-size: 0; /* El texto desaparece visualmente */
-  }
-
-  .menu a i {
-    font-size: 18px; /* El icono permanece visible y centrado */
-    margin: 0;
-    width: auto;
-  }
-
-  /* Ocultar texto del Logout */
-  .logout a {
-    justify-content: center;
-    font-size: 0; /* Desaparece el texto "Cerrar sesión" */
-  }
-
-  .logout a i {
-    font-size: 18px; /* Solo queda el icono de logout */
-  }
-
-  /* Reducción extrema del logo para convertirlo en un icono cuadrado pequeño */
-  .logo-img {
-    width: 65px;
-    padding: 10px;
-    border-radius: 16px;
-  }
-
-  /* El contenido se desplaza a la izquierda adaptándose al nuevo ancho de la sidebar (90px) */
-  .main-content {
-    margin-left: 90px;
-    padding: 16px;
-  }
-
-  .page-title {
-    min-width: auto;
-    text-align: center;
-  }
-  .page-title h1 {
-    font-size: 22px;
-  }
-  .page-title p {
-    font-size: 13px;
+  .topbar {
+    gap: 15px;
   }
 
   .search-box {
     max-width: 100%;
   }
 
-  .topbar {
-    gap: 14px;
-  }
-
-  .topbar-actions {
-    width: auto;
-    justify-content: flex-start;
-    align-self: flex-start;
+  .table-card,
+  .form-card {
     margin-left: 0;
-    gap: 10px;
+    margin-right: 0;
+  }
+}
+
+/* ==========================================================
+   RESPONSIVE - PANTALLAS MEDIANAS
+   ========================================================== */
+/* ==========================================================
+   PANTALLAS MEDIANAS
+   ========================================================== */
+@media (max-width: 992px) {
+  .sidebar {
+    width: 90px;
+    padding: 20px 10px;
   }
 
-  /* Oculta texto del usuario */
-  .user-info {
+  .main-content {
+    margin-left: 90px;
+    width: calc(100% - 90px);
+    padding: 15px;
+  }
+
+  /* Ocultar logo de texto */
+  .logo span {
     display: none;
   }
 
-  .breadcrumb {
-    font-size: 12px;
-    gap: 6px;
+  .logo-img {
+    width: 55px;
+    padding: 8px;
   }
 
-  .form-card {
-    margin: 16px 0;
-    border-radius: 12px;
+  /* Menú solo iconos */
+  .menu a,
+  .logout a {
+    justify-content: center;
+    padding: 14px 0;
+    gap: 0;
+    font-size: 0; /* Oculta cualquier texto fuera de spans */
   }
 
-  .form-card-header,
-  .form-body {
-    padding: 20px;
+  .menu a span,
+  .logout a span {
+    display: none;
   }
 
-  .form-card-title {
-    font-size: 18px;
+  .menu i,
+  .logout i {
+    font-size: 20px;
+    width: auto;
+    margin: 0;
   }
 
-  .form-card-subtitle {
-    font-size: 12px;
-  }
-
-  .field > label {
-    font-size: 12px;
-  }
-
-  .field input,
-  .field select {
-    font-size: 13px;
-    padding: 10px 12px;
-  }
-
-  /* Los botones de estado (Radio de Activo/Inactivo) se apilan verticalmente */
-  .status-group {
-    flex-direction: column;
-  }
-
-  /* Los botones del pie del formulario se estiran al 100% ocupando todo el ancho móvil */
-  .form-footer {
+  .topbar {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .form-footer .btn {
-    width: 100%; /* Botones grandes y fáciles de tocar con el dedo */
-    justify-content: center;
-  }
-}
-
-/* --------------------------------------------------------------------------
-   MÓVILES PEQUEÑOS (Pantallas de baja gama o resolución muy reducida)
-   -------------------------------------------------------------------------- */
-@media screen and (max-width: 480px) {
-  .sidebar {
-    width: 72px; /* Sidebar aún más compacta */
-    padding: 16px 8px;
+  .topbar-actions {
+    margin-left: 0;
+    justify-content: flex-end;
   }
 
-  .main-content {
-    margin-left: 72px; /* Ajuste del margen para no pisar la mini sidebar */
-    padding: 12px;
-  }
-
-  .logo-img {
-    width: 52px; /* Mini logo insignia */
-    padding: 8px;
-  }
-
-  .menu {
-    gap: 6px;
-  }
-
-  .menu a {
-    padding: 12px 8px;
-  }
-
-  .menu a i {
-    font-size: 16px;
+  .search-box {
+    max-width: 100%;
   }
 
   .page-title h1 {
-    font-size: 22px; /* Texto ultracompacto */
+    font-size: 28px;
   }
 
-  .page-title p {
-    font-size: 12px;
+  .form-grid {
+    grid-template-columns: 1fr;
   }
 
-  .search-box input {
-    padding: 12px 14px 12px 42px; /* Reajuste del padding interno del buscador */
-    font-size: 13px;
+  .form-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ==========================================================
+   RESPONSIVE - CELULARES
+   ========================================================== */
+/* ==========================================================
+   CELULARES
+   ========================================================== */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+    padding: 15px 5px;
   }
 
-  .user-profile {
-    gap: 8px;
-    padding: 6px 8px;
+  .main-content {
+    margin-left: 70px;
+    width: calc(100% - 70px);
   }
 
-  .user-profile img {
-    width: 38px;
-    height: 38px; /* Foto de perfil más pequeña */
-  }
-
-  /* OCULTA el bloque de textos del usuario. En pantallas de menos de 480px sólo queda la foto */
-  .user-info {
+  .logo span {
     display: none;
   }
 
-  .form-card-header,
-  .form-body {
-    padding: 16px; /* Minimiza los colchones internos de la tarjeta */
+  .logo-img {
+    width: 45px;
+    padding: 6px;
   }
 
-  .form-card-title {
-    font-size: 16px;
+  .menu a,
+  .logout a {
+    justify-content: center;
+    padding: 12px 0;
+    gap: 0;
+    font-size: 0; /* Oculta texto residual */
   }
 
-  .form-card-subtitle {
-    font-size: 11px;
+  .menu a span,
+  .logout a span {
+    display: none;
   }
 
-  .form-card-icon {
-    width: 40px;
-    height: 40px;
-    font-size: 16px;
+  .menu i,
+  .logout i {
+    font-size: 18px;
+    width: auto;
+    margin: 0;
   }
 
-  .field input,
-  .field select {
-    font-size: 12px;
-    padding: 9px 10px;
+  .page-title h1 {
+    font-size: 24px;
   }
 
-  .btn {
+  .page-title p {
     font-size: 13px;
-    padding: 10px 14px;
   }
 
-  .footer {
-    font-size: 12px;
-    margin-top: 20px;
+  .search-box input {
+    padding: 12px 15px 12px 42px;
+    font-size: 14px;
+  }
+
+  .form-body {
+    padding: 15px;
+  }
+
+  .form-footer {
+    flex-direction: column;
+  }
+
+  .form-footer .btn {
+    width: 100%;
+  }
+
+  .table-card-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .table-search input {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .data-table {
+    min-width: 700px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .main-content {
+    width: calc(100% - 230px);
+  }
+}
+
+@media (max-width: 992px) {
+  .main-content {
+    width: calc(100% - 90px);
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    width: calc(100% - 70px);
   }
 }
