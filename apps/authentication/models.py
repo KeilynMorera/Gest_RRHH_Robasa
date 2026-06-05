@@ -248,6 +248,7 @@ class Contrato(models.Model):
     class Meta:
         db_table = 'Contrato'
         managed  = False   # Django no toca esta tabla (no crea ni altera)
+        
 
     def __str__(self):
         return self.Tipo_Contrato
