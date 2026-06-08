@@ -50,30 +50,33 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
 
-                console.log("Datos recibidos:", data);
+                console.log("DATOS RECIBIDOS:");
+                console.log(data);
 
                 if (data.success) {
 
-                    const salarioBruto =
-                        document.getElementById("salario_bruto");
+                    document.getElementById("salario_bruto").value =
+                        data.salario_bruto;
 
-                    const salarioSemNeto =
-                        document.getElementById("salario_sem_neto");
+                    document.getElementById("salario_sem_neto").value =
+                        data.salario_sem_neto;
 
-                    const comisionBase =
-                        document.getElementById("comision_base");
+                    document.getElementById("comision_base").value =
+                        data.comision_base;
 
-                    const variableBase =
-                        document.getElementById("variable_base");
+                    document.getElementById("variable_base").value =
+                        data.variable_base;
 
-                    const viaticos =
-                        document.getElementById("viaticos_alimenticios");
+                    document.getElementById("viaticos_alimenticios").value =
+                        data.viaticos_alimenticios;
 
-                    const kilometraje =
-                        document.getElementById("kilometraje_base");
+                    document.getElementById("kilometraje_base").value =
+                        data.kilometraje_base;
 
-                    const bono =
-                        document.getElementById("bono_base");
+                    document.getElementById("bono_base").value =
+                        data.bono_base;
+
+                    calcularCompensacionTotal();
 
                     console.log("Campos encontrados:", {
                         salarioBruto,

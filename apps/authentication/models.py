@@ -407,14 +407,7 @@ class SalarioEmpleado(models.Model):
 
     def save(self, *args, **kwargs):
 
-        self.Compensacion_Total = (
-            self.Salario_Bruto +
-            self.Comision_Base +
-            self.Variable_Base +
-            self.Viaticos_Alimenticios +
-            self.Kilometraje_Base +
-            self.Bono_Base
-        )
+        
 
         super().save(*args, **kwargs)
 

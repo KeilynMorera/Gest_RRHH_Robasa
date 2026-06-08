@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
+from decimal import Decimal
 
 from .models import (
     Persona,
@@ -837,14 +838,14 @@ def registrar_salario(request):
         fecha_inicio = request.POST.get('fecha_inicio')
         fecha_fin = request.POST.get('fecha_fin')
 
-        salario_bruto = request.POST.get('salario_bruto')
-        salario_sem_neto = request.POST.get('salario_sem_neto')
+        salario_bruto = Decimal(request.POST.get('salario_bruto') or 0)
+        salario_sem_neto = Decimal(request.POST.get('salario_sem_neto') or 0)
 
-        comision = request.POST.get('comision_base')
-        variable = request.POST.get('variable_base')
-        viaticos = request.POST.get('viaticos_alimenticios')
-        kilometraje = request.POST.get('kilometraje_base')
-        bono = request.POST.get('bono_base')
+        comision = Decimal(request.POST.get('comision_base') or 0)
+        variable = Decimal(request.POST.get('variable_base') or 0)
+        viaticos = Decimal(request.POST.get('viaticos_alimenticios') or 0)
+        kilometraje = Decimal(request.POST.get('kilometraje_base') or 0)
+        bono = Decimal(request.POST.get('bono_base') or 0)
 
         observaciones = request.POST.get('observaciones')
 
@@ -853,6 +854,20 @@ def registrar_salario(request):
         )
 
         if accion == 'crear' or not accion:
+
+            print("POST COMPLETO:")
+            print(request.POST)
+
+            print("Fecha inicio:", fecha_inicio)
+            print("Fecha fin:", fecha_fin)
+
+            print("salario_bruto =", salario_bruto)
+            print("salario_sem_neto =", salario_sem_neto)
+            print("comision =", comision)
+            print("variable =", variable)
+            print("viaticos =", viaticos)
+            print("kilometraje =", kilometraje)
+            print("bono =", bono)
 
             SalarioEmpleado.objects.create(
 
