@@ -958,7 +958,7 @@ def editar_salario(request, id_salario):
 # =========================================================
 # Obtener compensación base según el puesto del empleado
 # =========================================================
-from django.http import JsonResponse
+
 
 def obtener_compensacion_empleado(request, id_empleado):
 
@@ -970,9 +970,17 @@ def obtener_compensacion_empleado(request, id_empleado):
             pk=id_empleado
         )
 
-        compensacion = Compensacion_Puesto.objects.filter(
+        print("EMPLEADO:", empleado)
+        print("PUESTO:", empleado.idPuesto)
+        print("ID PUESTO:", empleado.idPuesto.idPuesto)
+
+        compensaciones = Compensacion_Puesto.objects.filter(
             idPuesto=empleado.idPuesto
-        ).order_by(
+        )
+
+        print("COMPENSACIONES ENCONTRADAS:", compensaciones.count())
+
+        compensacion = compensaciones.order_by(
             '-Vigencia'
         ).first()
 
