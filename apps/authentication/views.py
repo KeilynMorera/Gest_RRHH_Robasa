@@ -1,6 +1,19 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Persona, PersonaSexo, Empresa, Gerencia, Departamento, Puesto
-from .models import Compensacion_Puesto, Contrato, Empleado, Pasante
+from django.http import JsonResponse
+
+from .models import (
+    Persona,
+    PersonaSexo,
+    Empresa,
+    Gerencia,
+    Departamento,
+    Puesto,
+    Compensacion_Puesto,
+    Contrato,
+    Empleado,
+    Pasante,
+    SalarioEmpleado,
+)
 
 # =========================================================
 # Vista: Login
@@ -490,18 +503,6 @@ def per_emp_view(request):
 
 
 
-
-# =========================================================
-# Resto de vistas (sin cambios)
-# =========================================================
-def empleados_view(request):
-    return render(request, 'empleados.html')
-
-def pasantes_view(request):
-    return render(request, 'pasantes.html')
-
-
-
 # =========================================================
 # Vista: Personas — registro, modificación y listado
 # NOTA: esta función reemplaza tanto 'registrar_persona'
@@ -821,9 +822,215 @@ def editar_pasante(request, id_pasante):
 
 
 
+# =========================================================
+# Vista: Salarios — registro, modificación y listado
+# =========================================================
+def registrar_salario(request):
 
-def salario_view(request):
-    return render(request, 'salario.html')
+    if request.method == 'POST':
+
+        accion = request.POST.get('accion')
+        salario_id = request.POST.get('salario_id')
+
+        empleado_id = request.POST.get('empleado')
+
+        fecha_inicio = request.POST.get('fecha_inicio')
+        fecha_fin = request.POST.get('fecha_fin')
+
+        salario_bruto = request.POST.get('salario_bruto')
+        salario_sem_neto = request.POST.get('salario_sem_neto')
+
+        comision = request.POST.get('comision_base')
+        variable = request.POST.get('variable_base')
+        viaticos = request.POST.get('viaticos_alimenticios')
+        kilometraje = request.POST.get('kilometraje_base')
+        bono = request.POST.get('bono_base')
+
+        observaciones = request.POST.get('observaciones')
+
+        empleado_obj = Empleado.objects.get(
+            pk=empleado_id
+        )
+
+        if accion == 'crear' or not accion:
+
+            SalarioEmpleado.objects.create(
+
+                idEmpleado=empleado_obj,
+
+                Fecha_Inicio=fecha_inicio,
+                Fecha_Fin=fecha_fin if fecha_fin else None,
+
+                Salario_Bruto=salario_bruto,
+                Salario_Sem_Neto=salario_sem_neto,
+
+                Comision_Base=comision,
+                Variable_Base=variable,
+                Viaticos_Alimenticios=viaticos,
+                Kilometraje_Base=kilometraje,
+                Bono_Base=bono,
+
+                Observaciones=observaciones
+            )
+
+        elif accion == 'modificar' and salario_id:
+
+            salario = SalarioEmpleado.objects.get(
+                pk=salario_id
+            )
+
+            salario.idEmpleado = empleado_obj
+
+            salario.Fecha_Inicio = fecha_inicio
+            salario.Fecha_Fin = fecha_fin if fecha_fin else None
+
+            salario.Salario_Bruto = salario_bruto
+            salario.Salario_Sem_Neto = salario_sem_neto
+
+            salario.Comision_Base = comision
+            salario.Variable_Base = variable
+            salario.Viaticos_Alimenticios = viaticos
+            salario.Kilometraje_Base = kilometraje
+            salario.Bono_Base = bono
+
+            salario.Observaciones = observaciones
+
+            salario.save()
+
+        return redirect('salarios')
+
+    return render(request, 'salario.html', {
+
+        'empleados': Empleado.objects.select_related(
+            'idPersona',
+            'idPuesto'
+        ).filter(
+            Activo=True
+        ).order_by(
+            'idPersona__Nombre_Completo'
+        ),
+
+        'salarios': SalarioEmpleado.objects.select_related(
+            'idEmpleado',
+            'idEmpleado__idPersona',
+            'idEmpleado__idPuesto'
+        ).order_by(
+            '-Fecha_Inicio'
+        ),
+
+        'salario_editar': None
+    })
+
+
+# =========================================================
+# Vista: Editar Salario
+# =========================================================
+def editar_salario(request, id_salario):
+
+    salario = get_object_or_404(
+        SalarioEmpleado,
+        pk=id_salario
+    )
+
+    return render(request, 'salarios.html', {
+
+        'salario_editar': salario,
+
+        'empleados': Empleado.objects.select_related(
+            'idPersona',
+            'idPuesto'
+        ).filter(
+            Activo=True
+        ).order_by(
+            'idPersona__Nombre_Completo'
+        ),
+
+        'salarios': SalarioEmpleado.objects.select_related(
+            'idEmpleado',
+            'idEmpleado__idPersona',
+            'idEmpleado__idPuesto'
+        ).order_by(
+            '-Fecha_Inicio'
+        )
+    })
+
+
+# =========================================================
+# Obtener compensación base según el puesto del empleado
+# =========================================================
+from django.http import JsonResponse
+
+def obtener_compensacion_empleado(request, id_empleado):
+
+    try:
+
+        empleado = Empleado.objects.select_related(
+            'idPuesto'
+        ).get(
+            pk=id_empleado
+        )
+
+        compensacion = Compensacion_Puesto.objects.filter(
+            idPuesto=empleado.idPuesto
+        ).order_by(
+            '-Vigencia'
+        ).first()
+
+        if compensacion is None:
+
+            return JsonResponse({
+                'success': False,
+                'mensaje': 'El puesto no tiene compensación configurada.'
+            })
+
+        return JsonResponse({
+
+            'success': True,
+
+            'id_puesto': empleado.idPuesto.idPuesto,
+            'puesto': empleado.idPuesto.Nombre,
+
+            'salario_bruto':
+                float(compensacion.Salario_Bruto),
+
+            'salario_sem_neto':
+                float(compensacion.Salario_Sem_Neto),
+
+            'comision_base':
+                float(compensacion.Comision_Base),
+
+            'variable_base':
+                float(compensacion.Variable_Base),
+
+            'viaticos_alimenticios':
+                float(compensacion.Viaticos_Alimenticios),
+
+            'kilometraje_base':
+                float(compensacion.Kilometraje_Base),
+
+            'bono_base':
+                float(compensacion.Bono_Base),
+
+            'vigencia':
+                compensacion.Vigencia.strftime('%Y-%m-%d')
+                if compensacion.Vigencia else None
+
+        })
+
+    except Empleado.DoesNotExist:
+
+        return JsonResponse({
+            'success': False,
+            'mensaje': 'Empleado no encontrado.'
+        })
+
+    except Exception as e:
+
+        return JsonResponse({
+            'success': False,
+            'mensaje': str(e)
+        })
+
 
 def vacaciones_view(request):
     return render(request, 'vacaciones.html')

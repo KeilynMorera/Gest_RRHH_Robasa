@@ -39,21 +39,16 @@ urlpatterns = [
     # Ruta para el dashboard (pantalla de registro de pasantes)
     path('pasantes/', views.registrar_pasante, name='pasantes'),
 
-    
-    
-    
-    
-    
-    # Ruta para el dashboard (pantalla de registro de pasantes)
-    path('pasantes.html/', views.pasantes_view, name='pasantes'),
+    # Ruta para el dashboard (pantalla de eleccion (Registro o Consulta de salario))
+    path('salarios/', views.registrar_salario, name='salarios'),
     
    
 
     
-    
-    
-    # Ruta para el dashboard (pantalla de registro de salario)
-    path('salario.html/', views.salario_view, name='salario'),
+   
+
+
+
     # Ruta para el dashboard (pantalla de eleccion (Solicitud o Consulta de Vacaciones))
     path('vacaciones.html/', views.vacaciones_view, name='vacaciones'),
     # Ruta para el dashboard (pantalla de solicitud de vacaciones)

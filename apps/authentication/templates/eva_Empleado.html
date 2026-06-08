@@ -63,6 +63,9 @@
         <!-- =========================================================
              MENÚ DE NAVEGACIÓN PRINCIPAL
              ========================================================= -->
+        <!-- =========================================================
+             MENÚ DE NAVEGACIÓN
+        ========================================================= -->
         <nav class="menu">
           <!-- Inicio -->
           <a href="{% url 'inicio' %}">
@@ -70,7 +73,7 @@
             Inicio
           </a>
 
-          <!-- Personas o empleados -->
+          <!-- Personas o Empleados -->
           <a href="{% url 'per_emp' %}">
             <i class="fas fa-user-group"></i>
             Personas o Empleados
@@ -88,14 +91,14 @@
             Empresas
           </a>
 
-          <!-- Gerencias y puestos -->
+          <!-- Gerencias, Departamentos y Puestos -->
           <a href="{% url 'comple_Empresa' %}">
             <i class="fas fa-briefcase"></i>
             Gerencias, Departamentos y Puestos
           </a>
 
           <!-- Salarios -->
-          <a href="{% url 'salario' %}">
+          <a href="{% url 'salarios' %}">
             <i class="fas fa-money-bill-wave"></i>
             Salarios
           </a>
@@ -112,19 +115,19 @@
             Vacaciones
           </a>
 
-          <!-- Asistencia -->
+          <!-- Asistencia y Permisos -->
           <a href="{% url 'elec_Asistencia' %}">
             <i class="fas fa-clock"></i>
             Asistencia y Permiso
           </a>
 
-          <!-- Rotaciones -->
+          <!-- Acciones o Rotaciones -->
           <a href="{% url 'accion_rotacion' %}">
             <i class="fas fa-clipboard-list"></i>
             Acciones o Rotaciones del Personal
           </a>
 
-          <!-- Evaluaciones -->
+          <!-- Evaluación de Desempeño -->
           <a href="{% url 'evaluaciones' %}">
             <i class="fas fa-chart-line"></i>
             Evaluación de Desempeño
@@ -148,7 +151,7 @@
             Reportes
           </a>
 
-          <!-- Usuarios -->
+          <!-- Usuarios y Roles -->
           <a href="{% url 'usuarios' %}">
             <i class="fas fa-users-cog"></i>
             Usuarios y Roles

@@ -77,7 +77,7 @@
           </a>
 
           <!-- Acceso al módulo salarial -->
-          <a href="{% url 'salario' %}">
+          <a href="{% url 'salarios' %}">
             <i class="fas fa-money-bill-wave"></i>
             Salarios
           </a>
@@ -208,7 +208,7 @@
           <i class="fas fa-chevron-right sep"></i>
 
           <!-- Módulo salarios -->
-          <a href="{% url 'salario' %}">Salarios</a>
+          <a href="{% url 'salarios' %}">Salarios</a>
 
           <!-- Separador -->
           <i class="fas fa-chevron-right sep"></i>
@@ -253,9 +253,23 @@
           ========================================================= -->
           <div class="form-body">
             <!-- Formulario principal -->
-            <form method="POST" action="#">
+            <form method="POST" action="{% url 'salarios' %}">
               <!-- Token de seguridad CSRF -->
               {% csrf_token %}
+
+              <input
+                type="hidden"
+                name="accion"
+                value="{% if salario_editar %}modificar{% else %}crear{% endif %}"
+              />
+
+              {% if salario_editar %}
+              <input
+                type="hidden"
+                name="salario_id"
+                value="{{ salario_editar.idSalarioEmpleado }}"
+              />
+              {% endif %}
 
               <!-- =====================================================
                    SECCIÓN: DATOS DEL EMPLEADO
@@ -280,7 +294,7 @@
                       <!-- Recorrido dinámico de empleados -->
                       {% for empleado in empleados %}
                       <option value="{{ empleado.idEmpleado }}">
-                        {{ empleado.Nombre_Completo }}
+                        {{ empleado.idPersona.Nombre_Completo }}
                       </option>
                       {% endfor %}
                     </select>
@@ -325,8 +339,7 @@
                   <div class="field">
                     <label for="salario_semanal_neto">
                       <i class="fas fa-wallet field-icon"></i>
-                      Salario semanal neto
-                      <span class="req">*</span>
+                      Salario semanal neto <span class="req">*</span>
                     </label>
 
                     <input
@@ -334,8 +347,9 @@
                       step="0.01"
                       min="0"
                       id="salario_semanal_neto"
-                      name="salario_semanal_neto"
+                      name="salario_sem_neto"
                       placeholder="0.00"
+                      value="{{ compensacion_editar.Salario_Sem_Neto|default:'0.00' }}"
                       required
                     />
                   </div>
@@ -353,7 +367,6 @@
                       step="0.01"
                       min="0"
                       id="compensacion_total"
-                      name="compensacion_total"
                       placeholder="0.00"
                       readonly
                       required
@@ -362,14 +375,141 @@
                 </div>
               </div>
 
-              <!-- =====================================================
-                   SECCIÓN: COMPONENTES DEL SALARIO
-              ====================================================== -->
+              <!-- =========================================================
+                   SECCIÓN: SALARIO BASE
+              ========================================================= -->
               <div class="form-section">
-                <h4 class="form-section-title">Componentes de Salario</h4>
+                <h4 class="form-section-title">Salario Base</h4>
 
-                  
-                  
+                <div class="form-grid">
+                  <!-- Salario bruto -->
+                  <div class="field">
+                    <label for="salario_bruto">
+                      <i class="fas fa-coins field-icon"></i>
+                      Salario bruto <span class="req">*</span>
+                    </label>
+
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      id="salario_bruto"
+                      name="salario_bruto"
+                      value="{{ compensacion_editar.Salario_Bruto|default:'0.00' }}"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- =========================================================
+                   SECCIÓN: INCENTIVOS Y VARIABLES
+              ========================================================= -->
+              <div class="form-section">
+                <h4 class="form-section-title">Incentivos y Variables</h4>
+
+                <div class="form-grid">
+                  <!-- Comisión base -->
+                  <div class="field">
+                    <label for="comision_base">
+                      <i class="fas fa-percent field-icon"></i>
+                      Comisión base
+                    </label>
+
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      id="comision_base"
+                      name="comision_base"
+                      value="{{ compensacion_editar.Comision_Base|default:'0.00' }}"
+                      placeholder="0.00"
+                    />
+                  </div>
+
+                  <!-- Variable base -->
+                  <div class="field">
+                    <label for="variable_base">
+                      <i class="fas fa-chart-line field-icon"></i>
+                      Variable base
+                    </label>
+
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      id="variable_base"
+                      name="variable_base"
+                      value="{{ compensacion_editar.Variable_Base|default:'0.00' }}"
+                      placeholder="0.00"
+                    />
+                  </div>
+
+                  <!-- Bono base -->
+                  <div class="field">
+                    <label for="bono_base">
+                      <i class="fas fa-gift field-icon"></i>
+                      Bono base
+                    </label>
+
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      id="bono_base"
+                      name="bono_base"
+                      value="{{ compensacion_editar.Bono_Base|default:'0.00' }}"
+                      placeholder="0.00"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- =========================================================
+                   SECCIÓN: VIÁTICOS Y MOVILIDAD
+              ========================================================= -->
+              <div class="form-section">
+                <h4 class="form-section-title">Viáticos y Movilidad</h4>
+
+                <div class="form-grid">
+                  <!-- Viáticos alimenticios -->
+                  <div class="field">
+                    <label for="viaticos_alimenticios">
+                      <i class="fas fa-utensils field-icon"></i>
+                      Viáticos alimenticios
+                    </label>
+
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      id="viaticos_alimenticios"
+                      name="viaticos_alimenticios"
+                      value="{{ compensacion_editar.Viaticos_Alimenticios|default:'0.00' }}"
+                      placeholder="0.00"
+                    />
+                  </div>
+
+                  <!-- Kilometraje -->
+                  <div class="field">
+                    <label for="kilometraje_base">
+                      <i class="fas fa-route field-icon"></i>
+                      Kilometraje base
+                    </label>
+
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      id="kilometraje_base"
+                      name="kilometraje_base"
+                      value="{{ compensacion_editar.Kilometraje_Base|default:'0.00' }}"
+                      placeholder="0.00"
+                    />
+                  </div>
+                </div>
+              </div>
+
               <!-- =====================================================
                    SECCIÓN: OBSERVACIONES
               ====================================================== -->
@@ -383,8 +523,8 @@
                   </label>
 
                   <textarea
-                    id="descripcion_general"
-                    name="descripcion_general"
+                    id="observaciones"
+                    name="observaciones"
                     rows="4"
                     maxlength="300"
                     placeholder="Ingrese comentarios adicionales sobre la asignación salarial."
@@ -416,6 +556,118 @@
               </div>
             </form>
           </div>
+
+          <!-- ======================================================
+                TARJETA: TABLA DE SALARIOS
+          ====================================================== -->
+          <section class="table-card">
+            <div class="table-card-header">
+              <div class="table-card-header-left">
+                <div class="table-card-icon">
+                  <i class="fas fa-money-bill-wave"></i>
+                </div>
+
+                <div>
+                  <h2 class="table-card-title">Historial Salarial</h2>
+
+                  <p class="table-card-subtitle">
+                    Busque un empleado y seleccione el ícono de edición para
+                    modificar su información salarial.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Buscador -->
+              <div class="table-search">
+                <i class="fas fa-search"></i>
+
+                <input
+                  type="text"
+                  id="filtro-salarios"
+                  placeholder="Buscar empleado o fecha..."
+                />
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="data-table" id="tabla-salarios">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Empleado</th>
+                    <th>Puesto</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th>Salario Bruto</th>
+                    <th>Compensación Total</th>
+                    <th>Estado</th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {% for salario in salarios %}
+
+                  <tr>
+                    <td>{{ salario.idSalarioEmpleado }}</td>
+
+                    <td>{{ salario.idEmpleado.idPersona.Nombre_Completo }}</td>
+
+                    <td>{{ salario.idEmpleado.idPuesto.Nombre }}</td>
+
+                    <td>{{ salario.Fecha_Inicio|date:"d/m/Y" }}</td>
+
+                    <td>
+                      {% if salario.Fecha_Fin %} {{
+                      salario.Fecha_Fin|date:"d/m/Y" }} {% else %} Vigente
+                      {%endif %}
+                    </td>
+
+                    <td>₡{{ salario.Salario_Bruto }}</td>
+
+                    <td>₡{{ salario.Compensacion_Total }}</td>
+
+                    <td>
+                      {% if not salario.Fecha_Fin %}
+
+                      <span class="estado-activo">
+                        <i class="fas fa-circle"></i>
+                        Vigente
+                      </span>
+
+                      {% else %}
+
+                      <span class="estado-inactivo">
+                        <i class="fas fa-circle"></i>
+                        Histórico
+                      </span>
+
+                      {% endif %}
+                    </td>
+
+                    <td class="col-accion">
+                      <a
+                        href="{% url 'editar_salario_empleado' salario.idSalarioEmpleado %}"
+                        class="btn btn-warning btn-sm"
+                      >
+                        <i class="fas fa-pen-to-square"></i>
+                      </a>
+                    </td>
+                  </tr>
+
+                  {% empty %}
+
+                  <tr>
+                    <td colspan="9" class="tabla-vacia">
+                      No existen registros salariales.
+                    </td>
+                  </tr>
+
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </section>
         </section>
 
         <!-- =========================================================
@@ -426,5 +678,7 @@
         </footer>
       </main>
     </div>
+
+    <script src="{% static 'js/salario.js' %}"></script>
   </body>
 </html>

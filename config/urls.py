@@ -91,6 +91,13 @@ urlpatterns = [
     path('pasantes/editar/<int:id_pasante>/', views.editar_pasante, name='editar_pasante'),
 
 
+
+    # =========================================================
+    # Registro de salario de empleados
+    # =========================================================
+    path('salarios/', views.registrar_salario, name='salarios'),
+    path('salarios/editar/<int:id_salario>/', views.editar_salario, name='editar_salario'),
+    path('obtener-compensacion-empleado/<int:id_empleado>/', views.obtener_compensacion_empleado, name='obtener_compensacion_empleado'),
 ]
 
 

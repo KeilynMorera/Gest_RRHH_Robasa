@@ -322,3 +322,104 @@ class Pasante(models.Model):
 
     def __str__(self):
         return f"{self.idPersona.Nombre_Completo} — {self.idPuesto.Nombre}"
+    
+
+
+# =========================================================
+# TABLA: Salario_Empleado
+# =========================================================
+class SalarioEmpleado(models.Model):
+
+    idSalarioEmpleado = models.AutoField(
+        primary_key=True
+    )
+
+    Fecha_Inicio = models.DateField()
+
+    Fecha_Fin = models.DateField(
+        null=True,
+        blank=True
+    )
+
+    Salario_Bruto = models.DecimalField(
+        max_digits=12,
+        decimal_places=2
+    )
+
+    Salario_Sem_Neto = models.DecimalField(
+        max_digits=12,
+        decimal_places=2
+    )
+
+    Comision_Base = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    Variable_Base = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    Viaticos_Alimenticios = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    Kilometraje_Base = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    Bono_Base = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    Compensacion_Total = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        editable=False
+    )
+
+    Observaciones = models.CharField(
+        max_length=5000,
+        null=True,
+        blank=True
+    )
+
+    idEmpleado = models.ForeignKey(
+        'Empleado',
+        on_delete=models.CASCADE,
+        db_column='idEmpleado',
+        related_name='salarios'
+    )
+
+    class Meta:
+        db_table = 'Salario_Empleado'
+        verbose_name = 'Salario Empleado'
+        verbose_name_plural = 'Salarios Empleados'
+
+    def save(self, *args, **kwargs):
+
+        self.Compensacion_Total = (
+            self.Salario_Bruto +
+            self.Comision_Base +
+            self.Variable_Base +
+            self.Viaticos_Alimenticios +
+            self.Kilometraje_Base +
+            self.Bono_Base
+        )
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return (
+            f"{self.idEmpleado.idPersona.Nombre_Completo} "
+            f"- {self.Compensacion_Total}"
+        )

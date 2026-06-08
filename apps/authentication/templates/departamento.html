@@ -70,20 +70,23 @@
         <!-- ======================================================
              MENÚ DE NAVEGACIÓN PRINCIPAL
         ====================================================== -->
+        <!-- =========================================================
+             MENÚ DE NAVEGACIÓN
+        ========================================================= -->
         <nav class="menu">
-          <!-- Inicio del sistema -->
+          <!-- Inicio -->
           <a href="{% url 'inicio' %}">
             <i class="fas fa-house"></i>
             Inicio
           </a>
 
-          <!-- Gestión de empleados -->
+          <!-- Personas o Empleados -->
           <a href="{% url 'per_emp' %}">
             <i class="fas fa-user-group"></i>
             Personas o Empleados
           </a>
 
-          <!-- Proceso de onboarding -->
+          <!-- Onboarding -->
           <a href="{% url 'onboarding' %}">
             <i class="fas fa-rocket"></i>
             Onboarding / Entradas
@@ -95,14 +98,14 @@
             Empresas
           </a>
 
-          <!-- Gerencias, departamentos y puestos -->
+          <!-- Gerencias, Departamentos y Puestos -->
           <a href="{% url 'comple_Empresa' %}">
             <i class="fas fa-briefcase"></i>
             Gerencias, Departamentos y Puestos
           </a>
 
           <!-- Salarios -->
-          <a href="{% url 'salario' %}">
+          <a href="{% url 'salarios' %}">
             <i class="fas fa-money-bill-wave"></i>
             Salarios
           </a>
@@ -119,19 +122,19 @@
             Vacaciones
           </a>
 
-          <!-- Asistencia y permisos -->
+          <!-- Asistencia y Permisos -->
           <a href="{% url 'elec_Asistencia' %}">
             <i class="fas fa-clock"></i>
             Asistencia y Permiso
           </a>
 
-          <!-- Acciones o rotaciones -->
+          <!-- Acciones o Rotaciones -->
           <a href="{% url 'accion_rotacion' %}">
             <i class="fas fa-clipboard-list"></i>
             Acciones o Rotaciones del Personal
           </a>
 
-          <!-- Evaluaciones -->
+          <!-- Evaluación de Desempeño -->
           <a href="{% url 'evaluaciones' %}">
             <i class="fas fa-chart-line"></i>
             Evaluación de Desempeño
@@ -155,7 +158,7 @@
             Reportes
           </a>
 
-          <!-- Usuarios y roles -->
+          <!-- Usuarios y Roles -->
           <a href="{% url 'usuarios' %}">
             <i class="fas fa-users-cog"></i>
             Usuarios y Roles
