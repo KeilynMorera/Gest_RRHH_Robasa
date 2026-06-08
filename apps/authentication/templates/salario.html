@@ -368,45 +368,7 @@
               <div class="form-section">
                 <h4 class="form-section-title">Componentes de Salario</h4>
 
-                <div class="form-grid">
-                  <!-- COMPONENTE -->
-                  <div class="field">
-                    <label for="componente">
-                      <i class="fas fa-money-bill-wave field-icon"></i>
-                      Componente Salarial
-                      <span class="req">*</span>
-                    </label>
-
-                    <select id="componente" name="idComponente" required>
-                      <option disabled selected value="">
-                        Seleccione componente
-                      </option>
-
-                      {% for componente in componentes %}
-                      <option value="{{ componente.idComponente }}">
-                        {{ componente.NombreComponente }}
-                      </option>
-                      {% endfor %}
-                    </select>
-                  </div>
-
-                  <!-- Comisión -->
-                  <div class="field">
-                    <label for="comision_base">
-                      <i class="fas fa-percent field-icon"></i>
-                      Monto componente
-                    </label>
-
-                    <input
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      id="comision_base"
-                      name="comision_base"
-                      value="0.00"
-                      placeholder="0.00"
-                    />
-                  </div>
+                  
                   
               <!-- =====================================================
                    SECCIÓN: OBSERVACIONES
