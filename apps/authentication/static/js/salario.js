@@ -145,6 +145,13 @@ function calcularCompensacionTotal() {
     const bono =
         parseFloat(document.getElementById("bono_base").value) || 0;
 
+    console.log("Salario:", salario);
+    console.log("Comision:", comision);
+    console.log("Variable:", variable);
+    console.log("Viaticos:", viaticos);
+    console.log("Kilometraje:", kilometraje);
+    console.log("Bono:", bono);
+
     const total =
         salario +
         comision +
@@ -152,6 +159,8 @@ function calcularCompensacionTotal() {
         viaticos +
         kilometraje +
         bono;
+
+    console.log("TOTAL:", total);
 
     document.getElementById("compensacion_total").value =
         total.toFixed(2);
