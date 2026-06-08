@@ -405,10 +405,16 @@ class SalarioEmpleado(models.Model):
         verbose_name = 'Salario Empleado'
         verbose_name_plural = 'Salarios Empleados'
 
+    # ✅ CORRECTO — calcula Compensacion_Total antes de guardar
     def save(self, *args, **kwargs):
-
-        
-
+        self.Compensacion_Total = (
+            (self.Salario_Bruto     or 0) +
+            (self.Comision_Base     or 0) +
+            (self.Variable_Base     or 0) +
+            (self.Viaticos_Alimenticios or 0) +
+            (self.Kilometraje_Base  or 0) +
+            (self.Bono_Base         or 0)
+        )
         super().save(*args, **kwargs)
 
     def __str__(self):

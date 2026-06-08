@@ -619,9 +619,7 @@
                     <td>{{ salario.Fecha_Inicio|date:"d/m/Y" }}</td>
 
                     <td>
-                      {% if salario.Fecha_Fin %} {{
-                      salario.Fecha_Fin|date:"d/m/Y" }} {% else %} Vigente
-                      {%endif %}
+                      {% if salario.Fecha_Fin %}{{salario.Fecha_Fin|date:"d/m/Y" }}{% else %}—{% endif %}
                     </td>
 
                     <td>₡{{ salario.Salario_Bruto }}</td>

@@ -947,7 +947,7 @@ def editar_salario(request, id_salario):
         pk=id_salario
     )
 
-    return render(request, 'salarios.html', {
+    return render(request, 'salario.html', {
 
         'salario_editar': salario,
 
