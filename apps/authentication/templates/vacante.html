@@ -624,6 +624,92 @@
               </div>
             </form>
           </div>
+
+          <!-- TARJETA: TABLA DE VACANTES -->
+          <section class="table-card">
+            <div class="table-card-header">
+              <div class="table-card-header-left">
+                <div class="table-card-icon">
+                  <i class="fas fa-briefcase"></i>
+                </div>
+                <div>
+                  <h2 class="table-card-title">Vacantes registradas</h2>
+                  <p class="table-card-subtitle">
+                    Busque una vacante y seleccione el ícono de edición para
+                    modificar sus datos.
+                  </p>
+                </div>
+              </div>
+              <div class="table-search">
+                <i class="fas fa-search"></i>
+                <input
+                  type="text"
+                  id="filtro-tabla"
+                  placeholder="Buscar vacante o puesto..."
+                />
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="data-table" id="tabla-vacantes">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Título Publicación</th>
+                    <th>Puesto</th>
+                    <th>Salario Bruto</th>
+                    <th>Compensación Total</th>
+                    <th>Cierre Proceso</th>
+                    <th>Estatus</th>
+                    <th class="col-accion">Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for vacante in vacantes %}
+                  <tr>
+                    <td>{{ vacante.id_Vacante_Asig }}</td>
+                    <td>
+                      <strong
+                        >{{ vacante.id_Vacante.TituloPublicacion }}</strong
+                      >
+                    </td>
+                    <td>{{ vacante.idCompensacion.idPuesto.Nombre }}</td>
+                    <td>₡{{ vacante.idCompensacion.Salario_Bruto }}</td>
+                    <td>₡{{ vacante.idCompensacion.Compensacion_Total }}</td>
+                    <td>
+                      {{ vacante.id_Vacante.Cierre_Proceso|date:"d/m/Y" }}
+                    </td>
+                    <td>{{ vacante.id_Estatus_Vacante.Descripcion }}</td>
+                    <td class="col-accion">
+                      <a
+                        href="{% url 'editar_vacante' vacante.id_Vacante_Asig %}"
+                        class="btn btn-warning btn-sm"
+                        title="Editar vacante"
+                        ><i class="fas fa-pen-to-square"></i
+                      ></a>
+                      <a
+                        href="{% url 'eliminar_vacante' vacante.id_Vacante_Asig %}"
+                        class="btn btn-danger btn-sm"
+                        title="Eliminar vacante"
+                        onclick="
+                          return confirm('¿Desea eliminar esta vacante?');
+                        "
+                        ><i class="fas fa-trash"></i
+                      ></a>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="8" class="tabla-vacia">
+                      <i class="fas fa-briefcase"></i>
+                      No existen vacantes registradas.
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </section>
         </section>
 
         <!-- ==========================================================================
