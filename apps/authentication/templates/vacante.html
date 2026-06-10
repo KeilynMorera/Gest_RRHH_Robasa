@@ -308,6 +308,8 @@
               <div>
                 <!-- Título -->
                 <h2 class="form-card-title">Nueva Vacante</h2>
+                {% if vacante_editar %} Modificar Vacante {% else %} Nueva
+                Vacante {% endif %}
 
                 <!-- Descripción -->
                 <p class="form-card-subtitle">
@@ -331,7 +333,22 @@
             <!-- ==========================================================================
                  FORMULARIO HTML
                  ========================================================================== -->
-            <form action="#" method="POST">
+            <form method="POST" action="{% url 'vacantes' %}">
+              {% csrf_token %}
+
+              <input
+                type="hidden"
+                name="accion"
+                value="{% if vacante_editar %}modificar{% else %}crear{% endif %}"
+              />
+
+              {% if vacante_editar %}
+              <input
+                type="hidden"
+                name="vacante_asig_id"
+                value="{{ vacante_editar.id_Vacante_Asig }}"
+              />
+              {% endif %}
               <!-- ==========================================================================
                    SECCIÓN: INFORMACIÓN GENERAL
                    ========================================================================== -->
@@ -352,7 +369,8 @@
                     <input
                       type="date"
                       id="fecha_registro"
-                      name="Fecha_Registro"
+                      name="fecha_registro"
+                      value="{% if vacante_editar %}{{ vacante_editar.id_Vacante.Fecha_Registro|date:'Y-m-d' }}{% endif %}"
                       required
                     />
                   </div>
@@ -365,13 +383,29 @@
                       <span class="req">*</span>
                     </label>
 
-                    <select id="estatus" name="Estatus" required>
-                      <option disabled selected>Seleccione estado...</option>
+                    <select id="estatus" name="estatus" required>
+                      <option value="" disabled selected>
+                        Seleccione estado...
+                      </option>
 
-                      <option>Abierta</option>
-                      <option>En proceso</option>
-                      <option>Cerrada</option>
-                      <option>Cancelada</option>
+                      {% for estatus in estatuses %}
+                      <option
+                        value="{{ estatus.id_Estatus_Vacante }}"
+                        {%
+                        if
+                        vacante_editar
+                        and
+                        vacante_editar.id_Estatus_Vacante.id_Estatus_Vacante=""
+                        ="estatus.id_Estatus_Vacante"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        {{ estatus.TipoEstatus }}
+                      </option>
+                      {% endfor %}
                     </select>
                   </div>
 
@@ -386,7 +420,8 @@
                     <input
                       type="text"
                       id="titulo_publicacion"
-                      name="TituloPublicacion"
+                      name="titulo_publicacion"
+                      value="{% if vacante_editar %}{{ vacante_editar.id_Vacante.TituloPublicacion }}{% endif %}"
                       placeholder="Ej: Analista Financiero Senior"
                       required
                     />
@@ -403,7 +438,8 @@
                     <input
                       type="text"
                       id="motivo"
-                      name="Motivo"
+                      name="motivo"
+                      value="{% if vacante_editar %}{{ vacante_editar.id_Vacante.Motivo }}{% endif %}"
                       placeholder="Ej: Sustitución por renuncia o Incremento de operaciones"
                       required
                     />
@@ -420,7 +456,8 @@
                     <input
                       type="date"
                       id="fecha_cierre"
-                      name="Fecha_Cierre"
+                      name="cierre_proceso"
+                      value="{% if vacante_editar.id_Vacante.Cierre_Proceso %}{{ vacante_editar.id_Vacante.Cierre_Proceso|date:'Y-m-d' }}{% endif %}"
                     />
                   </div>
                 </div>
@@ -445,59 +482,49 @@
                       <span class="req">*</span>
                     </label>
 
-                    <select id="puesto" name="idPuesto" required>
-                      <option disabled selected>Seleccione el puesto...</option>
+                    <select id="puesto" name="puesto" required>
+                      <option value="" disabled selected>
+                        Seleccione el puesto...
+                      </option>
 
-                      <!-- Estos datos normalmente vienen desde Django -->
-                      <option value="1">Analista Financiero</option>
-                      <option value="2">Supervisor Comercial</option>
-                      <option value="3">Asistente Administrativo</option>
-                      <option value="4">Encargado de Bodega</option>
+                      {% for puesto in puestos %}
+                      <option
+                        value="{{ puesto.idPuesto }}"
+                        {%
+                        if
+                        vacante_editar
+                        and
+                        vacante_editar.idPuesto.idPuesto=""
+                        ="puesto.idPuesto"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        {{ puesto.Nombre }}
+                      </option>
+                      {% endfor %}
                     </select>
                   </div>
 
                   <!-- ===================== COMPENSACIÓN / SALDO ===================== -->
                   <div class="field">
-                    <label for="compensacion">
-                      <i class="fas fa-wallet field-icon"></i>
-                      Saldo / Compensación del Puesto
-                      <span class="req">*</span>
+                    <label>
+                      <i class="fas fa-money-bill-wave field-icon"></i>
+                      Salario Bruto
                     </label>
 
-                    <select id="compensacion" name="idCompensacion" required>
-                      <option disabled selected>
-                        Seleccione compensación asignada...
-                      </option>
-
-                      <!-- Ejemplos -->
-                      <option value="1">
-                        Analista Financiero - ₡1,200,000
-                      </option>
-
-                      <option value="2">
-                        Supervisor Comercial - ₡1,500,000
-                      </option>
-
-                      <option value="3">
-                        Asistente Administrativo - ₡850,000
-                      </option>
-                    </select>
+                    <input type="text" id="salario_bruto" readonly />
                   </div>
 
-                  <!-- ===================== SALARIO AUTORIZADO ===================== -->
                   <div class="field">
-                    <label for="salario_autorizado">
-                      <i class="fas fa-money-bill-wave field-icon"></i>
-                      Salario Autorizado para la Vacante
+                    <label>
+                      <i class="fas fa-wallet field-icon"></i>
+                      Compensación Total
                     </label>
 
-                    <input
-                      type="number"
-                      step="0.01"
-                      id="salario_autorizado"
-                      name="Salario_Autorizado"
-                      placeholder="Ej: 1250000.00"
-                    />
+                    <input type="text" id="compensacion_total" readonly />
                   </div>
                 </div>
               </div>
@@ -521,11 +548,13 @@
 
                     <textarea
                       id="experiencia"
-                      name="Expe_Requerida"
+                      name="experiencia_requerida"
                       rows="4"
                       placeholder="Ej: 3 años en análisis financiero y manejo de ERP"
                       required
-                    ></textarea>
+                    >
+                    {% if vacante_editar %}{{ vacante_editar.id_Vacante.Expe_Requerida }}{% endif %}</textarea
+                    >
                   </div>
                 </div>
               </div>
@@ -547,12 +576,29 @@
                       <span class="req">*</span>
                     </label>
 
-                    <select id="empleado_aut" name="idEmpleado_Aut" required>
-                      <option disabled selected>Seleccione empleado...</option>
+                    <select id="empleado_aut" name="empleado_aut" required>
+                      <option value="" disabled selected>
+                        Seleccione empleado...
+                      </option>
 
-                      <option value="1">Carlos Méndez</option>
-                      <option value="2">Ana Rodríguez</option>
-                      <option value="3">María Gómez</option>
+                      {% for emp in empleados %}
+                      <option
+                        value="{{ emp.idEmpleado }}"
+                        {%
+                        if
+                        vacante_editar
+                        and
+                        vacante_editar.idEmpleado_Aut.idEmpleado=""
+                        ="emp.idEmpleado"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        {{ emp.idPersona.Nombre_Completo }}
+                      </option>
+                      {% endfor %}
                     </select>
                   </div>
 
@@ -564,15 +610,29 @@
                       <span class="req">*</span>
                     </label>
 
-                    <select
-                      id="empleado_eval"
-                      name="idEmpleado_Rel_Ev"
-                      required
-                    >
-                      <option disabled selected>Seleccione evaluador...</option>
+                    <select id="empleado_eval" name="empleado_eval" required>
+                      <option value="" disabled selected>
+                        Seleccione empleado...
+                      </option>
 
-                      <option value="4">José Ramírez</option>
-                      <option value="5">Laura Fernández</option>
+                      {% for emp in empleados %}
+                      <option
+                        value="{{ emp.idEmpleado }}"
+                        {%
+                        if
+                        vacante_editar
+                        and
+                        vacante_editar.idEmpleado_Rel_Ev.idEmpleado=""
+                        ="emp.idEmpleado"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        {{ emp.idPersona.Nombre_Completo }}
+                      </option>
+                      {% endfor %}
                     </select>
                   </div>
 
@@ -584,17 +644,29 @@
                       <span class="req">*</span>
                     </label>
 
-                    <select
-                      id="empleado_jefe"
-                      name="idEmpleado_Jef_Puest"
-                      required
-                    >
-                      <option disabled selected>
-                        Seleccione jefe directo...
+                    <select id="empleado_jefe" name="empleado_jefe" required>
+                      <option value="" disabled selected>
+                        Seleccione empleado...
                       </option>
 
-                      <option value="6">Andrés Solano</option>
-                      <option value="7">Patricia Vargas</option>
+                      {% for emp in empleados %}
+                      <option
+                        value="{{ emp.idEmpleado }}"
+                        {%
+                        if
+                        vacante_editar
+                        and
+                        vacante_editar.idEmpleado_Jef_Puest.idEmpleado=""
+                        ="emp.idEmpleado"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        {{ emp.idPersona.Nombre_Completo }}
+                      </option>
+                      {% endfor %}
                     </select>
                   </div>
 
@@ -605,11 +677,29 @@
                       Empleado al que se releva
                     </label>
 
-                    <select id="empleado_sus" name="idEmpleado_Sus">
-                      <option selected value="">No aplica</option>
+                    <select id="empleado_sus" name="empleado_sus">
+                      <option value="" disabled selected>
+                        Seleccione empleado...
+                      </option>
 
-                      <option value="8">Pedro Gómez</option>
-                      <option value="9">Luis Araya</option>
+                      {% for emp in empleados %}
+                      <option
+                        value="{{ emp.idEmpleado }}"
+                        {%
+                        if
+                        vacante_editar
+                        and
+                        vacante_editar.idEmpleado_Sus.idEmpleado=""
+                        ="emp.idEmpleado"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        {{ emp.idPersona.Nombre_Completo }}
+                      </option>
+                      {% endfor %}
                     </select>
                   </div>
                 </div>
@@ -619,22 +709,14 @@
                    FOOTER DEL FORMULARIO
                    ========================================================================== -->
               <div class="form-footer">
-                <!-- Botón reset -->
                 <button type="reset" class="btn btn-ghost">
                   <i class="fas fa-rotate-left"></i>
                   Limpiar Campos
                 </button>
 
-                <!-- Guardar borrador -->
-                <button type="submit" class="btn btn-secondary">
-                  <i class="fas fa-floppy-disk"></i>
-                  Guardar Borrador
-                </button>
-
-                <!-- Publicar vacante -->
                 <button type="submit" class="btn btn-primary">
-                  <i class="fas fa-check"></i>
-                  Publicar Vacante
+                  <i class="fas fa-floppy-disk"></i>
+                  Guardar Vacante
                 </button>
               </div>
             </form>
@@ -683,34 +765,34 @@
                   {% for vacante in vacantes %}
                   <tr>
                     <td>{{ vacante.id_Vacante_Asig }}</td>
+
                     <td>
-                      <strong
-                        >{{ vacante.id_Vacante.TituloPublicacion }}</strong
-                      >
+                      <strong>
+                        {{ vacante.id_Vacante.TituloPublicacion }}
+                      </strong>
                     </td>
-                    <td>{{ vacante.idCompensacion.idPuesto.Nombre }}</td>
-                    <td>₡{{ vacante.idCompensacion.Salario_Bruto }}</td>
-                    <td>₡{{ vacante.idCompensacion.Compensacion_Total }}</td>
+
+                    <td>{{ vacante.idPuesto.Nombre }}</td>
+
+                    <!-- SALARIO BRUTO -->
+                    <td>₡{{ vacante.idPuesto.Salario_Bruto }}</td>
+
+                    <!-- COMPENSACIÓN TOTAL -->
+                    <td>₡{{ vacante.idPuesto.Compensacion_Total }}</td>
+
                     <td>
                       {{ vacante.id_Vacante.Cierre_Proceso|date:"d/m/Y" }}
                     </td>
-                    <td>{{ vacante.id_Estatus_Vacante.Descripcion }}</td>
+
+                    <td>{{ vacante.id_Estatus_Vacante.TipoEstatus }}</td>
+
                     <td class="col-accion">
                       <a
                         href="{% url 'editar_vacante' vacante.id_Vacante_Asig %}"
                         class="btn btn-warning btn-sm"
-                        title="Editar vacante"
-                        ><i class="fas fa-pen-to-square"></i
-                      ></a>
-                      <a
-                        href="{% url 'eliminar_vacante' vacante.id_Vacante_Asig %}"
-                        class="btn btn-danger btn-sm"
-                        title="Eliminar vacante"
-                        onclick="
-                          return confirm('¿Desea eliminar esta vacante?');
-                        "
-                        ><i class="fas fa-trash"></i
-                      ></a>
+                      >
+                        <i class="fas fa-pen-to-square"></i>
+                      </a>
                     </td>
                   </tr>
                   {% empty %}
@@ -736,5 +818,11 @@
         </footer>
       </main>
     </div>
+
+    <!-- ======================================================
+         ARCHIVO JS LOCAL
+         Funcionalidades interactivas personalizadas
+    ====================================================== -->
+    <script src="{% static 'js/vacante.js' %}"></script>
   </body>
 </html>

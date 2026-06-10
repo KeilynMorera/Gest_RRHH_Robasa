@@ -474,6 +474,18 @@ class Vacante(models.Model):
         max_length=500
     )
 
+    Salario_Bruto = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    Compensacion_Total = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
     Cierre_Proceso = models.DateField(
         null=True,
         blank=True
@@ -481,11 +493,6 @@ class Vacante(models.Model):
 
     class Meta:
         db_table = 'Vacante'
-        verbose_name = 'Vacante'
-        verbose_name_plural = 'Vacantes'
-
-    def __str__(self):
-        return self.TituloPublicacion
 
 
 # =========================================================

@@ -106,7 +106,8 @@ urlpatterns = [
     # =========================================================
     path('vacantes/', views.registrar_vacante, name='vacantes'),
     path('vacantes/editar/<int:id_vacante_asig>/', views.editar_vacante, name='editar_vacante'),
-    path('vacantes/compensacion/<int:id_puesto>/', views.obtener_compensacion_puesto, name='obtener_compensacion_puesto'),
+    path('obtener-compensacion-puesto/<int:id_puesto>/', views.obtener_compensacion_puesto, name='obtener_compensacion_puesto'),
+
 ]
 
 

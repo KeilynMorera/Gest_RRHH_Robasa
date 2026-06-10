@@ -76,8 +76,7 @@ urlpatterns = [
     # (Registro Vantante (para publicación) o
     # Vacante candidato (para ingresar el empleado o persona interesado))
     path('reclutamiento.html/', views.reclutamiento_view, name='reclutamiento'),
-    # Ruta para el dashboard (pantalla de resgistro vacante abierta)
-    path('vacante.html/', views.vacante_view, name='vacante'),
+  
     # Ruta para el dashboard (pantalla de resgistro vacante abierta)
     path('reclut_Vacante.html/', views.reclut_Vacante_view, name='reclut_Vacante'),
     # Ruta para el dashboard (pantalla de resgistro usuarios con permisos)

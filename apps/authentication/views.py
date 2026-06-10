@@ -15,9 +15,9 @@ from .models import (
     Empleado,
     Pasante,
     SalarioEmpleado,
-    Estatus,
     Vacante,
     Vacante_Asig,
+    Estatus,
 )
 
 # =========================================================
@@ -978,7 +978,6 @@ def editar_salario(request, id_salario):
 # Obtener compensación base según el puesto del empleado
 # =========================================================
 
-
 def obtener_compensacion_empleado(request, id_empleado):
 
     try:
@@ -1061,7 +1060,7 @@ def obtener_compensacion_empleado(request, id_empleado):
 
 
 # =========================================================
-# Registrar / Modificar Vacante
+# Registrar y Modificar Vacantes
 # =========================================================
 def registrar_vacante(request):
 
@@ -1070,39 +1069,38 @@ def registrar_vacante(request):
         accion = request.POST.get('accion')
         vacante_asig_id = request.POST.get('vacante_asig_id')
 
-        # -------------------------
-        # Datos Vacante
-        # -------------------------
+        # =====================================================
+        # DATOS DE VACANTE
+        # =====================================================
         fecha_registro = request.POST.get('fecha_registro')
         titulo = request.POST.get('titulo_publicacion')
         motivo = request.POST.get('motivo')
         experiencia = request.POST.get('experiencia_requerida')
         cierre = request.POST.get('cierre_proceso')
 
-        # -------------------------
-        # Relaciones
-        # -------------------------
+        # =====================================================
+        # RELACIONES
+        # =====================================================
         estatus_id = request.POST.get('estatus')
 
         empleado_aut_id = request.POST.get('empleado_aut')
         empleado_eval_id = request.POST.get('empleado_eval')
-        empleado_sus_id = request.POST.get('empleado_sus')
         empleado_jefe_id = request.POST.get('empleado_jefe')
+        empleado_sus_id = request.POST.get('empleado_sus')
 
         puesto_id = request.POST.get('puesto')
 
+        # =====================================================
+        # CREAR
+        # =====================================================
         if accion == 'crear':
 
             vacante = Vacante.objects.create(
 
                 Fecha_Registro=fecha_registro,
-
                 TituloPublicacion=titulo,
-
                 Motivo=motivo,
-
                 Expe_Requerida=experiencia,
-
                 Cierre_Proceso=cierre if cierre else None
             )
 
@@ -1116,14 +1114,19 @@ def registrar_vacante(request):
 
                 idEmpleado_Rel_Ev_id=empleado_eval_id,
 
-                idEmpleado_Sus_id=empleado_sus_id
-                if empleado_sus_id else None,
-
                 idEmpleado_Jef_Puest_id=empleado_jefe_id,
+
+                idEmpleado_Sus_id=(
+                    empleado_sus_id
+                    if empleado_sus_id else None
+                ),
 
                 idPuesto_id=puesto_id
             )
 
+        # =====================================================
+        # MODIFICAR
+        # =====================================================
         elif accion == 'modificar':
 
             asignacion = get_object_or_404(
@@ -1149,12 +1152,12 @@ def registrar_vacante(request):
 
             asignacion.idEmpleado_Rel_Ev_id = empleado_eval_id
 
+            asignacion.idEmpleado_Jef_Puest_id = empleado_jefe_id
+
             asignacion.idEmpleado_Sus_id = (
                 empleado_sus_id
                 if empleado_sus_id else None
             )
-
-            asignacion.idEmpleado_Jef_Puest_id = empleado_jefe_id
 
             asignacion.idPuesto_id = puesto_id
 
@@ -1162,34 +1165,33 @@ def registrar_vacante(request):
 
         return redirect('vacantes')
 
+    # =========================================================
+    # CARGA INICIAL DE PANTALLA
+    # =========================================================
     return render(
         request,
         'vacante.html',
         {
 
-            'estatuses':
-                Estatus.objects.all(),
+            'vacante_editar': None,
 
-            'empleados':
-                Empleado.objects.select_related(
-                    'idPersona',
-                    'idPuesto'
-                ),
+            'estatuses': Estatus.objects.all(),
 
-            'puestos':
-                Puesto.objects.all(),
+            'empleados': Empleado.objects.select_related(
+                'idPersona'
+            ),
 
-            'vacantes':
-                Vacante_Asig.objects.select_related(
-                    'id_Vacante',
-                    'id_Estatus_Vacante',
-                    'idPuesto',
-                    'idEmpleado_Aut__idPersona',
-                    'idEmpleado_Rel_Ev__idPersona',
-                    'idEmpleado_Jef_Puest__idPersona'
-                ),
+            'puestos': Puesto.objects.all(),
 
-            'vacante_editar': None
+            'vacantes': Vacante_Asig.objects.select_related(
+                'id_Vacante',
+                'id_Estatus_Vacante',
+                'idPuesto',
+                'idEmpleado_Aut__idPersona',
+                'idEmpleado_Rel_Ev__idPersona',
+                'idEmpleado_Jef_Puest__idPersona',
+                'idEmpleado_Sus__idPersona'
+            )
         }
     )
 
@@ -1208,30 +1210,80 @@ def editar_vacante(request, id_vacante_asig):
 
             'vacante_editar': vacante,
 
-            'estatuses':
-                Estatus.objects.all(),
+            'estatuses': Estatus.objects.all(),
 
-            'empleados':
-                Empleado.objects.select_related(
-                    'idPersona',
-                    'idPuesto'
-                ),
+            'empleados': Empleado.objects.select_related(
+                'idPersona'
+            ),
 
-            'puestos':
-                Puesto.objects.all(),
+            'puestos': Puesto.objects.all(),
 
-            'vacantes':
-                Vacante_Asig.objects.select_related(
-                    'id_Vacante',
-                    'id_Estatus_Vacante',
-                    'idPuesto'
-                )
+            'vacantes': Vacante_Asig.objects.select_related(
+                'id_Vacante',
+                'id_Estatus_Vacante',
+                'idPuesto',
+                'idEmpleado_Aut__idPersona',
+                'idEmpleado_Rel_Ev__idPersona',
+                'idEmpleado_Jef_Puest__idPersona',
+                'idEmpleado_Sus__idPersona'
+            )
         }
     )
 
 
+def obtener_compensacion_puesto(request, id_puesto):
 
+    try:
 
+        puesto = Puesto.objects.get(
+            pk=id_puesto
+        )
+
+        compensacion = Compensacion_Puesto.objects.filter(
+            idPuesto=puesto
+        ).first()
+
+        if compensacion is None:
+
+            return JsonResponse({
+                'success': False,
+                'mensaje': 'No existe compensación configurada.'
+            })
+
+        compensacion_total = (
+
+            compensacion.Salario_Bruto +
+
+            compensacion.Comision_Base +
+
+            compensacion.Variable_Base +
+
+            compensacion.Viaticos_Alimenticios +
+
+            compensacion.Kilometraje_Base +
+
+            compensacion.Bono_Base
+        )
+
+        return JsonResponse({
+
+            'success': True,
+
+            'salario_bruto':
+                float(compensacion.Salario_Bruto),
+
+            'compensacion_total':
+                float(compensacion_total)
+        })
+
+    except Exception as e:
+
+        return JsonResponse({
+
+            'success': False,
+
+            'mensaje': str(e)
+        })
 
 
 
@@ -1270,6 +1322,8 @@ def matriz_view(request):
 
 def reclutamiento_view(request):
     return render(request, 'reclutamiento.html')
+
+
 
 def reclut_Vacante_view(request):
     return render(request, 'reclut_Vacante.html')
