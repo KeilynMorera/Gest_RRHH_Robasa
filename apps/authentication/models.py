@@ -422,3 +422,138 @@ class SalarioEmpleado(models.Model):
             f"{self.idEmpleado.idPersona.Nombre_Completo} "
             f"- {self.Compensacion_Total}"
         )
+
+
+
+# =========================================================
+# Tabla: Estatus
+# Registro estatus de la vacante
+# =========================================================
+class Estatus(models.Model):
+
+    id_Estatus_Vacante = models.AutoField(
+        primary_key=True,
+        db_column='id_Estatus_Vacante'
+    )
+
+    TipoEstatus = models.CharField(
+        max_length=20
+    )
+
+    class Meta:
+        db_table = 'Estatus'
+        verbose_name = 'Estatus'
+        verbose_name_plural = 'Estatus'
+
+    def __str__(self):
+        return self.TipoEstatus
+
+
+# =========================================================
+# Tabla: Vacante
+# Información principal de la vacante
+# =========================================================
+class Vacante(models.Model):
+
+    id_Vacante = models.AutoField(
+        primary_key=True,
+        db_column='id_Vacante'
+    )
+
+    Fecha_Registro = models.DateField()
+
+    TituloPublicacion = models.CharField(
+        max_length=150
+    )
+
+    Motivo = models.CharField(
+        max_length=200
+    )
+
+    Expe_Requerida = models.CharField(
+        max_length=500
+    )
+
+    Cierre_Proceso = models.DateField(
+        null=True,
+        blank=True
+    )
+
+    class Meta:
+        db_table = 'Vacante'
+        verbose_name = 'Vacante'
+        verbose_name_plural = 'Vacantes'
+
+    def __str__(self):
+        return self.TituloPublicacion
+
+
+# =========================================================
+# Tabla: Vacante_Asig
+# Relación de la vacante con empleados y puesto
+# =========================================================
+class Vacante_Asig(models.Model):
+
+    id_Vacante_Asig = models.AutoField(
+        primary_key=True,
+        db_column='id_Vacante_Asig'
+    )
+
+    id_Estatus_Vacante = models.ForeignKey(
+        Estatus,
+        on_delete=models.PROTECT,
+        db_column='id_Estatus_Vacante',
+        related_name='vacantes_asignadas'
+    )
+
+    id_Vacante = models.ForeignKey(
+        Vacante,
+        on_delete=models.CASCADE,
+        db_column='id_Vacante',
+        related_name='asignaciones'
+    )
+
+    idEmpleado_Aut = models.ForeignKey(
+        'Empleado',
+        on_delete=models.PROTECT,
+        db_column='idEmpleado_Aut',
+        related_name='vacantes_autorizadas'
+    )
+
+    idEmpleado_Rel_Ev = models.ForeignKey(
+        'Empleado',
+        on_delete=models.PROTECT,
+        db_column='idEmpleado_Rel_Ev',
+        related_name='vacantes_evaluador'
+    )
+
+    idEmpleado_Sus = models.ForeignKey(
+        'Empleado',
+        on_delete=models.PROTECT,
+        db_column='idEmpleado_Sus',
+        related_name='vacantes_sustitucion',
+        null=True,
+        blank=True
+    )
+
+    idEmpleado_Jef_Puest = models.ForeignKey(
+        'Empleado',
+        on_delete=models.PROTECT,
+        db_column='idEmpleado_Jef_Puest',
+        related_name='vacantes_jefatura'
+    )
+
+    idPuesto = models.ForeignKey(
+        'Puesto',
+        on_delete=models.PROTECT,
+        db_column='idPuesto',
+        related_name='vacantes'
+    )
+
+    class Meta:
+        db_table = 'Vacante_Asig'
+        verbose_name = 'Asignación de Vacante'
+        verbose_name_plural = 'Asignaciones de Vacantes'
+
+    def __str__(self):
+        return f'Vacante #{self.id_Vacante_id} - {self.idPuesto}'

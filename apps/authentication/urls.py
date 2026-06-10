@@ -41,8 +41,9 @@ urlpatterns = [
 
     # Ruta para el dashboard (pantalla de eleccion (Registro o Consulta de salario))
     path('salarios/', views.registrar_salario, name='salarios'),
-    
-   
+
+    #Ruta para el dashboard (pantalla de registro de vacantes)
+    path('vacantes/', views.registrar_vacante, name='vacantes'),
 
     
    
