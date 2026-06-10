@@ -1059,6 +1059,9 @@ def obtener_compensacion_empleado(request, id_empleado):
 
 
 
+
+
+
 # =========================================================
 # Registrar y Modificar Vacantes
 # =========================================================
@@ -1076,6 +1079,8 @@ def registrar_vacante(request):
         titulo = request.POST.get('titulo_publicacion')
         motivo = request.POST.get('motivo')
         experiencia = request.POST.get('experiencia_requerida')
+        salario_bruto = request.POST.get('salario_bruto')
+        compensacion_total = request.POST.get('compensacion_total')
         cierre = request.POST.get('cierre_proceso')
 
         # =====================================================
@@ -1087,12 +1092,15 @@ def registrar_vacante(request):
         empleado_eval_id = request.POST.get('empleado_eval')
         empleado_jefe_id = request.POST.get('empleado_jefe')
         empleado_sus_id = request.POST.get('empleado_sus')
-
         puesto_id = request.POST.get('puesto')
 
         # =====================================================
         # CREAR
         # =====================================================
+
+        print("SALARIO BRUTO:", salario_bruto)
+        print("COMPENSACION TOTAL:", compensacion_total)
+        
         if accion == 'crear':
 
             vacante = Vacante.objects.create(
@@ -1101,6 +1109,8 @@ def registrar_vacante(request):
                 TituloPublicacion=titulo,
                 Motivo=motivo,
                 Expe_Requerida=experiencia,
+                Salario_Bruto=salario_bruto,
+                Compensacion_Total=compensacion_total,
                 Cierre_Proceso=cierre if cierre else None
             )
 
@@ -1134,12 +1144,17 @@ def registrar_vacante(request):
                 pk=vacante_asig_id
             )
 
+            # Obtener la vacante asociada
             vacante = asignacion.id_Vacante
 
             vacante.Fecha_Registro = fecha_registro
             vacante.TituloPublicacion = titulo
             vacante.Motivo = motivo
             vacante.Expe_Requerida = experiencia
+
+            vacante.Salario_Bruto = salario_bruto
+            vacante.Compensacion_Total = compensacion_total
+
             vacante.Cierre_Proceso = (
                 cierre if cierre else None
             )
@@ -1147,16 +1162,12 @@ def registrar_vacante(request):
             vacante.save()
 
             asignacion.id_Estatus_Vacante_id = estatus_id
-
             asignacion.idEmpleado_Aut_id = empleado_aut_id
-
             asignacion.idEmpleado_Rel_Ev_id = empleado_eval_id
-
             asignacion.idEmpleado_Jef_Puest_id = empleado_jefe_id
 
             asignacion.idEmpleado_Sus_id = (
-                empleado_sus_id
-                if empleado_sus_id else None
+                empleado_sus_id if empleado_sus_id else None
             )
 
             asignacion.idPuesto_id = puesto_id
@@ -1164,6 +1175,8 @@ def registrar_vacante(request):
             asignacion.save()
 
         return redirect('vacantes')
+    
+    
 
     # =========================================================
     # CARGA INICIAL DE PANTALLA
@@ -1230,7 +1243,6 @@ def editar_vacante(request, id_vacante_asig):
         }
     )
 
-
 def obtener_compensacion_puesto(request, id_puesto):
 
     try:
@@ -1284,6 +1296,7 @@ def obtener_compensacion_puesto(request, id_puesto):
 
             'mensaje': str(e)
         })
+
 
 
 

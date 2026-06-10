@@ -16,10 +16,24 @@ document.getElementById('puesto').addEventListener('change', function() {
 
         if (data.success) {
 
+            // ==============================
+            // CAMPOS VISIBLES
+            // ==============================
+
             document.getElementById("salario_bruto").value =
                 data.salario_bruto;
 
             document.getElementById("compensacion_total").value =
+                data.compensacion_total;
+
+            // ==============================
+            // CAMPOS OCULTOS PARA GUARDAR
+            // ==============================
+
+            document.getElementById("salario_bruto_hidden").value =
+                data.salario_bruto;
+
+            document.getElementById("compensacion_total_hidden").value =
                 data.compensacion_total;
 
         } else {
@@ -27,6 +41,10 @@ document.getElementById('puesto').addEventListener('change', function() {
             document.getElementById("salario_bruto").value = '';
 
             document.getElementById("compensacion_total").value = '';
+
+            document.getElementById("salario_bruto_hidden").value = '';
+
+            document.getElementById("compensacion_total_hidden").value = '';
 
             console.log(data.mensaje);
         }

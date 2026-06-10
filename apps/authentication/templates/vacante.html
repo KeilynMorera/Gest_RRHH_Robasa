@@ -516,9 +516,10 @@
                     </label>
 
                     <input
-                      type="hidden"
-                      id="salario_bruto_hidden"
+                      type="text"
+                      id="salario_bruto"
                       name="salario_bruto"
+                      readonly
                     />
                   </div>
 
@@ -527,10 +528,12 @@
                       <i class="fas fa-wallet field-icon"></i>
                       Compensación Total
                     </label>
+
                     <input
-                      type="hidden"
-                      id="compensacion_total_hidden"
+                      type="text"
+                      id="compensacion_total"
                       name="compensacion_total"
+                      readonly
                     />
                   </div>
                 </div>
@@ -782,10 +785,11 @@
                     <td>{{ vacante.idPuesto.Nombre }}</td>
 
                     <!-- SALARIO BRUTO -->
-                    <td>₡{{ vacante.idPuesto.Salario_Bruto }}</td>
+
+                    <td>{{ vacante.id_Vacante.Salario_Bruto }}</td>
 
                     <!-- COMPENSACIÓN TOTAL -->
-                    <td>₡{{ vacante.idPuesto.Compensacion_Total }}</td>
+                    <td>{{ vacante.id_Vacante.Compensacion_Total }}</td>
 
                     <td>
                       {{ vacante.id_Vacante.Cierre_Proceso|date:"d/m/Y" }}
