@@ -262,6 +262,19 @@
           <div class="form-body">
             <!-- Formulario principal -->
             <form action="#" method="POST">
+              {% csrf_token %}
+
+              <input
+                type="hidden"
+                name="accion"
+                value="{% if candidato_editar %}modificar{% else %}crear{% endif %}"
+              />
+
+              <input
+                type="hidden"
+                name="candidato_id"
+                value="{% if candidato_editar %}{{ candidato_editar.id_Candidato }}{% endif %}"
+              />
               <!-- ==================================================
                    DATOS GENERALES DE LA POSTULACIÓN
               ================================================== -->
@@ -280,14 +293,29 @@
                       <span class="req">*</span>
                     </label>
 
-                    <select id="vacante" name="idVacante" required>
+                    <select id="vacante" name="vacante" required>
                       <option disabled selected>
-                        Seleccione una vacante activa...
+                        Seleccione una vacante...
                       </option>
 
-                      <option>Analista Financiero Senior</option>
-                      <option>Supervisor Comercial</option>
-                      <option>Desarrollador Backend</option>
+                      {% for vacante in vacantes %}
+                      <option
+                        value="{{ vacante.id_Vacante }}"
+                        {%
+                        if
+                        candidato_editar
+                        and
+                        candidato_editar.id_Vacante.id_Vacante=""
+                        ="vacante.id_Vacante"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        {{ vacante.TituloPublicacion }}
+                      </option>
+                      {% endfor %}
                     </select>
                   </div>
 
@@ -300,21 +328,35 @@
                       <span class="req">*</span>
                     </label>
 
-                    <select id="persona" name="idPersona" required>
-                      <option disabled selected>Seleccione candidato...</option>
-
-                      <option>Juan Pérez</option>
-                      <option>María González</option>
-                      <option>Carlos Ramírez</option>
+                    <select id="persona" name="empleado" required>
+                      {% for empleado in empleados %}
+                      <option
+                        value="{{ empleado.idEmpleado }}"
+                        {%
+                        if
+                        candidato_editar
+                        and
+                        candidato_editar.idPersona.idPersona=""
+                        ="empleado.idPersona.idPersona"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        {{ empleado.idPersona.Nombre_Completo }}
+                      </option>
+                      {% endfor %}
                     </select>
                   </div>
 
-                  <!-- Estado del empleado -->
+                  <!-- Estado -->
                   <div class="field">
                     <label>
                       <i class="fas fa-circle-dot field-icon"></i>
-                      Estado del empleado <span class="req">*</span>
+                      Estado
                     </label>
+
                     <div class="status-group">
                       <div class="status-option">
                         <input
@@ -325,17 +367,22 @@
                           {%
                           if
                           not
-                          empleado_editar
+                          candidato_editar
                           or
-                          empleado_editar.Activo
-                          %}checked{%
+                          candidato_editar.Activo
+                          %}
+                          checked
+                          {%
                           endif
                           %}
                         />
+
                         <label for="estadoActivo">
-                          <span class="dot"></span> Activo
+                          <span class="dot"></span>
+                          Activo
                         </label>
                       </div>
+
                       <div class="status-option">
                         <input
                           type="radio"
@@ -344,16 +391,20 @@
                           value="0"
                           {%
                           if
-                          empleado_editar
+                          candidato_editar
                           and
                           not
-                          empleado_editar.Activo
-                          %}checked{%
+                          candidato_editar.Activo
+                          %}
+                          checked
+                          {%
                           endif
                           %}
                         />
+
                         <label for="estadoInactivo">
-                          <span class="dot"></span> Inactivo
+                          <span class="dot"></span>
+                          Inactivo
                         </label>
                       </div>
                     </div>
@@ -368,16 +419,27 @@
                       <span class="req">*</span>
                     </label>
 
-                    <select id="fase_actual" name="Fase_Actual" required>
-                      <option disabled selected>
-                        Seleccione fase actual...
+                    <select id="fase_actual" name="fase" required>
+                      <option disabled selected>Seleccione una fase...</option>
+
+                      {% for fase in fases %}
+                      <option
+                        value="{{ fase.id_Fase }}"
+                        {%
+                        if
+                        candidato_editar
+                        and
+                        candidato_editar.id_Fase.id_Fase=""
+                        ="fase.id_Fase"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        {{ fase.Fase_Actual }}
                       </option>
-
-                      <option value="1">Fase 1 - Preselección</option>
-
-                      <option value="2">Fase 2 - Entrevista</option>
-
-                      <option value="3">Fase 3 - Evaluación Final</option>
+                      {% endfor %}
                     </select>
                   </div>
                 </div>
@@ -393,23 +455,31 @@
                   <div class="field field-full">
                     <label for="resultado">
                       <i class="fas fa-clipboard-check field-icon"></i>
-
                       Dictamen de Estatus
                       <span class="req">*</span>
                     </label>
 
-                    <select id="resultado" name="Resultado" required>
-                      <option disabled selected>
-                        Seleccione resultado o avance...
+                    <select id="resultado" name="proceso" required>
+                      <option disabled selected>Seleccione resultado...</option>
+
+                      {% for proceso in procesos %}
+                      <option
+                        value="{{ proceso.id_Proceso }}"
+                        {%
+                        if
+                        candidato_editar
+                        and
+                        candidato_editar.id_Proceso.id_Proceso=""
+                        ="proceso.id_Proceso"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        {{ proceso.Resultado_Av }}
                       </option>
-
-                      <option>Avanzó (Pasa a siguiente fase)</option>
-
-                      <option>
-                        Descartado (No cumple perfil / Banco de talento)
-                      </option>
-
-                      <option>Seleccionado (Apto para contratación)</option>
+                      {% endfor %}
                     </select>
                   </div>
                 </div>
@@ -431,10 +501,12 @@
 
                     <textarea
                       id="observaciones"
-                      name="Observaciones"
+                      name="observaciones"
                       rows="6"
                       placeholder="Describa el desempeño en la entrevista, pretensión salarial, fortalezas detectadas o motivos de descarte..."
-                    ></textarea>
+                    >
+{{ candidato_editar.Observaciones|default:'' }}</textarea
+                    >
                   </div>
                 </div>
               </div>
@@ -448,42 +520,34 @@
                 </h4>
 
                 <div class="candidate-progress">
-                  <!-- Paso completado -->
-                  <div class="progress-step completed">
+                  <div id="step1" class="progress-step">
                     <div class="step-circle">
                       <i class="fas fa-check"></i>
                     </div>
-
                     <div class="step-content">
                       <strong>Fase 1</strong>
                       <span>Preselección</span>
                     </div>
                   </div>
 
-                  <!-- Línea -->
-                  <div class="progress-line active"></div>
+                  <div id="line1" class="progress-line"></div>
 
-                  <!-- Paso activo -->
-                  <div class="progress-step active">
+                  <div id="step2" class="progress-step">
                     <div class="step-circle">
                       <i class="fas fa-user-tie"></i>
                     </div>
-
                     <div class="step-content">
                       <strong>Fase 2</strong>
                       <span>Entrevista</span>
                     </div>
                   </div>
 
-                  <!-- Línea -->
-                  <div class="progress-line"></div>
+                  <div id="line2" class="progress-line"></div>
 
-                  <!-- Paso pendiente -->
-                  <div class="progress-step">
+                  <div id="step3" class="progress-step">
                     <div class="step-circle">
                       <i class="fas fa-award"></i>
                     </div>
-
                     <div class="step-content">
                       <strong>Fase 3</strong>
                       <span>Evaluación Final</span>
@@ -511,7 +575,9 @@
                 <!-- Registrar -->
                 <button type="submit" class="btn btn-primary">
                   <i class="fas fa-check"></i>
-                  Registrar Candidato
+
+                  {% if candidato_editar %} Actualizar Candidato {% else %}
+                  Registrar Candidato {% endif %}
                 </button>
               </div>
             </form>
@@ -637,5 +703,7 @@
         </footer>
       </main>
     </div>
+
+    <script src="{% static 'js/reclu_Vacante.js' %}"></script>
   </body>
 </html>

@@ -1303,6 +1303,9 @@ def obtener_compensacion_puesto(request, id_puesto):
 
 
 
+# =========================================================
+# Registrar y Modificar Reclutamiento de personal par ala vacante abierta
+# =========================================================
 def registrar_candidato(request):
 
     if request.method == 'POST':
