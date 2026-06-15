@@ -108,6 +108,13 @@ urlpatterns = [
     path('vacantes/editar/<int:id_vacante_asig>/', views.editar_vacante, name='editar_vacante'),
     path('obtener-compensacion-puesto/<int:id_puesto>/', views.obtener_compensacion_puesto, name='obtener_compensacion_puesto'),
 
+
+    # =========================================================
+    # Registro de vacante
+    # =========================================================
+    path('candidatos/', views.registrar_candidato, name='candidatos'),
+    path('candidatos/editar/<int:id_candidato_asig>/', views.editar_candidato, name='editar_candidato'),
+    
 ]
 
 

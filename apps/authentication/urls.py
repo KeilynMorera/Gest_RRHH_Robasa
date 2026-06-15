@@ -45,7 +45,8 @@ urlpatterns = [
     #Ruta para el dashboard (pantalla de registro de vacantes)
     path('vacantes/', views.registrar_vacante, name='vacantes'),
 
-    
+    # Vacante candidato (para ingresar el empleado o persona interesado))
+    path('candidatos/', views.registrar_candidato, name='candidatos'),
    
 
 
@@ -73,9 +74,7 @@ urlpatterns = [
     # Ruta para el dashboard (pantalla de resgistro evaluación matriz)
     path('matriz.html/', views.matriz_view, name='matriz'),
     # Ruta para el dashboard (pantalla de eleccion
-    # (Registro Vantante (para publicación) o
-    # Vacante candidato (para ingresar el empleado o persona interesado))
-    path('reclutamiento.html/', views.reclutamiento_view, name='reclutamiento'),
+    
   
     # Ruta para el dashboard (pantalla de resgistro vacante abierta)
     path('reclut_Vacante.html/', views.reclut_Vacante_view, name='reclut_Vacante'),

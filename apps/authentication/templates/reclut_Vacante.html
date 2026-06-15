@@ -275,7 +275,6 @@
                   <div class="field">
                     <label for="vacante">
                       <i class="fas fa-briefcase field-icon"></i>
-
                       Vacante a Aplicar
                       <span class="req">*</span>
                     </label>
@@ -309,29 +308,60 @@
                     </select>
                   </div>
 
-                  <!-- Estado -->
+                  <!-- Estado del candidato -->
                   <div class="field">
-                    <label for="estado">
-                      <i class="fas fa-toggle-on field-icon"></i>
-
-                      Estado del Registro
-                      <span class="req">*</span>
+                    <label>
+                      <i class="fas fa-circle-dot field-icon"></i>
+                      Estado del empleado <span class="req">*</span>
                     </label>
-
-                    <select id="estado" name="idEstado" required>
-                      <option disabled selected>Seleccione estado...</option>
-
-                      <option value="1">Activo (En consideración)</option>
-
-                      <option value="2">Inactivo (Histórico/Pauna)</option>
-                    </select>
+                    <div class="status-group">
+                      <div class="status-option">
+                        <input
+                          type="radio"
+                          name="activo"
+                          id="estadoActivo"
+                          value="1"
+                          {%
+                          if
+                          not
+                          empleado_editar
+                          or
+                          empleado_editar.Activo
+                          %}checked{%
+                          endif
+                          %}
+                        />
+                        <label for="estadoActivo">
+                          <span class="dot"></span> Activo
+                        </label>
+                      </div>
+                      <div class="status-option">
+                        <input
+                          type="radio"
+                          name="activo"
+                          id="estadoInactivo"
+                          value="0"
+                          {%
+                          if
+                          empleado_editar
+                          and
+                          not
+                          empleado_editar.Activo
+                          %}checked{%
+                          endif
+                          %}
+                        />
+                        <label for="estadoInactivo">
+                          <span class="dot"></span> Inactivo
+                        </label>
+                      </div>
+                    </div>
                   </div>
 
                   <!-- Fase actual -->
                   <div class="field">
                     <label for="fase_actual">
                       <i class="fas fa-layer-group field-icon"></i>
-
                       Fase Actual
                       <span class="req">*</span>
                     </label>
@@ -522,71 +552,44 @@
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Empleado</th>
-                    <th>Puesto</th>
-                    <th>Fecha Inicio</th>
-                    <th>Fecha Fin</th>
-                    <th>Salario Bruto</th>
-                    <th>Compensación Total</th>
-                    <th>Estado</th>
+                    <th>Candidato</th>
+                    <th>Vacante</th>
+                    <th>Fase</th>
+                    <th>Resultado</th>
+                    <th>Activo</th>
                     <th>Acción</th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  {% for salario in salarios %}
+                  {% for candidato in candidatos %}
 
                   <tr>
-                    <td>{{ salario.idSalarioEmpleado }}</td>
-
-                    <td>{{ salario.idEmpleado.idPersona.Nombre_Completo }}</td>
-
-                    <td>{{ salario.idEmpleado.idPuesto.Nombre }}</td>
-
-                    <td>{{ salario.Fecha_Inicio|date:"d/m/Y" }}</td>
+                    <td>{{ candidato.id_Candidato }}</td>
 
                     <td>
-                      {% if salario.Fecha_Fin %}{{salario.Fecha_Fin|date:"d/m/Y"
-                      }}{% else %}—{% endif %}
+                      {{ candidato.idPersona.Nombre }} {{
+                      candidato.idPersona.Apellido1 }}
                     </td>
 
-                    <td>₡{{ salario.Salario_Bruto }}</td>
+                    <td>{{ candidato.id_Vacante.TituloPublicacion }}</td>
 
-                    <td>₡{{ salario.Compensacion_Total }}</td>
+                    <td>{{ candidato.id_Fase.Fase_Actual }}</td>
+
+                    <td>{{ candidato.id_Proceso.Resultado_Av }}</td>
 
                     <td>
-                      {% if not salario.Fecha_Fin %}
-
-                      <span class="estado-activo">
-                        <i class="fas fa-circle"></i>
-                        Vigente
-                      </span>
-
-                      {% else %}
-
-                      <span class="estado-inactivo">
-                        <i class="fas fa-circle"></i>
-                        Histórico
-                      </span>
-
-                      {% endif %}
+                      {% if candidato.Activo %} Activo {% else %} Inactivo {%
+                      endif %}
                     </td>
 
-                    <td class="col-accion">
+                    <td>
                       <a
-                        href="{% url 'editar_salario' salario.idSalarioEmpleado %}"
+                        href="{% url 'editar_candidato' candidato.id_Candidato %}"
                         class="btn btn-warning btn-sm"
                       >
                         <i class="fas fa-pen-to-square"></i>
                       </a>
-                    </td>
-                  </tr>
-
-                  {% empty %}
-
-                  <tr>
-                    <td colspan="9" class="tabla-vacia">
-                      No existen registros salariales.
                     </td>
                   </tr>
 

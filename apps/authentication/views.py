@@ -18,6 +18,9 @@ from .models import (
     Vacante,
     Vacante_Asig,
     Estatus,
+    FaseCandidato,
+    ProcesoFase,
+    VacanteCandidato,
 )
 
 # =========================================================
@@ -1060,7 +1063,8 @@ def obtener_compensacion_empleado(request, id_empleado):
 
 
 
-
+def reclutamiento_view(request):
+    return render(request, 'reclutamiento.html')
 
 # =========================================================
 # Registrar y Modificar Vacantes
@@ -1299,6 +1303,143 @@ def obtener_compensacion_puesto(request, id_puesto):
 
 
 
+def registrar_candidato(request):
+
+    if request.method == 'POST':
+
+        accion = request.POST.get('accion')
+        candidato_id = request.POST.get('candidato_id')
+
+        activo = request.POST.get('activo') == '1'
+        observaciones = request.POST.get('observaciones')
+
+        vacante_id = request.POST.get('vacante')
+        empleado_id = request.POST.get('empleado')
+
+        fase_id = request.POST.get('fase')
+        proceso_id = request.POST.get('proceso')
+
+        # ==========================================
+        # CREAR
+        # ==========================================
+        if accion == 'crear':
+
+            empleado = Empleado.objects.get(
+                pk=empleado_id
+            )
+
+            VacanteCandidato.objects.create(
+
+                Activo=activo,
+
+                Observaciones=observaciones,
+
+                id_Vacante_id=vacante_id,
+
+                idPersona=empleado.idPersona,
+
+                id_Fase_id=fase_id,
+
+                id_Proceso_id=proceso_id
+            )
+
+        # ==========================================
+        # MODIFICAR
+        # ==========================================
+        elif accion == 'modificar':
+
+            candidato = get_object_or_404(
+                VacanteCandidato,
+                pk=candidato_id
+            )
+
+            empleado = Empleado.objects.get(
+                pk=empleado_id
+            )
+
+            candidato.Activo = activo
+
+            candidato.Observaciones = observaciones
+
+            candidato.id_Vacante_id = vacante_id
+
+            candidato.idPersona = empleado.idPersona
+
+            candidato.id_Fase_id = fase_id
+
+            candidato.id_Proceso_id = proceso_id
+
+            candidato.save()
+
+        return redirect('candidatos')
+
+    return render(
+        request,
+        'reclut_Vacante.html',
+        {
+
+            'candidato_editar': None,
+
+            'vacantes': Vacante.objects.all(),
+
+            'empleados': Empleado.objects.select_related(
+                'idPersona'
+            ),
+
+            'fases': FaseCandidato.objects.all(),
+
+            'procesos': ProcesoFase.objects.all(),
+
+            'candidatos': VacanteCandidato.objects.select_related(
+                'idPersona',
+                'id_Vacante',
+                'id_Fase',
+                'id_Proceso'
+            )
+        }
+    )
+
+
+def editar_candidato(request, id_candidato):
+
+    candidato = get_object_or_404(
+        VacanteCandidato,
+        pk=id_candidato
+    )
+
+    return render(
+        request,
+        'reclut_Vacante.html',
+        {
+
+            'candidato_editar': candidato,
+
+            'vacantes': Vacante.objects.all(),
+
+            'empleados': Empleado.objects.select_related(
+                'idPersona'
+            ),
+
+            'fases': FaseCandidato.objects.all(),
+
+            'procesos': ProcesoFase.objects.all(),
+
+            'candidatos': VacanteCandidato.objects.select_related(
+                'idPersona',
+                'id_Vacante',
+                'id_Fase',
+                'id_Proceso'
+            )
+        }
+    )
+
+
+
+
+
+
+
+
 
 def vacaciones_view(request):
     return render(request, 'vacaciones.html')
@@ -1332,14 +1473,6 @@ def result_Evaluacion_view(request):
 
 def matriz_view(request):
     return render(request, 'matriz.html')
-
-def reclutamiento_view(request):
-    return render(request, 'reclutamiento.html')
-
-
-
-def reclut_Vacante_view(request):
-    return render(request, 'reclut_Vacante.html')
 
 def usuarios_view(request):
     return render(request, 'usuarios.html')
