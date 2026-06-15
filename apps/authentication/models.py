@@ -567,21 +567,27 @@ class Vacante_Asig(models.Model):
     
 
 
+from django.db import models
+
 # =========================================================
+
 # FASE DEL CANDIDATO
+
 # =========================================================
 
 class FaseCandidato(models.Model):
-
     id_Fase = models.AutoField(
-        primary_key=True
+        primary_key=True,
+        db_column='id_Fase'
     )
 
     Fase_Actual = models.CharField(
-        max_length=25
+        max_length=25,
+        db_column='Fase_Actual'
     )
 
     class Meta:
+        managed = False
         db_table = 'FaseCandidato'
 
     def __str__(self):
@@ -589,20 +595,22 @@ class FaseCandidato(models.Model):
 
 
 # =========================================================
-
-# RESULTADO DE LA FASE
+# RESULTADO DEL PROCESO
 # =========================================================
 
 class ProcesoFase(models.Model):
     id_Proceso = models.AutoField(
-        primary_key=True
+        primary_key=True,
+        db_column='id_Proceso'
     )
 
     Resultado_Av = models.CharField(
-        max_length=80
+        max_length=80,
+        db_column='Resultado_Av'
     )
 
     class Meta:
+        managed = False
         db_table = 'ProcesoFase'
 
     def __str__(self):
@@ -613,51 +621,52 @@ class ProcesoFase(models.Model):
 # CANDIDATOS DE UNA VACANTE
 # =========================================================
 
-class Vacante_Candidato(models.Model):
+class VacanteCandidato(models.Model):
 
     id_Candidato = models.AutoField(
-        primary_key=True
+        primary_key=True,
+        db_column='id_Candidato'
     )
 
     Activo = models.BooleanField(
-        default=True
+        default=True,
+        db_column='Activo'
     )
 
     Observaciones = models.CharField(
-        max_length=400
+        max_length=400,
+        db_column='Observaciones'
     )
 
     id_Vacante = models.ForeignKey(
         'Vacante',
-        on_delete=models.CASCADE,
+        on_delete=models.DO_NOTHING,
         db_column='id_Vacante',
         related_name='candidatos'
     )
 
     idPersona = models.ForeignKey(
         'Persona',
-        on_delete=models.CASCADE,
+        on_delete=models.DO_NOTHING,
         db_column='idPersona',
         related_name='postulaciones'
     )
 
     id_Fase = models.ForeignKey(
-        FaseCandidato,
-        on_delete=models.PROTECT,
+        'FaseCandidato',
+        on_delete=models.DO_NOTHING,
         db_column='id_Fase'
     )
 
     id_Proceso = models.ForeignKey(
-        ProcesoFase,
-        on_delete=models.PROTECT,
+        'ProcesoFase',
+        on_delete=models.DO_NOTHING,
         db_column='id_Proceso'
     )
 
     class Meta:
+        managed = False
         db_table = 'Vacante_Candidato'
 
     def __str__(self):
-        return (
-            f"{self.idPersona} - "
-            f"{self.id_Vacante}"
-    )
+        return f"{self.idPersona} - {self.id_Vacante}"
