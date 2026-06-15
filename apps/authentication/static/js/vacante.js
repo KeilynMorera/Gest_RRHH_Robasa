@@ -59,3 +59,32 @@ document.getElementById('puesto').addEventListener('change', function() {
     console.log("Puesto seleccionado:", this.value);
 
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const filtro = document.getElementById("filtro-tabla");
+    const tabla = document.getElementById("tabla-vacantes");
+    const filas = tabla.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+
+    filtro.addEventListener("keyup", function () {
+
+        let textoBusqueda = filtro.value.toLowerCase();
+
+        for (let i = 0; i < filas.length; i++) {
+
+            let titulo = filas[i].cells[1].textContent.toLowerCase();
+            let puesto = filas[i].cells[2].textContent.toLowerCase();
+
+            if (
+                titulo.includes(textoBusqueda) ||
+                puesto.includes(textoBusqueda)
+            ) {
+                filas[i].style.display = "";
+            } else {
+                filas[i].style.display = "none";
+            }
+        }
+    });
+
+});
