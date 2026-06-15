@@ -46,6 +46,9 @@ urlpatterns = [
     path('vacantes/', views.registrar_vacante, name='vacantes'),
 
     # Vacante candidato (para ingresar el empleado o persona interesado))
+    path('reclutamiento.html/', views.reclutamiento_view, name='reclutamiento'),
+    
+    # Ruta para el dashboard (pantalla de resgistro vacante abierta)
     path('candidatos/', views.registrar_candidato, name='candidatos'),
    
 
@@ -73,11 +76,10 @@ urlpatterns = [
     path('result_Evaluacion.html/', views.result_Evaluacion_view, name='result_Evaluacion'),
     # Ruta para el dashboard (pantalla de resgistro evaluación matriz)
     path('matriz.html/', views.matriz_view, name='matriz'),
-    # Ruta para el dashboard (pantalla de eleccion
+    
     
   
-    # Ruta para el dashboard (pantalla de resgistro vacante abierta)
-    path('reclut_Vacante.html/', views.reclut_Vacante_view, name='reclut_Vacante'),
+    
     # Ruta para el dashboard (pantalla de resgistro usuarios con permisos)
     path('usuarios.html/', views.usuarios_view, name='usuarios'),
     # Ruta para el dashboard (pantalla de configuraciones del sistema)

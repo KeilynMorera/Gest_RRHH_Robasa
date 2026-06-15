@@ -1173,6 +1173,69 @@ textarea:focus {
   font-size: 14px;
 }
 
+/* Enfoque (Focus) de Inputs y Selects */
+.field input[type="date"]:focus,
+.field select:focus {
+  border-color: #e8600a; /* Borde naranja de la marca */
+  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12); /* Glow sutil naranja */
+  background: #ffffff; /* Cambia su fondo a blanco puro para resaltar */
+}
+
+/* Estado / Toggle Radio personalizado como botones de selección */
+.status-group {
+  display: flex;
+  gap: 10px; /* Espacio entre las opciones de radio botones */
+}
+
+.status-option {
+  flex: 1; /* Hace que cada opción ocupe la mitad del ancho de forma equitativa */
+  position: relative;
+}
+
+/* Ocultar los botones de radio circulares nativos del sistema */
+.status-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Convertir la etiqueta asociada al radio en el nuevo "botón" visual */
+.status-option label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+  border: 1.5px solid #dde2f0;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7499;
+  background: #f7f8fc;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    background 0.2s,
+    color 0.2s;
+}
+
+/* Selector hermano (+): Cuando el radio oculto está CHECKED, modifica el diseño del label siguiente */
+.status-option input:checked + label {
+  border-color: #e8600a; /* Borde se vuelve naranja */
+  background: rgba(232, 96, 10, 0.08); /* Fondo sutil naranja claro */
+  color: #e8600a; /* Texto naranja */
+}
+
+/* Punto decorativo dentro de las opciones de estado */
+.status-option .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: currentColor; /* Adopta automáticamente el color de texto actual de su contenedor principal */
+  flex-shrink: 0;
+}
+
 /* ─────────────────────────────────────────────────────────────
    SMARTPHONES Y PANTALLAS PEQUEÑAS (Hasta 768px)
    ───────────────────────────────────────────────────────────── */
