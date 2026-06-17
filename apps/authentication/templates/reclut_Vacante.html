@@ -261,20 +261,19 @@
           ====================================================== -->
           <div class="form-body">
             <!-- Formulario principal -->
-            <form method="POST" action="{% url 'vacantes' %}">
-              {% csrf_token %}
-
-              <input
-                type="hidden"
-                name="accion"
-                value="{% if candidato_editar %}modificar{% else %}crear{% endif %}"
-              />
+            <form method="POST" action="{% url 'candidatos' %}">
+              {% csrf_token %} {% if candidato_editar %}
+              <input type="hidden" name="accion" value="modificar" />
 
               <input
                 type="hidden"
                 name="candidato_id"
-                value="{% if candidato_editar %}{{ candidato_editar.id_Candidato }}{% endif %}"
+                value="{{ candidato_editar.id_Candidato }}"
               />
+              {% else %}
+              <input type="hidden" name="accion" value="crear" />
+              {% endif %}
+
               <!-- ==================================================
                    DATOS GENERALES DE LA POSTULACIÓN
               ================================================== -->
@@ -288,7 +287,6 @@
                   <div class="field">
                     <label for="vacante">
                       <i class="fas fa-briefcase field-icon"></i>
-
                       Vacante a Aplicar
                       <span class="req">*</span>
                     </label>
@@ -417,7 +415,6 @@
                   <div class="field">
                     <label for="fase_actual">
                       <i class="fas fa-layer-group field-icon"></i>
-
                       Fase Actual
                       <span class="req">*</span>
                     </label>
@@ -498,7 +495,6 @@
                   <div class="field field-full">
                     <label for="observaciones">
                       <i class="fas fa-align-left field-icon"></i>
-
                       Observaciones y Feedback de Entrevista
                     </label>
 
@@ -682,59 +678,19 @@
 
                     <td>{{ candidato.id_Proceso.Resultado_Av }}</td>
 
+                    <td>{{ candidato.Observaciones }}</td>
+
                     <td>
-                      {% if candidato.Observaciones|length > 40 %}
-                      {{candidato.Observaciones|slice:":40" }}... {% else %}
-                      {{candidato.Observaciones }} {% endif %}
+                      {% if candidato.Activo %} Activo {% else %} Inactivo
+                      {%endif %}
                     </td>
 
                     <td>
-                      {% if candidato.Activo %}
-
-                      <span class="estado-activo">
-                        <i class="fas fa-circle"></i>
-
-                        Activo
-                      </span>
-
-                      {% else %}
-
-                      <span class="estado-inactivo">
-                        <i class="fas fa-circle"></i>
-
-                        Inactivo
-                      </span>
-
-                      {% endif %}
-                    </td>
-
-                    <tbody>
-                      {% for candidato in candidatos %}
-
-                      <tr>
-                        ...
-
-                        <td class="col-accion">
-                          <a
-                            href="{% url 'editar_candidato' candidato.id_Candidato %}"
-                            class="btn btn-warning btn-sm"
-                          >
-                            <i class="fas fa-pen-to-square"></i>
-                          </a>
-                        </td>
-                      </tr>
-
-                      {% endfor %}
-                    </tbody>
-                  </tr>
-
-                  {% empty %}
-
-                  <tr>
-                    <td colspan="8" class="tabla-vacia">
-                      <i class="fas fa-user-slash"></i>
-
-                      No existen candidatos registrados.
+                      <a
+                        href="{% url 'editar_candidato' candidato.id_Candidato %}"
+                      >
+                        <i class="fas fa-pen-to-square"></i>
+                      </a>
                     </td>
                   </tr>
 

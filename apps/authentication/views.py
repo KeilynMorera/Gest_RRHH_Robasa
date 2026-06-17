@@ -1310,25 +1310,42 @@ def registrar_candidato(request):
 
     if request.method == 'POST':
 
-        Vacante_Candidato.objects.create(
+        accion = request.POST.get('accion')
+        candidato_id = request.POST.get('candidato_id')
 
-            Activo=request.POST.get('activo') == '1',
+        if accion == 'crear':
 
-            Observaciones=request.POST.get('observaciones'),
+            Vacante_Candidato.objects.create(
+                Activo=request.POST.get('activo') == '1',
+                Observaciones=request.POST.get('observaciones'),
+                id_Vacante_id=request.POST.get('vacante'),
+                idPersona_id=request.POST.get('persona'),
+                id_Fase_id=request.POST.get('fase'),
+                id_Proceso_id=request.POST.get('proceso')
+            )
 
-            id_Vacante_id=request.POST.get('vacante'),
+        elif accion == 'modificar':
 
-            idPersona_id=request.POST.get('persona'),
+            candidato = get_object_or_404(
+                Vacante_Candidato,
+                pk=candidato_id
+            )
 
-            id_Fase_id=request.POST.get('fase'),
+            candidato.Activo = request.POST.get('activo') == '1'
+            candidato.Observaciones = request.POST.get('observaciones')
+            candidato.id_Vacante_id = request.POST.get('vacante')
+            candidato.idPersona_id = request.POST.get('persona')
+            candidato.id_Fase_id = request.POST.get('fase')
+            candidato.id_Proceso_id = request.POST.get('proceso')
 
-            id_Proceso_id=request.POST.get('proceso')
-
-        )
+            candidato.save()
 
         return redirect('candidatos')
 
+    # ESTE BLOQUE ES NECESARIO PARA LAS PETICIONES GET
     contexto = {
+
+        'candidato_editar': None,
 
         'personas': Persona.objects.all(),
 
@@ -1339,15 +1356,10 @@ def registrar_candidato(request):
         'procesos': ProcesoFase.objects.all(),
 
         'candidatos': Vacante_Candidato.objects.select_related(
-
             'idPersona',
-
             'id_Vacante',
-
             'id_Fase',
-
             'id_Proceso'
-
         )
     }
 
@@ -1392,33 +1404,6 @@ def editar_candidato(request,id):
     )
 
 
-def actualizar_candidato(request):
-
-    if request.method == 'POST':
-
-        candidato = get_object_or_404(
-
-            Vacante_Candidato,
-
-            pk=request.POST.get('candidato_id')
-
-        )
-
-        candidato.Activo = request.POST.get('activo') == '1'
-
-        candidato.Observaciones = request.POST.get('observaciones')
-
-        candidato.id_Vacante_id = request.POST.get('vacante')
-
-        candidato.idPersona_id = request.POST.get('persona')
-
-        candidato.id_Fase_id = request.POST.get('fase')
-
-        candidato.id_Proceso_id = request.POST.get('proceso')
-
-        candidato.save()
-
-        return redirect('candidatos')
 
 
 

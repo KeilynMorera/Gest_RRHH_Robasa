@@ -1,9 +1,6 @@
 from django.db import models
 
 
-
-    
-
 # =========================================================
 # TABLA: Empresas
 # =========================================================
@@ -566,8 +563,6 @@ class Vacante_Asig(models.Model):
         return f'Vacante #{self.id_Vacante_id} - {self.idPuesto}'
     
 
-
-from django.db import models
 
 # =========================================================
 

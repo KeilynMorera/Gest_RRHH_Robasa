@@ -114,7 +114,7 @@ urlpatterns = [
     # =========================================================
     path('candidatos/', views.registrar_candidato, name='candidatos'),
     path('candidatos/editar/<int:id>/', views.editar_candidato, name='editar_candidato'),
-    path('candidatos/actualizar/', views.actualizar_candidato, name='actualizar_candidato'),
+  
 ]
 
 

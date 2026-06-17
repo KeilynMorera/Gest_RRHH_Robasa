@@ -131,3 +131,38 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const filtro = document.getElementById("filtro-candidatos");
+    const tabla = document.getElementById("tabla-candidatos");
+    const filas = tabla.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+
+    filtro.addEventListener("keyup", function () {
+
+        let texto = filtro.value.toLowerCase();
+
+        for (let i = 0; i < filas.length; i++) {
+
+            // Columna Candidato (índice 1)
+            let candidato = filas[i].cells[1].textContent.toLowerCase();
+
+            // Columna Vacante (índice 2)
+            let vacante = filas[i].cells[2].textContent.toLowerCase();
+
+            if (
+                candidato.includes(texto) ||
+                vacante.includes(texto)
+            ) {
+
+                filas[i].style.display = "";
+
+            } else {
+
+                filas[i].style.display = "none";
+
+            }
+        }
+    });
+
+});
