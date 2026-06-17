@@ -520,10 +520,12 @@
                 </h4>
 
                 <div class="candidate-progress">
+                  <!-- FASE 1 -->
                   <div id="step1" class="progress-step">
                     <div class="step-circle">
-                      <i class="fas fa-check"></i>
+                      <i class="fas fa-file-alt"></i>
                     </div>
+
                     <div class="step-content">
                       <strong>Fase 1</strong>
                       <span>Preselección</span>
@@ -532,10 +534,12 @@
 
                   <div id="line1" class="progress-line"></div>
 
+                  <!-- FASE 2 -->
                   <div id="step2" class="progress-step">
                     <div class="step-circle">
                       <i class="fas fa-user-tie"></i>
                     </div>
+
                     <div class="step-content">
                       <strong>Fase 2</strong>
                       <span>Entrevista</span>
@@ -544,13 +548,43 @@
 
                   <div id="line2" class="progress-line"></div>
 
+                  <!-- FASE 3 -->
                   <div id="step3" class="progress-step">
                     <div class="step-circle">
                       <i class="fas fa-award"></i>
                     </div>
+
                     <div class="step-content">
                       <strong>Fase 3</strong>
                       <span>Evaluación Final</span>
+                    </div>
+                  </div>
+
+                  <div id="line3" class="progress-line"></div>
+
+                  <!-- CONTRATADO -->
+                  <div id="step4" class="progress-step">
+                    <div class="step-circle">
+                      <i class="fas fa-handshake"></i>
+                    </div>
+
+                    <div class="step-content">
+                      <strong>Contratado</strong>
+                      <span>Aprobado</span>
+                    </div>
+                  </div>
+
+                  <div id="line4" class="progress-line"></div>
+
+                  <!-- RECHAZADO -->
+                  <div id="step5" class="progress-step">
+                    <div class="step-circle">
+                      <i class="fas fa-times"></i>
+                    </div>
+
+                    <div class="step-content">
+                      <strong>Rechazado</strong>
+                      <span>Proceso finalizado</span>
                     </div>
                   </div>
                 </div>
@@ -567,38 +601,32 @@
                 </button>
 
                 <!-- Guardar -->
-                <button type="submit" class="btn btn-secondary">
-                  <i class="fas fa-floppy-disk"></i>
-                  Guardar Progreso
-                </button>
-
-                <!-- Registrar -->
                 <button type="submit" class="btn btn-primary">
                   <i class="fas fa-check"></i>
 
                   {% if candidato_editar %} Actualizar Candidato {% else %}
-                  Registrar Candidato {% endif %}
+                  Guardar Progreso {% endif %}
                 </button>
               </div>
             </form>
           </div>
 
           <!-- ======================================================
-                TARJETA: TABLA DE SALARIOS
-          ====================================================== -->
+     TARJETA: TABLA DE CANDIDATOS
+====================================================== -->
           <section class="table-card">
             <div class="table-card-header">
               <div class="table-card-header-left">
                 <div class="table-card-icon">
-                  <i class="fas fa-money-bill-wave"></i>
+                  <i class="fas fa-user-check"></i>
                 </div>
 
                 <div>
-                  <h2 class="table-card-title">Historial Salarial</h2>
+                  <h2 class="table-card-title">Candidatos Registrados</h2>
 
                   <p class="table-card-subtitle">
-                    Busque un empleado y seleccione el ícono de edición para
-                    modificar su información salarial.
+                    Busque un candidato y seleccione el ícono de edición para
+                    actualizar su proceso de reclutamiento.
                   </p>
                 </div>
               </div>
@@ -609,62 +637,67 @@
 
                 <input
                   type="text"
-                  id="filtro-salarios"
-                  placeholder="Buscar empleado o fecha..."
+                  id="filtro-candidatos"
+                  placeholder="Buscar candidato o vacante..."
                 />
               </div>
             </div>
 
             <div class="table-wrapper">
-              <table class="data-table" id="tabla-salarios">
+              <table class="data-table" id="tabla-candidatos">
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Empleado</th>
-                    <th>Puesto</th>
-                    <th>Fecha Inicio</th>
-                    <th>Fecha Fin</th>
-                    <th>Salario Bruto</th>
-                    <th>Compensación Total</th>
+
+                    <th>Candidato</th>
+
+                    <th>Vacante</th>
+
+                    <th>Fase Actual</th>
+
+                    <th>Resultado</th>
+
+                    <th>Observaciones</th>
+
                     <th>Estado</th>
+
                     <th>Acción</th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  {% for salario in salarios %}
+                  {% for candidato in candidatos %}
 
                   <tr>
-                    <td>{{ salario.idSalarioEmpleado }}</td>
+                    <td>{{ candidato.id_Candidato }}</td>
 
-                    <td>{{ salario.idEmpleado.idPersona.Nombre_Completo }}</td>
+                    <td>{{ candidato.idPersona.Nombre_Completo }}</td>
 
-                    <td>{{ salario.idEmpleado.idPuesto.Nombre }}</td>
+                    <td>{{ candidato.id_Vacante.TituloPublicacion }}</td>
 
-                    <td>{{ salario.Fecha_Inicio|date:"d/m/Y" }}</td>
+                    <td>{{ candidato.id_Fase.Fase_Actual }}</td>
+
+                    <td>{{ candidato.id_Proceso.Resultado_Av }}</td>
 
                     <td>
-                      {% if salario.Fecha_Fin %}{{salario.Fecha_Fin|date:"d/m/Y"
-                      }}{% else %}—{% endif %}
+                      {% if candidato.Observaciones|length > 40 %} {{candidato.Observaciones|slice:":40" }}... {% else %} {{candidato.Observaciones }} {% endif %}
                     </td>
 
-                    <td>₡{{ salario.Salario_Bruto }}</td>
-
-                    <td>₡{{ salario.Compensacion_Total }}</td>
-
                     <td>
-                      {% if not salario.Fecha_Fin %}
+                      {% if candidato.Activo %}
 
                       <span class="estado-activo">
                         <i class="fas fa-circle"></i>
-                        Vigente
+
+                        Activo
                       </span>
 
                       {% else %}
 
                       <span class="estado-inactivo">
                         <i class="fas fa-circle"></i>
-                        Histórico
+
+                        Inactivo
                       </span>
 
                       {% endif %}
@@ -672,7 +705,7 @@
 
                     <td class="col-accion">
                       <a
-                        href="{% url 'editar_salario' salario.idSalarioEmpleado %}"
+                        href="{% url 'editar_candidato' candidato.id_Candidato %}"
                         class="btn btn-warning btn-sm"
                       >
                         <i class="fas fa-pen-to-square"></i>
@@ -683,8 +716,10 @@
                   {% empty %}
 
                   <tr>
-                    <td colspan="9" class="tabla-vacia">
-                      No existen registros salariales.
+                    <td colspan="8" class="tabla-vacia">
+                      <i class="fas fa-user-slash"></i>
+
+                      No existen candidatos registrados.
                     </td>
                   </tr>
 

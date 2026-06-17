@@ -1236,6 +1236,36 @@ textarea:focus {
   flex-shrink: 0;
 }
 
+.progress-step.hired .step-circle{
+    background:#28a745;
+    color:white;
+    border-color:#28a745;
+}
+
+.progress-step.rejected .step-circle{
+    background:#dc3545;
+    color:white;
+    border-color:#dc3545;
+}
+
+.progress-line.hired{
+    background:#28a745;
+}
+
+.progress-step.disabled{
+    opacity:0.4;
+}
+
+.progress-line.hired {
+    background: #28a745 !important;
+}
+
+.progress-step.hired .step-circle {
+    background: #28a745 !important;
+    border-color: #28a745 !important;
+    color: white;
+}
+
 /* ─────────────────────────────────────────────────────────────
    SMARTPHONES Y PANTALLAS PEQUEÑAS (Hasta 768px)
    ───────────────────────────────────────────────────────────── */
