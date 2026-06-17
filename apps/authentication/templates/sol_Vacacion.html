@@ -329,6 +329,22 @@
                  FORMULARIO HTML
                  ========================================================================== -->
             <form method="POST" action="#">
+              {% if solicitud_editar %}
+
+              <input type="hidden" name="accion" value="modificar" />
+
+              <input
+                type="hidden"
+                name="solicitud_id"
+                value="{{ solicitud_editar.idSolicitud }}"
+              />
+
+              {% else %}
+
+              <input type="hidden" name="accion" value="crear" />
+
+              {% endif %}
+              
               <!-- Token de seguridad CSRF de Django -->
               {% csrf_token %}
 
@@ -525,6 +541,101 @@
               </div>
             </form>
           </div>
+
+          <!-- ======================================================
+     TARJETA: TABLA DE SOLICITUDES DE VACACIONES
+====================================================== -->
+          <section class="table-card">
+            <div class="table-card-header">
+              <div class="table-card-header-left">
+                <div class="table-card-icon">
+                  <i class="fas fa-umbrella-beach"></i>
+                </div>
+
+                <div>
+                  <h2 class="table-card-title">Solicitudes de Vacaciones</h2>
+
+                  <p class="table-card-subtitle">
+                    Consulte, busque y edite las solicitudes de vacaciones
+                    registradas.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Buscador -->
+              <div class="table-search">
+                <i class="fas fa-search"></i>
+
+                <input
+                  type="text"
+                  id="filtro-vacaciones"
+                  placeholder="Buscar empleado..."
+                />
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="data-table" id="tabla-vacaciones">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+
+                    <th>Empleado</th>
+
+                    <th>Fecha Solicitud</th>
+
+                    <th>Fecha Inicio</th>
+
+                    <th>Fecha Fin</th>
+
+                    <th>Días</th>
+
+                    <th>Estado</th>
+
+                    <th>Aprobado por</th>
+
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {% for solicitud in solicitudes %}
+
+                  <tr>
+                    <td>{{ solicitud.idSolicitud }}</td>
+
+                    <td>{{ solicitud.idEmpleado_Sol_Vac.Nombre_Completo }}</td>
+
+                    <td>{{ solicitud.Fecha_Solicitud }}</td>
+
+                    <td>{{ solicitud.Fecha_Inicio }}</td>
+
+                    <td>{{ solicitud.Fecha_Fin }}</td>
+
+                    <td>{{ solicitud.Dias_Solicitud }}</td>
+
+                    <td>{{ solicitud.id_Estatus_Vacante.Nombre_Estatus }}</td>
+
+                    <td>
+                      {% if solicitud.idEmpleado_Respon %} {{
+                      solicitud.idEmpleado_Respon.Nombre_Completo }} {% else %}
+                      Pendiente {% endif %}
+                    </td>
+
+                    <td>
+                      <a
+                        href="{% url 'editar_solicitud_vacacion' solicitud.idSolicitud %}"
+                      >
+                        <i class="fas fa-pen-to-square"></i>
+                      </a>
+                    </td>
+                  </tr>
+
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </section>
         </section>
 
         <!-- ==========================================================================

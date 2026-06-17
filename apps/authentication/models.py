@@ -592,7 +592,6 @@ class FaseCandidato(models.Model):
 # =========================================================
 # RESULTADO DEL PROCESO
 # =========================================================
-
 class ProcesoFase(models.Model):
     id_Proceso = models.AutoField(
         primary_key=True,
@@ -612,6 +611,9 @@ class ProcesoFase(models.Model):
         return self.Resultado_Av
 
 
+# =========================================================
+# CANDIDATO DE LA VACANTE
+# =========================================================
 class Vacante_Candidato(models.Model):
 
     id_Candidato = models.AutoField(primary_key=True)
@@ -647,3 +649,53 @@ class Vacante_Candidato(models.Model):
     class Meta:
         db_table = "Vacante_Candidato"
         managed = False
+
+
+
+# =========================================================
+# SOLICITUD DE VACACIONES
+# =========================================================
+class VacacionSolicitud(models.Model):
+
+    idSolicitud = models.AutoField(
+        primary_key=True
+    )
+
+    Fecha_Solicitud = models.DateField()
+
+    Fecha_Inicio = models.DateField()
+
+    Fecha_Fin = models.DateField()
+
+    Dias_Solicitud = models.DecimalField(
+        max_digits=6,
+        decimal_places=2
+    )
+
+    id_Estatus_Vacante = models.ForeignKey(
+        Estatus,
+        on_delete=models.PROTECT,
+        db_column='id_Estatus_Vacante',
+        related_name='solicitudes_vacaciones'
+    )
+
+    idEmpleado_Sol_Vac = models.ForeignKey(
+        Empleado,
+        on_delete=models.PROTECT,
+        db_column='idEmpleado_Sol_Vac',
+        related_name='vacaciones_solicitadas'
+    )
+
+    idEmpleado_Respon = models.ForeignKey(
+        Empleado,
+        on_delete=models.PROTECT,
+        db_column='idEmpleado_Respon',
+        related_name='vacaciones_aprobadas'
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'Vacacion_Solicitud'
+
+    def __str__(self):
+        return f"Solicitud #{self.idSolicitud}"

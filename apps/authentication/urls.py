@@ -51,13 +51,13 @@ urlpatterns = [
     # Ruta para el dashboard (pantalla de resgistro vacante abierta)
     path('candidatos/', views.registrar_candidato, name='candidatos'),
    
-
-
-
     # Ruta para el dashboard (pantalla de eleccion (Solicitud o Consulta de Vacaciones))
     path('vacaciones.html/', views.vacaciones_view, name='vacaciones'),
+   
     # Ruta para el dashboard (pantalla de solicitud de vacaciones)
-    path('sol_Vacacion.html/', views.sol_Vacacion_view, name='sol_Vacacion'),
+    path('solicitudes-vacaciones/', views.registrar_solicitud_vacacion, name='solicitudes_vacaciones'),
+   
+   
     # Ruta para el dashboard (pantalla de consulta del saldo de vacaciones)
     path('con_Vacacion.html/', views.con_Vacacion_view, name='con_Vacacion'),
     # Ruta para el dashboard (pantalla de eleccion (Asistencia o Permiso))

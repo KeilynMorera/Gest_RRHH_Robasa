@@ -114,7 +114,13 @@ urlpatterns = [
     # =========================================================
     path('candidatos/', views.registrar_candidato, name='candidatos'),
     path('candidatos/editar/<int:id>/', views.editar_candidato, name='editar_candidato'),
-  
+
+
+    # =========================================================
+    # Registro de solicitud de vacaciones
+    # =========================================================
+    path('solicitudes-vacaciones/', views.registrar_solicitud_vacacion, name='solicitudes_vacaciones'),
+    path('editar-solicitud-vacacion/<int:id>/', views.editar_solicitud_vacacion, name='editar_solicitud_vacacion'),
 ]
 
 

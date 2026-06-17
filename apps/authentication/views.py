@@ -21,6 +21,7 @@ from .models import (
     FaseCandidato,
     ProcesoFase,
     Vacante_Candidato,
+    VacacionSolicitud
 )
 
 # =========================================================
@@ -1405,16 +1406,178 @@ def editar_candidato(request,id):
 
 
 
-
-
-
-
-
 def vacaciones_view(request):
     return render(request, 'vacaciones.html')
 
-def sol_Vacacion_view(request):
-    return render(request, 'sol_Vacacion.html')
+
+# =========================================================
+# REGISTRAR Y MODIFICAR SOLICITUD DE VACACIONES
+# =========================================================
+def registrar_solicitud_vacacion(request):
+
+    if request.method == 'POST':
+
+        accion = request.POST.get('accion')
+
+        solicitud_id = request.POST.get('solicitud_id')
+
+
+        # ============================================
+        # CREAR
+        # ============================================
+
+        if accion == 'crear':
+
+            VacacionSolicitud.objects.create(
+
+                Fecha_Solicitud=request.POST.get('fecha_solicitud'),
+
+                Fecha_Inicio=request.POST.get('fecha_inicio'),
+
+                Fecha_Fin=request.POST.get('fecha_fin'),
+
+                Dias_Solicitud=request.POST.get('dias_solicitados'),
+
+                id_Estatus_Vacante_id=request.POST.get('estado'),
+
+                idEmpleado_Sol_Vac_id=request.POST.get('empleado'),
+
+                idEmpleado_Respon_id=request.POST.get('aprobador')
+
+            )
+
+
+        # ============================================
+        # MODIFICAR
+        # ============================================
+
+        elif accion == 'modificar':
+
+            solicitud = get_object_or_404(
+                VacacionSolicitud,
+                pk=solicitud_id
+            )
+
+            solicitud.Fecha_Solicitud = request.POST.get(
+                'fecha_solicitud'
+            )
+
+            solicitud.Fecha_Inicio = request.POST.get(
+                'fecha_inicio'
+            )
+
+            solicitud.Fecha_Fin = request.POST.get(
+                'fecha_fin'
+            )
+
+            solicitud.Dias_Solicitud = request.POST.get(
+                'dias_solicitados'
+            )
+
+            solicitud.id_Estatus_Vacante_id = request.POST.get(
+                'estado'
+            )
+
+            solicitud.idEmpleado_Sol_Vac_id = request.POST.get(
+                'empleado'
+            )
+
+            solicitud.idEmpleado_Respon_id = request.POST.get(
+                'aprobador'
+            )
+
+            solicitud.save()
+
+
+        return redirect('solicitudes_vacaciones')
+
+
+    # ============================================
+    # GET
+    # ============================================
+
+    contexto = {
+
+        'solicitud_editar': None,
+
+        'empleados': Empleado.objects.all(),
+
+        'aprobadores': Empleado.objects.all(),
+
+        'estados': Estatus.objects.all(),
+
+        'solicitudes': VacacionSolicitud.objects.select_related(
+
+            'idEmpleado_Sol_Vac',
+
+            'idEmpleado_Respon',
+
+            'id_Estatus_Vacante'
+
+        )
+
+    }
+
+    return render(
+
+        request,
+
+        'sol_Vacacion.html',
+
+        contexto
+
+    )
+
+
+# =========================================================
+# EDITAR SOLICITUD DE VACACIONES
+# =========================================================
+
+def editar_solicitud_vacacion(request, id):
+
+    solicitud = get_object_or_404(
+
+        VacacionSolicitud,
+
+        pk=id
+
+    )
+
+
+    contexto = {
+
+        'solicitud_editar': solicitud,
+
+        'empleados': Empleado.objects.all(),
+
+        'aprobadores': Empleado.objects.all(),
+
+        'estados': Estatus.objects.all(),
+
+        'solicitudes': VacacionSolicitud.objects.select_related(
+
+            'idEmpleado_Sol_Vac',
+
+            'idEmpleado_Respon',
+
+            'id_Estatus_Vacante'
+
+        )
+
+    }
+
+
+    return render(
+
+        request,
+
+        'vacacion_Solicitud.html',
+
+        contexto
+
+    )
+
+
 
 def con_Vacacion_view(request):
     return render(request, 'con_Vacacion.html')
