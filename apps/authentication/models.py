@@ -425,6 +425,8 @@ class SalarioEmpleado(models.Model):
 # =========================================================
 # Tabla: Estatus
 # Registro estatus de la vacante
+# Solo lectura — los datos vienen definidos en la BD.
+# No se registran desde el sistema.
 # =========================================================
 class Estatus(models.Model):
 
@@ -565,9 +567,7 @@ class Vacante_Asig(models.Model):
 
 
 # =========================================================
-
 # FASE DEL CANDIDATO
-
 # =========================================================
 
 class FaseCandidato(models.Model):
@@ -591,6 +591,8 @@ class FaseCandidato(models.Model):
 
 # =========================================================
 # RESULTADO DEL PROCESO
+# Solo lectura — los datos vienen definidos en la BD.
+# No se registran desde el sistema.
 # =========================================================
 class ProcesoFase(models.Model):
     id_Proceso = models.AutoField(
