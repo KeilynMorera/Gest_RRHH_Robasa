@@ -261,7 +261,7 @@
           ====================================================== -->
           <div class="form-body">
             <!-- Formulario principal -->
-            <form action="#" method="POST">
+            <form method="POST" action="{% url 'vacantes' %}">
               {% csrf_token %}
 
               <input
@@ -294,11 +294,10 @@
                     </label>
 
                     <select id="vacante" name="vacante" required>
-                      <option disabled selected>
-                        Seleccione una vacante...
-                      </option>
+                      <option value="">Seleccione una vacante...</option>
 
                       {% for vacante in vacantes %}
+
                       <option
                         value="{{ vacante.id_Vacante }}"
                         {%
@@ -315,6 +314,7 @@
                       >
                         {{ vacante.TituloPublicacion }}
                       </option>
+
                       {% endfor %}
                     </select>
                   </div>
@@ -323,29 +323,32 @@
                   <div class="field">
                     <label for="persona">
                       <i class="fas fa-user field-icon"></i>
-
                       Candidato / Persona
                       <span class="req">*</span>
                     </label>
 
-                    <select id="persona" name="empleado" required>
-                      {% for empleado in empleados %}
+                    <select id="persona" name="persona" required>
+                      <option value="">Seleccione una persona...</option>
+
+                      {% for persona in personas %}
+
                       <option
-                        value="{{ empleado.idEmpleado }}"
+                        value="{{ persona.idPersona }}"
                         {%
                         if
                         candidato_editar
                         and
                         candidato_editar.idPersona.idPersona=""
-                        ="empleado.idPersona.idPersona"
+                        ="persona.idPersona"
                         %}
                         selected
                         {%
                         endif
                         %}
                       >
-                        {{ empleado.idPersona.Nombre_Completo }}
+                        {{ persona.Nombre_Completo }}
                       </option>
+
                       {% endfor %}
                     </select>
                   </div>
@@ -420,9 +423,8 @@
                     </label>
 
                     <select id="fase_actual" name="fase" required>
-                      <option disabled selected>Seleccione una fase...</option>
-
                       {% for fase in fases %}
+
                       <option
                         value="{{ fase.id_Fase }}"
                         {%
@@ -439,6 +441,7 @@
                       >
                         {{ fase.Fase_Actual }}
                       </option>
+
                       {% endfor %}
                     </select>
                   </div>
@@ -460,9 +463,8 @@
                     </label>
 
                     <select id="resultado" name="proceso" required>
-                      <option disabled selected>Seleccione resultado...</option>
-
                       {% for proceso in procesos %}
+
                       <option
                         value="{{ proceso.id_Proceso }}"
                         {%
@@ -479,6 +481,7 @@
                       >
                         {{ proceso.Resultado_Av }}
                       </option>
+
                       {% endfor %}
                     </select>
                   </div>
@@ -605,15 +608,15 @@
                   <i class="fas fa-check"></i>
 
                   {% if candidato_editar %} Actualizar Candidato {% else %}
-                  Guardar Progreso {% endif %}
+                  Guardar Candidato {% endif %}
                 </button>
               </div>
             </form>
           </div>
 
           <!-- ======================================================
-     TARJETA: TABLA DE CANDIDATOS
-====================================================== -->
+                TARJETA: TABLA DE CANDIDATOS
+          ====================================================== -->
           <section class="table-card">
             <div class="table-card-header">
               <div class="table-card-header-left">
@@ -680,7 +683,9 @@
                     <td>{{ candidato.id_Proceso.Resultado_Av }}</td>
 
                     <td>
-                      {% if candidato.Observaciones|length > 40 %} {{candidato.Observaciones|slice:":40" }}... {% else %} {{candidato.Observaciones }} {% endif %}
+                      {% if candidato.Observaciones|length > 40 %}
+                      {{candidato.Observaciones|slice:":40" }}... {% else %}
+                      {{candidato.Observaciones }} {% endif %}
                     </td>
 
                     <td>
@@ -703,14 +708,24 @@
                       {% endif %}
                     </td>
 
-                    <td class="col-accion">
-                      <a
-                        href="{% url 'editar_candidato' candidato.id_Candidato %}"
-                        class="btn btn-warning btn-sm"
-                      >
-                        <i class="fas fa-pen-to-square"></i>
-                      </a>
-                    </td>
+                    <tbody>
+                      {% for candidato in candidatos %}
+
+                      <tr>
+                        ...
+
+                        <td class="col-accion">
+                          <a
+                            href="{% url 'editar_candidato' candidato.id_Candidato %}"
+                            class="btn btn-warning btn-sm"
+                          >
+                            <i class="fas fa-pen-to-square"></i>
+                          </a>
+                        </td>
+                      </tr>
+
+                      {% endfor %}
+                    </tbody>
                   </tr>
 
                   {% empty %}

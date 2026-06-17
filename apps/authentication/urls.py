@@ -42,11 +42,11 @@ urlpatterns = [
     # Ruta para el dashboard (pantalla de eleccion (Registro o Consulta de salario))
     path('salarios/', views.registrar_salario, name='salarios'),
 
-    #Ruta para el dashboard (pantalla de registro de vacantes)
-    path('vacantes/', views.registrar_vacante, name='vacantes'),
-
     # Vacante candidato (para ingresar el empleado o persona interesado))
     path('reclutamiento.html/', views.reclutamiento_view, name='reclutamiento'),
+
+    #Ruta para el dashboard (pantalla de registro de vacantes)
+    path('vacantes/', views.registrar_vacante, name='vacantes'),
     
     # Ruta para el dashboard (pantalla de resgistro vacante abierta)
     path('candidatos/', views.registrar_candidato, name='candidatos'),

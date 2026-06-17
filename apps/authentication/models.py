@@ -617,56 +617,33 @@ class ProcesoFase(models.Model):
         return self.Resultado_Av
 
 
-# =========================================================
-# CANDIDATOS DE UNA VACANTE
-# =========================================================
+class Vacante_Candidato(models.Model):
 
-class VacanteCandidato(models.Model):
+    id_Candidato = models.AutoField(primary_key=True)
 
-    id_Candidato = models.AutoField(
-        primary_key=True,
-        db_column='id_Candidato'
-    )
+    Activo = models.BooleanField(default=True)
 
-    Activo = models.BooleanField(
-        default=True,
-        db_column='Activo'
-    )
-
-    Observaciones = models.CharField(
-        max_length=400,
-        db_column='Observaciones'
-    )
+    Observaciones = models.CharField(max_length=400)
 
     id_Vacante = models.ForeignKey(
-        'Vacante',
-        on_delete=models.DO_NOTHING,
-        db_column='id_Vacante',
-        related_name='candidatos'
+        Vacante,
+        on_delete=models.CASCADE
     )
 
     idPersona = models.ForeignKey(
-        'Persona',
-        on_delete=models.DO_NOTHING,
-        db_column='idPersona',
-        related_name='postulaciones'
+        Persona,
+        on_delete=models.CASCADE
     )
 
     id_Fase = models.ForeignKey(
-        'FaseCandidato',
-        on_delete=models.DO_NOTHING,
-        db_column='id_Fase'
+        FaseCandidato,
+        on_delete=models.CASCADE
     )
 
     id_Proceso = models.ForeignKey(
-        'ProcesoFase',
-        on_delete=models.DO_NOTHING,
-        db_column='id_Proceso'
+        ProcesoFase,
+        on_delete=models.CASCADE
     )
 
     class Meta:
-        managed = False
-        db_table = 'Vacante_Candidato'
-
-    def __str__(self):
-        return f"{self.idPersona} - {self.id_Vacante}"
+        db_table = "Vacante_Candidato"

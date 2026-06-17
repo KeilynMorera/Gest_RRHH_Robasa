@@ -1310,134 +1310,115 @@ def registrar_candidato(request):
 
     if request.method == 'POST':
 
-        accion = request.POST.get('accion')
-        candidato_id = request.POST.get('candidato_id')
+        VacanteCandidato.objects.create(
 
-        activo = request.POST.get('activo') == '1'
-        observaciones = request.POST.get('observaciones')
+            Activo=request.POST.get('activo') == '1',
 
-        vacante_id = request.POST.get('vacante')
-        empleado_id = request.POST.get('empleado')
+            Observaciones=request.POST.get('observaciones'),
 
-        fase_id = request.POST.get('fase')
-        proceso_id = request.POST.get('proceso')
+            id_Vacante_id=request.POST.get('vacante'),
 
-        # ==========================================
-        # CREAR
-        # ==========================================
-        if accion == 'crear':
+            idPersona_id=request.POST.get('persona'),
 
-            empleado = Empleado.objects.get(
-                pk=empleado_id
-            )
+            id_Fase_id=request.POST.get('fase'),
 
-            VacanteCandidato.objects.create(
+            id_Proceso_id=request.POST.get('proceso')
 
-                Activo=activo,
-
-                Observaciones=observaciones,
-
-                id_Vacante_id=vacante_id,
-
-                idPersona=empleado.idPersona,
-
-                id_Fase_id=fase_id,
-
-                id_Proceso_id=proceso_id
-            )
-
-        # ==========================================
-        # MODIFICAR
-        # ==========================================
-        elif accion == 'modificar':
-
-            candidato = get_object_or_404(
-                VacanteCandidato,
-                pk=candidato_id
-            )
-
-            empleado = Empleado.objects.get(
-                pk=empleado_id
-            )
-
-            candidato.Activo = activo
-
-            candidato.Observaciones = observaciones
-
-            candidato.id_Vacante_id = vacante_id
-
-            candidato.idPersona = empleado.idPersona
-
-            candidato.id_Fase_id = fase_id
-
-            candidato.id_Proceso_id = proceso_id
-
-            candidato.save()
+        )
 
         return redirect('candidatos')
 
+    contexto = {
+
+        'personas': Persona.objects.all(),
+
+        'vacantes': Vacante.objects.all(),
+
+        'fases': FaseCandidato.objects.all(),
+
+        'procesos': ProcesoFase.objects.all(),
+
+        'candidatos': VacanteCandidato.objects.select_related(
+
+            'idPersona',
+
+            'id_Vacante',
+
+            'id_Fase',
+
+            'id_Proceso'
+
+        )
+    }
+
     return render(
         request,
         'reclut_Vacante.html',
-        {
-
-            'candidato_editar': None,
-
-            'vacantes': Vacante.objects.all(),
-
-            'empleados': Empleado.objects.select_related(
-                'idPersona'
-            ),
-
-            'fases': FaseCandidato.objects.all(),
-
-            'procesos': ProcesoFase.objects.all(),
-
-            'candidatos': VacanteCandidato.objects.select_related(
-                'idPersona',
-                'id_Vacante',
-                'id_Fase',
-                'id_Proceso'
-            )
-        }
+        contexto
     )
 
 
-def editar_candidato(request, id_candidato):
+def editar_candidato(request,id):
 
     candidato = get_object_or_404(
         VacanteCandidato,
-        pk=id_candidato
+        pk=id
     )
+
+    contexto = {
+
+        'candidato_editar': candidato,
+
+        'personas': Persona.objects.all(),
+
+        'vacantes': Vacante.objects.all(),
+
+        'fases': FaseCandidato.objects.all(),
+
+        'procesos': ProcesoFase.objects.all(),
+
+        'candidatos': VacanteCandidato.objects.select_related(
+            'idPersona',
+            'id_Vacante',
+            'id_Fase',
+            'id_Proceso'
+        )
+    }
 
     return render(
         request,
         'reclut_Vacante.html',
-        {
-
-            'candidato_editar': candidato,
-
-            'vacantes': Vacante.objects.all(),
-
-            'empleados': Empleado.objects.select_related(
-                'idPersona'
-            ),
-
-            'fases': FaseCandidato.objects.all(),
-
-            'procesos': ProcesoFase.objects.all(),
-
-            'candidatos': VacanteCandidato.objects.select_related(
-                'idPersona',
-                'id_Vacante',
-                'id_Fase',
-                'id_Proceso'
-            )
-        }
+        contexto
     )
 
 
+def actualizar_candidato(request):
 
+    if request.method == 'POST':
+
+        candidato = get_object_or_404(
+
+            VacanteCandidato,
+
+            pk=request.POST.get('candidato_id')
+
+        )
+
+        candidato.Activo = request.POST.get('activo') == '1'
+
+        candidato.Observaciones = request.POST.get('observaciones')
+
+        candidato.id_Vacante_id = request.POST.get('vacante')
+
+        candidato.idPersona_id = request.POST.get('persona')
+
+        candidato.id_Fase_id = request.POST.get('fase')
+
+        candidato.id_Proceso_id = request.POST.get('proceso')
+
+        candidato.save()
+
+        return redirect('candidatos')
 
 
 
