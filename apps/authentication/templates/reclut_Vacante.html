@@ -685,9 +685,12 @@
                       {%endif %}
                     </td>
 
-                    <td>
+                    <td class="col-accion">
+                      <!-- Editar -->
                       <a
                         href="{% url 'editar_candidato' candidato.id_Candidato %}"
+                        class="btn btn-warning btn-sm"
+                        title="Editar empleado"
                       >
                         <i class="fas fa-pen-to-square"></i>
                       </a>
