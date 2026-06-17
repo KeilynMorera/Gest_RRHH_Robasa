@@ -627,23 +627,28 @@ class Vacante_Candidato(models.Model):
 
     id_Vacante = models.ForeignKey(
         Vacante,
+        db_column='id_Vacante',
         on_delete=models.CASCADE
     )
 
     idPersona = models.ForeignKey(
         Persona,
+        db_column='idPersona',
         on_delete=models.CASCADE
     )
 
     id_Fase = models.ForeignKey(
         FaseCandidato,
+        db_column='id_Fase',
         on_delete=models.CASCADE
     )
 
     id_Proceso = models.ForeignKey(
         ProcesoFase,
+        db_column='id_Proceso',
         on_delete=models.CASCADE
     )
 
     class Meta:
         db_table = "Vacante_Candidato"
+        managed = False

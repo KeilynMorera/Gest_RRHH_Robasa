@@ -20,7 +20,7 @@ from .models import (
     Estatus,
     FaseCandidato,
     ProcesoFase,
-    VacanteCandidato,
+    Vacante_Candidato,
 )
 
 # =========================================================
@@ -1310,7 +1310,7 @@ def registrar_candidato(request):
 
     if request.method == 'POST':
 
-        VacanteCandidato.objects.create(
+        Vacante_Candidato.objects.create(
 
             Activo=request.POST.get('activo') == '1',
 
@@ -1338,7 +1338,7 @@ def registrar_candidato(request):
 
         'procesos': ProcesoFase.objects.all(),
 
-        'candidatos': VacanteCandidato.objects.select_related(
+        'candidatos': Vacante_Candidato.objects.select_related(
 
             'idPersona',
 
@@ -1361,7 +1361,7 @@ def registrar_candidato(request):
 def editar_candidato(request,id):
 
     candidato = get_object_or_404(
-        VacanteCandidato,
+        Vacante_Candidato,
         pk=id
     )
 
@@ -1377,7 +1377,7 @@ def editar_candidato(request,id):
 
         'procesos': ProcesoFase.objects.all(),
 
-        'candidatos': VacanteCandidato.objects.select_related(
+        'candidatos': Vacante_Candidato.objects.select_related(
             'idPersona',
             'id_Vacante',
             'id_Fase',
@@ -1398,7 +1398,7 @@ def actualizar_candidato(request):
 
         candidato = get_object_or_404(
 
-            VacanteCandidato,
+            Vacante_Candidato,
 
             pk=request.POST.get('candidato_id')
 
