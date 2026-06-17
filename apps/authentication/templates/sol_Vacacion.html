@@ -328,7 +328,7 @@
             <!-- ==========================================================================
                  FORMULARIO HTML
                  ========================================================================== -->
-            <form method="POST" action="#">
+            <form method="POST" action="{% url 'solicitudes_vacaciones' %}">
               {% if solicitud_editar %}
 
               <input type="hidden" name="accion" value="modificar" />
@@ -344,7 +344,7 @@
               <input type="hidden" name="accion" value="crear" />
 
               {% endif %}
-              
+
               <!-- Token de seguridad CSRF de Django -->
               {% csrf_token %}
 
@@ -367,18 +367,27 @@
 
                     <!-- Lista de empleados -->
                     <select id="empleado" name="empleado" required>
-                      <!-- Opción por defecto -->
-                      <option value="" disabled selected>
-                        Seleccione un empleado...
+                      <option value="">Seleccione un empleado...</option>
+
+                      {% for empleado in empleados %}
+
+                      <option
+                        value="{{ empleado.idEmpleado }}"
+                        {%
+                        if
+                        solicitud_editar
+                        and
+                        solicitud_editar.idEmpleado_Sol_Vac.idEmpleado=""
+                        ="empleado.idEmpleado"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        {{ empleado.idPersona.Nombre_Completo }}
                       </option>
 
-                      <!-- 
-                        Recorre la lista de empleados enviada desde Django.
-                      -->
-                      {% for empleado in empleados %}
-                      <option value="{{ empleado.idEmpleado }}">
-                        {{ empleado.Nombre_Completo }}
-                      </option>
                       {% endfor %}
                     </select>
                   </div>
@@ -396,6 +405,7 @@
                       type="date"
                       id="fecha_solicitud"
                       name="fecha_solicitud"
+                      value="{{ solicitud_editar.Fecha_Solicitud|date:'Y-m-d' }}"
                       required
                     />
                   </div>
@@ -410,11 +420,28 @@
 
                     <!-- Estado actual de la solicitud -->
                     <select id="estado" name="estado" required>
-                      <option value="Pendiente" selected>Pendiente</option>
+                      <option value="">Seleccione un estado...</option>
 
-                      <option value="Aprobado">Aprobado</option>
+                      {% for estado in estados %}
 
-                      <option value="Rechazado">Rechazado</option>
+                      <option
+                        value="{{ estado.id_Estatus_Vacante }}"
+                        {%
+                        if
+                        solicitud_editar
+                        and
+                        solicitud_editar.id_Estatus_Vacante.id_Estatus_Vacante=""
+                        ="estado.id_Estatus_Vacante"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        {{ estado.TipoEstatus }}
+                      </option>
+
+                      {% endfor %}
                     </select>
                   </div>
                 </div>
@@ -441,6 +468,7 @@
                       type="date"
                       id="fecha_inicio"
                       name="fecha_inicio"
+                      value="{{ solicitud_editar.Fecha_Inicio|date:'Y-m-d' }}"
                       required
                     />
                   </div>
@@ -457,6 +485,7 @@
                       type="date"
                       id="fecha_fin"
                       name="fecha_fin"
+                      value="{{ solicitud_editar.Fecha_Fin|date:'Y-m-d' }}"
                       required
                     />
                   </div>
@@ -475,6 +504,7 @@
                       min="0.5"
                       id="dias_solicitados"
                       name="dias_solicitados"
+                      value="{{ solicitud_editar.Dias_Solicitud|default:'' }}"
                       placeholder="0.00"
                       required
                     />
@@ -499,18 +529,27 @@
 
                     <!-- Lista de aprobadores -->
                     <select id="aprobador" name="aprobador">
-                      <!-- Opción inicial -->
-                      <option value="" selected>
-                        Seleccione el aprobador...
+                      <option value="">Seleccione el aprobador...</option>
+
+                      {% for aprobador in aprobadores %}
+
+                      <option
+                        value="{{ aprobador.idEmpleado }}"
+                        {%
+                        if
+                        solicitud_editar
+                        and
+                        solicitud_editar.idEmpleado_Respon.idEmpleado=""
+                        ="aprobador.idEmpleado"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        {{ aprobador.idPersona.Nombre_Completo }}
                       </option>
 
-                      <!-- 
-                        Recorre la lista de aprobadores enviada desde Django.
-                      -->
-                      {% for aprobador in aprobadores %}
-                      <option value="{{ aprobador.idEmpleado }}">
-                        {{ aprobador.Nombre_Completo }}
-                      </option>
                       {% endfor %}
                     </select>
                   </div>
@@ -536,15 +575,17 @@
                 <!-- ===================== GUARDAR ===================== -->
                 <button type="submit" class="btn btn-primary">
                   <i class="fas fa-paper-plane"></i>
-                  Guardar Solicitud
+
+                  {% if solicitud_editar %} Actualizar Solicitud {% else %}
+                  Guardar Solicitud {% endif %}
                 </button>
               </div>
             </form>
           </div>
 
           <!-- ======================================================
-     TARJETA: TABLA DE SOLICITUDES DE VACACIONES
-====================================================== -->
+                TARJETA: TABLA DE SOLICITUDES DE VACACIONES
+          ====================================================== -->
           <section class="table-card">
             <div class="table-card-header">
               <div class="table-card-header-left">
@@ -604,7 +645,9 @@
                   <tr>
                     <td>{{ solicitud.idSolicitud }}</td>
 
-                    <td>{{ solicitud.idEmpleado_Sol_Vac.Nombre_Completo }}</td>
+                    <td>
+                      {{ solicitud.idEmpleado_Sol_Vac.idPersona.Nombre_Completo}}
+                    </td>
 
                     <td>{{ solicitud.Fecha_Solicitud }}</td>
 
@@ -614,17 +657,19 @@
 
                     <td>{{ solicitud.Dias_Solicitud }}</td>
 
-                    <td>{{ solicitud.id_Estatus_Vacante.Nombre_Estatus }}</td>
+                    <td>{{ solicitud.id_Estatus_Vacante.TipoEstatus }}</td>
 
                     <td>
-                      {% if solicitud.idEmpleado_Respon %} {{
-                      solicitud.idEmpleado_Respon.Nombre_Completo }} {% else %}
-                      Pendiente {% endif %}
+                      {% if solicitud.idEmpleado_Respon %} {{solicitud.idEmpleado_Respon.idPersona.Nombre_Completo }}
+                      {% else %} Pendiente {% endif %}
                     </td>
 
-                    <td>
+                    <td class="col-accion">
+                      <!-- Editar -->
                       <a
                         href="{% url 'editar_solicitud_vacacion' solicitud.idSolicitud %}"
+                        class="btn btn-warning btn-sm"
+                        title="Editar empleado"
                       >
                         <i class="fas fa-pen-to-square"></i>
                       </a>
@@ -647,5 +692,7 @@
         </footer>
       </main>
     </div>
+
+    <script src="{% static 'js/sol_Vacacion.js' %}"></script>
   </body>
 </html>

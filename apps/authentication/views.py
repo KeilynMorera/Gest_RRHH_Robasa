@@ -1571,7 +1571,7 @@ def editar_solicitud_vacacion(request, id):
 
         request,
 
-        'vacacion_Solicitud.html',
+        'sol_Vacacion.html',
 
         contexto
 
