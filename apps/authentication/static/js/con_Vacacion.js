@@ -1,25 +1,23 @@
-document.getElementById("empleado").addEventListener("change", function(){
+const empleado = document.getElementById("empleado");
 
-    let empleadoId = this.value;
+empleado.addEventListener("change", function(){
 
-    if(empleadoId==""){
-        return;
-    }
-
-    fetch(`/obtener_saldo_vacaciones/${empleadoId}/`)
+    fetch(
+        `/obtener_saldo_vacaciones/?empleado=${this.value}`
+    )
 
     .then(response => response.json())
 
     .then(data => {
 
         document.getElementById("dias_acumulados").value =
-            data.dias_acumulados;
+            data.acumulados;
 
         document.getElementById("dias_tomados").value =
-            data.dias_tomados;
+            data.tomados;
 
         document.getElementById("dias_disponibles").value =
-            data.dias_disponibles;
+            data.disponibles;
 
     });
 

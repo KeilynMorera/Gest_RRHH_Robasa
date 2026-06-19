@@ -1607,6 +1607,14 @@ def guardar_saldo_vacaciones(request):
             Anio=anio_actual
         )
 
+        for s in VacacionSolicitud.objects.filter(
+            idEmpleado_Sol_Vac=empleado):
+            print(
+                s.idSolicitud,
+                s.Dias_Solicitud,
+                s.id_Estatus_Vacante.TipoEstatus
+            )
+
         saldo.save()
 
     saldos = VacacionSaldo.objects.select_related(
@@ -1662,29 +1670,32 @@ def editar_saldo_vacaciones(request, id):
     )
 
 
+def obtener_saldo_vacaciones(request):
 
-def obtener_saldo_vacaciones(request,id):
+    empleado_id = request.GET.get("empleado")
 
-    empleado = Empleado.objects.get(idEmpleado=id)
-
-    anio = date.today().year
-
-    saldo, creado = VacacionSaldo.objects.get_or_create(
-
-        idEmpleado_Sal_Vac=empleado,
-
-        Anio=anio
+    empleado = Empleado.objects.get(
+        idEmpleado=empleado_id
     )
 
-    saldo.save()
+    saldo = VacacionSaldo(
+        idEmpleado_Sal_Vac=empleado,
+        Anio=date.today().year
+    )
+
+    acumulados = saldo.calcular_dias_acumulados()
+
+    tomados = saldo.calcular_dias_tomados()
+
+    disponibles = acumulados - tomados
 
     return JsonResponse({
 
-        "dias_acumulados": float(saldo.Dias_Acumulados),
+        'acumulados': acumulados,
 
-        "dias_tomados": float(saldo.Dias_Tomado),
+        'tomados': tomados,
 
-        "dias_disponibles": float(saldo.Dias_Disponibles)
+        'disponibles': disponibles
 
     })
 

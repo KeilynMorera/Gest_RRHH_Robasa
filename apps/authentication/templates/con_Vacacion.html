@@ -316,7 +316,10 @@
                ========================================================================== -->
           <div class="form-body">
             <!-- Formulario principal -->
-            <form method="POST" action="{% url 'guardar_saldo_vacaciones' %}">
+            <form
+              method="POST"
+              action="{% if saldo_editar %}{% url 'editar_saldo_vacaciones' saldo_editar.idSaldo %}{% else %}{% url 'guardar_saldo_vacaciones' %}{% endif %}"
+            >
               <!-- Token CSRF de seguridad Django -->
               {% csrf_token %}
 
@@ -404,12 +407,7 @@
                     </label>
 
                     <!-- Días acumulados por el colaborador -->
-                    <input
-                      type="number"
-                      id="dias_acumulados"
-                      value="{{ saldo_editar.Dias_Acumulados }}"
-                      readonly
-                    />
+                    <input type="number" id="dias_acumulados" readonly />
                   </div>
 
                   <!-- ===================== DÍAS TOMADOS ===================== -->
@@ -421,12 +419,7 @@
                     </label>
 
                     <!-- Cantidad de días utilizados -->
-                    <input
-                      type="number"
-                      id="dias_tomados"
-                      value="{{ saldo_editar.Dias_Tomado }}"
-                      readonly
-                    />
+                    <input type="number" id="dias_tomados" readonly />
                   </div>
 
                   <!-- ===================== DÍAS DISPONIBLES ===================== -->
@@ -437,12 +430,7 @@
                     </label>
 
                     <!-- Campo calculado automáticamente -->
-                    <input
-                      type="number"
-                      id="dias_disponibles"
-                      value="{{ saldo_editar.Dias_Disponibles }}"
-                      readonly
-                    />
+                    <input type="number" id="dias_disponibles" readonly />
                   </div>
                 </div>
               </div>
@@ -465,8 +453,11 @@
 
                 <!-- Botón guardar -->
                 <button type="submit" class="btn btn-primary">
+                  {% if saldo_editar %}
+                  <i class="fas fa-pen"></i>
+                  Actualizar Saldo {% else %}
                   <i class="fas fa-floppy-disk"></i>
-                  Guardar Saldo
+                  Guardar Saldo {% endif %}
                 </button>
               </div>
             </form>
@@ -580,6 +571,6 @@
       </main>
     </div>
 
-    <script src="{% static 'js/sol_Vacacion.js' %}"></script>
+    <script src="{% static 'js/con_Vacacion.js' %}"></script>
   </body>
 </html>

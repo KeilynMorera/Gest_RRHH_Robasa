@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models import Sum
-from datetime import date
+from datetime import date, datetime, timedelta
 
 
 # =========================================================
@@ -778,11 +778,17 @@ class VacacionSaldo(models.Model):
     def calcular_dias_tomados(self):
 
         total = VacacionSolicitud.objects.filter(
+
             idEmpleado_Sol_Vac=self.idEmpleado_Sal_Vac,
+
             Fecha_Inicio__year=self.Anio,
-            id_Estatus_Vacante__TipoEstatus="Aprobado"
+
+            id_Estatus_Vacante__TipoEstatus__iexact="Aprobada"
+
         ).aggregate(
+
             total=Sum('Dias_Solicitud')
+
         )
 
         return total['total'] or 0
@@ -802,3 +808,112 @@ class VacacionSaldo(models.Model):
         super().save(*args, **kwargs)
 
 
+
+
+# =========================================================
+# ESTADO DE ASISTENCIA
+# =========================================================
+class AsistenciaEstado(models.Model):
+
+    idAsis_Estado = models.AutoField(
+        primary_key=True
+    )
+
+    TipoEstado = models.CharField(
+        max_length=20
+    )
+
+    class Meta:
+        db_table = 'Asistencia_Estado'
+
+    def __str__(self):
+
+        return self.TipoEstado
+
+
+# =========================================================
+# ASISTENCIA
+# =========================================================
+class Asistencia(models.Model):
+
+    idAsistencia = models.AutoField(
+        primary_key=True
+    )
+
+    Fecha = models.DateField()
+
+    Hora_Entrada = models.TimeField()
+
+    Hora_Salida = models.TimeField()
+
+    Horas_Extra = models.TimeField(
+        null=True,
+        blank=True
+    )
+
+    idAsis_Estado = models.ForeignKey(
+        AsistenciaEstado,
+        on_delete=models.PROTECT,
+        db_column='idAsis_Estado',
+        related_name='asistencias'
+    )
+
+    idEmpleado = models.ForeignKey(
+        Empleado,
+        on_delete=models.CASCADE,
+        db_column='idEmpleado',
+        related_name='asistencias'
+    )
+
+    class Meta:
+
+        db_table = 'Asistencia'
+
+        ordering = ['-Fecha']
+
+    def __str__(self):
+
+        return f"{self.idEmpleado} - {self.Fecha}"
+
+
+    # =====================================================
+    # CALCULAR HORAS EXTRA
+    # Jornada laboral = 8 horas
+    # =====================================================
+
+    def calcular_horas_extra(self):
+
+        jornada = timedelta(hours=8)
+
+        entrada = datetime.combine(
+            datetime.today(),
+            self.Hora_Entrada
+        )
+
+        salida = datetime.combine(
+            datetime.today(),
+            self.Hora_Salida
+        )
+
+        horas_trabajadas = salida - entrada
+
+        if horas_trabajadas > jornada:
+
+            extra = horas_trabajadas - jornada
+
+            return (
+                datetime.min + extra
+            ).time()
+
+        return datetime.min.time()
+
+
+    # =====================================================
+    # GUARDAR
+    # =====================================================
+
+    def save(self, *args, **kwargs):
+
+        self.Horas_Extra = self.calcular_horas_extra()
+
+        super().save(*args, **kwargs)
