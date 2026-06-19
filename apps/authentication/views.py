@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from decimal import Decimal
 from django.db.models import Max
 from django.db.models import Sum
-from datetime import date
+from datetime import date, datetime
 
 from .models import (
     Persona,
@@ -1713,15 +1713,6 @@ def elec_Asistencia_view(request):
 # =========================================================
 # GUARDAR ASISTENCIA
 # =========================================================
-
-from datetime import datetime
-from django.shortcuts import render
-from apps.authentication.models import (
-    Empleado,
-    Asistencia,
-    AsistenciaEstado
-)
-
 def guardar_asistencia(request):
 
     empleados = Empleado.objects.select_related(
@@ -1816,9 +1807,13 @@ def editar_asistencia(request, id):
 
         asistencia.Fecha = request.POST.get("fecha")
 
-        asistencia.Hora_Entrada = request.POST.get("hora_entrada")
+        asistencia.Hora_Entrada = datetime.strptime(
+            request.POST.get("hora_entrada"), "%H:%M"
+        ).time()
 
-        asistencia.Hora_Salida = request.POST.get("hora_salida")
+        asistencia.Hora_Salida = datetime.strptime(
+            request.POST.get("hora_salida"), "%H:%M"
+        ).time()
 
 
         empleado = Empleado.objects.get(

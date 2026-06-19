@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models import Sum
-from datetime import date, datetime, timedelta
+from datetime import datetime, date, timedelta, time
 
 
 # =========================================================
@@ -883,19 +883,19 @@ class Asistencia(models.Model):
 
     def calcular_horas_extra(self):
 
-        entrada = datetime.combine(date.today(), self.Hora_Entrada)
-        salida = datetime.combine(date.today(), self.Hora_Salida)
-
-        jornada = timedelta(hours=8)
-
+        entrada  = datetime.combine(date.today(), self.Hora_Entrada)
+        salida   = datetime.combine(date.today(), self.Hora_Salida)
+        jornada  = timedelta(hours=8)
         trabajado = salida - entrada
-
-        extra = trabajado - jornada
+        extra    = trabajado - jornada
 
         if extra.total_seconds() <= 0:
-            return 0
+            return time(0, 0, 0)   # ← time en lugar de int 0
 
-        return int(extra.total_seconds() / 3600)
+        total_seg = int(extra.total_seconds())
+        horas     = total_seg // 3600
+        minutos   = (total_seg % 3600) // 60
+        return time(horas, minutos, 0)   # ← time en lugar de int
 
 
     # =====================================================

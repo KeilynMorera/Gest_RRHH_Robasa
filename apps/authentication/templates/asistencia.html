@@ -324,7 +324,10 @@
                =============================================================== -->
           <div class="form-body">
             <!-- Formulario principal -->
-            <form method="POST" action="{% url 'guardar_asistencia' %}">
+            <form
+              method="POST"
+              action="{% if asistencia_editar %}{% url 'editar_asistencia' asistencia_editar.idAsistencia %}{% else %}{% url 'guardar_asistencia' %}{% endif %}"
+            >
               <!-- Token de seguridad CSRF de Django -->
               {% csrf_token %}
 
@@ -352,15 +355,22 @@
 
                       <option
                         value="{{ empleado.idEmpleado }}"
+                        {#
+                        ✅
+                        CORRECTO
+                        —
+                        en
+                        una
+                        sola
+                        línea
+                        #}
                         {%
                         if
                         asistencia_editar
                         and
                         asistencia_editar.idEmpleado.idEmpleado=""
                         ="empleado.idEmpleado"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
@@ -411,9 +421,7 @@
                         and
                         asistencia_editar.idAsis_Estado.idAsis_Estado=""
                         ="estado.idAsis_Estado"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
@@ -591,9 +599,7 @@
                     </td>
 
                     <td>
-                      {% if asistencia.Horas_Extra %}
-                      {{asistencia.Horas_Extra|time:"H:i" }} {% else %} 00:00
-                      {%endif %}
+                      {% if asistencia.Horas_Extra %}{{asistencia.Horas_Extra|time:"G" }}h {% if asistencia.Horas_Extra|time:"i" != "00" %}{{asistencia.Horas_Extra|time:"i" }}m{% endif %}{% else%}—{% endif %}
                     </td>
 
                     <td>{{ asistencia.idAsis_Estado.TipoEstado }}</td>
