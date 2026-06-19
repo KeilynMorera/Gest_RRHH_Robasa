@@ -60,12 +60,15 @@ urlpatterns = [
     # Ruta para el dashboard (pantalla de consulta del saldo de vacaciones)
     path('guardar_saldo_vacaciones/', views.guardar_saldo_vacaciones, name='guardar_saldo_vacaciones'),
 
-
-
     # Ruta para el dashboard (pantalla de eleccion (Asistencia o Permiso))
     path('elec_Asistencia.html/', views.elec_Asistencia_view, name='elec_Asistencia'),
+
     # Ruta para el dashboard (pantalla de registro de asistencia)
-    path('asistencia.html/', views.asistencia_view, name='asistencia'),
+    path('guardar_asistencia/', views.guardar_asistencia, name='guardar_asistencia'),
+
+
+
+
     # Ruta para el dashboard (pantalla de registro de permiso)
     path('permiso.html/', views.permiso_view, name='permiso'),
     # Ruta para el dashboard (pantalla de eleccion (Evaluación de Empleado o Jefatura))

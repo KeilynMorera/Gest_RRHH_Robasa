@@ -883,29 +883,19 @@ class Asistencia(models.Model):
 
     def calcular_horas_extra(self):
 
+        entrada = datetime.combine(date.today(), self.Hora_Entrada)
+        salida = datetime.combine(date.today(), self.Hora_Salida)
+
         jornada = timedelta(hours=8)
 
-        entrada = datetime.combine(
-            datetime.today(),
-            self.Hora_Entrada
-        )
+        trabajado = salida - entrada
 
-        salida = datetime.combine(
-            datetime.today(),
-            self.Hora_Salida
-        )
+        extra = trabajado - jornada
 
-        horas_trabajadas = salida - entrada
+        if extra.total_seconds() <= 0:
+            return 0
 
-        if horas_trabajadas > jornada:
-
-            extra = horas_trabajadas - jornada
-
-            return (
-                datetime.min + extra
-            ).time()
-
-        return datetime.min.time()
+        return int(extra.total_seconds() / 3600)
 
 
     # =====================================================

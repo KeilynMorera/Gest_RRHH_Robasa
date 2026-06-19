@@ -24,7 +24,9 @@ from .models import (
     ProcesoFase,
     Vacante_Candidato,
     VacacionSolicitud,
-    VacacionSaldo
+    VacacionSaldo,
+    AsistenciaEstado,
+    Asistencia
 )
 
 # =========================================================
@@ -1670,6 +1672,9 @@ def editar_saldo_vacaciones(request, id):
     )
 
 
+# =========================================================
+# OBTENER EL SALDO DE VACACIONES
+# =========================================================
 def obtener_saldo_vacaciones(request):
 
     empleado_id = request.GET.get("empleado")
@@ -1700,11 +1705,188 @@ def obtener_saldo_vacaciones(request):
     })
 
 
+
 def elec_Asistencia_view(request):
     return render(request, 'elec_Asistencia.html')
 
-def asistencia_view(request):
-    return render(request, 'asistencia.html')
+
+# =========================================================
+# GUARDAR ASISTENCIA
+# =========================================================
+
+from datetime import datetime
+from django.shortcuts import render
+from apps.authentication.models import (
+    Empleado,
+    Asistencia,
+    AsistenciaEstado
+)
+
+def guardar_asistencia(request):
+
+    empleados = Empleado.objects.select_related(
+        'idPersona'
+    )
+
+    estados = AsistenciaEstado.objects.all()
+
+    if request.method == "POST":
+
+        empleado = Empleado.objects.get(
+            idEmpleado=request.POST.get("empleado")
+        )
+
+        estado = AsistenciaEstado.objects.get(
+            idAsis_Estado=request.POST.get("estado")
+        )
+
+        # Convertir string a objeto time
+        hora_entrada = datetime.strptime(
+            request.POST.get("hora_entrada"),
+            "%H:%M"
+        ).time()
+
+        hora_salida = datetime.strptime(
+            request.POST.get("hora_salida"),
+            "%H:%M"
+        ).time()
+
+        asistencia = Asistencia(
+
+            Fecha=request.POST.get("fecha"),
+
+            Hora_Entrada=hora_entrada,
+
+            Hora_Salida=hora_salida,
+
+            idEmpleado=empleado,
+
+            idAsis_Estado=estado
+
+        )
+
+        # El modelo calculará automáticamente Horas_Extra
+        asistencia.save()
+
+
+    asistencias = Asistencia.objects.select_related(
+
+        'idEmpleado',
+
+        'idEmpleado__idPersona',
+
+        'idAsis_Estado'
+
+    )
+
+    return render(
+
+        request,
+
+        'asistencia.html',
+
+        {
+
+            'empleados': empleados,
+
+            'estados': estados,
+
+            'asistencias': asistencias
+
+        }
+
+    )
+
+
+# =========================================================
+# MODIFICAR ASISTENCIA
+# =========================================================
+def editar_asistencia(request, id):
+
+    asistencia = get_object_or_404(
+
+        Asistencia,
+
+        idAsistencia=id
+
+    )
+
+
+    if request.method == "POST":
+
+        asistencia.Fecha = request.POST.get("fecha")
+
+        asistencia.Hora_Entrada = request.POST.get("hora_entrada")
+
+        asistencia.Hora_Salida = request.POST.get("hora_salida")
+
+
+        empleado = Empleado.objects.get(
+
+            idEmpleado=request.POST.get("empleado")
+
+        )
+
+        asistencia.idEmpleado = empleado
+
+
+        estado = AsistenciaEstado.objects.get(
+
+            idAsis_Estado=request.POST.get("estado")
+
+        )
+
+        asistencia.idAsis_Estado = estado
+
+
+        # Se recalculan las horas extra automáticamente
+        asistencia.save()
+
+
+    empleados = Empleado.objects.select_related(
+
+        'idPersona'
+
+    )
+
+    estados = AsistenciaEstado.objects.all()
+
+
+    asistencias = Asistencia.objects.select_related(
+
+        'idEmpleado',
+
+        'idEmpleado__idPersona',
+
+        'idAsis_Estado'
+
+    )
+
+
+    return render(
+
+        request,
+
+        'asistencia.html',
+
+        {
+
+            'empleados': empleados,
+
+            'estados': estados,
+
+            'asistencias': asistencias,
+
+            'asistencia_editar': asistencia
+
+        }
+
+    )
+
+
+
+
+
 
 def permiso_view(request):
     return render(request, 'permiso.html')

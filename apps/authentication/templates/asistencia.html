@@ -324,7 +324,7 @@
                =============================================================== -->
           <div class="form-body">
             <!-- Formulario principal -->
-            <form method="POST" action="#">
+            <form method="POST" action="{% url 'guardar_asistencia' %}">
               <!-- Token de seguridad CSRF de Django -->
               {% csrf_token %}
 
@@ -348,15 +348,23 @@
                     <!-- Lista de empleados -->
                     <select id="empleado" name="empleado" required>
                       <!-- Opción inicial -->
-                      <option value="" disabled selected>
-                        Seleccione un empleado...
-                      </option>
-
-                      <!-- Recorrido dinámico de empleados -->
                       {% for empleado in empleados %}
 
-                      <option value="{{ empleado.idEmpleado }}">
-                        {{ empleado.Nombre_Completo }}
+                      <option
+                        value="{{ empleado.idEmpleado }}"
+                        {%
+                        if
+                        asistencia_editar
+                        and
+                        asistencia_editar.idEmpleado.idEmpleado=""
+                        ="empleado.idEmpleado"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        {{ empleado.idPersona.Nombre_Completo }}
                       </option>
 
                       {% endfor %}
@@ -372,7 +380,13 @@
                     </label>
 
                     <!-- Campo de fecha -->
-                    <input type="date" id="fecha" name="fecha" required />
+                    <input
+                      type="date"
+                      id="fecha"
+                      name="fecha"
+                      value="{{ asistencia_editar.Fecha|date:'Y-m-d' }}"
+                      required
+                    />
                   </div>
 
                   <!-- ================= ESTADO ================= -->
@@ -385,14 +399,28 @@
 
                     <!-- Estado de asistencia -->
                     <select id="estado" name="estado" required>
-                      <option value="" disabled selected>
-                        Seleccione un estado...
+                      <option value="">Seleccione un estado...</option>
+
+                      {% for estado in estados %}
+
+                      <option
+                        value="{{ estado.idAsis_Estado }}"
+                        {%
+                        if
+                        asistencia_editar
+                        and
+                        asistencia_editar.idAsis_Estado.idAsis_Estado=""
+                        ="estado.idAsis_Estado"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        {{ estado.TipoEstado }}
                       </option>
 
-                      <option value="Presente">Presente</option>
-                      <option value="Ausente">Ausente</option>
-                      <option value="Tardanza">Tardanza</option>
-                      <option value="Permiso">Permiso</option>
+                      {% endfor %}
                     </select>
                   </div>
                 </div>
@@ -415,7 +443,12 @@
                     </label>
 
                     <!-- Hora de ingreso -->
-                    <input type="time" id="hora_entrada" name="hora_entrada" />
+                    <input
+                      type="time"
+                      id="hora_entrada"
+                      name="hora_entrada"
+                      value="{% if asistencia_editar %}{{ asistencia_editar.Hora_Entrada|time:'H:i' }}{% endif %}"
+                    />
                   </div>
 
                   <!-- ================= HORA SALIDA ================= -->
@@ -426,7 +459,12 @@
                     </label>
 
                     <!-- Hora de salida -->
-                    <input type="time" id="hora_salida" name="hora_salida" />
+                    <input
+                      type="time"
+                      id="hora_salida"
+                      name="hora_salida"
+                      value="{% if asistencia_editar %}{{ asistencia_editar.Hora_Salida|time:'H:i' }}{% endif %}"
+                    />
                   </div>
 
                   <!-- ================= HORAS EXTRAS ================= -->
@@ -438,13 +476,11 @@
 
                     <!-- Cantidad de horas extras -->
                     <input
-                      type="number"
-                      step="0.01"
-                      min="0"
+                      type="text"
                       id="horas_extras"
                       name="horas_extras"
-                      value="0.00"
-                      placeholder="0.00"
+                      value="{% if asistencia_editar %}{{ asistencia_editar.Horas_Extra }}{% else %}00:00:00{% endif %}"
+                      readonly
                     />
                   </div>
                 </div>
@@ -474,6 +510,118 @@
               </div>
             </form>
           </div>
+
+          <!-- ======================================================
+                TARJETA: ASISTENCIA DE EMPLEADOS
+          ====================================================== -->
+          <section class="table-card">
+            <div class="table-card-header">
+              <div class="table-card-header-left">
+                <div class="table-card-icon">
+                  <i class="fas fa-user-check"></i>
+                </div>
+
+                <div>
+                  <h2 class="table-card-title">Registro de Asistencia</h2>
+
+                  <p class="table-card-subtitle">
+                    Consulte y modifique las asistencias registradas de los
+                    empleados.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Buscador -->
+
+              <div class="table-search">
+                <i class="fas fa-search"></i>
+
+                <input
+                  type="text"
+                  id="filtro-asistencia"
+                  placeholder="Buscar empleado..."
+                />
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="data-table" id="tabla-asistencia">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+
+                    <th>Empleado</th>
+
+                    <th>Fecha</th>
+
+                    <th>Hora Entrada</th>
+
+                    <th>Hora Salida</th>
+
+                    <th>Horas Extra</th>
+
+                    <th>Estado</th>
+
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {% for asistencia in asistencias %}
+
+                  <tr>
+                    <td>{{ asistencia.idAsistencia }}</td>
+
+                    <td>
+                      {{ asistencia.idEmpleado.idPersona.Nombre_Completo }}
+                    </td>
+
+                    <td>{{ asistencia.Fecha }}</td>
+
+                    <td>
+                      {% if asistencia.Hora_Entrada %}
+                      {{asistencia.Hora_Entrada|time:"H:i" }} {% else %} 00:00
+                      {%endif %}
+                    </td>
+
+                    <td>
+                      {% if asistencia.Hora_Salida %}
+                      {{asistencia.Hora_Salida|time:"H:i" }} {% else %} 00:00
+                      {%endif %}
+                    </td>
+
+                    <td>
+                      {% if asistencia.Horas_Extra %}
+                      {{asistencia.Horas_Extra|time:"H:i" }} {% else %} 00:00
+                      {%endif %}
+                    </td>
+
+                    <td>{{ asistencia.idAsis_Estado.TipoEstado }}</td>
+
+                    <td class="col-accion">
+                      <a
+                        href="{% url 'editar_asistencia' asistencia.idAsistencia %}"
+                      >
+                        <i class="fas fa-pen-to-square"></i>
+                      </a>
+                    </td>
+                  </tr>
+
+                  {% empty %}
+
+                  <tr>
+                    <td colspan="8" class="tabla-vacia">
+                      <i class="fas fa-calendar-times"></i>
+
+                      No existen registros de asistencia.
+                    </td>
+                  </tr>
+
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </section>
         </section>
 
         <!-- ==================================================================
@@ -485,5 +633,7 @@
         </footer>
       </main>
     </div>
+
+    <script src="{% static 'js/asistencia.js' %}"></script>
   </body>
 </html>

@@ -129,6 +129,15 @@ urlpatterns = [
     path('editar_saldo_vacaciones/<int:id>/', views.editar_saldo_vacaciones, name='editar_saldo_vacaciones'),
     path('obtener_saldo_vacaciones/', views.obtener_saldo_vacaciones, name='obtener_saldo_vacaciones'),
     
+
+    # =========================================================
+    # CONSULTA DE ASISTENCIA
+    # =========================================================
+    # Guardar asistencia
+    path('guardar_asistencia/', views.guardar_asistencia, name='guardar_asistencia'),
+    # Editar asistencia
+    path('editar_asistencia/<int:id>/', views.editar_asistencia, name='editar_asistencia'),
+
 ]
 
 
