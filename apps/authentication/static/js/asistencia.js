@@ -60,3 +60,53 @@ document.getElementById("hora_entrada")
 document.getElementById("hora_salida")
 
 .addEventListener("change",calcularHorasExtra);
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const filtro = document.getElementById("filtro-asistencia");
+  const filas  = document.querySelectorAll("#tabla-asistencia tbody tr");
+
+  if (!filtro) return;
+
+  filtro.addEventListener("keyup", function () {
+    const texto = this.value.toLowerCase().trim();
+
+    filas.forEach(function (fila) {
+
+      // Ignora la fila vacía
+      if (fila.querySelector(".tabla-vacia")) return;
+
+      // [1] Nombre del empleado  [2] Fecha
+      const nombre = fila.children[1]?.textContent.toLowerCase() ?? "";
+      const fecha  = fila.children[2]?.textContent.toLowerCase() ?? "";
+
+      const coincide = nombre.includes(texto) || fecha.includes(texto);
+
+      fila.style.display = coincide ? "" : "none";
+    });
+
+    // Mensaje dinámico si no hay resultados
+    const mensajeDinamico = document.getElementById("sin-resultados-asistencia");
+    if (mensajeDinamico) mensajeDinamico.remove();
+
+    const visibles = [...filas].filter(f =>
+      !f.querySelector(".tabla-vacia") && f.style.display !== "none"
+    );
+
+    if (visibles.length === 0 && texto !== "") {
+      const tbody = document.querySelector("#tabla-asistencia tbody");
+      const fila  = document.createElement("tr");
+      fila.id     = "sin-resultados-asistencia";
+      fila.innerHTML = `
+        <td colspan="8" class="tabla-vacia">
+          <i class="fas fa-magnifying-glass"></i>
+          No se encontraron registros para "<strong>${texto}</strong>"
+        </td>`;
+      tbody.appendChild(fila);
+    }
+  });
+
+});
