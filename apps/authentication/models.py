@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import Sum
+from datetime import date
 
 
 # =========================================================
@@ -701,3 +703,102 @@ class VacacionSolicitud(models.Model):
 
     def __str__(self):
         return f"Solicitud #{self.idSolicitud}"
+
+
+
+# =========================================================
+# CONSULTAR SALDO DE VACACIONES
+# =========================================================
+class VacacionSaldo(models.Model):
+
+    idSaldo = models.AutoField(primary_key=True)
+
+    Anio = models.IntegerField()
+
+    Dias_Acumulados = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        default=0
+    )
+
+    Dias_Tomado = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        default=0
+    )
+
+    Dias_Disponibles = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        default=0
+    )
+
+    idEmpleado_Sal_Vac = models.ForeignKey(
+        Empleado,
+        on_delete=models.CASCADE,
+        db_column='idEmpleado_Sal_Vac',
+        related_name='saldo_vacaciones'
+    )
+
+    class Meta:
+        db_table = 'Vacacion_Saldo'
+
+    def __str__(self):
+        return f"{self.idEmpleado_Sal_Vac} - {self.Anio}"
+    
+
+
+    def calcular_dias_acumulados(self):
+
+        fecha_ingreso = self.idEmpleado_Sal_Vac.Fecha_Ingreso
+
+        hoy = date.today()
+
+        anios = hoy.year - fecha_ingreso.year
+
+        if anios < 1:
+            return 0
+
+        elif anios == 1:
+            return 12
+
+        elif anios == 2:
+            return 14
+
+        elif anios == 3:
+            return 16
+
+        elif anios == 4:
+            return 18
+
+        else:
+            return 20
+        
+
+    def calcular_dias_tomados(self):
+
+        total = VacacionSolicitud.objects.filter(
+            idEmpleado_Sol_Vac=self.idEmpleado_Sal_Vac,
+            Fecha_Inicio__year=self.Anio,
+            id_Estatus_Vacante__TipoEstatus="Aprobado"
+        ).aggregate(
+            total=Sum('Dias_Solicitud')
+        )
+
+        return total['total'] or 0
+    
+
+    def save(self, *args, **kwargs):
+
+        self.Dias_Acumulados = self.calcular_dias_acumulados()
+
+        self.Dias_Tomado = self.calcular_dias_tomados()
+
+        self.Dias_Disponibles = (
+            self.Dias_Acumulados -
+            self.Dias_Tomado
+        )
+
+        super().save(*args, **kwargs)
+
+

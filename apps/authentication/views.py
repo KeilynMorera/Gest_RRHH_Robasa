@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from decimal import Decimal
 from django.db.models import Max
+from django.db.models import Sum
+from datetime import date
 
 from .models import (
     Persona,
@@ -21,7 +23,8 @@ from .models import (
     FaseCandidato,
     ProcesoFase,
     Vacante_Candidato,
-    VacacionSolicitud
+    VacacionSolicitud,
+    VacacionSaldo
 )
 
 # =========================================================
@@ -1578,9 +1581,113 @@ def editar_solicitud_vacacion(request, id):
     )
 
 
+# =========================================================
+# GUARDAR CONSULTA DE VACACIONES
+# =========================================================
+def guardar_saldo_vacaciones(request):
 
-def con_Vacacion_view(request):
-    return render(request, 'con_Vacacion.html')
+    empleados = Empleado.objects.select_related(
+        'idPersona'
+    )
+
+    if request.method == "POST":
+
+        empleado_id = request.POST.get("empleado")
+
+        empleado = Empleado.objects.get(
+            idEmpleado=empleado_id
+        )
+
+        anio_actual = date.today().year
+
+        saldo, creado = VacacionSaldo.objects.get_or_create(
+
+            idEmpleado_Sal_Vac=empleado,
+
+            Anio=anio_actual
+        )
+
+        saldo.save()
+
+    saldos = VacacionSaldo.objects.select_related(
+        'idEmpleado_Sal_Vac',
+        'idEmpleado_Sal_Vac__idPersona'
+    )
+
+    return render(
+        request,
+        'con_Vacacion.html',
+        {
+            'empleados': empleados,
+            'saldos': saldos
+        }
+    )
+
+
+# =========================================================
+# MODIFICAR CONSULTA DE VACACIONES
+# =========================================================
+def editar_saldo_vacaciones(request, id):
+
+    saldo = get_object_or_404(
+        VacacionSaldo,
+        idSaldo=id
+    )
+
+    if request.method == "POST":
+
+        saldo.Anio = request.POST.get("anio")
+
+        saldo.save()
+
+    empleados = Empleado.objects.select_related(
+        'idPersona'
+    )
+
+    saldos = VacacionSaldo.objects.select_related(
+        'idEmpleado_Sal_Vac',
+        'idEmpleado_Sal_Vac__idPersona'
+    )
+
+    return render(
+        request,
+        'con_Vacacion.html',
+        {
+            'empleados': empleados,
+
+            'saldos': saldos,
+
+            'saldo_editar': saldo
+        }
+    )
+
+
+
+def obtener_saldo_vacaciones(request,id):
+
+    empleado = Empleado.objects.get(idEmpleado=id)
+
+    anio = date.today().year
+
+    saldo, creado = VacacionSaldo.objects.get_or_create(
+
+        idEmpleado_Sal_Vac=empleado,
+
+        Anio=anio
+    )
+
+    saldo.save()
+
+    return JsonResponse({
+
+        "dias_acumulados": float(saldo.Dias_Acumulados),
+
+        "dias_tomados": float(saldo.Dias_Tomado),
+
+        "dias_disponibles": float(saldo.Dias_Disponibles)
+
+    })
+
 
 def elec_Asistencia_view(request):
     return render(request, 'elec_Asistencia.html')
