@@ -295,7 +295,7 @@ class Pasante(models.Model):
     Fecha_Inicio         = models.DateField()
     Fecha_Fin            = models.DateField(null=True, blank=True)  # NULL permitido
     Univercidad          = models.CharField(max_length=200)
-    Carrera              = models.CharField(max_length=200)
+    Carrera              = models.CharField(max_length=100, default="Sin especificar")
     Tutor_Univercitario  = models.CharField(max_length=200)
     Activo               = models.BooleanField(default=True)  # BIT: True=1 Activo, False=0 Inactivo
 
@@ -309,6 +309,7 @@ class Pasante(models.Model):
                                on_delete=models.CASCADE,
                                db_column='idPuesto'
                            )
+    
     idEmpleado_Sup       = models.ForeignKey(
                                Empleado,
                                on_delete=models.CASCADE,
@@ -907,3 +908,95 @@ class Asistencia(models.Model):
         self.Horas_Extra = self.calcular_horas_extra()
 
         super().save(*args, **kwargs)
+
+
+# =========================================================
+# TABLA: TipoPermiso
+# Catálogo de tipos de permisos
+# =========================================================
+class TipoPermiso(models.Model):
+
+    id_TipoPermiso = models.AutoField(
+        primary_key=True,
+        db_column='id_TipoPermiso'
+    )
+
+    Tipo_Permiso = models.CharField(
+        max_length=80,
+        db_column='Tipo_Permiso'
+    )
+
+    class Meta:
+
+        managed = False
+
+        db_table = 'TipoPermiso'
+
+    def __str__(self):
+
+        return self.Tipo_Permiso
+    
+
+# =========================================================
+# TABLA: Permiso
+# Justificación o permiso asociado a una asistencia
+# =========================================================
+class Permiso(models.Model):
+
+    idPermiso = models.AutoField(
+        primary_key=True,
+        db_column='idPermiso'
+    )
+
+    Activo = models.BooleanField(
+        default=True,
+        db_column='Activo'
+    )
+
+    Justificacion = models.CharField(
+        max_length=5000,
+        db_column='Justificacion'
+    )
+
+    id_TipoPermiso = models.ForeignKey(
+
+        TipoPermiso,
+
+        on_delete=models.CASCADE,
+
+        db_column='id_TipoPermiso',
+
+        related_name='permisos'
+    )
+
+    idAsistencia = models.ForeignKey(
+
+        Asistencia,
+
+        on_delete=models.CASCADE,
+
+        db_column='idAsistencia',
+
+        related_name='permisos_asistencia'
+    )
+
+    idEmpleado = models.ForeignKey(
+
+        Empleado,
+
+        on_delete=models.CASCADE,
+
+        db_column='idEmpleado',
+
+        related_name='permisos_empleado'
+    )
+
+    class Meta:
+
+        managed = False
+
+        db_table = 'Permiso'
+
+    def __str__(self):
+
+        return f"{self.idEmpleado} - {self.id_TipoPermiso}"

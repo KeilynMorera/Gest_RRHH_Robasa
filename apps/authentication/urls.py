@@ -66,11 +66,12 @@ urlpatterns = [
     # Ruta para el dashboard (pantalla de registro de asistencia)
     path('guardar_asistencia/', views.guardar_asistencia, name='guardar_asistencia'),
 
-
-
-
     # Ruta para el dashboard (pantalla de registro de permiso)
-    path('permiso.html/', views.permiso_view, name='permiso'),
+    path('guardar_permiso/', views.guardar_permiso, name='guardar_permiso'),
+
+
+
+
     # Ruta para el dashboard (pantalla de eleccion (Evaluación de Empleado o Jefatura))
     path('evaluaciones.html/', views.evaluaciones_view, name='evaluaciones'),
     # Ruta para el dashboard (pantalla de registro de evaluación de empleados)

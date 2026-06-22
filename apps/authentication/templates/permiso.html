@@ -139,7 +139,7 @@
             Configuración
           </a>
         </nav>
-        
+
         <!-- Sección de Cierre de Sesión -->
         <div class="logout">
           <a href="login.html">
@@ -226,7 +226,7 @@
 
           <!-- Cuerpo del Formulario -->
           <div class="form-body">
-            <form method="POST" action="">
+            <form method="POST" action="{% url 'guardar_permiso' %}">
               <!-- Token de seguridad obligatorio en Django para formularios POST -->
               {% csrf_token %}
 
@@ -239,17 +239,23 @@
                   <div class="field field-full">
                     <label for="empleado">
                       <i class="fas fa-user field-icon"></i>
-                      Empleado <span class="req">*</span>
+
+                      Empleado
+
+                      <span class="req">*</span>
                     </label>
+
                     <select id="empleado" name="empleado" required>
                       <option value="" disabled selected>
                         Seleccione un empleado...
                       </option>
-                      <!-- Bucle Django para renderizar los empleados dinámicamente -->
+
                       {% for empleado in empleados %}
+
                       <option value="{{ empleado.idEmpleado }}">
-                        {{ empleado.Nombre_Completo }}
+                        {{ empleado.idPersona.Nombre_Completo }}
                       </option>
+
                       {% endfor %}
                     </select>
                   </div>
@@ -261,16 +267,16 @@
                       Registro de asistencia a justificar
                       <span class="req">*</span>
                     </label>
-                    <select id="idAsistencia" name="idAsistencia" required>
-                      <option value="" disabled selected>
-                        Seleccione un registro de asistencia...
+                    <select name="asistencia" required>
+                      <option value="">Seleccione una asistencia</option>
+
+                      {% for a in asistencias_permiso %}
+
+                      <option value="{{ a.idAsistencia }}">
+                        {{ a.idEmpleado.idPersona.Nombre_Completo }} - {{
+                        a.Fecha }}
                       </option>
-                      <!-- Bucle Django para listar asistencias existentes -->
-                      {% for asistencia in asistencias %}
-                      <option value="{{ asistencia.idAsistencia }}">
-                        {{ asistencia.idEmpleado.Nombre_Completo }} - {{
-                        asistencia.Fecha }} - {{ asistencia.Estado }}
-                      </option>
+
                       {% endfor %}
                     </select>
                     <small class="field-help">
@@ -285,25 +291,16 @@
                       <i class="fas fa-tags field-icon"></i>
                       Tipo de permiso <span class="req">*</span>
                     </label>
-                    <select id="Tipo_Permiso" name="Tipo_Permiso" required>
-                      <option value="" disabled selected>
-                        Seleccione el tipo...
+                    <select name="tipo_permiso" required>
+                      <option value="">Seleccione un tipo</option>
+
+                      {% for tipo in tipos_permiso %}
+
+                      <option value="{{ tipo.id_TipoPermiso }}">
+                        {{ tipo.Tipo_Permiso }}
                       </option>
-                      <option value="Incapacidad médica">
-                        Incapacidad médica
-                      </option>
-                      <option value="Permiso personal">Permiso personal</option>
-                      <option value="Cita médica">Cita médica</option>
-                      <option value="Licencia de maternidad">
-                        Licencia de maternidad
-                      </option>
-                      <option value="Licencia de paternidad">
-                        Licencia de paternidad
-                      </option>
-                      <option value="Duelo">Duelo</option>
-                      <option value="Estudios">Estudios</option>
-                      <option value="Vacaciones">Vacaciones</option>
-                      <option value="Otro">Otro</option>
+
+                      {% endfor %}
                     </select>
                   </div>
 
@@ -383,6 +380,99 @@
               </div>
             </form>
           </div>
+
+          <!-- ======================================================
+      TARJETA: REGISTRO DE PERMISOS
+====================================================== -->
+          <section class="table-card">
+            <div class="table-card-header">
+              <div class="table-card-header-left">
+                <div class="table-card-icon">
+                  <i class="fas fa-file-signature"></i>
+                </div>
+
+                <div>
+                  <h2 class="table-card-title">Registro de Permisos</h2>
+
+                  <p class="table-card-subtitle">
+                    Consulte los permisos y justificaciones registradas para los
+                    empleados.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Buscador -->
+
+              <div class="table-search">
+                <i class="fas fa-search"></i>
+
+                <input
+                  type="text"
+                  id="filtro-permiso"
+                  placeholder="Buscar empleado..."
+                />
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="data-table" id="tabla-permisos">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+
+                    <th>Empleado</th>
+
+                    <th>Fecha</th>
+
+                    <th>Tipo de Permiso</th>
+
+                    <th>Justificación</th>
+
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {% for permiso in permisos %}
+
+                  <tr>
+                    <td>{{ permiso.idPermiso }}</td>
+
+                    <td>{{ permiso.idEmpleado.idPersona.Nombre_Completo }}</td>
+
+                    <td>{{ permiso.idAsistencia.Fecha }}</td>
+
+                    <td>{{ permiso.id_TipoPermiso.Tipo_Permiso }}</td>
+
+                    <td>{{ permiso.Justificacion }}</td>
+
+                    <td>
+                      {% if permiso.Activo %}
+
+                      <span class="badge-success"> Aprobado </span>
+
+                      {% else %}
+
+                      <span class="badge-danger"> Rechazado </span>
+
+                      {% endif %}
+                    </td>
+                  </tr>
+
+                  {% empty %}
+
+                  <tr>
+                    <td colspan="6" class="tabla-vacia">
+                      <i class="fas fa-file-circle-xmark"></i>
+                      No existen permisos registrados.
+                    </td>
+                  </tr>
+
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </section>
         </section>
 
         <!-- Footer General -->

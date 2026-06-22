@@ -138,6 +138,11 @@ urlpatterns = [
     # Editar asistencia
     path('editar_asistencia/<int:id>/', views.editar_asistencia, name='editar_asistencia'),
 
+    # =========================================================
+    # CONSULTA DE PERMISOS
+    # =========================================================
+    path('guardar_permiso/', views.guardar_permiso, name='guardar_permiso'),
+
 ]
 
 

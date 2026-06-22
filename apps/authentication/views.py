@@ -26,7 +26,9 @@ from .models import (
     VacacionSolicitud,
     VacacionSaldo,
     AsistenciaEstado,
-    Asistencia
+    Asistencia,
+    TipoPermiso,
+    Permiso
 )
 
 # =========================================================
@@ -1879,12 +1881,108 @@ def editar_asistencia(request, id):
     )
 
 
+# =========================================================
+# GUARDAR PERMISO
+# =========================================================
+def guardar_permiso(request):
+
+    # ==========================
+    # EMPLEADOS
+    # ==========================
+    empleados = Empleado.objects.select_related(
+        'idPersona'
+    )
+
+    # ==========================
+    # TIPOS DE PERMISO
+    # ==========================
+    tipos_permiso = TipoPermiso.objects.all()
+
+    # ==========================
+    # SOLO ASISTENCIAS CON ESTADO "Permiso"
+    # ==========================
+    asistencias_permiso = Asistencia.objects.select_related(
+        'idEmpleado',
+        'idEmpleado__idPersona',
+        'idAsis_Estado'
+    ).filter(
+        idAsis_Estado__TipoEstado='Permiso'
+    )
+
+    # ==========================
+    # GUARDAR
+    # ==========================
+    if request.method == "POST":
+
+        empleado = Empleado.objects.get(
+            idEmpleado=request.POST.get("empleado")
+        )
+
+        asistencia = Asistencia.objects.get(
+            idAsistencia=request.POST.get("asistencia")
+        )
+
+        tipo_permiso = TipoPermiso.objects.get(
+            id_TipoPermiso=request.POST.get("tipo_permiso")
+        )
+
+        activo = request.POST.get("activo")
+
+        permiso = Permiso(
+
+            Activo=True if activo == "1" else False,
+
+            Justificacion=request.POST.get("justificacion"),
+
+            id_TipoPermiso=tipo_permiso,
+
+            idAsistencia=asistencia,
+
+            idEmpleado=empleado
+        )
+
+        permiso.save()
+
+        return redirect('guardar_permiso')
+
+
+    permisos = Permiso.objects.select_related(
+
+        'idEmpleado',
+
+        'idEmpleado__idPersona',
+
+        'idAsistencia',
+
+        'id_TipoPermiso'
+
+    )
+
+
+    return render(
+
+        request,
+
+        'permiso.html',
+
+        {
+
+            'empleados': empleados,
+
+            'tipos_permiso': tipos_permiso,
+
+            'asistencias_permiso': asistencias_permiso,
+
+            'permisos': permisos
+
+        }
+
+    )
 
 
 
 
-def permiso_view(request):
-    return render(request, 'permiso.html')
+
 
 def evaluaciones_view(request):
     return render(request, 'evaluaciones.html')
