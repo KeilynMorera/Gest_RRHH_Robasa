@@ -72,6 +72,15 @@ urlpatterns = [
     # Ruta para el dashboard (pantalla de acción o rotación de personal)
     path('accion_rotacion.html/', views.accion_rotacion_view, name='accion_rotacion'),
 
+    # Ruta para el dashboard (pantalla de registro de acciones del personal)
+    path('accion/gestionar/', views.registrar_cabecera_accion, name='crear_accion'),
+
+
+
+
+
+
+
 
 
     # Ruta para el dashboard (pantalla de eleccion (Evaluación de Empleado o Jefatura))

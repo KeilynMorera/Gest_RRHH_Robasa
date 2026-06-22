@@ -4,7 +4,8 @@ from decimal import Decimal
 from django.db.models import Max
 from django.db.models import Sum
 from datetime import date, datetime
-from django import forms
+from django.contrib import messages
+from .forms import AccionPersonalForm
 
 #Importa todo lo que se encuentra en el archivo models.py
 #Donde se encuentran los modelos de las tablas de la base de datos
@@ -1960,34 +1961,48 @@ def guardar_permiso(request):
 
 
 
-# =========================================================
-# GUARDAR ACCIONES DEL PERSONAL
-# =========================================================
-class AccionPersonalForm(forms.ModelForm):
-    class Meta:
-        model = AccionPersonal
-        fields = ['idEmpleado', 'Fecha']
-        widgets = {
-            'Fecha': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'idEmpleado': forms.Select(attrs={'class': 'form-control'}),
-        }
 
-class AccionTipoForm(forms.ModelForm):
-    class Meta:
-        model = AccionTipo
-        fields = ['id_Detalle_Accion', 'idSalarioEmpleado', 'Detalle']
-        widgets = {
-            'id_Detalle_Accion': forms.Select(attrs={'class': 'form-control'}),
-            'idSalarioEmpleado': forms.Select(attrs={'class': 'form-control', 'id': 'select_salario'}),
-            'Detalle': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-        }
 
-    def __init__(self, *args, **kwargs):
-        # Recibimos el empleado para filtrar únicamente sus salarios disponibles
-        empleado = kwargs.pop('empleado', None)
-        super().__init__(*args, **kwargs)
-        if empleado:
-            self.fields['idSalarioEmpleado'].queryset = SalarioEmpleado.objects.filter(idEmpleado=empleado)
+
+def registrar_cabecera_accion(request, pk=None):
+    accion_cabecera = None
+    paso_dos_habilitado = False
+
+    # Si la URL cuenta con una clave primaria (pk), la cabecera ya existe en la Base de Datos
+    if pk:
+        accion_cabecera = get_object_or_404(AccionPersonal, pk=pk)
+        paso_dos_habilitado = True
+
+    if request.method == 'POST':
+        # Procesamos de manera única e independiente el botón "guardar_cabecera"
+        form_cabecera = AccionPersonalForm(request.POST, instance=accion_cabecera)
+        
+        if form_cabecera.is_valid():
+            # Guarda en SQL Server y captura el idAccion (Identity Autoincremental)
+            accion_cabecera = form_cabecera.save()
+            messages.success(request, f"Cabecera procesada con éxito. Folio asignado: {accion_cabecera.idAccion}")
+            
+            # Redireccionamos a la misma vista pasando el ID para habilitar la segunda sección
+            return redirect('gestionar_accion', pk=accion_cabecera.idAccion)
+    else:
+        # Petición GET normal
+        form_cabecera = AccionPersonalForm(instance=accion_cabecera)
+
+    # Obtenemos los catálogos requeridos por las estructuras del HTML original
+    empleados = Empleado.objects.select_related('idPersona').all()
+    tipos_accion = DetalleAccion.objects.all()
+    salarios = SalarioEmpleado.objects.select_related('idEmpleado__idPersona').all()
+
+    return render(request, 'accion_Personal.html', {
+        'form_cabecera': form_cabecera,
+        'paso_dos_habilitado': paso_dos_habilitado,
+        'accion_cabecera': accion_cabecera,
+        'empleados': empleados,
+        'tipos_accion': tipos_accion,
+        'salarios': salarios,
+    })
+
+
 
 
 

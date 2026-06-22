@@ -3,6 +3,7 @@ from django.db.models import Sum
 from datetime import datetime, date, timedelta, time
 
 
+
 # =========================================================
 # TABLA: Empresas
 # =========================================================
@@ -1004,135 +1005,94 @@ class Permiso(models.Model):
 
 
 # =========================================================
-# TABLA: Accion_Personal
-# Cabecera de movimientos del personal
+# TABLA: Accion_Personal (Cabecera)
 # =========================================================
 class AccionPersonal(models.Model):
-
     idAccion = models.AutoField(
-        primary_key=True,
+        primary_key=True, 
         db_column='idAccion'
     )
-
     Fecha = models.DateField(
         db_column='Fecha'
     )
-
+    # Llave foránea directa al Empleado
     idEmpleado = models.ForeignKey(
-
-        Empleado,
-
+        'Empleado',  # Cambiar por Empleado si está en el mismo archivo
         on_delete=models.CASCADE,
-
         db_column='idEmpleado',
-
         related_name='acciones_personal'
     )
 
     class Meta:
-
-        managed = False
-
+        managed = False  # Cambiar a True si quieres que Django controle las migraciones
         db_table = 'Accion_Personal'
-
         ordering = ['-Fecha']
 
     def __str__(self):
-
-        return f"{self.idEmpleado} - {self.Fecha}"
+        return f"Folio: {self.idAccion} - Empleado: {self.idEmpleado_id} ({self.Fecha})"
     
 
+
+
+
 # =========================================================
-# TABLA: Detalle_Accion
-# Catálogo de acciones
+# TABLA: Detalle_Accion (Catálogo de Tipos de Acciones)
 # =========================================================
 class DetalleAccion(models.Model):
-
     id_Detalle_Accion = models.AutoField(
-        primary_key=True,
+        primary_key=True, 
         db_column='id_Detalle_Accion'
     )
-
     Accion = models.CharField(
-
-        max_length=80,
-
+        max_length=80, 
         db_column='Accion'
     )
 
     class Meta:
-
         managed = False
-
         db_table = 'Detalle_Accion'
 
     def __str__(self):
-
         return self.Accion
-    
+
 
 # =========================================================
-# TABLA: Accion_Tipo
-# Detalle de la acción realizada
+# TABLA: Accion_Tipo (Detalle del Movimiento)
 # =========================================================
 class AccionTipo(models.Model):
-
     idAccion_Tipo = models.AutoField(
-
-        primary_key=True,
-
+        primary_key=True, 
         db_column='idAccion_Tipo'
     )
-
     Detalle = models.CharField(
-
-        max_length=600,
-
+        max_length=600, 
         db_column='Detalle'
     )
-
+    # FK al catálogo Detalle_Accion
     id_Detalle_Accion = models.ForeignKey(
-
         DetalleAccion,
-
         on_delete=models.CASCADE,
-
         db_column='id_Detalle_Accion',
-
-        related_name='acciones_tipo'
+        related_name='tipos_asignados'
     )
-
+    # FK a la cabecera Accion_Personal
     idAccion = models.ForeignKey(
-
         AccionPersonal,
-
         on_delete=models.CASCADE,
-
         db_column='idAccion',
-
-        related_name='detalles_accion'
+        related_name='detalles_movimiento'
     )
-
+    # FK al Salario del Empleado para amarrar la Compensación Total
     idSalarioEmpleado = models.ForeignKey(
-
-        SalarioEmpleado,
-
+        'SalarioEmpleado',  # Ajustar al nombre exacto de tu modelo Salario_Empleado
         on_delete=models.CASCADE,
-
         db_column='idSalarioEmpleado',
-
-        related_name='acciones_salario'
+        related_name='acciones_salariales'
     )
 
     class Meta:
-
         managed = False
-
         db_table = 'Accion_Tipo'
 
     def __str__(self):
-
-        return f"{self.id_Detalle_Accion} - {self.idEmpleado if hasattr(self,'idEmpleado') else self.idAccion}"
-    
-
-
+        return f"Detalle de Acción {self.idAccion_Tipo} - Folio Cabecera: {self.idAccion_id}"

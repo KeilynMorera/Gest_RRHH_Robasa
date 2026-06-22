@@ -207,7 +207,7 @@
           </div>
 
           <div class="form-body">
-            <form action="#" method="POST" id="form-maestro-detalle">
+            <form action="{% url 'crear_accion' %}" method="POST" id="form-maestro-detalle">
               {% csrf_token %}
 
               <div class="form-section" id="seccion-cabecera">
@@ -223,11 +223,10 @@
                       (Folio)
                     </label>
                     <input
-                      type="number"
+                      type="text"
                       id="idAccion"
-                      name="idAccion"
                       placeholder="Automático (Sistema)"
-                      value="{{ accion_creada.idAccion|default:'' }}"
+                      value="{% if accion_cabecera %}{{ accion_cabecera.idAccion }}{% endif %}"
                       readonly
                     />
                   </div>
@@ -237,16 +236,11 @@
                       <i class="fas fa-user-tie field-icon"></i> Colaborador
                       Implicado <span class="req">*</span>
                     </label>
-                    <select id="idEmpleado" name="idEmpleado" required>
-                      <option value="" disabled selected>
-                        Seleccione el empleado...
-                      </option>
-                      {% for empleado in empleados %}
-                      <option value="{{ empleado.idEmpleado }}">
-                        {{ empleado.Nombre }}
-                      </option>
-                      {% endfor %}
-                    </select>
+                    {{ form_cabecera.idEmpleado }} {% if form_cabecera.idEmpleado.errors %}
+                    <div class="error-message">
+                      {{ form_cabecera.idEmpleado.errors }}
+                    </div>
+                    {% endif %}
                   </div>
 
                   <div class="field">
@@ -254,19 +248,25 @@
                       <i class="fas fa-calendar-check field-icon"></i> Fecha de
                       Aplicación <span class="req">*</span>
                     </label>
-                    <input type="date" id="Fecha" name="Fecha" required />
+                    {{ form_cabecera.Fecha }} {% if form_cabecera.Fecha.errors %}
+                    <div class="error-message">
+                      {{ form_cabecera.Fecha.errors }}
+                    </div>
+                    {% endif %}
                   </div>
                 </div>
 
-                <div style="margin-top: 15px; text-align: right">
+                <div class="form-footer">
+                  <button type="reset" id="btn-limpiar" class="btn btn-ghost">
+                    <i class="fas fa-xmark"></i> Limpiar Campos
+                  </button>
+
                   <button
-                    type="button"
+                    type="submit"
                     id="btn-guardar-cabecera"
                     class="btn btn-primary"
-                    style="padding: 8px 16px; font-size: 0.9rem"
                   >
-                    <i class="fas fa-plus-circle"></i> Iniciar Registro (Generar
-                    Folio)
+                    <i class="fas fa-plus-circle"></i> Iniciar Registro (Generar Folio)
                   </button>
                 </div>
               </div>

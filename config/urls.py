@@ -144,7 +144,13 @@ urlpatterns = [
     path('guardar_permiso/', views.guardar_permiso, name='guardar_permiso'),
 
 
+
+    # =========================================================
+    # VISTAS PARA ACCIONES DE PERSONAL
+    # =========================================================
     
+    # Ruta inicial para cuando entran a crear una nueva acción
+    path('accion/gestionar/', views.registrar_cabecera_accion, name='crear_accion'),
 
 ]
 
