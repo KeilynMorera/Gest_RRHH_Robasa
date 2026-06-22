@@ -273,8 +273,7 @@
                       {% for a in asistencias_permiso %}
 
                       <option value="{{ a.idAsistencia }}">
-                        {{ a.idEmpleado.idPersona.Nombre_Completo }} - {{
-                        a.Fecha }}
+                        {{ a.idEmpleado.idPersona.Nombre_Completo }} - {{ a.Fecha }}
                       </option>
 
                       {% endfor %}
@@ -313,25 +312,14 @@
 
                     <div class="status-group">
                       <div class="status-option">
-                        <input
-                          type="radio"
-                          id="aprobado_si"
-                          name="Aprobado"
-                          value="True"
-                          required
-                        />
+                        <input type="radio" name="activo" value="1" checked />
                         <label for="aprobado_si">
                           <span class="dot"></span> Aprobado
                         </label>
                       </div>
 
                       <div class="status-option">
-                        <input
-                          type="radio"
-                          id="aprobado_no"
-                          name="Aprobado"
-                          value="False"
-                        />
+                        <input type="radio" name="activo" value="0" />
                         <label for="aprobado_no">
                           <span class="dot"></span> No aprobado
                         </label>
@@ -352,10 +340,10 @@
                       Argumento / Motivo <span class="req">*</span>
                     </label>
                     <textarea
-                      id="Justificacion"
-                      name="Justificacion"
+                      id="justificacion"
+                      name="justificacion"
                       rows="6"
-                      maxlength="400"
+                      maxlength="5000"
                       placeholder="Describa explícitamente los detalles del justificante (ej. Número de boleta médica, motivos de fuerza mayor...)"
                       required
                     ></textarea>
@@ -382,8 +370,8 @@
           </div>
 
           <!-- ======================================================
-      TARJETA: REGISTRO DE PERMISOS
-====================================================== -->
+                TARJETA: REGISTRO DE PERMISOS
+          ====================================================== -->
           <section class="table-card">
             <div class="table-card-header">
               <div class="table-card-header-left">
@@ -481,5 +469,7 @@
         </footer>
       </main>
     </div>
+
+    <script src="{% static 'js/permiso.js' %}"></script>
   </body>
 </html>
