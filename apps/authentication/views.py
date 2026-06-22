@@ -4,32 +4,11 @@ from decimal import Decimal
 from django.db.models import Max
 from django.db.models import Sum
 from datetime import date, datetime
+from django import forms
 
-from .models import (
-    Persona,
-    PersonaSexo,
-    Empresa,
-    Gerencia,
-    Departamento,
-    Puesto,
-    Compensacion_Puesto,
-    Contrato,
-    Empleado,
-    Pasante,
-    SalarioEmpleado,
-    Vacante,
-    Vacante_Asig,
-    Estatus,
-    FaseCandidato,
-    ProcesoFase,
-    Vacante_Candidato,
-    VacacionSolicitud,
-    VacacionSaldo,
-    AsistenciaEstado,
-    Asistencia,
-    TipoPermiso,
-    Permiso
-)
+#Importa todo lo que se encuentra en el archivo models.py
+#Donde se encuentran los modelos de las tablas de la base de datos
+from .models import *
 
 # =========================================================
 # Vista: Login
@@ -1981,6 +1960,34 @@ def guardar_permiso(request):
 
 
 
+# =========================================================
+# GUARDAR ACCIONES DEL PERSONAL
+# =========================================================
+class AccionPersonalForm(forms.ModelForm):
+    class Meta:
+        model = AccionPersonal
+        fields = ['idEmpleado', 'Fecha']
+        widgets = {
+            'Fecha': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'idEmpleado': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+class AccionTipoForm(forms.ModelForm):
+    class Meta:
+        model = AccionTipo
+        fields = ['id_Detalle_Accion', 'idSalarioEmpleado', 'Detalle']
+        widgets = {
+            'id_Detalle_Accion': forms.Select(attrs={'class': 'form-control'}),
+            'idSalarioEmpleado': forms.Select(attrs={'class': 'form-control', 'id': 'select_salario'}),
+            'Detalle': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        # Recibimos el empleado para filtrar únicamente sus salarios disponibles
+        empleado = kwargs.pop('empleado', None)
+        super().__init__(*args, **kwargs)
+        if empleado:
+            self.fields['idSalarioEmpleado'].queryset = SalarioEmpleado.objects.filter(idEmpleado=empleado)
 
 
 

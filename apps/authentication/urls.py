@@ -69,6 +69,8 @@ urlpatterns = [
     # Ruta para el dashboard (pantalla de registro de permiso)
     path('guardar_permiso/', views.guardar_permiso, name='guardar_permiso'),
 
+    # Ruta para el dashboard (pantalla de acción o rotación de personal)
+    path('accion_rotacion.html/', views.accion_rotacion_view, name='accion_rotacion'),
 
 
 
@@ -82,6 +84,8 @@ urlpatterns = [
     path('result_Evaluacion.html/', views.result_Evaluacion_view, name='result_Evaluacion'),
     # Ruta para el dashboard (pantalla de resgistro evaluación matriz)
     path('matriz.html/', views.matriz_view, name='matriz'),
+    
+
     
     
   
@@ -104,10 +108,8 @@ urlpatterns = [
     path('kpi.html/', views.kpi_view, name='kpi'),
     # Ruta para el dashboard (pantalla de onboarding)
     path('onboarding.html/', views.onboarding_view, name='onboarding'),
-    # Ruta para el dashboard (pantalla de acción o rotación de personal)
-    path('accion_rotacion.html/', views.accion_rotacion_view, name='accion_rotacion'),
-    # Ruta para el dashboard (pantalla de acción de personal)
-    path('accion_Personal.html/', views.accion_Personal_view, name='accion_Personal'),
+    
+    
     # Ruta para el dashboard (pantalla de rotación de personal)
     path('rotacion_Personal.html/', views.rotacion_Personal_view, name='rotacion_Personal'),
     # Ruta para el dashboard (pantalla de eleccion de offboarding)

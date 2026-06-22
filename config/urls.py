@@ -143,6 +143,9 @@ urlpatterns = [
     # =========================================================
     path('guardar_permiso/', views.guardar_permiso, name='guardar_permiso'),
 
+
+    
+
 ]
 
 

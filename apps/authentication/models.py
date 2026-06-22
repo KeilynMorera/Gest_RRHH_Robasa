@@ -1000,3 +1000,139 @@ class Permiso(models.Model):
     def __str__(self):
 
         return f"{self.idEmpleado} - {self.id_TipoPermiso}"
+    
+
+
+# =========================================================
+# TABLA: Accion_Personal
+# Cabecera de movimientos del personal
+# =========================================================
+class AccionPersonal(models.Model):
+
+    idAccion = models.AutoField(
+        primary_key=True,
+        db_column='idAccion'
+    )
+
+    Fecha = models.DateField(
+        db_column='Fecha'
+    )
+
+    idEmpleado = models.ForeignKey(
+
+        Empleado,
+
+        on_delete=models.CASCADE,
+
+        db_column='idEmpleado',
+
+        related_name='acciones_personal'
+    )
+
+    class Meta:
+
+        managed = False
+
+        db_table = 'Accion_Personal'
+
+        ordering = ['-Fecha']
+
+    def __str__(self):
+
+        return f"{self.idEmpleado} - {self.Fecha}"
+    
+
+# =========================================================
+# TABLA: Detalle_Accion
+# Catálogo de acciones
+# =========================================================
+class DetalleAccion(models.Model):
+
+    id_Detalle_Accion = models.AutoField(
+        primary_key=True,
+        db_column='id_Detalle_Accion'
+    )
+
+    Accion = models.CharField(
+
+        max_length=80,
+
+        db_column='Accion'
+    )
+
+    class Meta:
+
+        managed = False
+
+        db_table = 'Detalle_Accion'
+
+    def __str__(self):
+
+        return self.Accion
+    
+
+# =========================================================
+# TABLA: Accion_Tipo
+# Detalle de la acción realizada
+# =========================================================
+class AccionTipo(models.Model):
+
+    idAccion_Tipo = models.AutoField(
+
+        primary_key=True,
+
+        db_column='idAccion_Tipo'
+    )
+
+    Detalle = models.CharField(
+
+        max_length=600,
+
+        db_column='Detalle'
+    )
+
+    id_Detalle_Accion = models.ForeignKey(
+
+        DetalleAccion,
+
+        on_delete=models.CASCADE,
+
+        db_column='id_Detalle_Accion',
+
+        related_name='acciones_tipo'
+    )
+
+    idAccion = models.ForeignKey(
+
+        AccionPersonal,
+
+        on_delete=models.CASCADE,
+
+        db_column='idAccion',
+
+        related_name='detalles_accion'
+    )
+
+    idSalarioEmpleado = models.ForeignKey(
+
+        SalarioEmpleado,
+
+        on_delete=models.CASCADE,
+
+        db_column='idSalarioEmpleado',
+
+        related_name='acciones_salario'
+    )
+
+    class Meta:
+
+        managed = False
+
+        db_table = 'Accion_Tipo'
+
+    def __str__(self):
+
+        return f"{self.id_Detalle_Accion} - {self.idEmpleado if hasattr(self,'idEmpleado') else self.idAccion}"
+    
+
+
