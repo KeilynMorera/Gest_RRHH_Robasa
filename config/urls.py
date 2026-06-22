@@ -149,8 +149,12 @@ urlpatterns = [
     # VISTAS PARA ACCIONES DE PERSONAL
     # =========================================================
     
-    # Ruta inicial para cuando entran a crear una nueva acción
+    # Ruta limpia para el paso 1 (GET y POST de cabecera)
     path('accion/gestionar/', views.registrar_cabecera_accion, name='crear_accion'),
+    
+    # RUTA CORREGIDA: Es la que recibe el ID de la cabecera una vez guardado
+    path('accion/gestionar/<int:pk>/', views.registrar_cabecera_accion, name='gestionar_accion'),
+
 
 ]
 

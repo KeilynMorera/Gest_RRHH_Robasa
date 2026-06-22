@@ -35,105 +35,55 @@
           />
         </div>
 
-        <!-- =========================================================
-             MENÚ DE NAVEGACIÓN
-        ========================================================= -->
         <nav class="menu">
-          <!-- Inicio -->
-          <a href="{% url 'inicio' %}">
-            <i class="fas fa-house"></i>
-            Inicio
-          </a>
-
-          <!-- Personas o Empleados -->
-          <a href="{% url 'per_emp' %}">
-            <i class="fas fa-user-group"></i>
-            Personas o Empleados
-          </a>
-
-          <!-- Onboarding -->
-          <a href="{% url 'onboarding' %}">
-            <i class="fas fa-rocket"></i>
-            Onboarding / Entradas
-          </a>
-
-          <!-- Empresas -->
-          <a href="{% url 'empresas' %}">
-            <i class="fas fa-building"></i>
-            Empresas
-          </a>
-
-          <!-- Gerencias, Departamentos y Puestos -->
-          <a href="{% url 'comple_Empresa' %}">
-            <i class="fas fa-briefcase"></i>
-            Gerencias, Departamentos y Puestos
-          </a>
-
-          <!-- Salarios -->
-          <a href="{% url 'salarios' %}">
-            <i class="fas fa-money-bill-wave"></i>
-            Salarios
-          </a>
-
-          <!-- Reclutamiento -->
-          <a href="{% url 'reclutamiento' %}">
-            <i class="fas fa-wallet"></i>
-            Reclutamiento
-          </a>
-
-          <!-- Vacaciones -->
-          <a href="{% url 'vacaciones' %}">
-            <i class="fas fa-umbrella-beach"></i>
-            Vacaciones
-          </a>
-
-          <!-- Asistencia y Permisos -->
-          <a href="{% url 'elec_Asistencia' %}">
-            <i class="fas fa-clock"></i>
-            Asistencia y Permiso
-          </a>
-
-          <!-- Acciones o Rotaciones -->
-          <a href="{% url 'accion_rotacion' %}">
-            <i class="fas fa-clipboard-list"></i>
-            Acciones o Rotaciones del Personal
-          </a>
-
-          <!-- Evaluación de Desempeño -->
-          <a href="{% url 'evaluaciones' %}">
-            <i class="fas fa-chart-line"></i>
-            Evaluación de Desempeño
-          </a>
-
-          <!-- KPIs -->
-          <a href="{% url 'elec_KPI' %}">
-            <i class="fas fa-file-lines"></i>
-            KPIs
-          </a>
-
-          <!-- Offboarding -->
-          <a href="{% url 'elec_Offboarding' %}">
-            <i class="fas fa-door-open"></i>
-            Offboarding / Salidas
-          </a>
-
-          <!-- Reportes -->
-          <a href="{% url 'reportes' %}">
-            <i class="fas fa-file-lines"></i>
-            Reportes
-          </a>
-
-          <!-- Usuarios y Roles -->
-          <a href="{% url 'usuarios' %}">
-            <i class="fas fa-users-cog"></i>
-            Usuarios y Roles
-          </a>
-
-          <!-- Configuración -->
-          <a href="{% url 'configuraciones' %}">
-            <i class="fas fa-gear"></i>
-            Configuración
-          </a>
+          <a href="{% url 'inicio' %}"><i class="fas fa-house"></i> Inicio</a>
+          <a href="{% url 'per_emp' %}"
+            ><i class="fas fa-user-group"></i> Personas o Empleados</a
+          >
+          <a href="{% url 'onboarding' %}"
+            ><i class="fas fa-rocket"></i> Onboarding / Entradas</a
+          >
+          <a href="{% url 'empresas' %}"
+            ><i class="fas fa-building"></i> Empresas</a
+          >
+          <a href="{% url 'comple_Empresa' %}"
+            ><i class="fas fa-briefcase"></i> Gerencias, Departamentos y
+            Puestos</a
+          >
+          <a href="{% url 'salarios' %}"
+            ><i class="fas fa-money-bill-wave"></i> Salarios</a
+          >
+          <a href="{% url 'reclutamiento' %}"
+            ><i class="fas fa-wallet"></i> Reclutamiento</a
+          >
+          <a href="{% url 'vacaciones' %}"
+            ><i class="fas fa-umbrella-beach"></i> Vacaciones</a
+          >
+          <a href="{% url 'elec_Asistencia' %}"
+            ><i class="fas fa-clock"></i> Asistencia y Permiso</a
+          >
+          <a href="{% url 'accion_rotacion' %}"
+            ><i class="fas fa-clipboard-list"></i> Acciones o Rotaciones del
+            Personal</a
+          >
+          <a href="{% url 'evaluaciones' %}"
+            ><i class="fas fa-chart-line"></i> Evaluación de Desempeño</a
+          >
+          <a href="{% url 'elec_KPI' %}"
+            ><i class="fas fa-file-lines"></i> KPIs</a
+          >
+          <a href="{% url 'elec_Offboarding' %}"
+            ><i class="fas fa-door-open"></i> Offboarding / Salidas</a
+          >
+          <a href="{% url 'reportes' %}"
+            ><i class="fas fa-file-lines"></i> Reportes</a
+          >
+          <a href="{% url 'usuarios' %}"
+            ><i class="fas fa-users-cog"></i> Usuarios y Roles</a
+          >
+          <a href="{% url 'configuraciones' %}"
+            ><i class="fas fa-gear"></i> Configuración</a
+          >
         </nav>
 
         <div class="logout">
@@ -207,8 +157,13 @@
           </div>
 
           <div class="form-body">
-            <form action="{% url 'crear_accion' %}" method="POST" id="form-maestro-detalle">
+            <form
+              action="{% url 'crear_accion' %}"
+              method="POST"
+              id="form-cabecera"
+            >
               {% csrf_token %}
+              <input type="hidden" name="action" value="guardar_cabecera" />
 
               <div class="form-section" id="seccion-cabecera">
                 <h4 class="form-section-title">
@@ -256,22 +211,47 @@
                   </div>
                 </div>
 
-                <div class="form-footer">
-                  <button type="reset" id="btn-limpiar" class="btn btn-ghost">
-                    <i class="fas fa-xmark"></i> Limpiar Campos
-                  </button>
-
+                <div
+                  class="form-footer"
+                  style="margin-top: 15px; justify-content: flex-end"
+                >
                   <button
                     type="submit"
                     id="btn-guardar-cabecera"
                     class="btn btn-primary"
+                    style="padding: 8px 16px; font-size: 0.9rem"
+                    {%
+                    if
+                    paso_dos_habilitado
+                    %}disabled{%
+                    endif
+                    %}
                   >
-                    <i class="fas fa-plus-circle"></i> Iniciar Registro (Generar Folio)
+                    <i class="fas fa-plus-circle"></i> Iniciar Registro (Generar
+                    Folio)
                   </button>
                 </div>
               </div>
+            </form>
 
-              <div class="form-section disabled-section" id="seccion-detalle">
+            <form
+              action="{% url 'crear_accion' %}"
+              method="POST"
+              id="form-detalle"
+            >
+              {% csrf_token %}
+              <input type="hidden" name="action" value="finalizar_accion" />
+
+              <input
+                type="hidden"
+                name="idAccion_padre"
+                value="{% if accion_cabecera %}{{ accion_cabecera.idAccion }}{% endif %}"
+              />
+
+              <div
+                class="form-section {% if not paso_dos_habilitado %}disabled-section{% endif %}"
+                id="seccion-detalle"
+              >
                 <h4 class="form-section-title">
                   <i class="fas fa-layer-group"></i> 2. Tipo y Especificación
                   del Movimiento
@@ -287,7 +267,13 @@
                       id="Tipo_Accion"
                       name="Tipo_Accion"
                       required
-                      disabled
+                      {%
+                      if
+                      not
+                      paso_dos_habilitado
+                      %}disabled{%
+                      endif
+                      %}
                     >
                       <option value="" disabled selected>
                         Seleccione la acción...
@@ -305,15 +291,23 @@
                       <i class="fas fa-money-check-dollar field-icon"></i>
                       Compensación Total Asociada
                     </label>
-                    <select id="idSalario" name="idSalario" disabled>
+                    <select
+                      id="idSalario"
+                      name="idSalario"
+                      {%
+                      if
+                      not
+                      paso_dos_habilitado
+                      %}disabled{%
+                      endif
+                      %}
+                    >
                       <option value="" selected>
                         Seleccione una compensación...
                       </option>
                       {% for salario in salarios %}
                       <option value="{{ salario.idSalario }}">
-                        ₡{{ salario.Compensacion_Total }} | Neto: ₡{{
-                        salario.Salario_Semanal_Neto }} | Comisión: ₡{{
-                        salario.Comision }}
+                        ₡{{ salario.Compensacion_Total }} | Neto: ₡{{ salario.Salario_Semanal_Neto }} | Comisión: ₡{{ salario.Comision }}
                       </option>
                       {% endfor %}
                     </select>
@@ -331,7 +325,13 @@
                     rows="4"
                     placeholder="Detalle del movimiento..."
                     required
-                    disabled
+                    {%
+                    if
+                    not
+                    paso_dos_habilitado
+                    %}disabled{%
+                    endif
+                    %}
                   ></textarea>
                 </div>
               </div>
@@ -345,7 +345,13 @@
                   type="submit"
                   id="btn-finalizar"
                   class="btn btn-primary"
-                  disabled
+                  {%
+                  if
+                  not
+                  paso_dos_habilitado
+                  %}disabled{%
+                  endif
+                  %}
                 >
                   <i class="fas fa-shield-halved"></i> Aplicar y Sellar Acción
                 </button>
@@ -362,59 +368,19 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        const btnGuardarCabecera = document.getElementById(
-          "btn-guardar-cabecera",
-        );
-        const seccionDetalle = document.getElementById("seccion-detalle");
-        const inputsDetalle =
-          seccionDetalle.querySelectorAll("select, textarea");
-        const btnFinalizar = document.getElementById("btn-finalizar");
-        const idAccionInput = document.getElementById("idAccion");
+        const formCabecera = document.getElementById("form-cabecera");
 
-        // Evento al dar clic en "Iniciar Registro"
-        btnGuardarCabecera.addEventListener("click", function () {
+        formCabecera.addEventListener("submit", function (e) {
           const empleado = document.getElementById("idEmpleado").value;
           const fecha = document.getElementById("Fecha").value;
 
-          // Validamos que la cabecera tenga datos válidos antes de proceder
           if (!empleado || !fecha) {
+            e.preventDefault();
             alert(
-              "Por favor, seleccione el colaborador y la fecha de aplicación antes de continuar.",
+              "Por favor, seleccione el colaborador y la fecha de aplicación antes de generar el folio.",
             );
-            return;
           }
-
-          // SIMULACIÓN O RECEPCIÓN DE FOLIO (Aquí puedes hacer un fetch AJAX a tu backend si lo prefieres)
-          // Si tu backend recarga la página con el ID, la lógica de Django 'value="{{...}}"' lo gestionará.
-          if (!idAccionInput.value) {
-            idAccionInput.value = Math.floor(100000 + Math.random() * 900000); // Folio ficticio temporal para pruebas
-          }
-
-          // Activamos la Sección de Detalles eliminando la clase restrictiva y habilitando sus elementos
-          seccionDetalle.classList.remove("disabled-section");
-          inputsDetalle.forEach((input) => input.removeAttribute("disabled"));
-          btnFinalizar.removeAttribute("disabled");
-
-          // Deshabilitamos la edición de la cabecera para garantizar consistencia del Folio
-          document.getElementById("idEmpleado").style.pointerEvents = "none";
-          document.getElementById("Fecha").readOnly = true;
-          btnGuardarCabecera.disabled = true;
         });
-
-        // Evento Reset para restaurar el estado inicial seguro de la vista
-        document
-          .getElementById("btn-limpiar")
-          .addEventListener("click", function () {
-            seccionDetalle.classList.add("disabled-section");
-            inputsDetalle.forEach((input) =>
-              input.setAttribute("disabled", "true"),
-            );
-            btnFinalizar.setAttribute("disabled", "true");
-
-            document.getElementById("idEmpleado").style.pointerEvents = "auto";
-            document.getElementById("Fecha").readOnly = false;
-            btnGuardarCabecera.disabled = false;
-          });
       });
     </script>
   </body>

@@ -1962,33 +1962,43 @@ def guardar_permiso(request):
 
 
 
-
-
 def registrar_cabecera_accion(request, pk=None):
     accion_cabecera = None
     paso_dos_habilitado = False
 
-    # Si la URL cuenta con una clave primaria (pk), la cabecera ya existe en la Base de Datos
     if pk:
         accion_cabecera = get_object_or_404(AccionPersonal, pk=pk)
         paso_dos_habilitado = True
 
     if request.method == 'POST':
-        # Procesamos de manera única e independiente el botón "guardar_cabecera"
-        form_cabecera = AccionPersonalForm(request.POST, instance=accion_cabecera)
+        # Detectamos cuál botón envió el formulario
+        accion_solicitada = request.POST.get('action')
+
+        # =========================================================================
+        # CASO 1: Se presionó "Iniciar Registro (Generar Folio)"
+        # =========================================================================
+        if accion_solicitada == 'guardar_cabecera':
+            form_cabecera = AccionPersonalForm(request.POST, instance=accion_cabecera)
+            if form_cabecera.is_valid():
+                accion_cabecera = form_cabecera.save()
+                messages.success(request, f"Cabecera procesada con éxito. Folio: {accion_cabecera.idAccion}")
+                # Redirecciona a la misma vista con el ID para habilitar el paso 2
+                return redirect('gestionar_accion', pk=accion_cabecera.idAccion)
         
-        if form_cabecera.is_valid():
-            # Guarda en SQL Server y captura el idAccion (Identity Autoincremental)
-            accion_cabecera = form_cabecera.save()
-            messages.success(request, f"Cabecera procesada con éxito. Folio asignado: {accion_cabecera.idAccion}")
-            
-            # Redireccionamos a la misma vista pasando el ID para habilitar la segunda sección
-            return redirect('gestionar_accion', pk=accion_cabecera.idAccion)
+        # =========================================================================
+        # CASO 2: Se presionó "Aplicar y Sellar Acción" (El botón de abajo)
+        # =========================================================================
+        elif accion_solicitada == 'finalizar_accion':
+            # Aquí procesas lo que corresponde al paso 2 (Detalles)
+            # Ejemplo: form_detalle = DetalleAccionForm(request.POST) ...
+            messages.success(request, "¡Acción completa guardada y sellada con éxito!")
+            return redirect('dashboard_or_whatever') # Tu redirección final
+
     else:
         # Petición GET normal
         form_cabecera = AccionPersonalForm(instance=accion_cabecera)
 
-    # Obtenemos los catálogos requeridos por las estructuras del HTML original
+    # Catálogos para el renderizado
     empleados = Empleado.objects.select_related('idPersona').all()
     tipos_accion = DetalleAccion.objects.all()
     salarios = SalarioEmpleado.objects.select_related('idEmpleado__idPersona').all()
@@ -2001,6 +2011,112 @@ def registrar_cabecera_accion(request, pk=None):
         'tipos_accion': tipos_accion,
         'salarios': salarios,
     })
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from .models import AccionPersonal, DetalleAccion, AccionTipo, SalarioEmpleado
+from .forms import AccionPersonalForm  # Ajusta según tu archivo forms.py
+
+def registrar_cabecera_accion(request, pk=None):
+    accion_cabecera = None
+    paso_dos_habilitado = False
+
+    # -------------------------------------------------------------------------
+    # FLUJO GET: Si viene un PK en la URL, cargamos la cabecera existente (Paso 2)
+    # -------------------------------------------------------------------------
+    if pk:
+        accion_cabecera = get_object_or_404(AccionPersonal, pk=pk)
+        paso_dos_habilitado = True
+
+    # -------------------------------------------------------------------------
+    # FLUJO POST: Procesamiento de los dos formularios independientes
+    # -------------------------------------------------------------------------
+    if request.method == 'POST':
+        action = request.POST.get('action')
+
+        # === FORMULARIO 1: Iniciar Registro (Guardar Cabecera) ===
+        if action == 'guardar_cabecera':
+            form_cabecera = AccionPersonalForm(request.POST)
+            if form_cabecera.is_valid():
+                # Guarda en SQL Server y recupera la instancia con su ID autoincremental
+                nueva_cabecera = form_cabecera.save()
+                messages.success(request, f"Cabecera guardada con éxito. Folio: {nueva_cabecera.idAccion}")
+                # Redirige a la ruta con el ID para desbloquear la segunda sección
+                return redirect('gestionar_accion', pk=nueva_cabecera.idAccion)
+            else:
+                messages.error(request, "Error al validar los datos de la cabecera.")
+
+        # === FORMULARIO 2: Aplicar y Sellar Acción (Guardar Detalle) ===
+        elif action == 'finalizar_accion':
+            # 1. Recuperamos el ID de la cabecera desde el input hidden del HTML
+            id_cabecera_padre = request.POST.get('idAccion_padre')
+            
+            if not id_cabecera_padre:
+                messages.error(request, "Error crítico: No se encontró la cabecera asociada al movimiento.")
+                return redirect('crear_accion')
+
+            # 2. Obtenemos el objeto de la cabecera real
+            cabecera_obj = get_object_or_404(AccionPersonal, pk=id_cabecera_padre)
+
+            # 3. Capturamos los datos enviados por el Formulario Detalle
+            id_detalle_accion = request.POST.get('Tipo_Accion')  # ID del catálogo DetalleAccion
+            id_salario_empleado = request.POST.get('idSalario')  # ID de SalarioEmpleado
+            detalle_texto = request.POST.get('Detalle')
+
+            # 4. Validamos que los campos obligatorios del HTML no vengan vacíos en el backend
+            if not id_detalle_accion or not detalle_texto:
+                messages.error(request, "Por favor complete todos los campos requeridos de la especificación.")
+                return redirect('gestionar_accion', pk=cabecera_obj.idAccion)
+
+            try:
+                # 5. Instanciamos los objetos foráneos correspondientes
+                catalogo_accion = get_object_or_404(DetalleAccion, pk=id_detalle_accion)
+                
+                # 'idSalarioEmpleado' puede ser opcional o nulo en algunos tipos de acciones
+                salario_obj = None
+                if id_salario_empleado:
+                    salario_obj = get_object_or_404(SalarioEmpleado, pk=id_salario_empleado)
+
+                # 6. Creamos y guardamos directamente en la tabla 'Accion_Tipo'
+                nuevo_movimiento = AccionTipo(
+                    idAccion=cabecera_obj,               # Instancia de AccionPersonal
+                    id_Detalle_Accion=catalogo_accion,   # Instancia de DetalleAccion
+                    idSalarioEmpleado=salario_obj,       # Instancia de SalarioEmpleado (o None)
+                    Detalle=detalle_texto                # Texto libre (max_length=600)
+                )
+                
+                # Ejecuta el INSERT en la base de datos SQL Server
+                nuevo_movimiento.save()
+
+                messages.success(request, f"El movimiento administrativo del Folio {cabecera_obj.idAccion} se ha sellado y guardado correctamente.")
+                
+                # Redirigimos al historial o pantalla principal de rotación
+                return redirect('accion_rotacion')
+
+            except Exception as e:
+                messages.error(request, f"Error al guardar en la base de datos: {str(e)}")
+                return redirect('gestionar_accion', pk=cabecera_obj.idAccion)
+
+    else:
+        # Si es un GET (Limpio o con PK), inicializamos el formulario de la cabecera
+        form_cabecera = AccionPersonalForm(instance=accion_cabecera)
+
+    # -------------------------------------------------------------------------
+    # CONTEXTO: Pasamos los catálogos necesarios para los select del HTML
+    # -------------------------------------------------------------------------
+    context = {
+        'form_cabecera': form_cabecera,
+        'accion_cabecera': accion_cabecera,
+        'paso_dos_habilitado': paso_dos_habilitado,
+        # Alimentamos los dropdowns consultando los modelos reales de tus tablas
+        'tipos_accion': DetalleAccion.objects.all(),
+        'salarios': SalarioEmpleado.objects.all(),
+    }
+    
+    return render(request, 'accion_Personal.html', context)
+
+
 
 
 

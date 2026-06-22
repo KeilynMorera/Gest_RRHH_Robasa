@@ -1032,9 +1032,6 @@ class AccionPersonal(models.Model):
         return f"Folio: {self.idAccion} - Empleado: {self.idEmpleado_id} ({self.Fecha})"
     
 
-
-
-
 # =========================================================
 # TABLA: Detalle_Accion (Catálogo de Tipos de Acciones)
 # =========================================================
