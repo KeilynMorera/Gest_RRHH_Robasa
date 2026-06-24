@@ -386,103 +386,242 @@
                 </div>
               </div>
 
-              <!-- =====================================================
-                    CRITERIOS
-              ===================================================== -->
+              <!-- =========================================================
+                    LISTA DE CRITERIOS DE EVALUACIÓN
+              ========================================================= -->
               <div class="evaluation-list">
-                <!-- METAS -->
+
+                <!-- =====================================================
+                      CUMPLE METAS Y OBJETIVOS
+                ===================================================== -->
                 <div class="evaluation-item">
-                  <h5>Cumplimiento de Metas</h5>
+                  <div class="evaluation-info">
+                    <h5>Cumplimiento de Metas y Objetivos</h5>
+                    <p>
+                      Evalúa si el colaborador cumple con los objetivos, metas y
+                      KPIs asignados por la organización.
+                    </p>
+                  </div>
 
                   <div class="status-group">
-                    <input
-                      type="radio"
-                      name="Cumple_Metas_Objetivos"
-                      value="1"
-                      required
-                    />
-                    Sí
-                    <input
-                      type="radio"
-                      name="Cumple_Metas_Objetivos"
-                      value="0"
-                    />
-                    No
+                    <!-- ACTIVO -->
+                    <div class="status-option">
+                      <input
+                        type="radio"
+                        id="metas_activo"
+                        name="Cumple_Metas_Objetivos"
+                        value="1"
+                        required
+                      />
+
+                      <label for="metas_activo">
+                        <span class="dot"></span>
+                        Activo
+                      </label>
+                    </div>
+
+                    <!-- INACTIVO -->
+                    <div class="status-option">
+                      <input
+                        type="radio"
+                        id="metas_inactivo"
+                        name="Cumple_Metas_Objetivos"
+                        value="0"
+                      />
+
+                      <label for="metas_inactivo">
+                        <span class="dot"></span>
+                        Inactivo
+                      </label>
+                    </div>
                   </div>
                 </div>
 
-                <!-- FUNCIONES -->
+                <!-- =====================================================
+                      CUMPLE FUNCIONES ASIGNADAS
+                ===================================================== -->
                 <div class="evaluation-item">
-                  <h5>Funciones Asignadas</h5>
+                  <div class="evaluation-info">
+                    <h5>Cumplimiento de Funciones Asignadas</h5>
+
+                    <p>
+                      Determina si el colaborador ejecuta correctamente las
+                      funciones y responsabilidades de su puesto.
+                    </p>
+                  </div>
 
                   <div class="status-group">
-                    <input
-                      type="radio"
-                      name="Cumple_FuncionesAsig"
-                      value="1"
-                      required
-                    />
-                    Sí
-                    <input type="radio" name="Cumple_FuncionesAsig" value="0" />
-                    No
+                    <!-- ACTIVO -->
+                    <div class="status-option">
+                      <input
+                        type="radio"
+                        id="funciones_activo"
+                        name="Cumple_FuncionesAsig"
+                        value="1"
+                        required
+                      />
+
+                      <label for="funciones_activo">
+                        <span class="dot"></span>
+                        Activo
+                      </label>
+                    </div>
+
+                    <!-- INACTIVO -->
+                    <div class="status-option">
+                      <input
+                        type="radio"
+                        id="funciones_inactivo"
+                        name="Cumple_FuncionesAsig"
+                        value="0"
+                      />
+
+                      <label for="funciones_inactivo">
+                        <span class="dot"></span>
+                        Inactivo
+                      </label>
+                    </div>
                   </div>
                 </div>
 
-                <!-- ENTREGABLES -->
+                <!-- =====================================================
+                      ENTREGABLES DE CALIDAD Y TIEMPO
+                ===================================================== -->
                 <div class="evaluation-item">
-                  <h5>Entregables</h5>
+                  <div class="evaluation-info">
+                    <h5>Entregables de Calidad y Tiempo</h5>
+
+                    <p>
+                      Evalúa si las entregas realizadas cumplen con los
+                      estándares de calidad y fechas establecidas.
+                    </p>
+                  </div>
 
                   <div class="status-group">
-                    <input
-                      type="radio"
-                      name="Entregables_Calidad_Tiempo"
-                      value="1"
-                      required
-                    />
-                    Sí
-                    <input
-                      type="radio"
-                      name="Entregables_Calidad_Tiempo"
-                      value="0"
-                    />
-                    No
+                    <!-- ACTIVO -->
+                    <div class="status-option">
+                      <input
+                        type="radio"
+                        id="entregables_activo"
+                        name="Entregables_Calidad_Tiempo"
+                        value="1"
+                        required
+                      />
+
+                      <label for="entregables_activo">
+                        <span class="dot"></span>
+                        Activo
+                      </label>
+                    </div>
+
+                    <!-- INACTIVO -->
+                    <div class="status-option">
+                      <input
+                        type="radio"
+                        id="entregables_inactivo"
+                        name="Entregables_Calidad_Tiempo"
+                        value="0"
+                      />
+
+                      <label for="entregables_inactivo">
+                        <span class="dot"></span>
+                        Inactivo
+                      </label>
+                    </div>
                   </div>
                 </div>
 
-                <!-- ASISTENCIA -->
+                <!-- =====================================================
+                      CUMPLIMIENTO DE ASISTENCIA
+                ===================================================== -->
                 <div class="evaluation-item">
-                  <h5>Asistencia</h5>
+                  <div class="evaluation-info">
+                    <h5>Cumplimiento de Asistencia</h5>
+
+                    <p>
+                      Verifica puntualidad, asistencia y cumplimiento de
+                      horarios laborales establecidos.
+                    </p>
+                  </div>
 
                   <div class="status-group">
-                    <input
-                      type="radio"
-                      name="Cumple_Asistencia"
-                      value="1"
-                      required
-                    />
-                    Sí
-                    <input type="radio" name="Cumple_Asistencia" value="0" /> No
+                    <!-- ACTIVO -->
+                    <div class="status-option">
+                      <input
+                        type="radio"
+                        id="asistencia_activo"
+                        name="Cumple_Asistencia"
+                        value="1"
+                        required
+                      />
+
+                      <label for="asistencia_activo">
+                        <span class="dot"></span>
+                        Activo
+                      </label>
+                    </div>
+
+                    <!-- INACTIVO -->
+                    <div class="status-option">
+                      <input
+                        type="radio"
+                        id="asistencia_inactivo"
+                        name="Cumple_Asistencia"
+                        value="0"
+                      />
+
+                      <label for="asistencia_inactivo">
+                        <span class="dot"></span>
+                        Inactivo
+                      </label>
+                    </div>
                   </div>
                 </div>
 
-                <!-- COMPROMISO -->
+                <!-- =====================================================
+                      COMPROMISO Y COLABORACIÓN
+                ===================================================== -->
                 <div class="evaluation-item">
-                  <h5>Compromiso y Colaboración</h5>
+                  <div class="evaluation-info">
+                    <h5>Compromiso y Colaboración</h5>
+
+                    <p>
+                      Mide el nivel de trabajo en equipo, compromiso
+                      organizacional y colaboración interna.
+                    </p>
+                  </div>
 
                   <div class="status-group">
-                    <input
-                      type="radio"
-                      name="Muestra_Compromiso_Colaboracion"
-                      value="1"
-                      required
-                    />
-                    Sí
-                    <input
-                      type="radio"
-                      name="Muestra_Compromiso_Colaboracion"
-                      value="0"
-                    />
-                    No
+                    <!-- ACTIVO -->
+                    <div class="status-option">
+                      <input
+                        type="radio"
+                        id="compromiso_activo"
+                        name="Muestra_Compromiso_Colaboracion"
+                        value="1"
+                        required
+                      />
+
+                      <label for="compromiso_activo">
+                        <span class="dot"></span>
+                        Activo
+                      </label>
+                    </div>
+
+                    <!-- INACTIVO -->
+                    <div class="status-option">
+                      <input
+                        type="radio"
+                        id="compromiso_inactivo"
+                        name="Muestra_Compromiso_Colaboracion"
+                        value="0"
+                      />
+
+                      <label for="compromiso_inactivo">
+                        <span class="dot"></span>
+                        Inactivo
+                      </label>
+                    </div>
                   </div>
                 </div>
               </div>

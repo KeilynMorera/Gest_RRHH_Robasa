@@ -1251,3 +1251,63 @@ class EvaluacionDesempeno(models.Model):
 
     def __str__(self):
         return f"Desempeño {self.id_Desempeno} - Eval {self.idEvaluacion_id}"
+    
+
+# =========================================================
+# TABLA: Evaluacion_JefePotencial
+# Evaluación del potencial realizada por la jefatura
+# =========================================================
+class EvaluacionJefePotencial(models.Model):
+
+    id_Eva_JefePote = models.AutoField(
+        primary_key=True,
+        db_column='id_Eva_JefePote'
+    )
+
+    Capacidad_Liderazgo = models.BooleanField(
+        db_column='Capacidad_Liderazgo'
+    )
+
+    Aprendizaje_Rapido = models.BooleanField(
+        db_column='Aprendizaje_Rapido'
+    )
+
+    Adaptacion_Cambio = models.BooleanField(
+        db_column='Adaptacion_Cambio'
+    )
+
+    Iniciativa_Mejora = models.BooleanField(
+        db_column='Iniciativa_Mejora'
+    )
+
+    Madurez_Emocional = models.BooleanField(
+        db_column='Madurez_Emocional'
+    )
+
+    pct_totalEv = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        db_column='pct_totalEv'
+    )
+
+    Observaciones = models.CharField(
+        max_length=500,
+        db_column='Observaciones'
+    )
+
+    idEvaluacion = models.ForeignKey(
+        Evaluacion,
+        on_delete=models.CASCADE,
+        db_column='idEvaluacion',
+        related_name='evaluaciones_potencial'
+    )
+
+    class Meta:
+        managed = False          # La tabla ya existe en SQL Server
+        db_table = 'Evaluacion_JefePotencial'
+        ordering = ['-id_Eva_JefePote']
+
+    def __str__(self):
+        return f"Potencial {self.id_Eva_JefePote} - Eval {self.idEvaluacion_id}"

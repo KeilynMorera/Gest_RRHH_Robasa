@@ -212,64 +212,52 @@
                   Información General del Periodo
                 </h4>
 
-                <!-- Grid -->
                 <div class="form-grid">
-                  <!-- ==============================================
-                       EMPLEADO EVALUADO
-                       ============================================== -->
+                  <!-- EMPLEADO EVALUADO -->
                   <div class="field">
                     <label for="idEmpleado">
                       <i class="fas fa-user field-icon"></i>
                       Empleado Evaluado <span class="req">*</span>
                     </label>
 
-                    <!-- Select de empleados -->
                     <select id="idEmpleado" name="idEmpleado" required>
-                      <!-- Opción por defecto -->
-                      <option value="" disabled selected>
+                      <option value="" selected disabled>
                         Seleccione un empleado...
                       </option>
 
-                      <!-- Recorre la lista de empleados -->
                       {% for empleado in empleados %}
                       <option value="{{ empleado.idEmpleado }}">
-                        {{ empleado.Primer_Nombre }} {{ empleado.Primer_Apellido
-                        }}
+                        {{ empleado }}
                       </option>
                       {% endfor %}
                     </select>
                   </div>
 
-                  <!-- ==============================================
-                       EVALUADOR
-                       ============================================== -->
+                  <!-- EVALUADOR -->
                   <div class="field">
                     <label for="idEvaluador">
                       <i class="fas fa-user-tie field-icon"></i>
-                      Evaluador / Jefatura Inmediata
-                      <span class="req">*</span>
+                      Evaluador / Jefatura <span class="req">*</span>
                     </label>
 
-                    <!-- Select de evaluadores -->
                     <select id="idEvaluador" name="idEvaluador" required>
-                      <option value="" disabled selected>
+                      <option value="" selected disabled>
                         Seleccione un evaluador...
                       </option>
 
-                      <!-- Recorre evaluadores -->
-                      {% for jefe in evaluadores %}
-                      <option value="{{ jefe.idEmpleado }}">
-                        {{ jefe.Primer_Nombre }} {{ jefe.Primer_Apellido }}
+                      {% for empleado in empleados %}
+                      <option value="{{ empleado.idEmpleado }}">
+                        {{ empleado }}
                       </option>
                       {% endfor %}
                     </select>
                   </div>
 
-                  <!-- Fecha -->
+                  <!-- FECHA -->
                   <div class="field">
                     <label for="Fecha_Evaluacion">
                       <i class="fas fa-calendar-day field-icon"></i>
-                      Fecha de Aplicación <span class="req">*</span>
+                      Fecha de Evaluación <span class="req">*</span>
                     </label>
 
                     <input
@@ -280,22 +268,23 @@
                     />
                   </div>
 
-                  <!-- Tipo de periodo -->
+                  <!-- PERIODO -->
                   <div class="field">
-                    <label for="Tipo_Periodo">
-                      <i class="fas fa-clock-rotate-left field-icon"></i>
+                    <label for="periodo">
+                      <i class="fas fa-clock field-icon"></i>
                       Tipo de Periodo <span class="req">*</span>
                     </label>
 
-                    <select id="Tipo_Periodo" name="Tipo_Periodo" required>
-                      <option value="" disabled selected>
-                        Seleccione el tipo...
+                    <select name="periodo" id="periodo" required>
+                      <option value="" selected disabled>
+                        Seleccione periodo...
                       </option>
 
-                      <option value="Mensual">Mensual</option>
-                      <option value="Trimestral">Trimestral</option>
-                      <option value="Semestral">Semestral</option>
-                      <option value="Anual">Anual</option>
+                      {% for p in periodos %}
+                      <option value="{{ p.idPeriodo }}">
+                        {{ p.Tipo_Periodo }}
+                      </option>
+                      {% endfor %}
                     </select>
                   </div>
                 </div>
@@ -494,12 +483,7 @@
                       Comentarios adicionales, fortalezas observadas y áreas
                       específicas de desarrollo
                     </label>
-                    <textarea
-                      id="observaciones"
-                      name="observaciones"
-                      rows="5"
-                      placeholder="Describa el porqué de la calificación de potencial del colaborador y sus posibles proyecciones..."
-                    ></textarea>
+                    <textarea name="Observaciones" rows="4" required></textarea>
                   </div>
                 </div>
               </div>

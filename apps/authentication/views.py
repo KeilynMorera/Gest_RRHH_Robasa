@@ -2342,13 +2342,105 @@ def crear_evaluacion(request):
     return render(request, "eva_Empleado.html", context)
 
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.db import transaction
+
+# =========================================================
+# CREAR EVALUACIÓN DE POTENCIAL (JEFATURA)
+# =========================================================
+def crear_evaluacion_jefatura(request):
+
+    empleados = Empleado.objects.select_related("idPersona").all()
+    evaluadores = Empleado.objects.select_related("idPersona").all()
+    periodos = Periodo.objects.all()
+
+    if request.method == "POST":
+
+        try:
+            with transaction.atomic():
+
+                # ====================================
+                # CABECERA
+                # ====================================
+                idEmpleado = request.POST.get("idEmpleado")
+                idEvaluador = request.POST.get("idEvaluador")
+                fecha = request.POST.get("Fecha_Evaluacion")
+                periodo_id = request.POST.get("periodo")
+
+                evaluacion = Evaluacion.objects.create(
+                    Fecha_Evaluacion=fecha,
+                    idPeriodo_id=periodo_id,
+                    idEmpleado_Ev_id=idEmpleado,
+                    idEmpleado_Jef_id=idEvaluador
+                )
+
+                # ====================================
+                # DETALLE DE JEFATURA
+                # ====================================
+                liderazgo = request.POST.get("Capacidad_Liderazgo") == "1"
+                aprendizaje = request.POST.get("Aprendizaje_Rapido") == "1"
+                adaptacion = request.POST.get("Adaptacion_Cambio") == "1"
+                iniciativa = request.POST.get("Iniciativa_Mejora") == "1"
+                madurez = request.POST.get("Madurez_Emocional") == "1"
+
+                observaciones = request.POST.get("Observaciones")
+
+                # Calcular porcentaje
+                total = sum([
+                    liderazgo,
+                    aprendizaje,
+                    adaptacion,
+                    iniciativa,
+                    madurez
+                ])
+
+                pct_total = (total / 5) * 100
+
+                # ====================================
+                # GUARDAR DETALLE
+                # ====================================
+                EvaluacionJefePotencial.objects.create(
+                    Capacidad_Liderazgo=liderazgo,
+                    Aprendizaje_Rapido=aprendizaje,
+                    Adaptacion_Cambio=adaptacion,
+                    Iniciativa_Mejora=iniciativa,
+                    Madurez_Emocional=madurez,
+                    pct_totalEv=pct_total,
+                    Observaciones=observaciones,
+                    idEvaluacion=evaluacion
+                )
+
+                messages.success(
+                    request,
+                    "Evaluación de jefatura registrada correctamente."
+                )
+
+                return redirect("crear_evaluacion_jefatura")
+
+        except Exception as e:
+
+            messages.error(
+                request,
+                f"Error al guardar: {str(e)}"
+            )
+
+    context = {
+        "empleados": empleados,
+        "evaluadores": evaluadores,
+        "periodos": periodos,
+    }
+
+    return render(
+        request,
+        "eva_Jefatura.html",
+        context
+    )
 
 
 
 
 
-def eva_Jefatura_view(request):
-    return render(request, 'eva_Jefatura.html')
 
 def result_Evaluacion_view(request):
     return render(request, 'result_Evaluacion.html')

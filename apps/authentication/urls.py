@@ -82,15 +82,15 @@ urlpatterns = [
     # Ruta para el dashboard (pantalla de registro de evaluación de empleados)
     path('evaluaciones/nueva/', views.crear_evaluacion, name='crear_evaluacion'),
 
-
-
-
-
-    
-    
-    
     # Ruta para el dashboard (pantalla de registro de evaluación de jefatura)
-    path('eva_Jefatura.html/', views.eva_Jefatura_view, name='eva_Jefatura'),
+    path('eva-jefatura/', views.crear_evaluacion_jefatura, name='crear_evaluacion_jefatura'),
+
+
+
+    
+    
+    
+    
     # Ruta para el dashboard (pantalla de vista de resultados de la evaluación)
     path('result_Evaluacion.html/', views.result_Evaluacion_view, name='result_Evaluacion'),
     # Ruta para el dashboard (pantalla de resgistro evaluación matriz)
