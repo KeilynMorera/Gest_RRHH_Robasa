@@ -6,6 +6,7 @@ from django.db.models import Sum
 from datetime import date, datetime
 from django.contrib import messages
 from .forms import AccionPersonalForm
+from django.db import transaction
 
 #Importa todo lo que se encuentra en el archivo models.py
 #Donde se encuentran los modelos de las tablas de la base de datos
@@ -1961,6 +1962,12 @@ def guardar_permiso(request):
 
 
 
+def accion_rotacion_view(request):
+    return render(request, 'accion_rotacion.html')
+
+# =========================================================
+# GUARDAR CABECERA DE LA ACCIÓN DEL PERSONAL
+# =========================================================
 def registrar_cabecera_accion(request, pk=None):
     accion_cabecera = None
     paso_dos_habilitado = False
@@ -2085,6 +2092,9 @@ def registrar_cabecera_accion(request, pk=None):
     return render(request, 'accion_Personal.html', context)
 
 
+# =========================================================
+# GUARDAR DETALLE DE LA ACCIÓN ANTERIORMENTE REGISTRADA
+# =========================================================
 def guardar_detalle_accion(request):
 
     if request.method == 'POST':
@@ -2265,8 +2275,77 @@ def obtener_salario_actual(request, idEmpleado):
 def evaluaciones_view(request):
     return render(request, 'evaluaciones.html')
 
-def eva_Empleado_view(request):
-    return render(request, 'eva_Empleado.html')
+
+# =========================================================
+# CREAR EVALUACIÓN + DESEMPEÑO (CABECERA + DETALLE)
+# =========================================================
+def crear_evaluacion(request):
+
+    empleados = Empleado.objects.select_related("idPersona").all()
+    evaluadores = Empleado.objects.select_related("idPersona").all()
+    periodos = Periodo.objects.all()
+
+    if request.method == "POST":
+
+        try:
+            with transaction.atomic():
+
+                # ============================
+                # CABECERA
+                # ============================
+                idEmpleado = request.POST.get("idEmpleado")
+                idEvaluador = request.POST.get("idEvaluador")
+                fecha = request.POST.get("Fecha_Evaluacion")
+                periodo_id = request.POST.get("periodo")
+
+                evaluacion = Evaluacion.objects.create(
+                    Fecha_Evaluacion=fecha,
+                    idPeriodo_id=periodo_id,
+                    idEmpleado_Ev_id=idEmpleado,
+                    idEmpleado_Jef_id=idEvaluador
+                )
+
+                # ============================
+                # DETALLE
+                # ============================
+                c1 = request.POST.get("Cumple_Metas_Objetivos") == "1"
+                c2 = request.POST.get("Cumple_FuncionesAsig") == "1"
+                c3 = request.POST.get("Entregables_Calidad_Tiempo") == "1"
+                c4 = request.POST.get("Cumple_Asistencia") == "1"
+                c5 = request.POST.get("Muestra_Compromiso_Colaboracion") == "1"
+
+                total = sum([c1, c2, c3, c4, c5])
+                pct_total = (total / 5) * 100
+
+                EvaluacionDesempeno.objects.create(
+                    Cumple_Metas_Objetivos=c1,
+                    Cumple_FuncionesAsig=c2,
+                    Entregables_Calidad_Tiempo=c3,
+                    Cumple_Asistencia=c4,
+                    Muestra_Compromiso_Colaboracion=c5,
+                    pct_totalEv=pct_total,
+                    idEvaluacion=evaluacion
+                )
+
+                messages.success(request, "Evaluación registrada correctamente.")
+                return redirect("crear_evaluacion")
+
+        except Exception as e:
+            messages.error(request, f"Error al guardar: {str(e)}")
+
+    context = {
+        "empleados": empleados,
+        "evaluadores": evaluadores,
+        "periodos": periodos,
+    }
+
+    return render(request, "eva_Empleado.html", context)
+
+
+
+
+
+
 
 def eva_Jefatura_view(request):
     return render(request, 'eva_Jefatura.html')
@@ -2304,11 +2383,9 @@ def kpi_view(request):
 def onboarding_view(request):
     return render(request, 'onboarding.html')
 
-def accion_rotacion_view(request):
-    return render(request, 'accion_rotacion.html')
 
-def accion_Personal_view(request):
-    return render(request, 'accion_Personal.html')
+
+
 
 def rotacion_Personal_view(request):
     return render(request, 'rotacion_Personal.html')

@@ -76,17 +76,19 @@ urlpatterns = [
     path('accion/gestionar/', views.registrar_cabecera_accion, name='crear_accion'),
 
 
-
-
-
-
-
-
-
     # Ruta para el dashboard (pantalla de eleccion (Evaluación de Empleado o Jefatura))
     path('evaluaciones.html/', views.evaluaciones_view, name='evaluaciones'),
+
     # Ruta para el dashboard (pantalla de registro de evaluación de empleados)
-    path('eva_Empleado.html/', views.eva_Empleado_view, name='eva_Empleado'),
+    path('evaluaciones/nueva/', views.crear_evaluacion, name='crear_evaluacion'),
+
+
+
+
+
+    
+    
+    
     # Ruta para el dashboard (pantalla de registro de evaluación de jefatura)
     path('eva_Jefatura.html/', views.eva_Jefatura_view, name='eva_Jefatura'),
     # Ruta para el dashboard (pantalla de vista de resultados de la evaluación)
@@ -119,8 +121,7 @@ urlpatterns = [
     path('onboarding.html/', views.onboarding_view, name='onboarding'),
     
     
-    # Ruta para el dashboard (pantalla de rotación de personal)
-    path('rotacion_Personal.html/', views.rotacion_Personal_view, name='rotacion_Personal'),
+    
     # Ruta para el dashboard (pantalla de eleccion de offboarding)
     path('elec_Offboarding.html/', views.elec_Offboarding_view, name='elec_Offboarding'),
     # Ruta para el dashboard (pantalla de registro de offboarding)

@@ -297,77 +297,63 @@
                ========================================================= -->
           <div class="form-body">
             <!-- Formulario -->
-            <form method="POST" action="">
-              <!-- Token de seguridad CSRF de Django -->
+            <form method="POST" action="{% url 'crear_evaluacion' %}">
               {% csrf_token %}
 
               <!-- =====================================================
-                   SECCIÓN: INFORMACIÓN GENERAL
-                   ===================================================== -->
+                    INFORMACIÓN GENERAL
+              ===================================================== -->
               <div class="form-section">
-                <!-- Título -->
                 <h4 class="form-section-title">
                   Información General del Periodo
                 </h4>
 
-                <!-- Grid -->
                 <div class="form-grid">
-                  <!-- ==============================================
-                       EMPLEADO EVALUADO
-                       ============================================== -->
+                  <!-- EMPLEADO EVALUADO -->
                   <div class="field">
                     <label for="idEmpleado">
                       <i class="fas fa-user field-icon"></i>
                       Empleado Evaluado <span class="req">*</span>
                     </label>
 
-                    <!-- Select de empleados -->
                     <select id="idEmpleado" name="idEmpleado" required>
-                      <!-- Opción por defecto -->
-                      <option value="" disabled selected>
+                      <option value="" selected disabled>
                         Seleccione un empleado...
                       </option>
 
-                      <!-- Recorre la lista de empleados -->
                       {% for empleado in empleados %}
                       <option value="{{ empleado.idEmpleado }}">
-                        {{ empleado.Primer_Nombre }} {{ empleado.Primer_Apellido
-                        }}
+                        {{ empleado }}
                       </option>
                       {% endfor %}
                     </select>
                   </div>
 
-                  <!-- ==============================================
-                       EVALUADOR
-                       ============================================== -->
+                  <!-- EVALUADOR -->
                   <div class="field">
                     <label for="idEvaluador">
                       <i class="fas fa-user-tie field-icon"></i>
-                      Evaluador / Jefatura Inmediata
-                      <span class="req">*</span>
+                      Evaluador / Jefatura <span class="req">*</span>
                     </label>
 
-                    <!-- Select de evaluadores -->
                     <select id="idEvaluador" name="idEvaluador" required>
-                      <option value="" disabled selected>
+                      <option value="" selected disabled>
                         Seleccione un evaluador...
                       </option>
 
-                      <!-- Recorre evaluadores -->
-                      {% for jefe in evaluadores %}
-                      <option value="{{ jefe.idEmpleado }}">
-                        {{ jefe.Primer_Nombre }} {{ jefe.Primer_Apellido }}
+                      {% for empleado in empleados %}
+                      <option value="{{ empleado.idEmpleado }}">
+                        {{ empleado }}
                       </option>
                       {% endfor %}
                     </select>
                   </div>
 
-                  <!-- Fecha -->
+                  <!-- FECHA -->
                   <div class="field">
                     <label for="Fecha_Evaluacion">
                       <i class="fas fa-calendar-day field-icon"></i>
-                      Fecha de Aplicación <span class="req">*</span>
+                      Fecha de Evaluación <span class="req">*</span>
                     </label>
 
                     <input
@@ -378,286 +364,140 @@
                     />
                   </div>
 
-                  <!-- Tipo de periodo -->
+                  <!-- PERIODO -->
                   <div class="field">
-                    <label for="Tipo_Periodo">
-                      <i class="fas fa-clock-rotate-left field-icon"></i>
+                    <label for="periodo">
+                      <i class="fas fa-clock field-icon"></i>
                       Tipo de Periodo <span class="req">*</span>
                     </label>
 
-                    <select id="Tipo_Periodo" name="Tipo_Periodo" required>
-                      <option value="" disabled selected>
-                        Seleccione el tipo...
+                    <select name="periodo" id="periodo" required>
+                      <option value="" selected disabled>
+                        Seleccione periodo...
                       </option>
 
-                      <option value="Mensual">Mensual</option>
-                      <option value="Trimestral">Trimestral</option>
-                      <option value="Semestral">Semestral</option>
-                      <option value="Anual">Anual</option>
+                      {% for p in periodos %}
+                      <option value="{{ p.idPeriodo }}">
+                        {{ p.Tipo_Periodo }}
+                      </option>
+                      {% endfor %}
                     </select>
                   </div>
                 </div>
               </div>
 
-              <!-- =========================================================
-     LISTA DE CRITERIOS DE EVALUACIÓN
-     ========================================================= -->
+              <!-- =====================================================
+                    CRITERIOS
+              ===================================================== -->
               <div class="evaluation-list">
-                <!-- =====================================================
-       CUMPLE METAS Y OBJETIVOS
-       ===================================================== -->
+                <!-- METAS -->
                 <div class="evaluation-item">
-                  <div class="evaluation-info">
-                    <h5>Cumplimiento de Metas y Objetivos</h5>
-
-                    <p>
-                      Evalúa si el colaborador cumple con los objetivos, metas y
-                      KPIs asignados por la organización.
-                    </p>
-                  </div>
+                  <h5>Cumplimiento de Metas</h5>
 
                   <div class="status-group">
-                    <!-- ACTIVO -->
-                    <div class="status-option">
-                      <input
-                        type="radio"
-                        id="metas_activo"
-                        name="Cumple_Metas_Objetivos"
-                        value="1"
-                        required
-                      />
-
-                      <label for="metas_activo">
-                        <span class="dot"></span>
-                        Activo
-                      </label>
-                    </div>
-
-                    <!-- INACTIVO -->
-                    <div class="status-option">
-                      <input
-                        type="radio"
-                        id="metas_inactivo"
-                        name="Cumple_Metas_Objetivos"
-                        value="0"
-                      />
-
-                      <label for="metas_inactivo">
-                        <span class="dot"></span>
-                        Inactivo
-                      </label>
-                    </div>
+                    <input
+                      type="radio"
+                      name="Cumple_Metas_Objetivos"
+                      value="1"
+                      required
+                    />
+                    Sí
+                    <input
+                      type="radio"
+                      name="Cumple_Metas_Objetivos"
+                      value="0"
+                    />
+                    No
                   </div>
                 </div>
 
-                <!-- =====================================================
-       CUMPLE FUNCIONES ASIGNADAS
-       ===================================================== -->
+                <!-- FUNCIONES -->
                 <div class="evaluation-item">
-                  <div class="evaluation-info">
-                    <h5>Cumplimiento de Funciones Asignadas</h5>
-
-                    <p>
-                      Determina si el colaborador ejecuta correctamente las
-                      funciones y responsabilidades de su puesto.
-                    </p>
-                  </div>
+                  <h5>Funciones Asignadas</h5>
 
                   <div class="status-group">
-                    <!-- ACTIVO -->
-                    <div class="status-option">
-                      <input
-                        type="radio"
-                        id="funciones_activo"
-                        name="Cumple_FuncionesAsig"
-                        value="1"
-                        required
-                      />
-
-                      <label for="funciones_activo">
-                        <span class="dot"></span>
-                        Activo
-                      </label>
-                    </div>
-
-                    <!-- INACTIVO -->
-                    <div class="status-option">
-                      <input
-                        type="radio"
-                        id="funciones_inactivo"
-                        name="Cumple_FuncionesAsig"
-                        value="0"
-                      />
-
-                      <label for="funciones_inactivo">
-                        <span class="dot"></span>
-                        Inactivo
-                      </label>
-                    </div>
+                    <input
+                      type="radio"
+                      name="Cumple_FuncionesAsig"
+                      value="1"
+                      required
+                    />
+                    Sí
+                    <input type="radio" name="Cumple_FuncionesAsig" value="0" />
+                    No
                   </div>
                 </div>
 
-                <!-- =====================================================
-       ENTREGABLES DE CALIDAD Y TIEMPO
-       ===================================================== -->
+                <!-- ENTREGABLES -->
                 <div class="evaluation-item">
-                  <div class="evaluation-info">
-                    <h5>Entregables de Calidad y Tiempo</h5>
-
-                    <p>
-                      Evalúa si las entregas realizadas cumplen con los
-                      estándares de calidad y fechas establecidas.
-                    </p>
-                  </div>
+                  <h5>Entregables</h5>
 
                   <div class="status-group">
-                    <!-- ACTIVO -->
-                    <div class="status-option">
-                      <input
-                        type="radio"
-                        id="entregables_activo"
-                        name="Entregables_Calidad_Tiempo"
-                        value="1"
-                        required
-                      />
-
-                      <label for="entregables_activo">
-                        <span class="dot"></span>
-                        Activo
-                      </label>
-                    </div>
-
-                    <!-- INACTIVO -->
-                    <div class="status-option">
-                      <input
-                        type="radio"
-                        id="entregables_inactivo"
-                        name="Entregables_Calidad_Tiempo"
-                        value="0"
-                      />
-
-                      <label for="entregables_inactivo">
-                        <span class="dot"></span>
-                        Inactivo
-                      </label>
-                    </div>
+                    <input
+                      type="radio"
+                      name="Entregables_Calidad_Tiempo"
+                      value="1"
+                      required
+                    />
+                    Sí
+                    <input
+                      type="radio"
+                      name="Entregables_Calidad_Tiempo"
+                      value="0"
+                    />
+                    No
                   </div>
                 </div>
 
-                <!-- =====================================================
-       CUMPLIMIENTO DE ASISTENCIA
-       ===================================================== -->
+                <!-- ASISTENCIA -->
                 <div class="evaluation-item">
-                  <div class="evaluation-info">
-                    <h5>Cumplimiento de Asistencia</h5>
-
-                    <p>
-                      Verifica puntualidad, asistencia y cumplimiento de
-                      horarios laborales establecidos.
-                    </p>
-                  </div>
+                  <h5>Asistencia</h5>
 
                   <div class="status-group">
-                    <!-- ACTIVO -->
-                    <div class="status-option">
-                      <input
-                        type="radio"
-                        id="asistencia_activo"
-                        name="Cumple_Asistencia"
-                        value="1"
-                        required
-                      />
-
-                      <label for="asistencia_activo">
-                        <span class="dot"></span>
-                        Activo
-                      </label>
-                    </div>
-
-                    <!-- INACTIVO -->
-                    <div class="status-option">
-                      <input
-                        type="radio"
-                        id="asistencia_inactivo"
-                        name="Cumple_Asistencia"
-                        value="0"
-                      />
-
-                      <label for="asistencia_inactivo">
-                        <span class="dot"></span>
-                        Inactivo
-                      </label>
-                    </div>
+                    <input
+                      type="radio"
+                      name="Cumple_Asistencia"
+                      value="1"
+                      required
+                    />
+                    Sí
+                    <input type="radio" name="Cumple_Asistencia" value="0" /> No
                   </div>
                 </div>
 
-                <!-- =====================================================
-       COMPROMISO Y COLABORACIÓN
-       ===================================================== -->
+                <!-- COMPROMISO -->
                 <div class="evaluation-item">
-                  <div class="evaluation-info">
-                    <h5>Compromiso y Colaboración</h5>
-
-                    <p>
-                      Mide el nivel de trabajo en equipo, compromiso
-                      organizacional y colaboración interna.
-                    </p>
-                  </div>
+                  <h5>Compromiso y Colaboración</h5>
 
                   <div class="status-group">
-                    <!-- ACTIVO -->
-                    <div class="status-option">
-                      <input
-                        type="radio"
-                        id="compromiso_activo"
-                        name="Muestra_Compromiso_Colaboracion"
-                        value="1"
-                        required
-                      />
-
-                      <label for="compromiso_activo">
-                        <span class="dot"></span>
-                        Activo
-                      </label>
-                    </div>
-
-                    <!-- INACTIVO -->
-                    <div class="status-option">
-                      <input
-                        type="radio"
-                        id="compromiso_inactivo"
-                        name="Muestra_Compromiso_Colaboracion"
-                        value="0"
-                      />
-
-                      <label for="compromiso_inactivo">
-                        <span class="dot"></span>
-                        Inactivo
-                      </label>
-                    </div>
+                    <input
+                      type="radio"
+                      name="Muestra_Compromiso_Colaboracion"
+                      value="1"
+                      required
+                    />
+                    Sí
+                    <input
+                      type="radio"
+                      name="Muestra_Compromiso_Colaboracion"
+                      value="0"
+                    />
+                    No
                   </div>
                 </div>
               </div>
 
               <!-- =====================================================
-                   BOTONES DE ACCIÓN
-                   ===================================================== -->
+                    BOTONES
+              ===================================================== -->
               <div class="form-footer">
-                <!-- Cancelar -->
                 <a href="{% url 'evaluaciones' %}" class="btn btn-ghost">
-                  <i class="fas fa-arrow-left"></i>
                   Cancelar
                 </a>
 
-                <!-- Limpiar -->
-                <button type="reset" class="btn btn-secondary">
-                  <i class="fas fa-rotate-left"></i>
-                  Limpiar Campos
-                </button>
+                <button type="reset" class="btn btn-secondary">Limpiar</button>
 
-                <!-- Guardar -->
                 <button type="submit" class="btn btn-primary">
-                  <i class="fas fa-floppy-disk"></i>
                   Guardar Evaluación
                 </button>
               </div>

@@ -1127,3 +1127,127 @@ class AccionTipo(models.Model):
     def __str__(self):
 
         return f"{self.idAccion} - {self.id_Detalle_Accion}"
+    
+
+
+# =========================================================
+# TABLA: Periodo
+# =========================================================
+class Periodo(models.Model):
+    idPeriodo = models.AutoField(
+        primary_key=True,
+        db_column='idPeriodo'
+    )
+
+    Tipo_Periodo = models.CharField(
+        max_length=30,
+        db_column='Tipo_Periodo'
+    )
+
+    class Meta:
+        managed = False  # 👈 IMPORTANTE: no Django no crea ni modifica la tabla
+        db_table = 'Periodo'
+        verbose_name = 'Periodo'
+        verbose_name_plural = 'Periodos'
+
+    def __str__(self):
+        return self.Tipo_Periodo
+    
+
+# =========================================================
+# TABLA: Cabecera de la evaluación
+# =========================================================
+class Evaluacion(models.Model):
+    idEvaluacion = models.AutoField(
+        primary_key=True,
+        db_column='idEvaluacion'
+    )
+
+    Fecha_Evaluacion = models.DateField(
+        db_column='Fecha_Evaluacion'
+    )
+
+    # Tipo de periodo (Mensual, Trimestral, etc.)
+    idPeriodo = models.ForeignKey(
+        Periodo,
+        on_delete=models.PROTECT,
+        db_column='idPeriodo',
+        related_name='evaluaciones'
+    )
+
+    # Empleado evaluado
+    idEmpleado_Ev = models.ForeignKey(
+        'Empleado',
+        on_delete=models.PROTECT,
+        db_column='idEmpleado_Ev',
+        related_name='evaluaciones_recibidas'
+    )
+
+    # Jefe que realiza la evaluación
+    idEmpleado_Jef = models.ForeignKey(
+        'Empleado',
+        on_delete=models.PROTECT,
+        db_column='idEmpleado_Jef',
+        related_name='evaluaciones_realizadas'
+    )
+
+    class Meta:
+        managed = False  # 👈 IMPORTANTE: ya existe en SQL Server
+        db_table = 'Evaluacion'
+        ordering = ['-Fecha_Evaluacion']
+
+    def __str__(self):
+        return f"Evaluación {self.idEvaluacion} - {self.Fecha_Evaluacion}"
+    
+
+# =========================================================
+# TABLA: Detalle del desempeño de la cabecera (Desempeño empleado "corriente")
+# =========================================================
+class EvaluacionDesempeno(models.Model):
+    id_Desempeno = models.AutoField(
+        primary_key=True,
+        db_column='id_Desempeno'
+    )
+
+    Cumple_Metas_Objetivos = models.BooleanField(
+        db_column='Cumple_Metas_Objetivos'
+    )
+
+    Cumple_FuncionesAsig = models.BooleanField(
+        db_column='Cumple_FuncionesAsig'
+    )
+
+    Entregables_Calidad_Tiempo = models.BooleanField(
+        db_column='Entregables_Calidad_Tiempo'
+    )
+
+    Cumple_Asistencia = models.BooleanField(
+        db_column='Cumple_Asistencia'
+    )
+
+    Muestra_Compromiso_Colaboracion = models.BooleanField(
+        db_column='Muestra_Compromiso_Colaboracion'
+    )
+
+    pct_totalEv = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        db_column='pct_totalEv'
+    )
+
+    idEvaluacion = models.ForeignKey(
+        Evaluacion,
+        on_delete=models.CASCADE,
+        db_column='idEvaluacion',
+        related_name='desempenos'
+    )
+
+    class Meta:
+        managed = False  # 👈 ya existe en SQL Server
+        db_table = 'Evaluacion_Desempeno'
+        ordering = ['-id_Desempeno']
+
+    def __str__(self):
+        return f"Desempeño {self.id_Desempeno} - Eval {self.idEvaluacion_id}"

@@ -160,6 +160,18 @@ urlpatterns = [
     path('obtener-salario/<int:idEmpleado>/', views.obtener_salario_actual, name='obtener_salario_actual'),
 
 
+
+    # =========================================================
+    # VISTAS PARA ROTACIONES DE PERSONAL
+    # =========================================================
+    # Pantalla lista / historial
+    # Crear nueva evaluación (CABECERA + DETALLE)
+    path('evaluaciones/nueva/', views.crear_evaluacion, name='crear_evaluacion'),
+
+
+   
+
+
 ]
 
 
