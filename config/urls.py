@@ -162,16 +162,15 @@ urlpatterns = [
 
 
     # =========================================================
-    # VISTAS PARA ROTACIONES DE PERSONAL
+    # VISTAS PARA EVALUACIONES DE PERSONAL
     # =========================================================
     # Pantalla lista / historial
     # Crear nueva evaluación (CABECERA + DETALLE)
     path('evaluaciones/nueva/', views.crear_evaluacion, name='crear_evaluacion'),
     #Crear nueva evaluación Jefatura (CABECERA + DETALLE)
     path('eva-jefatura/', views.crear_evaluacion_jefatura, name='crear_evaluacion_jefatura'),
-
-
-   
+    
+    path('matriz-9box/', views.crear_matriz_9box, name='crear_matriz_9box'),
 
 
 ]

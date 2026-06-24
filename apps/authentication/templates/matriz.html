@@ -3,45 +3,22 @@
      Permite utilizar archivos CSS, JS, imágenes y otros recursos
 ========================================================= -->
 {% load static %}
-
 <!doctype html>
 <html lang="es">
   <head>
-    <!-- =========================================================
-         CONFIGURACIÓN GENERAL DEL DOCUMENTO
-    ========================================================= -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!-- Título de la página mostrado en la pestaña del navegador -->
     <title>Configuración Matriz 9 Box - Gestión de Talento Humano</title>
-
-    <!-- =========================================================
-         HOJA DE ESTILOS PRINCIPAL
-    ========================================================= -->
     <link rel="stylesheet" href="{% static 'styles/matriz.css' %}" />
-
-    <!-- =========================================================
-         LIBRERÍA DE ÍCONOS FONT AWESOME
-    ========================================================= -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
   </head>
-
   <body>
-    <!-- =========================================================
-         CONTENEDOR GENERAL DEL DASHBOARD
-    ========================================================= -->
     <div class="dashboard-container">
-      <!-- =========================================================
-           SIDEBAR / MENÚ LATERAL
-      ========================================================= -->
+      <!-- SIDEBAR -->
       <aside class="sidebar">
-        <!-- =========================================================
-             LOGO DE LA EMPRESA
-        ========================================================= -->
         <div class="logo-container">
           <img
             src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
@@ -49,162 +26,98 @@
             class="logo-img"
           />
         </div>
-
-        <!-- ======================================================
-             MENÚ DE NAVEGACIÓN PRINCIPAL
-        ====================================================== -->
-        <!-- =========================================================
-             MENÚ DE NAVEGACIÓN
-        ========================================================= -->
         <nav class="menu">
-          <!-- Inicio -->
-          <a href="{% url 'inicio' %}">
-            <i class="fas fa-house"></i>
-            Inicio
-          </a>
-
-          <!-- Personas o Empleados -->
-          <a href="{% url 'per_emp' %}">
-            <i class="fas fa-user-group"></i>
-            Personas o Empleados
-          </a>
-
-          <!-- Onboarding -->
-          <a href="{% url 'onboarding' %}">
-            <i class="fas fa-rocket"></i>
-            Onboarding / Entradas
-          </a>
-
-          <!-- Empresas -->
-          <a href="{% url 'empresas' %}">
-            <i class="fas fa-building"></i>
-            Empresas
-          </a>
-
-          <!-- Gerencias, Departamentos y Puestos -->
-          <a href="{% url 'comple_Empresa' %}">
-            <i class="fas fa-briefcase"></i>
-            Gerencias, Departamentos y Puestos
-          </a>
-
-          <!-- Salarios -->
-          <a href="{% url 'salarios' %}">
-            <i class="fas fa-money-bill-wave"></i>
-            Salarios
-          </a>
-
-          <!-- Reclutamiento -->
-          <a href="{% url 'reclutamiento' %}">
-            <i class="fas fa-wallet"></i>
-            Reclutamiento
-          </a>
-
-          <!-- Vacaciones -->
-          <a href="{% url 'vacaciones' %}">
-            <i class="fas fa-umbrella-beach"></i>
-            Vacaciones
-          </a>
-
-          <!-- Asistencia y Permisos -->
-          <a href="{% url 'elec_Asistencia' %}">
-            <i class="fas fa-clock"></i>
-            Asistencia y Permiso
-          </a>
-
-          <!-- Acciones o Rotaciones -->
-          <a href="{% url 'accion_rotacion' %}">
-            <i class="fas fa-clipboard-list"></i>
-            Acciones o Rotaciones del Personal
-          </a>
-
-          <!-- Evaluación de Desempeño -->
-          <a href="{% url 'evaluaciones' %}">
-            <i class="fas fa-chart-line"></i>
-            Evaluación de Desempeño
-          </a>
-
-          <!-- KPIs -->
-          <a href="{% url 'elec_KPI' %}">
-            <i class="fas fa-file-lines"></i>
-            KPIs
-          </a>
-
-          <!-- Offboarding -->
-          <a href="{% url 'elec_Offboarding' %}">
-            <i class="fas fa-door-open"></i>
-            Offboarding / Salidas
-          </a>
-
-          <!-- Reportes -->
-          <a href="{% url 'reportes' %}">
-            <i class="fas fa-file-lines"></i>
-            Reportes
-          </a>
-
-          <!-- Usuarios y Roles -->
-          <a href="{% url 'usuarios' %}">
-            <i class="fas fa-users-cog"></i>
-            Usuarios y Roles
-          </a>
-
-          <!-- Configuración -->
-          <a href="{% url 'configuraciones' %}">
-            <i class="fas fa-gear"></i>
-            Configuración
-          </a>
+          <a href="{% url 'inicio' %}" data-label="Inicio"
+            ><i class="fas fa-house"></i> Inicio</a
+          >
+          <a href="{% url 'per_emp' %}" data-label="Personas o Empleados"
+            ><i class="fas fa-user-group"></i> Personas o Empleados</a
+          >
+          <a href="{% url 'onboarding' %}" data-label="Onboarding / Entradas"
+            ><i class="fas fa-rocket"></i> Onboarding / Entradas</a
+          >
+          <a href="{% url 'empresas' %}" data-label="Empresas"
+            ><i class="fas fa-building"></i> Empresas</a
+          >
+          <a
+            href="{% url 'comple_Empresa' %}"
+            data-label="Gerencias, Departamentos y Puestos"
+            ><i class="fas fa-briefcase"></i> Gerencias, Departamentos y
+            Puestos</a
+          >
+          <a href="{% url 'salarios' %}" data-label="Salarios"
+            ><i class="fas fa-money-bill-wave"></i> Salarios</a
+          >
+          <a href="{% url 'reclutamiento' %}" data-label="Reclutamiento"
+            ><i class="fas fa-wallet"></i> Reclutamiento</a
+          >
+          <a href="{% url 'vacaciones' %}" data-label="Vacaciones"
+            ><i class="fas fa-umbrella-beach"></i> Vacaciones</a
+          >
+          <a
+            href="{% url 'elec_Asistencia' %}"
+            data-label="Asistencia y Permiso"
+            ><i class="fas fa-clock"></i> Asistencia y Permiso</a
+          >
+          <a
+            href="{% url 'accion_rotacion' %}"
+            data-label="Acciones o Rotaciones"
+            ><i class="fas fa-clipboard-list"></i> Acciones o Rotaciones del
+            Personal</a
+          >
+          <a
+            href="{% url 'evaluaciones' %}"
+            class="active"
+            data-label="Evaluación de Desempeño"
+            ><i class="fas fa-chart-line"></i> Evaluación de Desempeño</a
+          >
+          <a href="{% url 'elec_KPI' %}" data-label="KPIs"
+            ><i class="fas fa-file-lines"></i> KPIs</a
+          >
+          <a
+            href="{% url 'elec_Offboarding' %}"
+            data-label="Offboarding / Salidas"
+            ><i class="fas fa-door-open"></i> Offboarding / Salidas</a
+          >
+          <a href="{% url 'reportes' %}" data-label="Reportes"
+            ><i class="fas fa-file-lines"></i> Reportes</a
+          >
+          <a href="{% url 'usuarios' %}" data-label="Usuarios y Roles"
+            ><i class="fas fa-users-cog"></i> Usuarios y Roles</a
+          >
+          <a href="{% url 'configuraciones' %}" data-label="Configuración"
+            ><i class="fas fa-gear"></i> Configuración</a
+          >
         </nav>
-
-        <!-- =========================================================
-             BOTÓN DE CERRAR SESIÓN
-        ========================================================= -->
         <div class="logout">
-          <a href="login.html">
-            <i class="fas fa-right-from-bracket"></i>
-            Cerrar sesión
-          </a>
+          <a href="{% url 'home' %}" data-label="Cerrar sesión"
+            ><i class="fas fa-right-from-bracket"></i> Cerrar sesión</a
+          >
         </div>
       </aside>
 
-      <!-- =========================================================
-           CONTENIDO PRINCIPAL DEL SISTEMA
-      ========================================================= -->
+      <!-- CONTENIDO PRINCIPAL -->
       <main class="main-content">
-        <!-- =========================================================
-             BARRA SUPERIOR (TOPBAR)
-        ========================================================= -->
+        <!-- Topbar -->
         <header class="topbar">
-          <!-- Título y descripción de la página -->
           <div class="page-title">
             <h1>Configuración Matriz 9 Box</h1>
             <p>Definición de parámetros, perfiles y estrategias de talento</p>
           </div>
-
-          <!-- =====================================================
-               BUSCADOR GENERAL
-          ===================================================== -->
           <div class="search-box">
             <i class="fas fa-search"></i>
-
             <input
               type="text"
               placeholder="Buscar empleado, módulo, reporte..."
             />
           </div>
-
-          <!-- =====================================================
-               ACCIONES SUPERIORES (NOTIFICACIONES Y PERFIL)
-          ===================================================== -->
           <div class="topbar-actions">
-            <!-- Notificaciones -->
             <div class="notification">
               <i class="fas fa-bell"></i>
               <span class="badge">3</span>
             </div>
-
-            <!-- Perfil del usuario -->
             <div class="user-profile">
               <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
-
               <div class="user-info">
                 <strong>María Gómez</strong>
                 <span>Recursos Humanos</span>
@@ -213,268 +126,224 @@
           </div>
         </header>
 
-        <!-- =========================================================
-             BREADCRUMB / MIGAS DE PAN
-        ========================================================= -->
+        <!-- Breadcrumb -->
         <div class="breadcrumb">
-          <!-- Ruta Inicio -->
-          <a href="{% url 'inicio' %}">
-            <i class="fas fa-house"></i>
-            Inicio
-          </a>
-
-          <!-- Separador -->
+          <a href="{% url 'inicio' %}"><i class="fas fa-house"></i> Inicio</a>
           <i class="fas fa-chevron-right sep"></i>
-
-          <!-- Ruta Evaluaciones -->
-          <a href="{% url 'evaluaciones' %}"> Evaluaciones </a>
-
-          <!-- Separador -->
+          <a href="{% url 'evaluaciones' %}">Evaluaciones</a>
           <i class="fas fa-chevron-right sep"></i>
-
-          <!-- Página actual -->
-          <span class="current"> Configuración Matriz 9 Box </span>
+          <span class="current">Configuración Matriz 9 Box</span>
         </div>
 
-        <!-- =========================================================
-             TARJETA PRINCIPAL DEL FORMULARIO
-        ========================================================= -->
+        <!-- TARJETA PRINCIPAL -->
         <section class="form-card">
-          <!-- =====================================================
-               ENCABEZADO DE LA TARJETA
-          ===================================================== -->
           <div class="form-card-header">
-            <!-- Lado izquierdo del encabezado -->
             <div class="form-card-header-left">
-              <!-- Ícono decorativo -->
               <div class="form-card-icon">
                 <i class="fas fa-border-all"></i>
               </div>
-
-              <!-- Título y subtítulo -->
               <div>
                 <h2 class="form-card-title">
                   Configuración de Cuadrantes 9 Box
                 </h2>
-
                 <p class="form-card-subtitle">
                   Registro y administración de perfiles, niveles y planes de
                   acción de la matriz de talento.
                 </p>
               </div>
             </div>
-
-            <!-- Nota de campos obligatorios -->
-            <p class="required-note">
-              <span>*</span>
-              Campos obligatorios
-            </p>
+            <p class="required-note"><span>*</span> Campos obligatorios</p>
           </div>
 
-          <!-- =====================================================
-               CUERPO DEL FORMULARIO
-          ===================================================== -->
-          <div class="form-body">
-            <!-- =====================================================
-                 FILTROS SUPERIORES
-            ===================================================== -->
-            <div class="filter-bar">
-              <!-- Filtro de colaborador -->
-              <div class="field filter-field">
-                <label>
-                  <i class="fas fa-user field-icon"></i>
-                  Colaborador
-                </label>
-
-                <select name="colaborador_filtro">
-                  <!-- Valor por defecto -->
-                  <option selected>Carlos Méndez</option>
-
-                  <!-- Lista dinámica de colaboradores -->
-                  {% for colaborador in colaboradores %}
-                  <option value="{{ colaborador.id }}">
-                    {{ colaborador.nombre }}
-                  </option>
-                  {% endfor %}
-                </select>
-              </div>
-
-              <!-- Filtro de período -->
-              <div class="field filter-field">
-                <label>
-                  <i class="fas fa-calendar field-icon"></i>
-                  Periodo
-                </label>
-
-                <select name="periodo_filtro">
-                  <option selected>Año 2026</option>
-                  <option>Año 2025</option>
-                </select>
-              </div>
-
-              <!-- Botón consultar -->
-              <button type="button" class="btn btn-primary">
-                <i class="fas fa-magnifying-glass-chart"></i>
-                Consultar
-              </button>
+          <!-- Mensajes Django -->
+          {% if messages %}
+          <div style="margin: 0 25px 10px">
+            {% for message in messages %}
+            <div
+              style="padding: 10px 14px; margin-bottom: 6px; border-radius: 8px; font-size: 13px; background: {% if message.tags == 'success' %}#d4edda{% else %}#f8d7da{% endif %}; color: {% if message.tags == 'success' %}#155724{% else %}#721c24{% endif %};"
+            >
+              <i
+                class="fas {% if message.tags == 'success' %}fa-circle-check{% else %}fa-circle-exclamation{% endif %}"
+              ></i>
+              {{ message }}
             </div>
+            {% endfor %}
+          </div>
+          {% endif %}
 
-            <!-- =====================================================
-                 FORMULARIO PRINCIPAL
-            ===================================================== -->
-            <form action="#" method="POST">
-              <!-- Token de seguridad CSRF de Django -->
+          <div class="form-body">
+            <form action="{% url 'crear_matriz_9box' %}" method="POST">
               {% csrf_token %}
 
-              <!-- =================================================
-                   SECCIÓN: INFORMACIÓN DEL CUADRANTE
-              ================================================= -->
+              <!-- ── Colaborador y Período ── -->
               <div class="form-section">
-                <h4 class="form-section-title">Información del Cuadrante</h4>
-
+                <h4 class="form-section-title">Colaborador y Período</h4>
                 <div class="form-grid">
-                  <!-- Campo Código del Cuadrante -->
+                  <!-- Empleado -->
                   <div class="field">
-                    <label for="cuadrante">
-                      <i class="fas fa-table-cells-large field-icon"></i>
-
-                      Código del Cuadrante
-                      <span class="req">*</span>
+                    <label for="idEmpleado">
+                      <i class="fas fa-user field-icon"></i>
+                      Colaborador <span class="req">*</span>
                     </label>
-
-                    <select id="cuadrante" name="cuadrante_codigo" required>
-                      <option disabled selected>
-                        Seleccione un cuadrante...
+                    <select id="idEmpleado" name="idEmpleado" required>
+                      <option value="" disabled selected>
+                        Seleccione un colaborador...
                       </option>
-
-                      <option value="B1">
-                        B1 (Bajo Desempeño / Bajo Potencial)
+                      {% for emp in empleados %}
+                      <option value="{{ emp.idEmpleado }}">
+                        {{ emp.idPersona.Nombre_Completo }}
                       </option>
-
-                      <option value="B2">B2</option>
-                      <option value="B3">B3</option>
-                      <option value="M1">M1</option>
-                      <option value="M2">M2</option>
-                      <option value="M3">M3</option>
-                      <option value="A1">A1</option>
-                      <option value="A2">A2</option>
-
-                      <option value="A3">
-                        A3 (Alto Desempeño / Alto Potencial)
-                      </option>
+                      {% endfor %}
                     </select>
                   </div>
 
-                  <!-- Campo Tipo Profesional -->
+                  <!-- Período -->
                   <div class="field">
-                    <label for="tipo_profesional">
-                      <i class="fas fa-user-tie field-icon"></i>
-
-                      Tipo Profesional
-                      <span class="req">*</span>
+                    <label for="idPeriodo">
+                      <i class="fas fa-calendar field-icon"></i>
+                      Período <span class="req">*</span>
                     </label>
+                    <select id="idPeriodo" name="idPeriodo" required>
+                      <option value="" disabled selected>
+                        Seleccione un período...
+                      </option>
+                      {% for periodo in periodos %}
+                      <option value="{{ periodo.idPeriodo }}">
+                        {{ periodo.Descripcion }}
+                      </option>
+                      {% endfor %}
+                    </select>
+                  </div>
 
+                  <!-- Año -->
+                  <div class="field">
+                    <label for="Anio">
+                      <i class="fas fa-calendar-days field-icon"></i>
+                      Año <span class="req">*</span>
+                    </label>
                     <input
-                      type="text"
-                      id="tipo_profesional"
-                      name="tipo_profesional"
-                      placeholder="Ej: Top Talent, Enigma, Fuerza Clave"
+                      type="number"
+                      id="Anio"
+                      name="Anio"
+                      min="2000"
+                      max="2099"
+                      placeholder="Ej: 2026"
                       required
                     />
                   </div>
-
-                  <!-- Campo Nivel de Desempeño -->
-                  <div class="field">
-                    <label for="nivel_desempeno">
-                      <i class="fas fa-chart-column field-icon"></i>
-
-                      Nivel de Desempeño
-                      <span class="req">*</span>
-                    </label>
-
-                    <select
-                      id="nivel_desempeno"
-                      name="nivel_desempeno"
-                      required
-                    >
-                      <option disabled selected>Seleccione nivel...</option>
-
-                      <option value="1">1 - Bajo</option>
-                      <option value="2">2 - Medio</option>
-                      <option value="3">3 - Alto</option>
-                    </select>
-                  </div>
-
-                  <!-- Campo Nivel Potencial -->
-                  <div class="field">
-                    <label for="nivel_potencial">
-                      <i class="fas fa-rocket field-icon"></i>
-
-                      Nivel Potencial
-                      <span class="req">*</span>
-                    </label>
-
-                    <select
-                      id="nivel_potencial"
-                      name="nivel_potencial"
-                      required
-                    >
-                      <option disabled selected>Seleccione potencial...</option>
-
-                      <option value="A">A - Alto</option>
-                      <option value="B">B - Medio</option>
-                      <option value="C">C - Bajo</option>
-                    </select>
-                  </div>
                 </div>
               </div>
 
-              <!-- =================================================
-                   SECCIÓN: PERFIL DEL CUADRANTE
-              ================================================= -->
+              <!-- ── Información del Cuadrante ── -->
               <div class="form-section">
-                <h4 class="form-section-title">Perfil del Cuadrante</h4>
-
+                <h4 class="form-section-title">Información del Cuadrante</h4>
                 <div class="form-grid">
-                  <!-- Descripción del perfil -->
-                  <div class="field field-full">
-                    <label for="perfil">
-                      <i class="fas fa-id-badge field-icon"></i>
-
-                      Descripción del Perfil
-                      <span class="req">*</span>
+                  <!-- Cuadrante 9Box -->
+                  <div class="field">
+                    <label for="idCuadrante_9box">
+                      <i class="fas fa-table-cells-large field-icon"></i>
+                      Código del Cuadrante <span class="req">*</span>
                     </label>
-
-                    <textarea
-                      id="perfil"
-                      name="perfil_descripcion"
-                      rows="5"
-                      placeholder="Describa el perfil profesional detallado para los colaboradores ubicados en este cuadrante..."
+                    <select
+                      id="idCuadrante_9box"
+                      name="idCuadrante_9box"
                       required
-                    ></textarea>
+                    >
+                      <option value="" disabled selected>
+                        Seleccione un cuadrante...
+                      </option>
+                      {% for cuadrante in cuadrantes %}
+                      <option value="{{ cuadrante.idCuadrante_9box }}">
+                        {{ cuadrante.Codigo }} — {{ cuadrante.Nombre }}
+                      </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <!-- Perfil del Cuadrante -->
+                  <div class="field">
+                    <label for="idCuadrante_9box_Perfil">
+                      <i class="fas fa-user-tie field-icon"></i>
+                      Perfil del Cuadrante <span class="req">*</span>
+                    </label>
+                    <select
+                      id="idCuadrante_9box_Perfil"
+                      name="idCuadrante_9box_Perfil"
+                      required
+                    >
+                      <option value="" disabled selected>
+                        Seleccione un perfil...
+                      </option>
+                      {% for perfil in perfiles %}
+                      <option value="{{ perfil.idCuadrante_9box_Perfil }}">
+                        {{ perfil.Nombre_Perfil }}
+                      </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <!-- Nivel de Desempeño -->
+                  <div class="field">
+                    <label for="idCuadrante_9box_Desempeno">
+                      <i class="fas fa-chart-column field-icon"></i>
+                      Nivel de Desempeño <span class="req">*</span>
+                    </label>
+                    <select
+                      id="idCuadrante_9box_Desempeno"
+                      name="idCuadrante_9box_Desempeno"
+                      required
+                    >
+                      <option value="" disabled selected>
+                        Seleccione nivel...
+                      </option>
+                      {% for desempeno in desempenos %}
+                      <option
+                        value="{{ desempeno.idCuadrante_9box_Desempeno }}"
+                      >
+                        {{ desempeno.Nivel }} — {{ desempeno.Descripcion }}
+                      </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <!-- Nivel Potencial -->
+                  <div class="field">
+                    <label for="idCuadrante_9box_Potencial">
+                      <i class="fas fa-rocket field-icon"></i>
+                      Nivel Potencial <span class="req">*</span>
+                    </label>
+                    <select
+                      id="idCuadrante_9box_Potencial"
+                      name="idCuadrante_9box_Potencial"
+                      required
+                    >
+                      <option value="" disabled selected>
+                        Seleccione potencial...
+                      </option>
+                      {% for potencial in potenciales %}
+                      <option
+                        value="{{ potencial.idCuadrante_9box_Potencial }}"
+                      >
+                        {{ potencial.Nivel }} — {{ potencial.Descripcion }}
+                      </option>
+                      {% endfor %}
+                    </select>
                   </div>
                 </div>
               </div>
 
-              <!-- =================================================
-                   SECCIÓN: PLAN DE ACCIÓN
-              ================================================= -->
+              <!-- ── Plan de Acción ── -->
               <div class="form-section">
                 <h4 class="form-section-title">Plan de Acción</h4>
-
                 <div class="form-grid">
-                  <!-- Estrategias recomendadas -->
                   <div class="field field-full">
-                    <label for="plan_accion">
+                    <label for="Plan_Accion">
                       <i class="fas fa-lightbulb field-icon"></i>
-
-                      Recomendaciones Estratégicas
-                      <span class="req">*</span>
+                      Recomendaciones Estratégicas <span class="req">*</span>
                     </label>
-
                     <textarea
-                      id="plan_accion"
-                      name="plan_accion_estrategia"
+                      id="Plan_Accion"
+                      name="Plan_Accion"
                       rows="6"
                       placeholder="Ingrese las pautas de desarrollo, incentivos, capacitaciones o planes de sucesión recomendados..."
                       required
@@ -483,107 +352,119 @@
                 </div>
               </div>
 
-              <!-- =================================================
-                   SECCIÓN: VISTA PREVIA DEL CUADRANTE
-              ================================================= -->
+              <!-- ── Vista Previa del Cuadrante ── -->
               <div class="form-section">
                 <h4 class="form-section-title">Vista Previa del Cuadrante</h4>
-
                 <div class="preview-layout">
-                  <!-- Tarjeta de vista previa -->
                   <div class="preview-card">
-                    <!-- Badge del cuadrante -->
-                    <div class="preview-badge">A3</div>
-
-                    <!-- Nombre del perfil -->
-                    <h3>Top Talent</h3>
-
-                    <!-- Descripción -->
-                    <p>
-                      Colaborador altamente eficaz, comprometido y con potencial
-                      estratégico de crecimiento dentro de la organización.
-                    </p>
-
-                    <!-- Niveles -->
+                    <div class="preview-badge" id="preview-codigo">—</div>
+                    <h3 id="preview-perfil">Seleccione un perfil</h3>
+                    <p id="preview-plan">El plan de acción aparecerá aquí...</p>
                     <div class="preview-levels">
-                      <!-- Nivel desempeño -->
                       <div class="mini-level">
                         <span>Desempeño</span>
-                        <strong>3</strong>
+                        <strong id="preview-desempeno">—</strong>
                       </div>
-
-                      <!-- Nivel potencial -->
                       <div class="mini-level">
                         <span>Potencial</span>
-                        <strong>A</strong>
+                        <strong id="preview-potencial">—</strong>
                       </div>
                     </div>
                   </div>
-
-                  <!-- Mini matriz visual -->
                   <div class="preview-matrix">
-                    <div class="mini-ninebox">
-                      <div class="mini-box">B1</div>
-                      <div class="mini-box">B2</div>
-                      <div class="mini-box">B3</div>
-
-                      <div class="mini-box">M1</div>
-
-                      <!-- Cuadrante activo -->
-                      <div class="mini-box active">A3</div>
-
-                      <div class="mini-box">M3</div>
-
-                      <div class="mini-box">A1</div>
-                      <div class="mini-box">A2</div>
-                      <div class="mini-box">A3</div>
+                    <div class="mini-ninebox" id="mini-ninebox">
+                      <!-- Se generan con JS según la selección -->
+                      {% for cuadrante in cuadrantes %}
+                      <div
+                        class="mini-box"
+                        data-codigo="{{ cuadrante.Codigo }}"
+                      >
+                        {{ cuadrante.Codigo }}
+                      </div>
+                      {% endfor %}
                     </div>
                   </div>
                 </div>
               </div>
 
-              <!-- =================================================
-                   FOOTER DEL FORMULARIO
-                   BOTONES DE ACCIÓN
-              ================================================= -->
+              <!-- Botones -->
               <div class="form-footer">
-                <!-- Botón limpiar -->
                 <button type="reset" class="btn btn-ghost">
-                  <i class="fas fa-rotate-left"></i>
-                  Limpiar
+                  <i class="fas fa-rotate-left"></i> Limpiar
                 </button>
-
-                <!-- Botón guardar borrador -->
-                <button
-                  type="submit"
-                  name="action_draft"
-                  class="btn btn-secondary"
-                >
-                  <i class="fas fa-floppy-disk"></i>
-                  Guardar borrador
-                </button>
-
-                <!-- Botón guardar -->
-                <button
-                  type="submit"
-                  name="action_save"
-                  class="btn btn-primary"
-                >
-                  <i class="fas fa-check"></i>
-                  Guardar cuadrante
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-check"></i> Guardar cuadrante
                 </button>
               </div>
             </form>
           </div>
         </section>
 
-        <!-- =========================================================
-             FOOTER GENERAL DEL SISTEMA
-        ========================================================= -->
         <footer class="footer">
           © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
         </footer>
       </main>
     </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Referencias a los selects y la vista previa
+        const selCuadrante = document.getElementById("idCuadrante_9box");
+        const selPerfil = document.getElementById("idCuadrante_9box_Perfil");
+        const selDesempeno = document.getElementById(
+          "idCuadrante_9box_Desempeno",
+        );
+        const selPotencial = document.getElementById(
+          "idCuadrante_9box_Potencial",
+        );
+        const txtPlan = document.getElementById("Plan_Accion");
+
+        const prevCodigo = document.getElementById("preview-codigo");
+        const prevPerfil = document.getElementById("preview-perfil");
+        const prevPlan = document.getElementById("preview-plan");
+        const prevDesempeno = document.getElementById("preview-desempeno");
+        const prevPotencial = document.getElementById("preview-potencial");
+        const miniBoxes = document.querySelectorAll(".mini-box");
+
+        function actualizarPreview() {
+          // Código del cuadrante
+          const codigo =
+            selCuadrante.options[selCuadrante.selectedIndex]?.text.split(
+              " ",
+            )[0] || "—";
+          prevCodigo.textContent = codigo;
+
+          // Perfil
+          prevPerfil.textContent =
+            selPerfil.options[selPerfil.selectedIndex]?.text ||
+            "Seleccione un perfil";
+
+          // Desempeño (primer carácter = número)
+          const desempText =
+            selDesempeno.options[selDesempeno.selectedIndex]?.text || "—";
+          prevDesempeno.textContent = desempText.split(" ")[0] || "—";
+
+          // Potencial (primer carácter = letra)
+          const potText =
+            selPotencial.options[selPotencial.selectedIndex]?.text || "—";
+          prevPotencial.textContent = potText.split(" ")[0] || "—";
+
+          // Plan de acción
+          prevPlan.textContent =
+            txtPlan.value || "El plan de acción aparecerá aquí...";
+
+          // Resaltar cuadrante activo en la mini matriz
+          miniBoxes.forEach((box) => {
+            box.classList.toggle("active", box.dataset.codigo === codigo);
+          });
+        }
+
+        selCuadrante.addEventListener("change", actualizarPreview);
+        selPerfil.addEventListener("change", actualizarPreview);
+        selDesempeno.addEventListener("change", actualizarPreview);
+        selPotencial.addEventListener("change", actualizarPreview);
+        txtPlan.addEventListener("input", actualizarPreview);
+      });
+    </script>
   </body>
 </html>

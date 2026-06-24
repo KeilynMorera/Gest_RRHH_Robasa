@@ -1311,3 +1311,193 @@ class EvaluacionJefePotencial(models.Model):
 
     def __str__(self):
         return f"Potencial {self.id_Eva_JefePote} - Eval {self.idEvaluacion_id}"
+    
+
+
+# =========================================================
+# TABLA: Cuadrante_9box_Perfil
+# =========================================================
+class Cuadrante9BoxPerfil(models.Model):
+
+    idCuadrante_9box_Perfil = models.AutoField(
+        primary_key=True,
+        db_column='idCuadrante_9box_Perfil'
+    )
+
+    Tipo_Profecional = models.CharField(
+        max_length=80,
+        db_column='Tipo_Profecional'
+    )
+
+    Perfil = models.CharField(
+        max_length=500,
+        db_column='Perfil'
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'Cuadrante_9box_Perfil'
+        verbose_name = 'Perfil 9 Box'
+        verbose_name_plural = 'Perfiles 9 Box'
+
+    def __str__(self):
+        return self.Tipo_Profecional
+    
+
+# =========================================================
+# TABLA: Cuadrante_9box
+# =========================================================
+class Cuadrante9Box(models.Model):
+
+    idCuadrante_9box = models.AutoField(
+        primary_key=True,
+        db_column='idCuadrante_9box'
+    )
+
+    Cuadrante = models.CharField(
+        max_length=5,
+        db_column='Cuadrante'
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'Cuadrante_9box'
+        verbose_name = 'Cuadrante 9 Box'
+        verbose_name_plural = 'Cuadrantes 9 Box'
+
+    def __str__(self):
+        return self.Cuadrante
+    
+
+# =========================================================
+# TABLA: Cuadrante_9box_Desempeno
+# =========================================================
+class Cuadrante9BoxDesempeno(models.Model):
+
+    idCuadrante_9box_Desempeno = models.AutoField(
+        primary_key=True,
+        db_column='idCuadrante_9box_Desempeno'
+    )
+
+    Nivel_Desempeno = models.CharField(
+        max_length=18,
+        db_column='Nivel_Desempeno'
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'Cuadrante_9box_Desempeno'
+        verbose_name = 'Nivel de Desempeño'
+        verbose_name_plural = 'Niveles de Desempeño'
+
+    def __str__(self):
+        return self.Nivel_Desempeno
+    
+
+# =========================================================
+# TABLA: Cuadrante_9box_Potencial
+# =========================================================
+class Cuadrante9BoxPotencial(models.Model):
+
+    idCuadrante_9box_Potencial = models.AutoField(
+        primary_key=True,
+        db_column='idCuadrante_9box_Potencial'
+    )
+
+    Nivel_Potencial = models.CharField(
+        max_length=1,
+        db_column='Nivel_Potencial'
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'Cuadrante_9box_Potencial'
+        verbose_name = 'Nivel de Potencial'
+        verbose_name_plural = 'Niveles de Potencial'
+
+    def __str__(self):
+        return self.Nivel_Potencial
+    
+
+# =========================================================
+# TABLA: Union_Matriz_Emp
+# Resultado final de la Matriz 9 Box por empleado
+# =========================================================
+class UnionMatrizEmp(models.Model):
+
+    id_Matriz = models.AutoField(
+        primary_key=True,
+        db_column='id_Matriz'
+    )
+
+    Anio = models.IntegerField(
+        db_column='Anio'
+    )
+
+    Plan_Accion = models.TextField(
+        db_column='Plan_Accion'
+    )
+
+    # Periodo evaluado
+    idPeriodo = models.ForeignKey(
+        Periodo,
+        on_delete=models.PROTECT,
+        db_column='idPeriodo',
+        related_name='matrices_empleados'
+    )
+
+    # Perfil resultante
+    idCuadrante_9box_Perfil = models.ForeignKey(
+        Cuadrante9BoxPerfil,
+        on_delete=models.PROTECT,
+        db_column='idCuadrante_9box_Perfil',
+        related_name='matrices_empleados'
+    )
+
+    # Cuadrante (A1, A2, A3, etc.)
+    idCuadrante_9box = models.ForeignKey(
+        Cuadrante9Box,
+        on_delete=models.PROTECT,
+        db_column='idCuadrante_9box',
+        related_name='matrices_empleados'
+    )
+
+    # Nivel de desempeño
+    idCuadrante_9box_Desempeno = models.ForeignKey(
+        Cuadrante9BoxDesempeno,
+        on_delete=models.PROTECT,
+        db_column='idCuadrante_9box_Desempeno',
+        related_name='matrices_empleados'
+    )
+
+    # Nivel de potencial
+    idCuadrante_9box_Potencial = models.ForeignKey(
+        Cuadrante9BoxPotencial,
+        on_delete=models.PROTECT,
+        db_column='idCuadrante_9box_Potencial',
+        related_name='matrices_empleados'
+    )
+
+    # Empleado evaluado
+    idEmpleado = models.ForeignKey(
+        'Empleado',
+        on_delete=models.PROTECT,
+        db_column='idEmpleado',
+        related_name='matrices_9box'
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'Union_Matriz_Emp'
+        verbose_name = 'Matriz 9 Box'
+        verbose_name_plural = 'Matrices 9 Box'
+        ordering = ['-Anio', '-id_Matriz']
+
+    def __str__(self):
+        return (
+            f"{self.idEmpleado} - "
+            f"{self.idCuadrante_9box.Cuadrante} "
+            f"({self.Anio})"
+        )
+    
+    

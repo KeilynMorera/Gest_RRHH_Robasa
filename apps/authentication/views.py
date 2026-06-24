@@ -2439,14 +2439,116 @@ def crear_evaluacion_jefatura(request):
 
 
 
+# =========================================================
+# CREAR MATRIZ 9 BOX
+# =========================================================
+def crear_matriz_9box(request):
+
+    # ==========================
+    # CATÁLOGOS
+    # ==========================
+    empleados = Empleado.objects.select_related(
+        "idPersona"
+    ).all()
+
+    periodos = Periodo.objects.all()
+
+    perfiles = Cuadrante9BoxPerfil.objects.all()
+
+    cuadrantes = Cuadrante9Box.objects.all()
+
+    desempenos = Cuadrante9BoxDesempeno.objects.all()
+
+    potenciales = Cuadrante9BoxPotencial.objects.all()
+
+    # ==========================
+    # GUARDAR
+    # ==========================
+    if request.method == "POST":
+
+        try:
+
+            with transaction.atomic():
+
+                UnionMatrizEmp.objects.create(
+
+                    Anio=request.POST.get("Anio"),
+
+                    Plan_Accion=request.POST.get("Plan_Accion"),
+
+                    idPeriodo_id=request.POST.get("idPeriodo"),
+
+                    idCuadrante_9box_Perfil_id=request.POST.get(
+                        "idCuadrante_9box_Perfil"
+                    ),
+
+                    idCuadrante_9box_id=request.POST.get(
+                        "idCuadrante_9box"
+                    ),
+
+                    idCuadrante_9box_Desempeno_id=request.POST.get(
+                        "idCuadrante_9box_Desempeno"
+                    ),
+
+                    idCuadrante_9box_Potencial_id=request.POST.get(
+                        "idCuadrante_9box_Potencial"
+                    ),
+
+                    idEmpleado_id=request.POST.get(
+                        "idEmpleado"
+                    )
+                )
+
+                messages.success(
+                    request,
+                    "Matriz 9 Box registrada correctamente."
+                )
+
+                return redirect("crear_matriz_9box")
+
+        except Exception as e:
+
+            messages.error(
+                request,
+                f"Error al guardar: {str(e)}"
+            )
+
+    # ==========================
+    # CONTEXTO
+    # ==========================
+    context = {
+
+        "empleados": empleados,
+
+        "periodos": periodos,
+
+        "perfiles": perfiles,
+
+        "cuadrantes": cuadrantes,
+
+        "desempenos": desempenos,
+
+        "potenciales": potenciales,
+    }
+
+    return render(
+        request,
+        "matriz_9box.html",
+        context
+    )
+
+
+
+
+
+
 
 
 
 def result_Evaluacion_view(request):
     return render(request, 'result_Evaluacion.html')
 
-def matriz_view(request):
-    return render(request, 'matriz.html')
+
 
 def usuarios_view(request):
     return render(request, 'usuarios.html')
