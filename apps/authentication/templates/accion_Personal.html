@@ -208,11 +208,20 @@
                       <i class="fas fa-user-tie field-icon"></i> Colaborador
                       Implicado <span class="req">*</span>
                     </label>
-                    {{ form_cabecera.idEmpleado }} {% if form_cabecera.idEmpleado.errors %}
-                    <div class="error-message">
-                      {{ form_cabecera.idEmpleado.errors }}
-                    </div>
-                    {% endif %}
+                    <select name="idEmpleado" id="idEmpleado" required>
+                      <option value="">Seleccione...</option>
+
+                      {% for emp in empleados %}
+
+                      <option
+                        value="{{ emp.idEmpleado }}"
+                        data-salario="{{ emp.salario_actual }}"
+                      >
+                        {{ emp.idPersona.Nombre_Completo }}
+                      </option>
+
+                      {% endfor %}
+                    </select>
                   </div>
 
                   <div class="field">
@@ -251,19 +260,14 @@
               </div>
             </form>
 
-            <form
-              action="{% url 'crear_accion' %}"
-              method="POST"
-              id="form-detalle"
-            >
+            <form method="POST" action="{% url 'guardar_detalle_accion' %}">
               {% csrf_token %}
               <input type="hidden" name="action" value="finalizar_accion" />
 
               <input
                 type="hidden"
                 name="idAccion_padre"
-                id="idAccion_padre"
-                value="{% if accion_cabecera %}{{ accion_cabecera.idAccion }}{% endif %}"
+                value="{{ accion_cabecera.idAccion }}"
               />
 
               <div
@@ -429,118 +433,90 @@
           </div>
         </section>
 
+        <!-- ======================================================
+            TARJETA: HISTORIAL DE ACCIONES DE PERSONAL
+        ====================================================== -->
+        <section class="table-card">
+          <div class="table-card-header">
+            <div class="table-card-header-left">
+              <div class="table-card-icon">
+                <i class="fas fa-clipboard-list"></i>
+              </div>
+
+              <div>
+                <h2 class="table-card-title">
+                  Historial de Acciones de Personal
+                </h2>
+
+                <p class="table-card-subtitle">
+                  Solo se muestran acciones que ya cuentan con detalle
+                  registrado.
+                </p>
+              </div>
+            </div>
+
+            <!-- Buscador -->
+            <div class="table-search">
+              <i class="fas fa-search"></i>
+
+              <input
+                type="text"
+                id="filtro-acciones"
+                placeholder="Buscar empleado o acción..."
+              />
+            </div>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="data-table" id="tabla-acciones">
+              <thead>
+                <tr>
+                  <th>Folio</th>
+                  <th>Empleado</th>
+                  <th>Acción</th>
+                  <th>Detalle</th>
+                  <th>Monto</th>
+                  <th>Fecha</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {% for a in acciones %}
+                <tr>
+                  <td>{{ a.idAccion.idAccion }}</td>
+
+                  <td>{{ a.idAccion.idEmpleado.idPersona.Nombre_Completo }}</td>
+
+                  <td>{{ a.id_Detalle_Accion.Accion }}</td>
+
+                  <td>{{ a.Detalle|truncatechars:60 }}</td>
+
+                  <td>
+                    {% if a.Monto_TA %} ₡{{ a.Monto_TA }} {% else %} — {% endif %}
+                  </td>
+
+                  <td>{{ a.idAccion.Fecha }}</td>
+                </tr>
+
+                {% empty %}
+                <tr>
+                  <td colspan="6" class="tabla-vacia">
+                    <i class="fas fa-file-circle-xmark"></i>
+                    No hay acciones registradas aún.
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
         <footer class="footer">
           © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
         </footer>
       </main>
     </div>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // --- Validación Básica Formulario 1 ---
-        const formCabecera = document.getElementById("form-cabecera");
-        formCabecera.addEventListener("submit", function (e) {
-          const empleadoInput = document.querySelector("[name='idEmpleado']");
-          const fechaInput = document.querySelector("[name='Fecha']");
-
-          if (!empleadoInput.value || !fechaInput.value) {
-            e.preventDefault();
-            alert(
-              "Por favor, seleccione el colaborador y la fecha de aplicación antes de generar el folio.",
-            );
-          }
-        });
-
-        // --- Lógica Dinámica Formulario 2 ---
-        const selectorAccion = document.getElementById("Tipo_Accion");
-        const colSelect = document.getElementById("columna-tipo-accion");
-
-        const contPremio = document.getElementById("contenedor-monto-premio");
-        const inputPremio = document.getElementById("monto_premio");
-
-        const contSalActual = document.getElementById(
-          "contenedor-salario-actual",
-        );
-        const contNuevSal = document.getElementById("contenedor-nuevo-salario");
-        const inputSalActual = document.getElementById("salario_actual");
-        const inputNuevSal = document.getElementById("nuevo_salario");
-        const labelNuevoSalario = document.querySelector(
-          "label[for='nuevo_salario']",
-        );
-
-        selectorAccion.addEventListener("change", function () {
-          const opcionSeleccionada = this.options[this.selectedIndex];
-          const nombreAccion = opcionSeleccionada.getAttribute("data-name");
-
-          // Reseteo por defecto: Ocultar todo y limpiar atributos 'required'
-          colSelect.style.gridColumn = "span 2";
-          contPremio.style.display = "none";
-          inputPremio.required = false;
-          inputPremio.value = "";
-
-          contSalActual.style.display = "none";
-          contNuevSal.style.display = "none";
-          inputNuevSal.required = false;
-          inputNuevSal.value = "";
-
-          if (nombreAccion === "Premio") {
-            // Diseño dividido: 50% Selector, 50% Monto Premio
-            colSelect.style.gridColumn = "span 1";
-            contPremio.style.display = "block";
-            inputPremio.required = true;
-          }
-          // NUEVO: Ahora aplica tanto para 'Ajuste Salarial' como para 'Ascenso'
-          else if (
-            nombreAccion === "Ajuste Salarial" ||
-            nombreAccion === "Ascenso"
-          ) {
-            // Diseño apilado: Fila completa para selector, fila inferior dividida para Salarios
-            colSelect.style.gridColumn = "span 2";
-            contSalActual.style.display = "block";
-            contNuevSal.style.display = "block";
-            inputNuevSal.required = true;
-
-            // Cambiar dinámicamente el texto del label para orientar mejor al usuario
-            if (nombreAccion === "Ascenso") {
-              labelNuevoSalario.innerHTML =
-                '<i class="fas fa-arrow-up-right-dots field-icon"></i> Nuevo Salario por Ascenso <span class="req">*</span>';
-              inputNuevSal.placeholder = "Ej: 550000 (Monto de nueva plaza)";
-            } else {
-              labelNuevoSalario.innerHTML =
-                '<i class="fas fa-coins field-icon"></i> Nuevo Salario Bruto Propuesto <span class="req">*</span>';
-              inputNuevSal.placeholder = "Ej: 450000";
-            }
-
-            // Intenta leer el elemento colaborador del paso 1 para cargar su salario base
-            const selectorEmpleado = document.querySelector(
-              "[name='idEmpleado']",
-            );
-            if (selectorEmpleado && selectorEmpleado.selectedIndex >= 0) {
-              const empleadoOpt =
-                selectorEmpleado.options[selectorEmpleado.selectedIndex];
-              const salarioBase =
-                empleadoOpt.getAttribute("data-salario") || "0.00";
-
-              // Formatea visualmente el salario actual en colones
-              inputSalActual.value =
-                "₡" +
-                parseFloat(salarioBase).toLocaleString("es-CR", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                });
-            }
-          }
-        });
-
-        // Limpieza controlada por el botón reset
-        document
-          .getElementById("btn-limpiar")
-          .addEventListener("click", function () {
-            setTimeout(() => {
-              selectorAccion.dispatchEvent(new Event("change"));
-            }, 10);
-          });
-      });
-    </script>
+    <script src="{% static 'js/accion_Personal.js' %}"></script>
   </body>
 </html>

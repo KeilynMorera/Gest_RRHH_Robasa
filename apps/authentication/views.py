@@ -1961,63 +1961,6 @@ def guardar_permiso(request):
 
 
 
-
-def registrar_cabecera_accion(request, pk=None):
-    accion_cabecera = None
-    paso_dos_habilitado = False
-
-    if pk:
-        accion_cabecera = get_object_or_404(AccionPersonal, pk=pk)
-        paso_dos_habilitado = True
-
-    if request.method == 'POST':
-        # Detectamos cuál botón envió el formulario
-        accion_solicitada = request.POST.get('action')
-
-        # =========================================================================
-        # CASO 1: Se presionó "Iniciar Registro (Generar Folio)"
-        # =========================================================================
-        if accion_solicitada == 'guardar_cabecera':
-            form_cabecera = AccionPersonalForm(request.POST, instance=accion_cabecera)
-            if form_cabecera.is_valid():
-                accion_cabecera = form_cabecera.save()
-                messages.success(request, f"Cabecera procesada con éxito. Folio: {accion_cabecera.idAccion}")
-                # Redirecciona a la misma vista con el ID para habilitar el paso 2
-                return redirect('gestionar_accion', pk=accion_cabecera.idAccion)
-        
-        # =========================================================================
-        # CASO 2: Se presionó "Aplicar y Sellar Acción" (El botón de abajo)
-        # =========================================================================
-        elif accion_solicitada == 'finalizar_accion':
-            # Aquí procesas lo que corresponde al paso 2 (Detalles)
-            # Ejemplo: form_detalle = DetalleAccionForm(request.POST) ...
-            messages.success(request, "¡Acción completa guardada y sellada con éxito!")
-            return redirect('dashboard_or_whatever') # Tu redirección final
-
-    else:
-        # Petición GET normal
-        form_cabecera = AccionPersonalForm(instance=accion_cabecera)
-
-    # Catálogos para el renderizado
-    empleados = Empleado.objects.select_related('idPersona').all()
-    tipos_accion = DetalleAccion.objects.all()
-    salarios = SalarioEmpleado.objects.select_related('idEmpleado__idPersona').all()
-
-    return render(request, 'accion_Personal.html', {
-        'form_cabecera': form_cabecera,
-        'paso_dos_habilitado': paso_dos_habilitado,
-        'accion_cabecera': accion_cabecera,
-        'empleados': empleados,
-        'tipos_accion': tipos_accion,
-        'salarios': salarios,
-    })
-
-
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from .models import AccionPersonal, DetalleAccion, AccionTipo, SalarioEmpleado
-from .forms import AccionPersonalForm  # Ajusta según tu archivo forms.py
-
 def registrar_cabecera_accion(request, pk=None):
     accion_cabecera = None
     paso_dos_habilitado = False
@@ -2102,6 +2045,24 @@ def registrar_cabecera_accion(request, pk=None):
         # Si es un GET (Limpio o con PK), inicializamos el formulario de la cabecera
         form_cabecera = AccionPersonalForm(instance=accion_cabecera)
 
+    
+    empleados = Empleado.objects.select_related(
+        'idPersona'
+    ).all()
+
+    for emp in empleados:
+
+        salario = SalarioEmpleado.objects.filter(
+            idEmpleado=emp
+        ).order_by(
+            '-idSalarioEmpleado'
+        ).first()
+
+        emp.salario_actual = (
+            salario.Salario_Sem_Neto
+            if salario else 0
+        )
+
     # -------------------------------------------------------------------------
     # CONTEXTO: Pasamos los catálogos necesarios para los select del HTML
     # -------------------------------------------------------------------------
@@ -2109,15 +2070,194 @@ def registrar_cabecera_accion(request, pk=None):
         'form_cabecera': form_cabecera,
         'accion_cabecera': accion_cabecera,
         'paso_dos_habilitado': paso_dos_habilitado,
-        # Alimentamos los dropdowns consultando los modelos reales de tus tablas
+        'empleados': empleados,
         'tipos_accion': DetalleAccion.objects.all(),
         'salarios': SalarioEmpleado.objects.all(),
-    }
+
+        # ✅ NUEVO: historial de acciones ya registradas (con detalle)
+        'acciones': AccionTipo.objects.select_related(
+            'idAccion',
+            'id_Detalle_Accion',
+            'idAccion__idEmpleado'
+        ).order_by('-idAccion_Tipo'),
+}
     
     return render(request, 'accion_Personal.html', context)
 
 
+def guardar_detalle_accion(request):
 
+    if request.method == 'POST':
+
+        id_accion = request.POST.get('idAccion_padre')
+
+        cabecera = get_object_or_404(
+
+            AccionPersonal,
+
+            pk=id_accion
+        )
+
+
+        tipo_accion = get_object_or_404(
+
+            DetalleAccion,
+
+            pk=request.POST.get('Tipo_Accion')
+        )
+
+
+        descripcion = request.POST.get('Detalle')
+
+
+        monto = None
+
+        salario = None
+
+
+        # ====================================
+        # PREMIO
+        # ====================================
+
+        if tipo_accion.Accion == 'Premio':
+
+            monto = Decimal(
+
+                request.POST.get('monto_premio')
+            )
+
+
+        # ====================================
+        # AJUSTE SALARIAL
+        # ====================================
+
+        elif tipo_accion.Accion == 'Ajuste Salarial':
+
+            nuevo_salario = Decimal(
+
+                request.POST.get('nuevo_salario')
+            )
+
+
+            salario = SalarioEmpleado.objects.filter(
+
+                idEmpleado=cabecera.idEmpleado
+
+            ).order_by(
+
+                '-idSalarioEmpleado'
+
+            ).first()
+
+
+            if salario:
+
+                salario.Salario_Sem_Neto = nuevo_salario
+
+                salario.save()
+
+
+            monto = nuevo_salario
+
+
+        # ====================================
+        # ASCENSO
+        # ====================================
+
+        elif tipo_accion.Accion == 'Ascenso':
+
+            nuevo_salario = Decimal(
+
+                request.POST.get('nuevo_salario')
+            )
+
+
+            salario = SalarioEmpleado.objects.filter(
+
+                idEmpleado=cabecera.idEmpleado
+
+            ).order_by(
+
+                '-idSalarioEmpleado'
+
+            ).first()
+
+
+            if salario:
+
+                salario.Salario_Sem_Neto = nuevo_salario
+
+                salario.save()
+
+
+            monto = nuevo_salario
+
+
+        # ====================================
+        # GUARDAR
+        # ====================================
+
+        movimiento = AccionTipo(
+
+            idAccion=cabecera,
+
+            id_Detalle_Accion=tipo_accion,
+
+            Detalle=descripcion,
+
+            Monto_TA=monto,
+
+            idSalarioEmpleado=salario
+        )
+
+        movimiento.save()
+
+
+        messages.success(
+
+            request,
+
+            "Acción registrada correctamente."
+        )
+
+
+        return redirect(
+
+            'gestionar_accion',
+
+            pk=cabecera.idAccion
+        )
+
+
+def obtener_salario_actual(request, idEmpleado):
+
+    salario = SalarioEmpleado.objects.filter(
+        idEmpleado=idEmpleado
+    ).order_by(
+        '-idSalarioEmpleado'
+    ).first()
+
+    if salario:
+
+        return JsonResponse({
+
+            'success': True,
+
+            'salario': float(salario.Salario_Sem_Neto),
+
+            'idSalario': salario.idSalarioEmpleado
+
+        })
+
+    return JsonResponse({
+
+        'success': False,
+
+        'salario': 0,
+
+        'idSalario': None
+
+    })
 
 
 

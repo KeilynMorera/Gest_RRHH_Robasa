@@ -1053,45 +1053,77 @@ class DetalleAccion(models.Model):
         return self.Accion
 
 
+
 # =========================================================
-# TABLA: Accion_Tipo (Detalle del Movimiento)
+# TABLA: Accion_Tipo
+# Detalle específico de una acción de personal
 # =========================================================
 class AccionTipo(models.Model):
+
     idAccion_Tipo = models.AutoField(
-        primary_key=True, 
+        primary_key=True,
         db_column='idAccion_Tipo'
     )
+
     Detalle = models.CharField(
-        max_length=600, 
+        max_length=600,
         db_column='Detalle'
     )
-    # NUEVA COLUMNA: Aquí guardaremos el monto personalizado (Premio, Ajuste, Ascenso) o 0.00
-    monto_ta = models.DecimalField(
-        max_digits=12, 
-        decimal_places=2, 
+
+    Monto_TA = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        null=True,
+        blank=True,
         db_column='Monto_TA'
     )
-    
-    # RELACIONES (Foreign Keys)
+
+    # Tipo de acción
     id_Detalle_Accion = models.ForeignKey(
-        'DetalleAccion', 
-        on_delete=models.PROTECT, 
-        db_column='id_Detalle_Accion'
+
+        DetalleAccion,
+
+        on_delete=models.PROTECT,
+
+        db_column='id_Detalle_Accion',
+
+        related_name='acciones_tipo'
     )
+
+    # Cabecera Accion_Personal
     idAccion = models.ForeignKey(
-        'AccionPersonal', 
-        on_delete=models.CASCADE, 
-        db_column='idAccion'
+
+        AccionPersonal,
+
+        on_delete=models.CASCADE,
+
+        db_column='idAccion',
+
+        related_name='detalles_accion'
     )
+
+    # Salario del empleado (solo para Ajuste Salarial o Ascenso)
     idSalarioEmpleado = models.ForeignKey(
-        'SalarioEmpleado', 
-        on_delete=models.PROTECT, 
-        db_column='idSalarioEmpleado'
+
+        SalarioEmpleado,
+
+        on_delete=models.SET_NULL,
+
+        null=True,
+
+        blank=True,
+
+        db_column='idSalarioEmpleado',
+
+        related_name='acciones_salario'
     )
 
     class Meta:
-        managed = False  # Mantiene el control sobre tu tabla existente en SQL Server
+
+        managed = False
+
         db_table = 'Accion_Tipo'
 
     def __str__(self):
-        return f"Movimiento {self.idAccion_Tipo} - {self.id_Detalle_Accion.Accion} (₡{self.monto_ta})"
+
+        return f"{self.idAccion} - {self.id_Detalle_Accion}"

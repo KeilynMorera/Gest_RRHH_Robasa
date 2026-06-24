@@ -155,6 +155,10 @@ urlpatterns = [
     # RUTA CORREGIDA: Es la que recibe el ID de la cabecera una vez guardado
     path('accion/gestionar/<int:pk>/', views.registrar_cabecera_accion, name='gestionar_accion'),
 
+    path('guardar-detalle-accion/', views.guardar_detalle_accion, name='guardar_detalle_accion'),
+
+    path('obtener-salario/<int:idEmpleado>/', views.obtener_salario_actual, name='obtener_salario_actual'),
+
 
 ]
 
