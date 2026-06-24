@@ -1065,31 +1065,33 @@ class AccionTipo(models.Model):
         max_length=600, 
         db_column='Detalle'
     )
-    # FK al catálogo Detalle_Accion
+    # NUEVA COLUMNA: Aquí guardaremos el monto personalizado (Premio, Ajuste, Ascenso) o 0.00
+    monto_ta = models.DecimalField(
+        max_digits=12, 
+        decimal_places=2, 
+        db_column='Monto_TA'
+    )
+    
+    # RELACIONES (Foreign Keys)
     id_Detalle_Accion = models.ForeignKey(
-        DetalleAccion,
-        on_delete=models.CASCADE,
-        db_column='id_Detalle_Accion',
-        related_name='tipos_asignados'
+        'DetalleAccion', 
+        on_delete=models.PROTECT, 
+        db_column='id_Detalle_Accion'
     )
-    # FK a la cabecera Accion_Personal
     idAccion = models.ForeignKey(
-        AccionPersonal,
-        on_delete=models.CASCADE,
-        db_column='idAccion',
-        related_name='detalles_movimiento'
+        'AccionPersonal', 
+        on_delete=models.CASCADE, 
+        db_column='idAccion'
     )
-    # FK al Salario del Empleado para amarrar la Compensación Total
     idSalarioEmpleado = models.ForeignKey(
-        'SalarioEmpleado',  # Ajustar al nombre exacto de tu modelo Salario_Empleado
-        on_delete=models.CASCADE,
-        db_column='idSalarioEmpleado',
-        related_name='acciones_salariales'
+        'SalarioEmpleado', 
+        on_delete=models.PROTECT, 
+        db_column='idSalarioEmpleado'
     )
 
     class Meta:
-        managed = False
+        managed = False  # Mantiene el control sobre tu tabla existente en SQL Server
         db_table = 'Accion_Tipo'
 
     def __str__(self):
-        return f"Detalle de Acción {self.idAccion_Tipo} - Folio Cabecera: {self.idAccion_id}"
+        return f"Movimiento {self.idAccion_Tipo} - {self.id_Detalle_Accion.Accion} (₡{self.monto_ta})"

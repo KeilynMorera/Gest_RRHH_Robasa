@@ -1,7 +1,6 @@
 {% load static %}
 
 <!doctype html>
-
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
@@ -9,7 +8,6 @@
     <title>Acciones de Personal - Talento Humano | Robasa</title>
 
     <link rel="stylesheet" href="{% static 'styles/accion_Personal.css' %}" />
-
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
@@ -20,6 +18,11 @@
         opacity: 0.5;
         pointer-events: none;
         user-select: none;
+      }
+      .field input[readonly] {
+        background-color: #e9ecef;
+        color: #495057;
+        cursor: not-allowed;
       }
     </style>
   </head>
@@ -147,7 +150,8 @@
                 </h2>
                 <p class="form-card-subtitle">
                   Genere justificantes legales de ascensos, amonestaciones,
-                  licencias o incrementos salariales.
+                  licencias o incrementos salariales con bases económicas o
+                  variables.
                 </p>
               </div>
             </div>
@@ -155,6 +159,19 @@
               Los campos con <span>*</span> son obligatorios
             </p>
           </div>
+
+          {% if messages %}
+          <div class="messages-container" style="margin: 0 25px 15px 25px">
+            {% for message in messages %}
+            <div
+              class="alert alert-{{ message.tags }}"
+              style="padding: 10px; margin-bottom: 5px; border-radius: 4px; background-color: {% if message.tags == 'success' %}#d4edda{% else %}#f8d7da{% endif %}; color: {% if message.tags == 'success' %}#155724{% else %}#721c24{% endif %};"
+            >
+              {{ message }}
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
 
           <div class="form-body">
             <form
@@ -245,6 +262,7 @@
               <input
                 type="hidden"
                 name="idAccion_padre"
+                id="idAccion_padre"
                 value="{% if accion_cabecera %}{{ accion_cabecera.idAccion }}{% endif %}"
               />
 
@@ -258,7 +276,11 @@
                 </h4>
 
                 <div class="form-grid">
-                  <div class="field">
+                  <div
+                    class="field"
+                    id="columna-tipo-accion"
+                    style="grid-column: span 2"
+                  >
                     <label for="Tipo_Accion">
                       <i class="fas fa-sliders field-icon"></i> Tipo de Acción
                       <span class="req">*</span>
@@ -279,38 +301,70 @@
                         Seleccione la acción...
                       </option>
                       {% for tipo in tipos_accion %}
-                      <option value="{{ tipo.idTipo_Accion }}">
-                        {{ tipo.Nombre_Tipo }}
+                      <option
+                        value="{{ tipo.id_Detalle_Accion }}"
+                        data-name="{{ tipo.Accion }}"
+                      >
+                        {{ tipo.Accion }} {% if tipo.valor_accion > 0 %}— Base:
+                        ₡{{ tipo.valor_accion }}{% endif %}
                       </option>
                       {% endfor %}
                     </select>
                   </div>
 
-                  <div class="field" id="contenedorSalario">
-                    <label for="idSalario">
-                      <i class="fas fa-money-check-dollar field-icon"></i>
-                      Compensación Total Asociada
+                  <div
+                    class="field"
+                    id="contenedor-monto-premio"
+                    style="display: none"
+                  >
+                    <label for="monto_premio">
+                      <i class="fas fa-trophy field-icon"></i> Monto del Premio
+                      (Según KPI) <span class="req">*</span>
                     </label>
-                    <select
-                      id="idSalario"
-                      name="idSalario"
-                      {%
-                      if
-                      not
-                      paso_dos_habilitado
-                      %}disabled{%
-                      endif
-                      %}
-                    >
-                      <option value="" selected>
-                        Seleccione una compensación...
-                      </option>
-                      {% for salario in salarios %}
-                      <option value="{{ salario.idSalario }}">
-                        ₡{{ salario.Compensacion_Total }} | Neto: ₡{{ salario.Salario_Semanal_Neto }} | Comisión: ₡{{ salario.Comision }}
-                      </option>
-                      {% endfor %}
-                    </select>
+                    <input
+                      type="number"
+                      id="monto_premio"
+                      name="monto_premio"
+                      step="0.01"
+                      min="0"
+                      placeholder="Ej: 50000"
+                    />
+                  </div>
+
+                  <div
+                    class="field"
+                    id="contenedor-salario-actual"
+                    style="display: none"
+                  >
+                    <label for="salario_actual">
+                      <i class="fas fa-money-bill-wave field-icon"></i> Salario
+                      Bruto Actual
+                    </label>
+                    <input
+                      type="text"
+                      id="salario_actual"
+                      readonly
+                      placeholder="₡0.00"
+                    />
+                  </div>
+
+                  <div
+                    class="field"
+                    id="contenedor-nuevo-salario"
+                    style="display: none"
+                  >
+                    <label for="nuevo_salario">
+                      <i class="fas fa-coins field-icon"></i> Nuevo Salario
+                      Bruto Propuesto <span class="req">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      id="nuevo_salario"
+                      name="nuevo_salario"
+                      step="0.01"
+                      min="0"
+                      placeholder="Ej: 450000"
+                    />
                   </div>
                 </div>
 
@@ -323,7 +377,8 @@
                     id="Detalle"
                     name="Detalle"
                     rows="4"
-                    placeholder="Detalle del movimiento..."
+                    placeholder="Detalle del movimiento administrativo..."
+                    maxlength="600"
                     required
                     {%
                     if
@@ -333,11 +388,25 @@
                     endif
                     %}
                   ></textarea>
+                  <small style="color: #6c757d; display: block; margin-top: 4px"
+                    >Máximo 600 caracteres.</small
+                  >
                 </div>
               </div>
 
               <div class="form-footer">
-                <button type="reset" id="btn-limpiar" class="btn btn-ghost">
+                <button
+                  type="reset"
+                  id="btn-limpiar"
+                  class="btn btn-ghost"
+                  {%
+                  if
+                  not
+                  paso_dos_habilitado
+                  %}disabled{%
+                  endif
+                  %}
+                >
                   <i class="fas fa-xmark"></i> Limpiar Campos
                 </button>
 
@@ -368,19 +437,109 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        // --- Validación Básica Formulario 1 ---
         const formCabecera = document.getElementById("form-cabecera");
-
         formCabecera.addEventListener("submit", function (e) {
-          const empleado = document.getElementById("idEmpleado").value;
-          const fecha = document.getElementById("Fecha").value;
+          const empleadoInput = document.querySelector("[name='idEmpleado']");
+          const fechaInput = document.querySelector("[name='Fecha']");
 
-          if (!empleado || !fecha) {
+          if (!empleadoInput.value || !fechaInput.value) {
             e.preventDefault();
             alert(
               "Por favor, seleccione el colaborador y la fecha de aplicación antes de generar el folio.",
             );
           }
         });
+
+        // --- Lógica Dinámica Formulario 2 ---
+        const selectorAccion = document.getElementById("Tipo_Accion");
+        const colSelect = document.getElementById("columna-tipo-accion");
+
+        const contPremio = document.getElementById("contenedor-monto-premio");
+        const inputPremio = document.getElementById("monto_premio");
+
+        const contSalActual = document.getElementById(
+          "contenedor-salario-actual",
+        );
+        const contNuevSal = document.getElementById("contenedor-nuevo-salario");
+        const inputSalActual = document.getElementById("salario_actual");
+        const inputNuevSal = document.getElementById("nuevo_salario");
+        const labelNuevoSalario = document.querySelector(
+          "label[for='nuevo_salario']",
+        );
+
+        selectorAccion.addEventListener("change", function () {
+          const opcionSeleccionada = this.options[this.selectedIndex];
+          const nombreAccion = opcionSeleccionada.getAttribute("data-name");
+
+          // Reseteo por defecto: Ocultar todo y limpiar atributos 'required'
+          colSelect.style.gridColumn = "span 2";
+          contPremio.style.display = "none";
+          inputPremio.required = false;
+          inputPremio.value = "";
+
+          contSalActual.style.display = "none";
+          contNuevSal.style.display = "none";
+          inputNuevSal.required = false;
+          inputNuevSal.value = "";
+
+          if (nombreAccion === "Premio") {
+            // Diseño dividido: 50% Selector, 50% Monto Premio
+            colSelect.style.gridColumn = "span 1";
+            contPremio.style.display = "block";
+            inputPremio.required = true;
+          }
+          // NUEVO: Ahora aplica tanto para 'Ajuste Salarial' como para 'Ascenso'
+          else if (
+            nombreAccion === "Ajuste Salarial" ||
+            nombreAccion === "Ascenso"
+          ) {
+            // Diseño apilado: Fila completa para selector, fila inferior dividida para Salarios
+            colSelect.style.gridColumn = "span 2";
+            contSalActual.style.display = "block";
+            contNuevSal.style.display = "block";
+            inputNuevSal.required = true;
+
+            // Cambiar dinámicamente el texto del label para orientar mejor al usuario
+            if (nombreAccion === "Ascenso") {
+              labelNuevoSalario.innerHTML =
+                '<i class="fas fa-arrow-up-right-dots field-icon"></i> Nuevo Salario por Ascenso <span class="req">*</span>';
+              inputNuevSal.placeholder = "Ej: 550000 (Monto de nueva plaza)";
+            } else {
+              labelNuevoSalario.innerHTML =
+                '<i class="fas fa-coins field-icon"></i> Nuevo Salario Bruto Propuesto <span class="req">*</span>';
+              inputNuevSal.placeholder = "Ej: 450000";
+            }
+
+            // Intenta leer el elemento colaborador del paso 1 para cargar su salario base
+            const selectorEmpleado = document.querySelector(
+              "[name='idEmpleado']",
+            );
+            if (selectorEmpleado && selectorEmpleado.selectedIndex >= 0) {
+              const empleadoOpt =
+                selectorEmpleado.options[selectorEmpleado.selectedIndex];
+              const salarioBase =
+                empleadoOpt.getAttribute("data-salario") || "0.00";
+
+              // Formatea visualmente el salario actual en colones
+              inputSalActual.value =
+                "₡" +
+                parseFloat(salarioBase).toLocaleString("es-CR", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                });
+            }
+          }
+        });
+
+        // Limpieza controlada por el botón reset
+        document
+          .getElementById("btn-limpiar")
+          .addEventListener("click", function () {
+            setTimeout(() => {
+              selectorAccion.dispatchEvent(new Event("change"));
+            }, 10);
+          });
       });
     </script>
   </body>
