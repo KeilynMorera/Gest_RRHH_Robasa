@@ -1036,6 +1036,68 @@ select {
   }
 }
 
+
+/* ===========================
+   MATRIZ MINI 9 BOX
+=========================== */
+
+.mini-ninebox{
+    display:grid;
+    grid-template-columns:repeat(3,80px);
+    grid-template-rows:repeat(3,80px);
+    gap:16px;
+    justify-content:center;
+    align-content:center;
+}
+
+.mini-box{
+
+    width:80px;
+    height:80px;
+
+    border:2px solid #d8e2f3;
+
+    border-radius:18px;
+
+    background:#ffffff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    transition:.3s;
+
+    font-weight:700;
+
+    color:#5d6d93;
+
+    cursor:default;
+}
+
+.mini-box span{
+
+    font-size:18px;
+
+    font-weight:700;
+}
+
+/* Cuadrante seleccionado */
+
+.mini-box.active{
+
+    background:#ff6a00;
+
+    border-color:#ff6a00;
+
+    color:#fff;
+
+    transform:scale(1.08);
+
+    box-shadow:0 10px 25px rgba(255,106,0,.35);
+}
+
 /* ==========================================================================
    SIDEBAR RESPONSIVE SOLO ÍCONOS
    ========================================================================== */

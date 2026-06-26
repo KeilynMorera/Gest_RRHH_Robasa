@@ -1347,6 +1347,7 @@ class Cuadrante9BoxPerfil(models.Model):
 # =========================================================
 # TABLA: Cuadrante_9box
 # =========================================================
+
 class Cuadrante9Box(models.Model):
 
     idCuadrante_9box = models.AutoField(
@@ -1354,8 +1355,7 @@ class Cuadrante9Box(models.Model):
         db_column='idCuadrante_9box'
     )
 
-    Cuadrante = models.CharField(
-        max_length=5,
+    Cuadrante = models.IntegerField(
         db_column='Cuadrante'
     )
 
@@ -1366,8 +1366,7 @@ class Cuadrante9Box(models.Model):
         verbose_name_plural = 'Cuadrantes 9 Box'
 
     def __str__(self):
-        return self.Cuadrante
-    
+        return str(self.Cuadrante)
 
 # =========================================================
 # TABLA: Cuadrante_9box_Desempeno

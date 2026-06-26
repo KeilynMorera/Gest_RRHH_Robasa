@@ -246,6 +246,7 @@
                       <i class="fas fa-table-cells-large field-icon"></i>
                       Código del Cuadrante <span class="req">*</span>
                     </label>
+
                     <select
                       id="idCuadrante_9box"
                       name="idCuadrante_9box"
@@ -254,14 +255,16 @@
                       <option value="" disabled selected>
                         Seleccione un cuadrante...
                       </option>
+
                       {% for cuadrante in cuadrantes %}
-                      <option value="{{ cuadrante.idCuadrante_9box }}">
+
+                      <option value="{{ cuadrante.Cuadrante }}">
                         {{ cuadrante.Cuadrante }}
                       </option>
+
                       {% endfor %}
                     </select>
                   </div>
-
                   <!-- Perfil del Cuadrante -->
                   <div class="field">
                     <label for="idCuadrante_9box_Perfil">
@@ -375,14 +378,16 @@
                   </div>
                   <div class="preview-matrix">
                     <div class="mini-ninebox" id="mini-ninebox">
-                      <!-- Se generan con JS según la selección -->
                       {% for cuadrante in cuadrantes %}
+
                       <div
                         class="mini-box"
-                        data-codigo="{{ cuadrante.Codigo }}"
+                        id="mini-{{ cuadrante.Cuadrante }}"
+                        data-codigo="{{ cuadrante.Cuadrante }}"
                       >
-                        {{ cuadrante.Codigo }}
+                        {{ cuadrante.Cuadrante }}
                       </div>
+
                       {% endfor %}
                     </div>
                   </div>
@@ -410,7 +415,6 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // Referencias a los selects y la vista previa
         const selCuadrante = document.getElementById("idCuadrante_9box");
         const selPerfil = document.getElementById("idCuadrante_9box_Perfil");
         const selDesempeno = document.getElementById(
@@ -426,47 +430,71 @@
         const prevPlan = document.getElementById("preview-plan");
         const prevDesempeno = document.getElementById("preview-desempeno");
         const prevPotencial = document.getElementById("preview-potencial");
+
         const miniBoxes = document.querySelectorAll(".mini-box");
 
         function actualizarPreview() {
-          // Código del cuadrante
-          const codigo =
-            selCuadrante.options[selCuadrante.selectedIndex]?.text.split(
-              " ",
-            )[0] || "—";
+          // 🔹 Código del cuadrante (VALUE es lo correcto)
+          const codigo = selCuadrante.value || "—";
+
           prevCodigo.textContent = codigo;
 
-          // Perfil
+          // 🔹 Perfil
           prevPerfil.textContent =
             selPerfil.options[selPerfil.selectedIndex]?.text ||
             "Seleccione un perfil";
 
-          // Desempeño (primer carácter = número)
+          // 🔹 Desempeño
           const desempText =
             selDesempeno.options[selDesempeno.selectedIndex]?.text || "—";
-          prevDesempeno.textContent = desempText.split(" ")[0] || "—";
+          prevDesempeno.textContent = desempText;
 
-          // Potencial (primer carácter = letra)
+          // 🔹 Potencial
           const potText =
             selPotencial.options[selPotencial.selectedIndex]?.text || "—";
-          prevPotencial.textContent = potText.split(" ")[0] || "—";
+          prevPotencial.textContent = potText;
 
-          // Plan de acción
+          // 🔹 Plan
           prevPlan.textContent =
             txtPlan.value || "El plan de acción aparecerá aquí...";
 
-          // Resaltar cuadrante activo en la mini matriz
+          // 🔹 Resaltar mini cuadrante
           miniBoxes.forEach((box) => {
             box.classList.toggle("active", box.dataset.codigo === codigo);
           });
         }
 
+        // eventos
         selCuadrante.addEventListener("change", actualizarPreview);
         selPerfil.addEventListener("change", actualizarPreview);
         selDesempeno.addEventListener("change", actualizarPreview);
         selPotencial.addEventListener("change", actualizarPreview);
         txtPlan.addEventListener("input", actualizarPreview);
       });
+
+      miniBoxes.forEach((box) => {
+        if (box.dataset.codigo === codigo) {
+          box.classList.add("active");
+        } else {
+          box.classList.remove("active");
+        }
+      });
+
+      function actualizarPreview() {
+        const codigo = selCuadrante.value || "—";
+
+        // Resumen
+        prevCodigo.textContent = codigo;
+
+        // Encender el cuadrante
+        document.querySelectorAll(".mini-box").forEach((box) => {
+          box.classList.remove("active");
+
+          if (box.dataset.codigo === codigo) {
+            box.classList.add("active");
+          }
+        });
+      }
     </script>
   </body>
 </html>

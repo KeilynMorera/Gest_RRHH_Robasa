@@ -2475,7 +2475,7 @@ def crear_matriz_9box(request):
 
                     Plan_Accion=request.POST.get("Plan_Accion"),
 
-                    idPeriodo_id=request.POST.get("idPeriodo"),
+                    idPeriodo_id=request.POST.get("periodo"),
 
                     idCuadrante_9box_Perfil_id=request.POST.get(
                         "idCuadrante_9box_Perfil"
