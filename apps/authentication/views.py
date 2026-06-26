@@ -7,6 +7,7 @@ from datetime import date, datetime
 from django.contrib import messages
 from .forms import AccionPersonalForm
 from django.db import transaction
+from django.db.models import Q # Asegúrate de tener esta importación al inicio de tu archivo views.py
 
 #Importa todo lo que se encuentra en el archivo models.py
 #Donde se encuentran los modelos de las tablas de la base de datos
@@ -2490,12 +2491,8 @@ def crear_matriz_9box(request):
 
 
 # =========================================================
-# DASHBOARD RESULTADOS (CORREGIDA Y COMPATIBLE CON EL HTML)
+# DASHBOARD RESULTADOS (CORREGIDA SIN ERRORES DE LOOKUP)
 # =========================================================
-# =========================================================
-# DASHBOARD RESULTADOS (CORREGIDA PARA EVITAR MULTIPLEOBJECTSRETURNED)
-# =========================================================
-
 def dashboard_resultados(request):
     # 1. Cargamos catálogos para renderizar los selectores
     empleados = Empleado.objects.select_related("idPersona").all()
@@ -2513,7 +2510,6 @@ def dashboard_resultados(request):
     if empleado_filtro and periodo_filtro and anio_filtro:
         try:
             # A. Buscamos el registro en la matriz cruzando empleado, periodo y año
-            # CORRECCIÓN: Se cambia .get() por .filter(...).first() para evitar caídas por duplicados
             matriz_seleccionada = UnionMatrizEmp.objects.select_related(
                 "idEmpleado__idPersona", 
                 "idEmpleado__idPuesto",
@@ -2528,18 +2524,58 @@ def dashboard_resultados(request):
                 Anio=anio_filtro
             ).first()
             
-            # Si se usó filter().first(), no arrojará DoesNotExist, sino que será None si está vacío
             if not matriz_seleccionada:
                 messages.warning(request, "No se encontraron resultados de la Matriz 9 Box para los criterios seleccionados.")
             
-            # B. Buscamos la evaluación de potencial de la jefatura ligada al empleado y periodo
-            # Filtramos a través de la relación de la tabla Evaluacion
-            potencial_seleccionado = EvaluacionJefePotencial.objects.select_related('idEvaluacion').filter(
-                idEvaluacion__idEmpleado_id=empleado_filtro,
-                idEvaluacion__idPeriodo_id=periodo_filtro,
-                idEvaluacion__Anio=anio_filtro # Ajusta el nombre de este campo según tu modelo Evaluacion si varía
-            ).first()
+            # =========================================================
+            # B. Buscamos la evaluación de potencial de la jefatura
+            # =========================================================
+            potencial_seleccionado = None
+            
+            if matriz_seleccionada:
+                # Traemos los registros con su evaluación asociada
+                registros_potencial = EvaluacionJefePotencial.objects.select_related('idEvaluacion').all()
+                
+                for pot in registros_potencial:
+                    eval_obj = pot.idEvaluacion
+                    if not eval_obj:
+                        continue
+                    
+                    # 1. Extraer ID del Empleado dinámicamente según cómo se llame en tu modelo Evaluacion
+                    eval_emp_id = None
+                    for attr in ['idEmpleado_id', 'idEmpleado', 'empleado_id', 'empleado']:
+                        if hasattr(eval_obj, attr):
+                            val = getattr(eval_obj, attr)
+                            # Si es un objeto Empleado, extraemos su pk (idEmpleado)
+                            eval_emp_id = val.idEmpleado if hasattr(val, 'idEmpleado') else val
+                            break
+                    
+                    # 2. Extraer ID del Periodo dinámicamente
+                    eval_per_id = None
+                    for attr in ['idPeriodo_id', 'idPeriodo', 'periodo_id', 'periodo']:
+                        if hasattr(eval_obj, attr):
+                            val = getattr(eval_obj, attr)
+                            eval_per_id = val.idPeriodo if hasattr(val, 'idPeriodo') else val
+                            break
 
+                    # 3. Extraer el Año dinámicamente (de la evaluación o del periodo asignado)
+                    eval_anio = None
+                    if hasattr(eval_obj, 'Anio'):
+                        eval_anio = eval_obj.Anio
+                    elif hasattr(eval_obj, 'anio'):
+                        eval_anio = eval_obj.anio
+                    elif eval_obj.idPeriodo and hasattr(eval_obj.idPeriodo, 'Anio'):
+                        eval_anio = eval_obj.idPeriodo.Anio
+
+                    # Validamos coincidencia estricta convirtiendo a texto
+                    if (str(eval_emp_id) == str(empleado_filtro) and 
+                        str(eval_per_id) == str(periodo_filtro) and 
+                        str(eval_anio) == str(anio_filtro)):
+                        potencial_seleccionado = pot
+                        break
+
+            # NOTA: Se eliminó la línea .first() que causaba conflictos aquí
+            
         except Exception as e:
             messages.error(request, f"Error al consultar los datos: {str(e)}")
 
@@ -2548,11 +2584,11 @@ def dashboard_resultados(request):
         'empleados': empleados,
         'periodos': periodos,
         'matriz_seleccionada': matriz_seleccionada,
-        'potencial_seleccionado': potencial_seleccionado, # Nueva información consolidada
+        'potencial_seleccionado': potencial_seleccionado, 
         
         # Guardamos las selecciones para mantener fijos los campos tras recargar la pantalla
-        'empleado_filtro_id': int(empleado_filtro) if empleado_filtro else None,
-        'periodo_filtro_id': int(periodo_filtro) if periodo_filtro else None,
+        'empleado_filtro_id': None,
+        'periodo_filtro_id': None,
         'anio_filtro_val': anio_filtro if anio_filtro else "",
     }
     
@@ -2564,7 +2600,6 @@ def dashboard_resultados(request):
         pass
         
     return render(request, 'result_Evaluacion.html', context)
-
 
 
 

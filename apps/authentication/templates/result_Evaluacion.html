@@ -175,9 +175,7 @@
                   {{ matriz_seleccionada.idEmpleado.idPersona.Nombre_Completo }}
                 </strong>
                 <span>
-                  {{
-                  matriz_seleccionada.idEmpleado.idPuesto.Nombre|default:"Colaborador"
-                  }}
+                  {{ matriz_seleccionada.idEmpleado.idPuesto.Nombre|default:"Colaborador" }}
                 </span>
               </div>
             </div>
@@ -279,9 +277,7 @@
                   <i class="fas fa-chart-column"></i>
                 </div>
                 <h2>
-                  {{
-                  matriz_seleccionada.idCuadrante_9box_Desempeno.Nivel_Desempeno
-                  }}
+                  {{ matriz_seleccionada.idCuadrante_9box_Desempeno.Nivel_Desempeno }}
                 </h2>
                 <p>Nivel asignado en la evaluación</p>
               </div>
@@ -292,9 +288,7 @@
                   <i class="fas fa-rocket"></i>
                 </div>
                 <h2>
-                  Nivel {{
-                  matriz_seleccionada.idCuadrante_9box_Potencial.Nivel_Potencial
-                  }}
+                  Nivel {{ matriz_seleccionada.idCuadrante_9box_Potencial.Nivel_Potencial }}
                 </h2>
                 <p>Capacidad de crecimiento identificada</p>
               </div>
@@ -327,23 +321,22 @@
                       Box
                     </h3>
                     <span class="status-badge high">
-                      {{
-                      matriz_seleccionada.idCuadrante_9box_Perfil.Tipo_Profecional
-                      }}
+                      {{ matriz_seleccionada.idCuadrante_9box_Perfil.Tipo_Profecional }}
                     </span>
                   </div>
 
                   <div class="ninebox-grid">
-                    <!-- FILA 3: POTENCIAL ALTO -->
                     <div
-                      class="box-item low {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 7 %}active{% endif %}"
+                      class="box-item low {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '7' %}active{% endif %}"
                       title="Enigma"
                     >
                       <div class="box-header-info">
                         <span class="quadrant-number">7</span>
-                        {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 7 %}<span class="eval-badge"
+                        {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '7' %}
+                        <span class="eval-badge"
                           ><i class="fas fa-user-check"></i> Colaborador</span
-                        >{% endif %}
+                        >
+                        {% endif %}
                       </div>
                       <div class="quadrant-body">
                         <h4>Enigma</h4>
@@ -352,54 +345,147 @@
                     </div>
 
                     <div
-                      class="box-item medium {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 8 %}active{% endif %}"
+                      class="box-item medium {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '8' %}active{% endif %}"
                       title="Alto Potencial Complejo"
                     >
-                      {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 8 %}<i class="fas fa-user"></i>{% endif %}
+                      <div class="box-header-info">
+                        <span class="quadrant-number">8</span>
+                        {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '8' %}
+                        <span class="eval-badge"
+                          ><i class="fas fa-user-check"></i> Colaborador</span
+                        >
+                        {% endif %}
+                      </div>
+                      <div class="quadrant-body">
+                        <h4>Alto Potencial</h4>
+                        <p>Potencial Alto / Desempeño Medio</p>
+                      </div>
                     </div>
+
                     <div
-                      class="box-item high {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 9 %}active{% endif %}"
+                      class="box-item high {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '9' %}active{% endif %}"
                       title="Estrella Suprema"
                     >
-                      {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 9 %}<i class="fas fa-user"></i>{% endif %}
+                      <div class="box-header-info">
+                        <span class="quadrant-number">9</span>
+                        {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '9' %}
+                        <span class="eval-badge"
+                          ><i class="fas fa-user-check"></i> Colaborador</span
+                        >
+                        {% endif %}
+                      </div>
+                      <div class="quadrant-body">
+                        <h4>Estrella Suprema</h4>
+                        <p>Potencial Alto / Desempeño Alto</p>
+                      </div>
                     </div>
 
                     <div
-                      class="box-item medium {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 4 %}active{% endif %}"
+                      class="box-item medium {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '4' %}active{% endif %}"
                       title="Dilema"
                     >
-                      {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 4 %}<i class="fas fa-user"></i>{% endif %}
-                    </div>
-                    <div
-                      class="box-item medium {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 5 %}active{% endif %}"
-                      title="Profesional Clave"
-                    >
-                      {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 5 %}<i class="fas fa-user"></i>{% endif %}
-                    </div>
-                    <div
-                      class="box-item high {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 6 %}active{% endif %}"
-                      title="Estrella en Crecimiento"
-                    >
-                      {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 6 %}<i class="fas fa-user"></i>{% endif %}
+                      <div class="box-header-info">
+                        <span class="quadrant-number">4</span>
+                        {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '4' %}
+                        <span class="eval-badge"
+                          ><i class="fas fa-user-check"></i> Colaborador</span
+                        >
+                        {% endif %}
+                      </div>
+                      <div class="quadrant-body">
+                        <h4>Dilema</h4>
+                        <p>Potencial Medio / Desempeño Bajo</p>
+                      </div>
                     </div>
 
                     <div
-                      class="box-item low {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 1 %}active{% endif %}"
+                      class="box-item medium {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '5' %}active{% endif %}"
+                      title="Profesional Clave"
+                    >
+                      <div class="box-header-info">
+                        <span class="quadrant-number">5</span>
+                        {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '5' %}
+                        <span class="eval-badge"
+                          ><i class="fas fa-user-check"></i> Colaborador</span
+                        >
+                        {% endif %}
+                      </div>
+                      <div class="quadrant-body">
+                        <h4>Profesional Clave</h4>
+                        <p>Potencial Medio / Desempeño Medio</p>
+                      </div>
+                    </div>
+
+                    <div
+                      class="box-item high {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '6' %}active{% endif %}"
+                      title="Estrella en Crecimiento"
+                    >
+                      <div class="box-header-info">
+                        <span class="quadrant-number">6</span>
+                        {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '6' %}
+                        <span class="eval-badge"
+                          ><i class="fas fa-user-check"></i> Colaborador</span
+                        >
+                        {% endif %}
+                      </div>
+                      <div class="quadrant-body">
+                        <h4>Estrella en Crecimiento</h4>
+                        <p>Potencial Medio / Desempeño Alto</p>
+                      </div>
+                    </div>
+
+                    <div
+                      class="box-item low {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '1' %}active{% endif %}"
                       title="Riesgo / Desempeño Inadecuado"
                     >
-                      {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 1 %}<i class="fas fa-user"></i>{% endif %}
+                      <div class="box-header-info">
+                        <span class="quadrant-number">1</span>
+                        {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '1' %}
+                        <span class="eval-badge"
+                          ><i class="fas fa-user-check"></i> Colaborador</span
+                        >
+                        {% endif %}
+                      </div>
+                      <div class="quadrant-body">
+                        <h4>Riesgo / Inadecuado</h4>
+                        <p>Potencial Bajo / Desempeño Bajo</p>
+                      </div>
                     </div>
+
                     <div
-                      class="box-item high {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 2 %}active{% endif %}"
+                      class="box-item high {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '2' %}active{% endif %}"
                       title="Empleado Efectivo"
                     >
-                      {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 2 %}<i class="fas fa-user"></i>{% endif %}
+                      <div class="box-header-info">
+                        <span class="quadrant-number">2</span>
+                        {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '2' %}
+                        <span class="eval-badge"
+                          ><i class="fas fa-user-check"></i> Colaborador</span
+                        >
+                        {% endif %}
+                      </div>
+                      <div class="quadrant-body">
+                        <h4>Empleado Efectivo</h4>
+                        <p>Potencial Bajo / Desempeño Medio</p>
+                      </div>
                     </div>
+
                     <div
-                      class="box-item high {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 3 %}active{% endif %}"
+                      class="box-item high {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '3' %}active{% endif %}"
                       title="Fuerza de Trabajo Sólida"
                     >
-                      {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 3 %}<i class="fas fa-user"></i>{% endif %}
+                      <div class="box-header-info">
+                        <span class="quadrant-number">3</span>
+                        {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '3' %}
+                        <span class="eval-badge"
+                          ><i class="fas fa-user-check"></i> Colaborador</span
+                        >
+                        {% endif %}
+                      </div>
+                      <div class="quadrant-body">
+                        <h4>Fuerza de Trabajo</h4>
+                        <p>Potencial Bajo / Desempeño Alto</p>
+                      </div>
                     </div>
                   </div>
 

@@ -466,7 +466,7 @@
 body {
   font-family: "Segoe UI", sans-serif;
   background: #f4f7fb; /* Color de fondo general de la aplicación */
-  color: #d35b1a;
+  color: #000000;
 }
 
 /* =========================
@@ -1134,6 +1134,138 @@ body {
   font-size: 12px;
   color: #7a8599;
   margin-top: 4px;
+}
+
+/* =========================================================
+   NINE BOX GRID (REESCRITO Y CORREGIDO)
+   Matriz de talento 3x3 de Recursos Humanos (Nueve Cajas)
+========================================================= */
+.ninebox-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas de igual tamaño */
+  gap: 12px;
+  margin-top: 15px;
+  margin-bottom: 16px;
+}
+
+/* Estado general de todos los cuadrantes (Apagados/Baja opacidad por defecto) */
+.box-item {
+  aspect-ratio: 1; /* Mantiene el cuadrante perfectamente cuadrado (1:1) */
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 110px;
+  transition: all 0.3s ease;
+  border: 2px solid #e8ecf6 !important; /* Borde sutil neutro */
+  opacity: 0.45; /* Opacidad baja para simular que están "apagados" */
+}
+
+/* Colores de fondo por defecto cuando NO están activos (Bases sutiles semi-transparentes) */
+.box-item.low {
+  background-color: rgba(255, 77, 79, 0.05) !important;
+} 
+.box-item.medium {
+  background-color: rgba(255, 184, 77, 0.06) !important;
+} 
+.box-item.high {
+  background-color: rgba(32, 178, 107, 0.05) !important;
+}
+
+/* Efecto zoom al pasar el mouse por un cuadrante */
+.box-item:hover {
+  transform: scale(1.02);
+  opacity: 0.7;
+}
+
+/* Encabezados internos de cada tarjeta */
+.box-header-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  width: 100%;
+}
+
+.quadrant-number {
+  font-weight: bold;
+  color: #8a94a6;
+  font-size: 0.95rem;
+}
+
+.quadrant-body h4 {
+  margin: 0 0 4px 0;
+  font-size: 0.95rem;
+  color: #1a2042;
+  font-weight: 600;
+}
+
+.quadrant-body p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #7a8599;
+  line-height: 1.3;
+}
+
+/* =======================================================
+   ESTILO FINAL DE ILUMINACIÓN DE TRIPLE ESPECIFICIDAD
+   ======================================================= */
+/* Forzamos al navegador a aplicar el verde sobre cualquier variación previa */
+.ninebox-grid .box-item.low.active,
+.ninebox-grid .box-item.medium.active,
+.ninebox-grid .box-item.high.active,
+.ninebox-grid .box-item.active {
+  opacity: 1 !important;
+  background-color: #e8f5e9 !important; /* Fondo verde claro éxito */
+  border: 3px solid #2e7d32 !important;   /* Borde verde corporativo */
+  box-shadow: 0 6px 20px rgba(46, 125, 50, 0.35) !important;
+  transform: scale(1.04) !important;
+  z-index: 5;
+}
+
+/* Forzar que los textos dentro del cuadrante iluminado resalten perfectamente */
+.ninebox-grid .box-item.active .quadrant-number {
+  color: #2e7d32 !important;
+  font-weight: 900 !important;
+}
+
+.ninebox-grid .box-item.active .quadrant-body h4 {
+  color: #1b5e20 !important;
+  font-weight: 700 !important;
+}
+
+.ninebox-grid .box-item.active .quadrant-body p {
+  color: #2e7d32 !important;
+  font-weight: 500;
+}
+
+/* Etiqueta animada "Colaborador" que inyecta Django */
+.eval-badge {
+  background-color: #2e7d32 !important;
+  color: #ffffff !important;
+  font-size: 0.7rem !important;
+  padding: 3px 10px !important;
+  border-radius: 50px !important;
+  font-weight: bold !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Textos de los ejes (X / Y) de la matriz */
+.matrix-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #7a8599;
 }
 
 /* ==========================================================================
