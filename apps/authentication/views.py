@@ -2270,6 +2270,9 @@ def obtener_salario_actual(request, idEmpleado):
     })
 
 
+def rotacion_Personal_view(request):
+    return render(request, 'rotacion_Personal.html')
+
 
 
 def evaluaciones_view(request):
@@ -2341,10 +2344,6 @@ def crear_evaluacion(request):
 
     return render(request, "eva_Empleado.html", context)
 
-
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.db import transaction
 
 # =========================================================
 # CREAR EVALUACIÓN DE POTENCIAL (JEFATURA)
@@ -2533,7 +2532,7 @@ def crear_matriz_9box(request):
 
     return render(
         request,
-        "matriz_9box.html",
+        "matriz.html",
         context
     )
 
@@ -2581,8 +2580,7 @@ def onboarding_view(request):
 
 
 
-def rotacion_Personal_view(request):
-    return render(request, 'rotacion_Personal.html')
+
 
 def elec_Offboarding_view(request):
     return render(request, 'elec_Offboarding.html')

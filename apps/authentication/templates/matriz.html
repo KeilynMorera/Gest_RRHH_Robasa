@@ -197,19 +197,21 @@
                     </select>
                   </div>
 
-                  <!-- Período -->
+                  <!-- PERIODO -->
                   <div class="field">
-                    <label for="idPeriodo">
-                      <i class="fas fa-calendar field-icon"></i>
-                      Período <span class="req">*</span>
+                    <label for="periodo">
+                      <i class="fas fa-clock field-icon"></i>
+                      Tipo de Periodo <span class="req">*</span>
                     </label>
-                    <select id="idPeriodo" name="idPeriodo" required>
-                      <option value="" disabled selected>
-                        Seleccione un período...
+
+                    <select name="periodo" id="periodo" required>
+                      <option value="" selected disabled>
+                        Seleccione periodo...
                       </option>
-                      {% for periodo in periodos %}
-                      <option value="{{ periodo.idPeriodo }}">
-                        {{ periodo.Descripcion }}
+
+                      {% for p in periodos %}
+                      <option value="{{ p.idPeriodo }}">
+                        {{ p.Tipo_Periodo }}
                       </option>
                       {% endfor %}
                     </select>
@@ -254,7 +256,7 @@
                       </option>
                       {% for cuadrante in cuadrantes %}
                       <option value="{{ cuadrante.idCuadrante_9box }}">
-                        {{ cuadrante.Codigo }} — {{ cuadrante.Nombre }}
+                        {{ cuadrante.Cuadrante }}
                       </option>
                       {% endfor %}
                     </select>
@@ -276,7 +278,7 @@
                       </option>
                       {% for perfil in perfiles %}
                       <option value="{{ perfil.idCuadrante_9box_Perfil }}">
-                        {{ perfil.Nombre_Perfil }}
+                        {{ perfil.Tipo_Profecional }}
                       </option>
                       {% endfor %}
                     </select>
@@ -300,7 +302,7 @@
                       <option
                         value="{{ desempeno.idCuadrante_9box_Desempeno }}"
                       >
-                        {{ desempeno.Nivel }} — {{ desempeno.Descripcion }}
+                        {{ desempeno.Nivel_Desempeno }}
                       </option>
                       {% endfor %}
                     </select>
@@ -324,7 +326,7 @@
                       <option
                         value="{{ potencial.idCuadrante_9box_Potencial }}"
                       >
-                        {{ potencial.Nivel }} — {{ potencial.Descripcion }}
+                        {{ potencial.Nivel_Potencial }}
                       </option>
                       {% endfor %}
                     </select>
