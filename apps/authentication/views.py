@@ -2442,110 +2442,130 @@ def crear_evaluacion_jefatura(request):
 # CREAR MATRIZ 9 BOX
 # =========================================================
 def crear_matriz_9box(request):
-
-    # ==========================
-    # CATÁLOGOS
-    # ==========================
-    empleados = Empleado.objects.select_related(
-        "idPersona"
-    ).all()
-
+    empleados = Empleado.objects.select_related("idPersona").all()
     periodos = Periodo.objects.all()
-
     perfiles = Cuadrante9BoxPerfil.objects.all()
-
     cuadrantes = Cuadrante9Box.objects.all()
-
     desempenos = Cuadrante9BoxDesempeno.objects.all()
-
     potenciales = Cuadrante9BoxPotencial.objects.all()
 
-    # ==========================
-    # GUARDAR
-    # ==========================
     if request.method == "POST":
-
         try:
-
             with transaction.atomic():
-
+                # Asegúrate de mapear las llaves del POST exactas de tu formulario HTML
                 UnionMatrizEmp.objects.create(
-
                     Anio=request.POST.get("Anio"),
-
                     Plan_Accion=request.POST.get("Plan_Accion"),
-
-                    idPeriodo_id=request.POST.get("periodo"),
-
-                    idCuadrante_9box_Perfil_id=request.POST.get(
-                        "idCuadrante_9box_Perfil"
-                    ),
-
-                    idCuadrante_9box_id=request.POST.get(
-                        "idCuadrante_9box"
-                    ),
-
-                    idCuadrante_9box_Desempeno_id=request.POST.get(
-                        "idCuadrante_9box_Desempeno"
-                    ),
-
-                    idCuadrante_9box_Potencial_id=request.POST.get(
-                        "idCuadrante_9box_Potencial"
-                    ),
-
-                    idEmpleado_id=request.POST.get(
-                        "idEmpleado"
-                    )
+                    
+                    # ⚠️ ¡CRUCIAL!: En tu HTML pusiste name="periodo"
+                    idPeriodo_id=request.POST.get("periodo"),  
+                    
+                    # ⚠️ ¡CRUCIAL!: En tu HTML pusiste name="idCuadrante_9box"
+                    idCuadrante_9box_id=request.POST.get("idCuadrante_9box"),  
+                    
+                    # Verificados con tus etiquetas <select name="..."> del formulario de configuración:
+                    idCuadrante_9box_Perfil_id=request.POST.get("idCuadrante_9box_Perfil"),
+                    idCuadrante_9box_Desempeno_id=request.POST.get("idCuadrante_9box_Desempeno"),
+                    idCuadrante_9box_Potencial_id=request.POST.get("idCuadrante_9box_Potencial"),
+                    idEmpleado_id=request.POST.get("idEmpleado")
                 )
 
-                messages.success(
-                    request,
-                    "Matriz 9 Box registrada correctamente."
-                )
-
+                messages.success(request, "Matriz 9 Box registrada correctamente.")
                 return redirect("crear_matriz_9box")
 
         except Exception as e:
+            messages.error(request, f"Error al guardar: {str(e)}")
 
-            messages.error(
-                request,
-                f"Error al guardar: {str(e)}"
-            )
-
-    # ==========================
-    # CONTEXTO
-    # ==========================
     context = {
-
         "empleados": empleados,
-
         "periodos": periodos,
-
         "perfiles": perfiles,
-
         "cuadrantes": cuadrantes,
-
         "desempenos": desempenos,
-
         "potenciales": potenciales,
     }
-
-    return render(
-        request,
-        "matriz.html",
-        context
-    )
+    return render(request, "matriz.html", context)
 
 
 
 
+# =========================================================
+# DASHBOARD RESULTADOS (CORREGIDA Y COMPATIBLE CON EL HTML)
+# =========================================================
+# =========================================================
+# DASHBOARD RESULTADOS (CORREGIDA PARA EVITAR MULTIPLEOBJECTSRETURNED)
+# =========================================================
+
+def dashboard_resultados(request):
+    # 1. Cargamos catálogos para renderizar los selectores
+    empleados = Empleado.objects.select_related("idPersona").all()
+    periodos = Periodo.objects.all()
+    
+    # 2. Capturamos los tres filtros obligatorios mediante el método GET
+    empleado_filtro = request.GET.get('empleado_filtro')
+    periodo_filtro = request.GET.get('periodo_filtro')
+    anio_filtro = request.GET.get('anio_filtro') # Capturamos el Año
+    
+    matriz_seleccionada = None
+    potencial_seleccionado = None
+
+    # 3. Solo si el usuario llenó los tres criterios realizamos la consulta consolidada
+    if empleado_filtro and periodo_filtro and anio_filtro:
+        try:
+            # A. Buscamos el registro en la matriz cruzando empleado, periodo y año
+            # CORRECCIÓN: Se cambia .get() por .filter(...).first() para evitar caídas por duplicados
+            matriz_seleccionada = UnionMatrizEmp.objects.select_related(
+                "idEmpleado__idPersona", 
+                "idEmpleado__idPuesto",
+                "idPeriodo", 
+                "idCuadrante_9box", 
+                "idCuadrante_9box_Desempeno", 
+                "idCuadrante_9box_Potencial",
+                "idCuadrante_9box_Perfil"
+            ).filter(
+                idEmpleado_id=empleado_filtro, 
+                idPeriodo_id=periodo_filtro, 
+                Anio=anio_filtro
+            ).first()
+            
+            # Si se usó filter().first(), no arrojará DoesNotExist, sino que será None si está vacío
+            if not matriz_seleccionada:
+                messages.warning(request, "No se encontraron resultados de la Matriz 9 Box para los criterios seleccionados.")
+            
+            # B. Buscamos la evaluación de potencial de la jefatura ligada al empleado y periodo
+            # Filtramos a través de la relación de la tabla Evaluacion
+            potencial_seleccionado = EvaluacionJefePotencial.objects.select_related('idEvaluacion').filter(
+                idEvaluacion__idEmpleado_id=empleado_filtro,
+                idEvaluacion__idPeriodo_id=periodo_filtro,
+                idEvaluacion__Anio=anio_filtro # Ajusta el nombre de este campo según tu modelo Evaluacion si varía
+            ).first()
+
+        except Exception as e:
+            messages.error(request, f"Error al consultar los datos: {str(e)}")
+
+    # 4. Construimos el contexto para el HTML
+    context = {
+        'empleados': empleados,
+        'periodos': periodos,
+        'matriz_seleccionada': matriz_seleccionada,
+        'potencial_seleccionado': potencial_seleccionado, # Nueva información consolidada
+        
+        # Guardamos las selecciones para mantener fijos los campos tras recargar la pantalla
+        'empleado_filtro_id': int(empleado_filtro) if empleado_filtro else None,
+        'periodo_filtro_id': int(periodo_filtro) if periodo_filtro else None,
+        'anio_filtro_val': anio_filtro if anio_filtro else "",
+    }
+    
+    # Manejo preventivo si se envía un valor no numérico en los filtros para evitar errores de casteo int()
+    try:
+        if empleado_filtro: context['empleado_filtro_id'] = int(empleado_filtro)
+        if periodo_filtro: context['periodo_filtro_id'] = int(periodo_filtro)
+    except ValueError:
+        pass
+        
+    return render(request, 'result_Evaluacion.html', context)
 
 
-
-
-
-def result_Evaluacion_view(request):
-    return render(request, 'result_Evaluacion.html')
 
 
 

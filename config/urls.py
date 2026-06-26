@@ -172,6 +172,7 @@ urlpatterns = [
     
     path('matriz-9box/', views.crear_matriz_9box, name='crear_matriz_9box'),
 
+    path('dashboard-resultados/', views.dashboard_resultados, name='dashboard_resultados'),
 
 ]
 

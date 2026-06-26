@@ -90,13 +90,9 @@ urlpatterns = [
 
     # Ruta para el dashboard (pantalla de resgistro evaluación matriz)
     path('matriz-9box/', views.crear_matriz_9box, name='crear_matriz_9box'),
-
-    
-    
-    
     
     # Ruta para el dashboard (pantalla de vista de resultados de la evaluación)
-    path('result_Evaluacion.html/', views.result_Evaluacion_view, name='result_Evaluacion'),
+    path('dashboard-resultados/', views.dashboard_resultados, name='dashboard_resultados'),
     
     
 

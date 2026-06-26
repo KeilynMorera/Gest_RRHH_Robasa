@@ -18,11 +18,7 @@
   <body>
     <div class="dashboard-container">
       <aside class="sidebar">
-        <!-- =========================================================
-             LOGO DE LA EMPRESA
-        ========================================================= -->
         <div class="logo-container">
-          <!-- Imagen cargada desde archivos estáticos -->
           <img
             src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
             alt="Logo Robasa"
@@ -30,108 +26,55 @@
           />
         </div>
 
-        <!-- ======================================================
-             MENÚ DE NAVEGACIÓN
-        ====================================================== -->
-        <!-- =========================================================
-             MENÚ DE NAVEGACIÓN
-        ========================================================= -->
         <nav class="menu">
-          <!-- Inicio -->
-          <a href="{% url 'inicio' %}">
-            <i class="fas fa-house"></i>
-            Inicio
-          </a>
-
-          <!-- Personas o Empleados -->
-          <a href="{% url 'per_emp' %}">
-            <i class="fas fa-user-group"></i>
-            Personas o Empleados
-          </a>
-
-          <!-- Onboarding -->
-          <a href="{% url 'onboarding' %}">
-            <i class="fas fa-rocket"></i>
-            Onboarding / Entradas
-          </a>
-
-          <!-- Empresas -->
-          <a href="{% url 'empresas' %}">
-            <i class="fas fa-building"></i>
-            Empresas
-          </a>
-
-          <!-- Gerencias, Departamentos y Puestos -->
-          <a href="{% url 'comple_Empresa' %}">
-            <i class="fas fa-briefcase"></i>
-            Gerencias, Departamentos y Puestos
-          </a>
-
-          <!-- Salarios -->
-          <a href="{% url 'salarios' %}">
-            <i class="fas fa-money-bill-wave"></i>
-            Salarios
-          </a>
-
-          <!-- Reclutamiento -->
-          <a href="{% url 'reclutamiento' %}">
-            <i class="fas fa-wallet"></i>
-            Reclutamiento
-          </a>
-
-          <!-- Vacaciones -->
-          <a href="{% url 'vacaciones' %}">
-            <i class="fas fa-umbrella-beach"></i>
-            Vacaciones
-          </a>
-
-          <!-- Asistencia y Permisos -->
-          <a href="{% url 'elec_Asistencia' %}">
-            <i class="fas fa-clock"></i>
-            Asistencia y Permiso
-          </a>
-
-          <!-- Acciones o Rotaciones -->
-          <a href="{% url 'accion_rotacion' %}">
-            <i class="fas fa-clipboard-list"></i>
-            Acciones o Rotaciones del Personal
-          </a>
-
-          <!-- Evaluación de Desempeño -->
-          <a href="{% url 'evaluaciones' %}">
-            <i class="fas fa-chart-line"></i>
-            Evaluación de Desempeño
-          </a>
-
-          <!-- KPIs -->
-          <a href="{% url 'elec_KPI' %}">
-            <i class="fas fa-file-lines"></i>
-            KPIs
-          </a>
-
-          <!-- Offboarding -->
-          <a href="{% url 'elec_Offboarding' %}">
-            <i class="fas fa-door-open"></i>
-            Offboarding / Salidas
-          </a>
-
-          <!-- Reportes -->
-          <a href="{% url 'reportes' %}">
-            <i class="fas fa-file-lines"></i>
-            Reportes
-          </a>
-
-          <!-- Usuarios y Roles -->
-          <a href="{% url 'usuarios' %}">
-            <i class="fas fa-users-cog"></i>
-            Usuarios y Roles
-          </a>
-
-          <!-- Configuración -->
-          <a href="{% url 'configuraciones' %}">
-            <i class="fas fa-gear"></i>
-            Configuración
-          </a>
+          <a href="{% url 'inicio' %}"><i class="fas fa-house"></i> Inicio</a>
+          <a href="{% url 'per_emp' %}"
+            ><i class="fas fa-user-group"></i> Personas o Empleados</a
+          >
+          <a href="{% url 'onboarding' %}"
+            ><i class="fas fa-rocket"></i> Onboarding / Entradas</a
+          >
+          <a href="{% url 'empresas' %}"
+            ><i class="fas fa-building"></i> Empresas</a
+          >
+          <a href="{% url 'comple_Empresa' %}"
+            ><i class="fas fa-briefcase"></i> Gerencias, Departamentos y
+            Puestos</a
+          >
+          <a href="{% url 'salarios' %}"
+            ><i class="fas fa-money-bill-wave"></i> Salarios</a
+          >
+          <a href="{% url 'reclutamiento' %}"
+            ><i class="fas fa-wallet"></i> Reclutamiento</a
+          >
+          <a href="{% url 'vacaciones' %}"
+            ><i class="fas fa-umbrella-beach"></i> Vacaciones</a
+          >
+          <a href="{% url 'elec_Asistencia' %}"
+            ><i class="fas fa-clock"></i> Asistencia y Permiso</a
+          >
+          <a href="{% url 'accion_rotacion' %}"
+            ><i class="fas fa-clipboard-list"></i> Acciones o Rotaciones del
+            Personal</a
+          >
+          <a href="{% url 'evaluaciones' %}"
+            ><i class="fas fa-chart-line"></i> Evaluación de Desempeño</a
+          >
+          <a href="{% url 'elec_KPI' %}"
+            ><i class="fas fa-file-lines"></i> KPIs</a
+          >
+          <a href="{% url 'elec_Offboarding' %}"
+            ><i class="fas fa-door-open"></i> Offboarding / Salidas</a
+          >
+          <a href="{% url 'reportes' %}"
+            ><i class="fas fa-file-lines"></i> Reportes</a
+          >
+          <a href="{% url 'usuarios' %}"
+            ><i class="fas fa-users-cog"></i> Usuarios y Roles</a
+          >
+          <a href="{% url 'configuraciones' %}"
+            ><i class="fas fa-gear"></i> Configuración</a
+          >
         </nav>
 
         <div class="logout">
@@ -180,6 +123,22 @@
           <span class="current"> Resultados de Evaluación </span>
         </div>
 
+        {% if messages %} {% for message in messages %}
+        <div
+          class="alert alert-{{ message.tags }}"
+          style="
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+          "
+        >
+          {{ message }}
+        </div>
+        {% endfor %} {% endif %}
+
         <section class="form-card">
           <div class="form-card-header">
             <div class="form-card-header-left">
@@ -191,61 +150,140 @@
                   Dashboard de Resultados de Desempeño
                 </h2>
                 <p class="form-card-subtitle">
-                  Visualización gráfica y porcentual de evaluaciones históricas
-                  del colaborador.
+                  Visualización gráfica de la matriz de talento evaluada para el
+                  colaborador.
                 </p>
               </div>
             </div>
 
+            {% if matriz_seleccionada %}
             <div class="employee-mini-card">
-              <img src="https://i.pravatar.cc/120?img=12" alt="Empleado" />
+              {% if matriz_seleccionada.idEmpleado.idPersona.Foto %}
+              <img
+                src="{{ matriz_seleccionada.idEmpleado.idPersona.Foto.url }}"
+                alt="Foto de {{ matriz_seleccionada.idEmpleado.idPersona.Nombre_Completo }}"
+              />
+              {% else %}
+              <img
+                src="https://ui-avatars.com/api/?name={{ matriz_seleccionada.idEmpleado.idPersona.Nombre_Completo|urlencode }}&background=random"
+                alt="Avatar genérico"
+              />
+              {% endif %}
+
               <div>
-                <strong>Carlos Méndez</strong>
-                <span>Supervisor Comercial</span>
+                <strong>
+                  {{ matriz_seleccionada.idEmpleado.idPersona.Nombre_Completo }}
+                </strong>
+                <span>
+                  {{
+                  matriz_seleccionada.idEmpleado.idPuesto.Nombre|default:"Colaborador"
+                  }}
+                </span>
               </div>
             </div>
+            {% endif %}
           </div>
 
           <div class="form-body">
-            <div class="filter-bar">
-              <div class="field filter-field">
-                <label>
-                  <i class="fas fa-user field-icon"></i> Colaborador
-                </label>
-                <select name="empleado_consulta" id="empleado_consulta">
-                  <option value="1" selected>Carlos Méndez</option>
-                  {% for emp in lista_empleados %}
-                  <option value="{{ emp.id }}">
-                    {{ emp.nombre_completo }}
+            <!-- Barra de Filtros Actualizada -->
+            <form
+              method="GET"
+              action=""
+              class="filter-bar"
+              style="
+                display: flex;
+                gap: 15px;
+                align-items: flex-end;
+                margin-bottom: 25px;
+              "
+            >
+              <div class="field filter-field" style="flex: 1">
+                <label
+                  ><i class="fas fa-user field-icon"></i> Colaborador</label
+                >
+                <select name="empleado_filtro" id="empleado_filtro" required>
+                  <option value="">Todos los empleados</option>
+                  {% for emp in empleados %}
+                  <option
+                    value="{{ emp.idEmpleado }}"
+                    {%
+                    if
+                    emp.idEmpleado=""
+                    ="empleado_filtro_id"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    {{ emp.idPersona.Nombre_Completo }}
                   </option>
                   {% endfor %}
                 </select>
               </div>
 
-              <div class="field filter-field">
-                <label>
-                  <i class="fas fa-calendar field-icon"></i> Periodo
-                </label>
-                <select name="periodo_consulta" id="periodo_consulta">
-                  <option selected>Año 2026</option>
-                  <option>Año 2025</option>
-                  <option>Año 2024</option>
+              <div class="field filter-field" style="flex: 1">
+                <label
+                  ><i class="fas fa-calendar field-icon"></i> Periodo</label
+                >
+                <select name="periodo_filtro" id="periodo_filtro" required>
+                  <option value="">Todos los periodos</option>
+                  {% for p in periodos %}
+                  <option
+                    value="{{ p.idPeriodo }}"
+                    {%
+                    if
+                    p.idPeriodo=""
+                    ="periodo_filtro_id"
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    {{ p.Tipo_Periodo }}
+                  </option>
+                  {% endfor %}
                 </select>
               </div>
 
-              <button type="button" class="btn btn-primary">
+              <!-- Nuevo campo obligatorio de Año para la vista -->
+              <div class="field filter-field" style="width: 120px">
+                <label
+                  ><i class="fas fa-calendar-days field-icon"></i> Año</label
+                >
+                <input
+                  type="number"
+                  name="anio_filtro"
+                  id="anio_filtro"
+                  placeholder="Ej. 2026"
+                  min="2020"
+                  max="2100"
+                  value="{{ anio_filtro_val }}"
+                  required
+                  style="
+                    width: 100%;
+                    padding: 8px;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                  "
+                />
+              </div>
+
+              <button type="submit" class="btn btn-primary">
                 <i class="fas fa-magnifying-glass-chart"></i> Consultar
               </button>
-            </div>
+            </form>
 
+            {% if matriz_seleccionada %}
             <div class="stats-grid">
               <div class="stat-card performance">
                 <div class="stat-top">
                   <span>Desempeño</span>
                   <i class="fas fa-chart-column"></i>
                 </div>
-                <h2>92%</h2>
-                <p>Excelente rendimiento general</p>
+                <h2>
+                  {{
+                  matriz_seleccionada.idCuadrante_9box_Desempeno.Nivel_Desempeno
+                  }}
+                </h2>
+                <p>Nivel asignado en la evaluación</p>
               </div>
 
               <div class="stat-card potential">
@@ -253,26 +291,30 @@
                   <span>Potencial</span>
                   <i class="fas fa-rocket"></i>
                 </div>
-                <h2>88%</h2>
-                <p>Alto potencial de crecimiento</p>
+                <h2>
+                  Nivel {{
+                  matriz_seleccionada.idCuadrante_9box_Potencial.Nivel_Potencial
+                  }}
+                </h2>
+                <p>Capacidad de crecimiento identificada</p>
               </div>
 
               <div class="stat-card semestral">
                 <div class="stat-top">
-                  <span>Semestral</span>
+                  <span>Año Evaluado</span>
                   <i class="fas fa-calendar-check"></i>
                 </div>
-                <h2>90%</h2>
-                <p>Resultado consolidado</p>
+                <h2>{{ matriz_seleccionada.Anio }}</h2>
+                <p>Gestión correspondiente</p>
               </div>
 
               <div class="stat-card cliente">
                 <div class="stat-top">
-                  <span>Cliente Interno</span>
-                  <i class="fas fa-users"></i>
+                  <span>Cuadrante</span>
+                  <i class="fas fa-th-large"></i>
                 </div>
-                <h2>95%</h2>
-                <p>Excelente colaboración</p>
+                <h2>N° {{ matriz_seleccionada.idCuadrante_9box.Cuadrante }}</h2>
+                <p>Ubicación en la matriz de talento</p>
               </div>
             </div>
 
@@ -280,166 +322,359 @@
               <div class="results-left">
                 <div class="result-panel">
                   <div class="panel-header">
-                    <h3><i class="fas fa-border-all"></i> Matriz 9 Box</h3>
-                    <span class="status-badge high">High Performer</span>
+                    <h3>
+                      <i class="fas fa-border-all"></i> Ubicación en la Matriz 9
+                      Box
+                    </h3>
+                    <span class="status-badge high">
+                      {{
+                      matriz_seleccionada.idCuadrante_9box_Perfil.Tipo_Profecional
+                      }}
+                    </span>
                   </div>
 
                   <div class="ninebox-grid">
-                    <div class="box-item low" title="Enigma"></div>
+                    <!-- FILA 3: POTENCIAL ALTO -->
                     <div
-                      class="box-item medium"
-                      title="Alto Potencial Complejo"
-                    ></div>
-                    <div class="box-item high" title="Estrella Suprema"></div>
-
-                    <div class="box-item medium" title="Dilema"></div>
-                    <div
-                      class="box-item medium active"
-                      title="Profesional Clave / High Performer"
+                      class="box-item low {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 7 %}active{% endif %}"
+                      title="Enigma"
                     >
-                      <i class="fas fa-user"></i>
+                      <div class="box-header-info">
+                        <span class="quadrant-number">7</span>
+                        {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 7 %}<span class="eval-badge"
+                          ><i class="fas fa-user-check"></i> Colaborador</span
+                        >{% endif %}
+                      </div>
+                      <div class="quadrant-body">
+                        <h4>Enigma</h4>
+                        <p>Potencial Alto / Desempeño Bajo</p>
+                      </div>
+                    </div>
+
+                    <div
+                      class="box-item medium {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 8 %}active{% endif %}"
+                      title="Alto Potencial Complejo"
+                    >
+                      {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 8 %}<i class="fas fa-user"></i>{% endif %}
                     </div>
                     <div
-                      class="box-item high"
-                      title="Estrella en Crecimiento"
-                    ></div>
+                      class="box-item high {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 9 %}active{% endif %}"
+                      title="Estrella Suprema"
+                    >
+                      {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 9 %}<i class="fas fa-user"></i>{% endif %}
+                    </div>
 
                     <div
-                      class="box-item low"
-                      title="Riesgo / Desempeño Inadecuado"
-                    ></div>
-                    <div class="box-item high" title="Empleado Efectivo"></div>
+                      class="box-item medium {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 4 %}active{% endif %}"
+                      title="Dilema"
+                    >
+                      {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 4 %}<i class="fas fa-user"></i>{% endif %}
+                    </div>
                     <div
-                      class="box-item high"
+                      class="box-item medium {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 5 %}active{% endif %}"
+                      title="Profesional Clave"
+                    >
+                      {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 5 %}<i class="fas fa-user"></i>{% endif %}
+                    </div>
+                    <div
+                      class="box-item high {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 6 %}active{% endif %}"
+                      title="Estrella en Crecimiento"
+                    >
+                      {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 6 %}<i class="fas fa-user"></i>{% endif %}
+                    </div>
+
+                    <div
+                      class="box-item low {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 1 %}active{% endif %}"
+                      title="Riesgo / Desempeño Inadecuado"
+                    >
+                      {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 1 %}<i class="fas fa-user"></i>{% endif %}
+                    </div>
+                    <div
+                      class="box-item high {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 2 %}active{% endif %}"
+                      title="Empleado Efectivo"
+                    >
+                      {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 2 %}<i class="fas fa-user"></i>{% endif %}
+                    </div>
+                    <div
+                      class="box-item high {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 3 %}active{% endif %}"
                       title="Fuerza de Trabajo Sólida"
-                    ></div>
+                    >
+                      {% if matriz_seleccionada.idCuadrante_9box.Cuadrante == 3 %}<i class="fas fa-user"></i>{% endif %}
+                    </div>
                   </div>
 
                   <div class="matrix-labels">
-                    <span>Potencial Bajo</span>
-                    <span>Potencial Alto</span>
+                    <span>Potencial Mínimo / Desempeño Bajo</span>
+                    <span>Potencial Máximo / Desempeño Alto</span>
                   </div>
                 </div>
 
                 <div class="result-panel">
                   <div class="panel-header">
                     <h3>
-                      <i class="fas fa-clock-rotate-left"></i> Historial de
-                      Evaluaciones
+                      <i class="fas fa-clock-rotate-left"></i> Información de
+                      Perfil del Cuadrante
                     </h3>
                   </div>
-
-                  <div class="timeline">
-                    <div class="timeline-item">
-                      <div class="timeline-dot"></div>
-                      <div class="timeline-content">
-                        <div class="timeline-top">
-                          <strong>Evaluación Semestral 2026</strong>
-                          <span>92%</span>
-                        </div>
-                        <p>Clasificación: Alto desempeño y alto potencial.</p>
-                      </div>
-                    </div>
-
-                    <div class="timeline-item">
-                      <div class="timeline-dot"></div>
-                      <div class="timeline-content">
-                        <div class="timeline-top">
-                          <strong>Evaluación Trimestral 2026</strong>
-                          <span>89%</span>
-                        </div>
-                        <p>
-                          Excelente colaboración y cumplimiento de objetivos.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div class="timeline-item">
-                      <div class="timeline-dot"></div>
-                      <div class="timeline-content">
-                        <div class="timeline-top">
-                          <strong>Evaluación Anual 2025</strong>
-                          <span>85%</span>
-                        </div>
-                        <p>
-                          Buen rendimiento general y capacidad de liderazgo
-                          demostrado.
-                        </p>
-                      </div>
-                    </div>
+                  <div style="padding: 15px; font-size: 0.95rem; color: #555">
+                    <strong>Descripción del Perfil Asignado:</strong>
+                    <p style="margin-top: 8px; line-height: 1.4">
+                      {{ matriz_seleccionada.idCuadrante_9box_Perfil.Perfil }}
+                    </p>
                   </div>
                 </div>
               </div>
 
               <div class="results-right">
+                <!-- PANEL NUEVO: Detalle de la Evaluación de Potencial por Jefatura -->
+                {% if potencial_seleccionado %}
+                <div class="result-panel" style="margin-bottom: 20px">
+                  <div
+                    class="panel-header"
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                    "
+                  >
+                    <h3>
+                      <i class="fas fa-user-check"></i> Competencias de
+                      Potencial (Jefatura)
+                    </h3>
+                    {% if potencial_seleccionado.pct_totalEv %}
+                    <span
+                      class="status-badge"
+                      style="
+                        background-color: #e3f2fd;
+                        color: #0d47a1;
+                        font-weight: bold;
+                        padding: 4px 10px;
+                        border-radius: 12px;
+                      "
+                    >
+                      Promedio: {{ potencial_seleccionado.pct_totalEv }}%
+                    </span>
+                    {% endif %}
+                  </div>
+                  <div style="padding: 15px">
+                    <ul
+                      style="
+                        list-style: none;
+                        padding: 0;
+                        margin: 0;
+                        line-height: 2.2;
+                        font-size: 0.95rem;
+                      "
+                    >
+                      <li
+                        style="
+                          display: flex;
+                          justify-content: space-between;
+                          align-items: center;
+                          border-bottom: 1px solid #f0f0f0;
+                          padding: 4px 0;
+                        "
+                      >
+                        <span>Capacidad de Liderazgo:</span>
+                        <span>
+                          {% if potencial_seleccionado.Capacidad_Liderazgo %}
+                          <i
+                            class="fas fa-circle-check"
+                            style="color: #2e7d32; font-size: 1.1rem"
+                          ></i>
+                          Cumple {% else %}
+                          <i
+                            class="fas fa-circle-xmark"
+                            style="color: #c62828; font-size: 1.1rem"
+                          ></i>
+                          No cumple {% endif %}
+                        </span>
+                      </li>
+                      <li
+                        style="
+                          display: flex;
+                          justify-content: space-between;
+                          align-items: center;
+                          border-bottom: 1px solid #f0f0f0;
+                          padding: 4px 0;
+                        "
+                      >
+                        <span>Aprendizaje Rápido:</span>
+                        <span>
+                          {% if potencial_seleccionado.Aprendizaje_Rapido %}
+                          <i
+                            class="fas fa-circle-check"
+                            style="color: #2e7d32; font-size: 1.1rem"
+                          ></i>
+                          Cumple {% else %}
+                          <i
+                            class="fas fa-circle-xmark"
+                            style="color: #c62828; font-size: 1.1rem"
+                          ></i>
+                          No cumple {% endif %}
+                        </span>
+                      </li>
+                      <li
+                        style="
+                          display: flex;
+                          justify-content: space-between;
+                          align-items: center;
+                          border-bottom: 1px solid #f0f0f0;
+                          padding: 4px 0;
+                        "
+                      >
+                        <span>Adaptación al Cambio:</span>
+                        <span>
+                          {% if potencial_seleccionado.Adaptacion_Cambio %}
+                          <i
+                            class="fas fa-circle-check"
+                            style="color: #2e7d32; font-size: 1.1rem"
+                          ></i>
+                          Cumple {% else %}
+                          <i
+                            class="fas fa-circle-xmark"
+                            style="color: #c62828; font-size: 1.1rem"
+                          ></i>
+                          No cumple {% endif %}
+                        </span>
+                      </li>
+                      <li
+                        style="
+                          display: flex;
+                          justify-content: space-between;
+                          align-items: center;
+                          border-bottom: 1px solid #f0f0f0;
+                          padding: 4px 0;
+                        "
+                      >
+                        <span>Iniciativa de Mejora:</span>
+                        <span>
+                          {% if potencial_seleccionado.Iniciativa_Mejora %}
+                          <i
+                            class="fas fa-circle-check"
+                            style="color: #2e7d32; font-size: 1.1rem"
+                          ></i>
+                          Cumple {% else %}
+                          <i
+                            class="fas fa-circle-xmark"
+                            style="color: #c62828; font-size: 1.1rem"
+                          ></i>
+                          No cumple {% endif %}
+                        </span>
+                      </li>
+                      <li
+                        style="
+                          display: flex;
+                          justify-content: space-between;
+                          align-items: center;
+                          border-bottom: 1px solid #f0f0f0;
+                          padding: 4px 0;
+                        "
+                      >
+                        <span>Madurez Emocional:</span>
+                        <span>
+                          {% if potencial_seleccionado.Madurez_Emocional %}
+                          <i
+                            class="fas fa-circle-check"
+                            style="color: #2e7d32; font-size: 1.1rem"
+                          ></i>
+                          Cumple {% else %}
+                          <i
+                            class="fas fa-circle-xmark"
+                            style="color: #c62828; font-size: 1.1rem"
+                          ></i>
+                          No cumple {% endif %}
+                        </span>
+                      </li>
+                    </ul>
+                    <div
+                      style="
+                        margin-top: 15px;
+                        padding: 10px;
+                        background-color: #fafafa;
+                        border-left: 4px solid #0288d1;
+                        border-radius: 4px;
+                      "
+                    >
+                      <strong
+                        style="
+                          font-size: 0.88rem;
+                          color: #333;
+                          display: block;
+                          margin-bottom: 4px;
+                        "
+                        >Observaciones de la Jefatura:</strong
+                      >
+                      <p
+                        style="
+                          margin: 0;
+                          font-size: 0.9rem;
+                          color: #555;
+                          font-style: italic;
+                        "
+                      >
+                        {{ potencial_seleccionado.Observaciones|default:"Sin
+                        observaciones registradas." }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+
                 <div class="result-panel">
                   <div class="panel-header">
                     <h3>
-                      <i class="fas fa-chart-pie"></i> Indicadores Específicos
+                      <i class="fas fa-comments"></i> Plan de Acción y
+                      Desarrollo
                     </h3>
                   </div>
-
-                  <div class="indicator-list">
-                    <div class="indicator-item">
-                      <div class="indicator-top">
-                        <span>Desempeño Técnico</span>
-                        <strong>92%</strong>
-                      </div>
-                      <div class="progress-bar">
-                        <div
-                          class="progress-fill performance"
-                          style="width: 92%"
-                        ></div>
-                      </div>
-                    </div>
-
-                    <div class="indicator-item">
-                      <div class="indicator-top">
-                        <span>Aptitud y Potencial Directivo</span>
-                        <strong>88%</strong>
-                      </div>
-                      <div class="progress-bar">
-                        <div
-                          class="progress-fill potential"
-                          style="width: 88%"
-                        ></div>
-                      </div>
-                    </div>
-
-                    <div class="indicator-item">
-                      <div class="indicator-top">
-                        <span>Índice de Cliente Interno</span>
-                        <strong>95%</strong>
-                      </div>
-                      <div class="progress-bar">
-                        <div
-                          class="progress-fill cliente"
-                          style="width: 95%"
-                        ></div>
-                      </div>
-                    </div>
+                  <div class="comment-box">
+                    <p style="white-space: pre-line">
+                      {{ matriz_seleccionada.Plan_Accion }}
+                    </p>
                   </div>
                 </div>
 
                 <div class="result-panel">
                   <div class="panel-header">
                     <h3>
-                      <i class="fas fa-comments"></i> Comentario General de
-                      Cierre
+                      <i class="fas fa-info-circle"></i> Resumen de Metodología
+                      9 Box
                     </h3>
                   </div>
-                  <div class="comment-box">
+                  <div
+                    style="
+                      padding: 15px;
+                      font-size: 0.88rem;
+                      color: #666;
+                      line-height: 1.5;
+                    "
+                  >
                     <p>
-                      El colaborador ha demostrado un desempeño sobresaliente,
-                      manteniendo altos niveles de productividad y liderazgo
-                      positivo dentro de su equipo. Se recomienda firmemente su
-                      consideración para programas de desarrollo ejecutivo y
-                      planes de sucesión corporativos a mediano plazo.
+                      La matriz 9-Box cruza el nivel de
+                      <strong>Desempeño</strong> (eje horizontal, pasado y
+                      presente del colaborador) frente al
+                      <strong>Potencial</strong> de desarrollo (eje vertical,
+                      competencias futuras del colaborador) para derivar
+                      acciones estratégicas de retención, capacitación y planes
+                      de carrera.
                     </p>
                   </div>
                 </div>
               </div>
             </div>
+            {% else %}
+            <div style="text-align: center; padding: 60px 40px; color: #888">
+              <i
+                class="fas fa-folder-open"
+                style="font-size: 3.5rem; margin-bottom: 15px; color: #ccc"
+              ></i>
+              <p style="font-size: 1.05rem">
+                Por favor, seleccione un colaborador, un periodo y un año para
+                visualizar el Dashboard Consolidado de Resultados.
+              </p>
+            </div>
+            {% endif %}
           </div>
         </section>
 
