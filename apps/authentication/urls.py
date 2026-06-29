@@ -101,11 +101,19 @@ urlpatterns = [
     path('kpi/registrar/', views.registrar_kpi_view, name='registrar_kpi'),
 
     # Ruta para el dashboard (pantalla de registro de KPI)
-     path('premios/nuevo/', views.crear_premio, name='crear_premio'),
+    path('premios/nuevo/', views.crear_premio, name='crear_premio'),
     
-    
+    # Ruta para el dashboard (pantalla de asignar premios a KPIs)
+    path("kpi/premios-asignados/", views.crear_premio_asignado, name="crear_premio_asignado"),
   
     
+
+
+
+
+
+
+
     # Ruta para el dashboard (pantalla de resgistro usuarios con permisos)
     path('usuarios.html/', views.usuarios_view, name='usuarios'),
     # Ruta para el dashboard (pantalla de configuraciones del sistema)
@@ -115,15 +123,12 @@ urlpatterns = [
     
     # Ruta para el dashboard (pantalla de registro de KPI)
     
-    # Ruta para el dashboard (pantalla de registro de KPI)
-    path('kpi_Detalle.html/', views.kpi_Detalle_view, name='kpi_Detalle'),
+    
     
     # Ruta para el dashboard (pantalla de configuraciones del sistema)
     path('kpi.html/', views.kpi_view, name='kpi'),
     # Ruta para el dashboard (pantalla de onboarding)
     path('onboarding.html/', views.onboarding_view, name='onboarding'),
-    
-    
     
     # Ruta para el dashboard (pantalla de eleccion de offboarding)
     path('elec_Offboarding.html/', views.elec_Offboarding_view, name='elec_Offboarding'),
@@ -131,7 +136,6 @@ urlpatterns = [
     path('registrar_off.html/', views.registrar_off_view, name='registrar_off'),
     # Ruta para el dashboard (pantalla de checklist de offboarding)
     path('checklist_off.html/', views.checklist_off_view, name='checklist_off'),
-    # Ruta para el dashboard (pantalla de asignar premios a KPIs)
-    path('kpi_AsigPremio.html/', views.kpi_AsigPremio_view, name='kpi_AsigPremio'),
+   
 ]
 

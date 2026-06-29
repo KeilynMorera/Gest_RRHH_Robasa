@@ -1,6 +1,7 @@
 from django import forms
 from .models import AccionPersonal, Empleado
 from .models import Premio, KpiCategoria, Cuadrante9BoxPerfil
+from .models import PremioAsignado
 
 class AccionPersonalForm(forms.ModelForm):
     class Meta:
@@ -16,9 +17,6 @@ class AccionPersonalForm(forms.ModelForm):
         # Reemplazamos las etiquetas del select por el Nombre_Completo de la Persona enlazada
         self.fields['idEmpleado'].queryset = Empleado.objects.select_related('idPersona').all()
         self.fields['idEmpleado'].label_from_instance = lambda obj: f"{obj.idPersona.Nombre_Completo}"
-
-
-
 
 
 
@@ -40,3 +38,28 @@ class PremioForm(forms.ModelForm):
             'id_KPI_Categoria': forms.Select(attrs={'class': 'form-control'}),
             'idCuadrante_9box_Perfil': forms.Select(attrs={'class': 'form-control'}),
         }
+
+
+
+class PremioAsignadoForm(forms.ModelForm):
+
+    empleado = forms.ModelChoiceField(
+        queryset=Empleado.objects.filter(Activo=True),
+        label="Empleado",
+        required=False,
+        widget=forms.Select(attrs={
+            'class': 'form-control',
+            'id': 'idEmpleado'
+        })
+    )
+
+    class Meta:
+        model = PremioAsignado
+
+        fields = [
+            'empleado',          # Campo auxiliar
+            'id_KPI',
+            'idPremio',
+            'Monto_Liquidado',
+            'Fecha_Registro',
+        ]

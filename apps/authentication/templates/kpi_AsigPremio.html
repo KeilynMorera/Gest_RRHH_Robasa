@@ -29,9 +29,6 @@
         <!-- ======================================================
              MENÚ DE NAVEGACIÓN
         ====================================================== -->
-        <!-- =========================================================
-             MENÚ DE NAVEGACIÓN
-        ========================================================= -->
         <nav class="menu">
           <!-- Inicio -->
           <a href="{% url 'inicio' %}">
@@ -196,82 +193,100 @@
           </div>
 
           <div class="form-body">
-            <form action="#" method="POST">
+            <!-- Mensajes -->
+            {% if messages %}
+            <div class="messages-container" style="margin-bottom: 20px">
+              {% for message in messages %}
+              <div
+                class="alert alert-{{ message.tags }}"
+                style="padding:12px;
+             border-radius:8px;
+             margin-bottom:10px;
+             background:{% if message.tags == 'success' %}#d4edda{% else %}#f8d7da{% endif %};
+             color:{% if message.tags == 'success' %}#155724{% else %}#721c24{% endif %};"
+              >
+                <i
+                  class="fas {% if message.tags == 'success' %}fa-circle-check{% else %}fa-circle-exclamation{% endif %}"
+                ></i>
+                {{ message }}
+              </div>
+              {% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="POST" action="{% url 'crear_premio_asignado' %}">
               {% csrf_token %}
 
               <div class="form-section">
                 <h4 class="form-section-title">
-                  <i class="fas fa-user-tag"></i> Asignación del Incentivo
-                  Evaluado
+                  <i class="fas fa-user-tag"></i>
+                  Asignación del Incentivo Evaluado
                 </h4>
 
                 <div class="form-grid">
+                  <!-- Cabecera KPI -->
                   <div class="field">
-                    <label for="id_kpi">
-                      <i class="fas fa-chart-column field-icon"></i> Registro
-                      KPI Evaluado <span class="req">*</span>
-                    </label>
-                    <select id="id_kpi" required>
-                      <option value="" disabled selected>
-                        Seleccione un registro...
-                      </option>
-                      <option value="1">KPI Julio 2026 - Carlos Méndez</option>
-                      <option value="2">KPI Julio 2026 - Ana Rodríguez</option>
-                      <option value="3">KPI Julio 2026 - María López</option>
-                    </select>
-                  </div>
-
-                  <div class="field">
-                    <label for="premio_relacionado">
-                      <i class="fas fa-trophy field-icon"></i> Premio Asociado
+                    <label for="{{ form.id_KPI.id_for_label }}">
+                      <i class="fas fa-chart-column field-icon"></i>
+                      Registro KPI Evaluado
                       <span class="req">*</span>
                     </label>
-                    <select id="premio_relacionado" required>
-                      <option value="" disabled selected>
-                        Seleccione el incentivo...
-                      </option>
-                      <option value="oro">Bono Oro</option>
-                      <option value="comercial">Incentivo Comercial</option>
-                      <option value="especial">Reconocimiento Especial</option>
-                    </select>
+
+                    {{ form.id_KPI }} {% if form.id_KPI.errors %}
+                    <small class="error"> {{ form.id_KPI.errors }} </small>
+                    {% endif %}
                   </div>
 
+                  <!-- Premio -->
                   <div class="field">
-                    <label for="fecha_asignacion">
-                      <i class="fas fa-calendar-check field-icon"></i> Fecha de
-                      Aplicación <span class="req">*</span>
+                    <label for="{{ form.idPremio.id_for_label }}">
+                      <i class="fas fa-trophy field-icon"></i>
+                      Premio Asociado
+                      <span class="req">*</span>
                     </label>
-                    <input type="date" id="fecha_asignacion" required />
+
+                    {{ form.idPremio }} {% if form.idPremio.errors %}
+                    <small class="error"> {{ form.idPremio.errors }} </small>
+                    {% endif %}
+                  </div>
+
+                  <!-- Monto Liquidado -->
+                  <div class="field">
+                    <label for="{{ form.Monto_Liquidado.id_for_label }}">
+                      <i class="fas fa-money-bill-wave field-icon"></i>
+                      Monto Liquidado
+                      <span class="req">*</span>
+                    </label>
+
+                    {{ form.Monto_Liquidado }} {% if form.Monto_Liquidado.errors %}
+                    <small class="error">
+                      {{ form.Monto_Liquidado.errors }}
+                    </small>
+                    {% endif %}
+                  </div>
+
+                  <!-- Fecha -->
+                  <div class="field">
+                    <label for="{{ form.Fecha_Registro.id_for_label }}">
+                      <i class="fas fa-calendar-check field-icon"></i>
+                      Fecha Registro
+                      <span class="req">*</span>
+                    </label>
+
+                    {{ form.Fecha_Registro }} {% if form.Fecha_Registro.errors %}
+                    <small class="error">
+                      {{ form.Fecha_Registro.errors }}
+                    </small>
+                    {% endif %}
                   </div>
                 </div>
               </div>
 
+              <!-- Historial -->
               <div class="form-section">
                 <h4 class="form-section-title">
-                  <i class="fas fa-calculator"></i> Vista Previa del Cálculo
-                  Actual
-                </h4>
-
-                <div class="summary-grid">
-                  <div class="summary-card">
-                    <span>Premio Seleccionado</span>
-                    <strong>Bono Oro</strong>
-                  </div>
-                  <div class="summary-card">
-                    <span>Métrica Evaluada</span>
-                    <strong>Cobro Efectividad</strong>
-                  </div>
-                  <div class="summary-card">
-                    <span>Monto Estimado</span>
-                    <strong>₡150,000</strong>
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-section">
-                <h4 class="form-section-title">
-                  <i class="fas fa-clock-rotate-left"></i> Historial Reciente de
-                  Asignaciones
+                  <i class="fas fa-clock-rotate-left"></i>
+                  Historial de Premios Asignados
                 </h4>
 
                 <div class="table-container">
@@ -279,30 +294,45 @@
                     <thead>
                       <tr>
                         <th>ID</th>
-                        <th>Colaborador</th>
-                        <th>Incentivo Aplicado</th>
-                        <th>KPI de Referencia</th>
+                        <th>Empleado</th>
+                        <th>Mes/Año KPI</th>
+                        <th>Premio</th>
                         <th>Monto Liquidado</th>
                         <th>Fecha Registro</th>
                       </tr>
                     </thead>
+
                     <tbody>
+                      {% for registro in premios_asignados %}
+
                       <tr>
-                        <td>1</td>
-                        <td><strong>Carlos Méndez</strong></td>
-                        <td>Bono Oro</td>
-                        <td>Cobro Efectividad</td>
-                        <td>₡150,000</td>
-                        <td>20/07/2026</td>
+                        <td>{{ registro.id_PremioAsignado }}</td>
+
+                        <td>{{ registro.id_KPI.idEmpleado }}</td>
+
+                        <td>
+                          {{ registro.id_KPI.mes }}/{{ registro.id_KPI.anio }}
+                        </td>
+
+                        <td>{{ registro.idPremio.Descripcion }}</td>
+
+                        <td>₡ {{ registro.Monto_Liquidado }}</td>
+
+                        <td>{{ registro.Fecha_Registro|date:"d/m/Y" }}</td>
                       </tr>
+
+                      {% empty %}
+
                       <tr>
-                        <td>2</td>
-                        <td><strong>Ana Rodríguez</strong></td>
-                        <td>Incentivo Comercial</td>
-                        <td>Comisión</td>
-                        <td>₡85,000</td>
-                        <td>18/07/2026</td>
+                        <td
+                          colspan="6"
+                          style="text-align: center; padding: 25px"
+                        >
+                          No existen premios asignados.
+                        </td>
                       </tr>
+
+                      {% endfor %}
                     </tbody>
                   </table>
                 </div>
@@ -310,15 +340,13 @@
 
               <div class="form-footer">
                 <button type="reset" class="btn btn-ghost">
-                  <i class="fas fa-rotate-left"></i> Limpiar Campos
-                </button>
-
-                <button type="button" class="btn btn-secondary">
-                  <i class="fas fa-eye"></i> Simular Montos
+                  <i class="fas fa-rotate-left"></i>
+                  Limpiar Campos
                 </button>
 
                 <button type="submit" class="btn btn-primary">
-                  <i class="fas fa-floppy-disk"></i> Guardar Incentivo
+                  <i class="fas fa-floppy-disk"></i>
+                  Guardar Premio Asignado
                 </button>
               </div>
             </form>

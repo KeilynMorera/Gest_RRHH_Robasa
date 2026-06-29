@@ -9,6 +9,8 @@ from .forms import AccionPersonalForm
 from django.db import transaction
 from django.db import IntegrityError
 from .forms import PremioForm
+from django.utils import timezone
+from .forms import PremioAsignadoForm
 from django.db.models import Q # Asegúrate de tener esta importación al inicio de tu archivo views.py
 
 #Importa todo lo que se encuentra en el archivo models.py
@@ -2765,6 +2767,49 @@ def editar_premio(request, id):
 
 
 
+def crear_premio_asignado(request):
+
+    if request.method == "POST":
+
+        form = PremioAsignadoForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request,
+                "Premio asignado correctamente."
+            )
+            return redirect("crear_premio_asignado")
+
+    else:
+        form = PremioAsignadoForm(
+            initial={
+                "Fecha_Registro": timezone.now().date()
+            }
+        )
+
+    premios_asignados = (
+        PremioAsignado.objects
+        .select_related(
+            "idPremio",
+            "id_KPI",
+            "id_KPI__idEmpleado"
+        )
+        .order_by("-Fecha_Registro")
+    )
+
+    context = {
+        "form": form,
+        "premios_asignados": premios_asignados,
+    }
+
+    return render(
+        request,
+        "kpi_AsigPremio.html",
+        context
+    )
+
+
 
 
 def usuarios_view(request):
@@ -2778,8 +2823,7 @@ def reportes_view(request):
 
 
 
-def kpi_Detalle_view(request):
-    return render(request, 'kpi_Detalle.html')
+
 
 
 
@@ -2803,6 +2847,3 @@ def registrar_off_view(request):
 
 def checklist_off_view(request):
     return render(request, 'checklist_off.html')
-
-def kpi_AsigPremio_view(request):
-    return render(request, 'kpi_AsigPremio.html')

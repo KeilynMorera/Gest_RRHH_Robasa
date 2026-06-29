@@ -1608,3 +1608,48 @@ class Premio(models.Model):
 
     def __str__(self):
         return f"{self.Descripcion} - ${self.Monto}"
+    
+
+# =========================================================
+# TABLA: Premio_Asignado
+# Relación entre un KPI evaluado y el premio obtenido
+# =========================================================
+class PremioAsignado(models.Model):
+
+    id_PremioAsignado = models.AutoField(
+        primary_key=True,
+        db_column='id_PremioAsignado'
+    )
+
+    Monto_Liquidado = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        db_column='Monto_Liquidado'
+    )
+
+    Fecha_Registro = models.DateField(
+        db_column='Fecha_Registro'
+    )
+
+    idPremio = models.ForeignKey(
+        Premio,
+        on_delete=models.DO_NOTHING,
+        db_column='idPremio',
+        related_name='premios_asignados'
+    )
+
+    id_KPI = models.ForeignKey(
+        KpiCabecera,          # Cambia el nombre si tu modelo se llama diferente
+        on_delete=models.DO_NOTHING,
+        db_column='id_KPI',
+        related_name='premios_asignados'
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'Premio_Asignado'
+        verbose_name = 'Premio Asignado'
+        verbose_name_plural = 'Premios Asignados'
+
+    def __str__(self):
+        return f'Premio #{self.id_PremioAsignado}'

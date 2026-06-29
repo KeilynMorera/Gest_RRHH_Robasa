@@ -186,7 +186,10 @@ urlpatterns = [
 
     path('premios/editar/<int:id>/', views.editar_premio, name='editar_premio'),
 
-
+    # ===========================
+    # PREMIOS ASIGNADOS
+    # ===========================
+    path("kpi/premios-asignados/", views.crear_premio_asignado, name="crear_premio_asignado"),
 
 
 
