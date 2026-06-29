@@ -38,8 +38,7 @@
             ><i class="fas fa-building"></i> Empresas</a
           >
           <a href="{% url 'comple_Empresa' %}"
-            ><i class="fas fa-briefcase"></i> Gerencias, Departamentos y
-            Puestos</a
+            ><i class="fas fa-briefcase"></i> Gerencias, Departamentos y Puestos</a
           >
           <a href="{% url 'salarios' %}"
             ><i class="fas fa-money-bill-wave"></i> Salarios</a
@@ -54,8 +53,7 @@
             ><i class="fas fa-clock"></i> Asistencia y Permiso</a
           >
           <a href="{% url 'accion_rotacion' %}"
-            ><i class="fas fa-clipboard-list"></i> Acciones o Rotaciones del
-            Personal</a
+            ><i class="fas fa-clipboard-list"></i> Acciones o Rotaciones del Personal</a
           >
           <a href="{% url 'evaluaciones' %}"
             ><i class="fas fa-chart-line"></i> Evaluación de Desempeño</a
@@ -183,7 +181,6 @@
           </div>
 
           <div class="form-body">
-            <!-- Barra de Filtros Actualizada -->
             <form
               method="GET"
               action=""
@@ -194,23 +191,16 @@
                 align-items: flex-end;
                 margin-bottom: 25px;
               "
-            >
+            </form>
+            <form method="GET" action="" class="filter-bar" style="display: flex; gap: 15px; align-items: flex-end; margin-bottom: 25px;">
               <div class="field filter-field" style="flex: 1">
-                <label
-                  ><i class="fas fa-user field-icon"></i> Colaborador</label
-                >
+                <label><i class="fas fa-user field-icon"></i> Colaborador</label>
                 <select name="empleado_filtro" id="empleado_filtro" required>
                   <option value="">Todos los empleados</option>
                   {% for emp in empleados %}
                   <option
                     value="{{ emp.idEmpleado }}"
-                    {%
-                    if
-                    emp.idEmpleado=""
-                    ="empleado_filtro_id"
-                    %}selected{%
-                    endif
-                    %}
+                    {% if emp.idEmpleado|slugify == empleado_filtro_id|slugify %}selected{% endif %}
                   >
                     {{ emp.idPersona.Nombre_Completo }}
                   </option>
@@ -219,21 +209,13 @@
               </div>
 
               <div class="field filter-field" style="flex: 1">
-                <label
-                  ><i class="fas fa-calendar field-icon"></i> Periodo</label
-                >
+                <label><i class="fas fa-calendar field-icon"></i> Periodo</label>
                 <select name="periodo_filtro" id="periodo_filtro" required>
                   <option value="">Todos los periodos</option>
                   {% for p in periodos %}
                   <option
                     value="{{ p.idPeriodo }}"
-                    {%
-                    if
-                    p.idPeriodo=""
-                    ="periodo_filtro_id"
-                    %}selected{%
-                    endif
-                    %}
+                    {% if p.idPeriodo|slugify == periodo_filtro_id|slugify %}selected{% endif %}
                   >
                     {{ p.Tipo_Periodo }}
                   </option>
@@ -241,11 +223,8 @@
                 </select>
               </div>
 
-              <!-- Nuevo campo obligatorio de Año para la vista -->
               <div class="field filter-field" style="width: 120px">
-                <label
-                  ><i class="fas fa-calendar-days field-icon"></i> Año</label
-                >
+                <label><i class="fas fa-calendar-days field-icon"></i> Año</label>
                 <input
                   type="number"
                   name="anio_filtro"
@@ -270,6 +249,45 @@
             </form>
 
             {% if matriz_seleccionada %}
+            
+            <div style="display: flex; gap: 20px; margin-bottom: 25px; flex-wrap: wrap;">
+              <div style="flex: 1; min-width: 280px; background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                  <span style="font-weight: 600; color: #444; font-size: 0.95rem;"><i class="fas fa-user-tie" style="color: #0288d1; margin-right: 8px;"></i>Porcentaje Desempeño Individual</span>
+                  <span style="background: #e1f5fe; color: #0288d1; font-weight: bold; padding: 4px 8px; border-radius: 6px; font-size: 0.9rem;">
+                    {% if desempeno_seleccionado and desempeno_seleccionado.pct_totalEv is not null %}
+                      {{ desempeno_seleccionado.pct_totalEv }}%
+                    {% else %}
+                      0.00%
+                    {% endif %}
+                  </span>
+                </div>
+                <div style="width: 100%; background: #f0f0f0; height: 8px; border-radius: 4px; overflow: hidden;">
+                  <div style="background: #0288d1; height: 100%; width: {% if desempeno_seleccionado and desempeno_seleccionado.pct_totalEv %}{{ desempeno_seleccionado.pct_totalEv }}{% else %}0{% endif %}%;"></div>
+                </div>
+                <small style="color: #777; display: block; margin-top: 8px; font-size: 0.82rem;">Resultado acumulado del cumplimiento de metas, funciones y entregables.</small>
+              </div>
+
+              <div style="flex: 1; min-width: 280px; background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                  <span style="font-weight: 600; color: #444; font-size: 0.95rem;"><i class="fas fa-brain" style="color: #2e7d32; margin-right: 8px;"></i>Porcentaje Potencial (Jefatura)</span>
+                  <span style="background: #e8f5e9; color: #2e7d32; font-weight: bold; padding: 4px 8px; border-radius: 6px; font-size: 0.9rem;">
+                    {% if profesional_seleccionado and profesional_seleccionado.pct_totalEv is not null %}
+                      {{ profesional_seleccionado.pct_totalEv }}%
+                    {% elif potencial_seleccionado and potencial_seleccionado.pct_totalEv is not null %}
+                      {{ potencial_seleccionado.pct_totalEv }}%
+                    {% else %}
+                      0.00%
+                    {% endif %}
+                  </span>
+                </div>
+                <div style="width: 100%; background: #f0f0f0; height: 8px; border-radius: 4px; overflow: hidden;">
+                  <div style="background: #2e7d32; height: 100%; width: {% if potencial_seleccionado and potencial_seleccionado.pct_totalEv %}{{ potencial_seleccionado.pct_totalEv }}{% elif profesional_seleccionado and profesional_seleccionado.pct_totalEv %}{{ profesional_seleccionado.pct_totalEv }}{% else %}0{% endif %}%;"></div>
+                </div>
+                <small style="color: #777; display: block; margin-top: 8px; font-size: 0.82rem;">Resultado ponderado según competencias de liderazgo, adaptación y madurez.</small>
+              </div>
+            </div>
+
             <div class="stats-grid">
               <div class="stat-card performance">
                 <div class="stat-top">
@@ -317,8 +335,7 @@
                 <div class="result-panel">
                   <div class="panel-header">
                     <h3>
-                      <i class="fas fa-border-all"></i> Ubicación en la Matriz 9
-                      Box
+                      <i class="fas fa-border-all"></i> Ubicación en la Matriz 9 Box
                     </h3>
                     <span class="status-badge high">
                       {{ matriz_seleccionada.idCuadrante_9box_Perfil.Tipo_Profecional }}
@@ -498,8 +515,7 @@
                 <div class="result-panel">
                   <div class="panel-header">
                     <h3>
-                      <i class="fas fa-clock-rotate-left"></i> Información de
-                      Perfil del Cuadrante
+                      <i class="fas fa-clock-rotate-left"></i> Información de Perfil del Cuadrante
                     </h3>
                   </div>
                   <div style="padding: 15px; font-size: 0.95rem; color: #555">
@@ -512,7 +528,6 @@
               </div>
 
               <div class="results-right">
-                <!-- PANEL NUEVO: Detalle de la Evaluación de Potencial por Jefatura -->
                 {% if potencial_seleccionado %}
                 <div class="result-panel" style="margin-bottom: 20px">
                   <div
@@ -524,8 +539,7 @@
                     "
                   >
                     <h3>
-                      <i class="fas fa-user-check"></i> Competencias de
-                      Potencial (Jefatura)
+                      <i class="fas fa-user-check"></i> Competencias de Potencial (Jefatura)
                     </h3>
                     {% if potencial_seleccionado.pct_totalEv %}
                     <span
@@ -699,8 +713,7 @@
                           font-style: italic;
                         "
                       >
-                        {{ potencial_seleccionado.Observaciones|default:"Sin
-                        observaciones registradas." }}
+                        {{ potencial_seleccionado.Observaciones|default:"Sin observaciones registradas." }}
                       </p>
                     </div>
                   </div>
@@ -710,8 +723,7 @@
                 <div class="result-panel">
                   <div class="panel-header">
                     <h3>
-                      <i class="fas fa-comments"></i> Plan de Acción y
-                      Desarrollo
+                      <i class="fas fa-comments"></i> Plan de Acción y Desarrollo
                     </h3>
                   </div>
                   <div class="comment-box">
@@ -724,8 +736,7 @@
                 <div class="result-panel">
                   <div class="panel-header">
                     <h3>
-                      <i class="fas fa-info-circle"></i> Resumen de Metodología
-                      9 Box
+                      <i class="fas fa-info-circle"></i> Resumen de Metodología 9 Box
                     </h3>
                   </div>
                   <div

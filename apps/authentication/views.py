@@ -2493,6 +2493,9 @@ def crear_matriz_9box(request):
 # =========================================================
 # DASHBOARD RESULTADOS (CORREGIDA SIN ERRORES DE LOOKUP)
 # =========================================================
+# =========================================================
+# DASHBOARD RESULTADOS (CON PORCENTAJE DE DESEMPEÑO INTEGRADO)
+# =========================================================
 def dashboard_resultados(request):
     # 1. Cargamos catálogos para renderizar los selectores
     empleados = Empleado.objects.select_related("idPersona").all()
@@ -2505,6 +2508,7 @@ def dashboard_resultados(request):
     
     matriz_seleccionada = None
     potencial_seleccionado = None
+    porcentaje_desempeno = None  # Variable para almacenar el % calculado
 
     # 3. Solo si el usuario llenó los tres criterios realizamos la consulta consolidada
     if empleado_filtro and periodo_filtro and anio_filtro:
@@ -2528,53 +2532,53 @@ def dashboard_resultados(request):
                 messages.warning(request, "No se encontraron resultados de la Matriz 9 Box para los criterios seleccionados.")
             
             # =========================================================
-            # B. Buscamos la evaluación de potencial de la jefatura
+            # B. Buscamos la evaluación de potencial y el desempeño asociado
             # =========================================================
-            potencial_seleccionado = None
+            registros_potencial = EvaluacionJefePotencial.objects.select_related('idEvaluacion').all()
             
-            if matriz_seleccionada:
-                # Traemos los registros con su evaluación asociada
-                registros_potencial = EvaluacionJefePotencial.objects.select_related('idEvaluacion').all()
+            for pot in registros_potencial:
+                eval_obj = pot.idEvaluacion
+                if not eval_obj:
+                    continue
                 
-                for pot in registros_potencial:
-                    eval_obj = pot.idEvaluacion
-                    if not eval_obj:
-                        continue
-                    
-                    # 1. Extraer ID del Empleado dinámicamente según cómo se llame en tu modelo Evaluacion
-                    eval_emp_id = None
-                    for attr in ['idEmpleado_id', 'idEmpleado', 'empleado_id', 'empleado']:
-                        if hasattr(eval_obj, attr):
-                            val = getattr(eval_obj, attr)
-                            # Si es un objeto Empleado, extraemos su pk (idEmpleado)
-                            eval_emp_id = val.idEmpleado if hasattr(val, 'idEmpleado') else val
-                            break
-                    
-                    # 2. Extraer ID del Periodo dinámicamente
-                    eval_per_id = None
-                    for attr in ['idPeriodo_id', 'idPeriodo', 'periodo_id', 'periodo']:
-                        if hasattr(eval_obj, attr):
-                            val = getattr(eval_obj, attr)
-                            eval_per_id = val.idPeriodo if hasattr(val, 'idPeriodo') else val
-                            break
-
-                    # 3. Extraer el Año dinámicamente (de la evaluación o del periodo asignado)
-                    eval_anio = None
-                    if hasattr(eval_obj, 'Anio'):
-                        eval_anio = eval_obj.Anio
-                    elif hasattr(eval_obj, 'anio'):
-                        eval_anio = eval_obj.anio
-                    elif eval_obj.idPeriodo and hasattr(eval_obj.idPeriodo, 'Anio'):
-                        eval_anio = eval_obj.idPeriodo.Anio
-
-                    # Validamos coincidencia estricta convirtiendo a texto
-                    if (str(eval_emp_id) == str(empleado_filtro) and 
-                        str(eval_per_id) == str(periodo_filtro) and 
-                        str(eval_anio) == str(anio_filtro)):
-                        potencial_seleccionado = pot
+                # 1. Extraer ID del Empleado dinámicamente
+                eval_emp_id = None
+                for attr in ['idEmpleado_id', 'idEmpleado', 'empleado_id', 'empleado']:
+                    if hasattr(eval_obj, attr):
+                        val = getattr(eval_obj, attr)
+                        eval_emp_id = val.idEmpleado if hasattr(val, 'idEmpleado') else val
+                        break
+                
+                # 2. Extraer ID del Periodo dinámicamente
+                eval_per_id = None
+                for attr in ['idPeriodo_id', 'idPeriodo', 'periodo_id', 'periodo']:
+                    if hasattr(eval_obj, attr):
+                        val = getattr(eval_obj, attr)
+                        eval_per_id = val.idPeriodo if hasattr(val, 'idPeriodo') else val
                         break
 
-            # NOTA: Se eliminó la línea .first() que causaba conflictos aquí
+                # 3. Extraer el Año dinámicamente
+                eval_anio = None
+                if hasattr(eval_obj, 'Anio'):
+                    eval_anio = eval_obj.Anio
+                elif hasattr(eval_obj, 'anio'):
+                    eval_anio = eval_obj.anio
+                elif eval_obj.idPeriodo and hasattr(eval_obj.idPeriodo, 'Anio'):
+                    eval_anio = eval_obj.idPeriodo.Anio
+
+                # Validamos coincidencia estricta
+                if (str(eval_emp_id) == str(empleado_filtro) and 
+                    str(eval_per_id) == str(periodo_filtro) and 
+                    str(eval_anio) == str(anio_filtro)):
+                    
+                    potencial_seleccionado = pot
+                    
+                    # 4. Buscamos el porcentaje de desempeño asociado a esta misma evaluación
+                    desempeno_obj = EvaluacionDesempeno.objects.filter(idEvaluacion=eval_obj).first()
+                    if desempeno_obj:
+                        porcentaje_desempeno = desempeno_obj.pct_totalEv
+                    
+                    break # Salimos del bucle al encontrar los datos correctos
             
         except Exception as e:
             messages.error(request, f"Error al consultar los datos: {str(e)}")
@@ -2585,6 +2589,7 @@ def dashboard_resultados(request):
         'periodos': periodos,
         'matriz_seleccionada': matriz_seleccionada,
         'potencial_seleccionado': potencial_seleccionado, 
+        'porcentaje_desempeno': porcentaje_desempeno, # Enviado al template HTML
         
         # Guardamos las selecciones para mantener fijos los campos tras recargar la pantalla
         'empleado_filtro_id': None,
@@ -2592,7 +2597,7 @@ def dashboard_resultados(request):
         'anio_filtro_val': anio_filtro if anio_filtro else "",
     }
     
-    # Manejo preventivo si se envía un valor no numérico en los filtros para evitar errores de casteo int()
+    # Manejo preventivo para evitar errores de casteo int()
     try:
         if empleado_filtro: context['empleado_filtro_id'] = int(empleado_filtro)
         if periodo_filtro: context['periodo_filtro_id'] = int(periodo_filtro)
@@ -2600,7 +2605,6 @@ def dashboard_resultados(request):
         pass
         
     return render(request, 'result_Evaluacion.html', context)
-
 
 
 

@@ -1499,4 +1499,40 @@ class UnionMatrizEmp(models.Model):
             f"({self.Anio})"
         )
     
-    
+
+
+# =========================================================
+# TABLA: KPI_Categoria
+# =========================================================
+class KpiCategoria(models.Model):
+    id_KPI_Categoria = models.AutoField(primary_key=True, db_column='id_KPI_Categoria')
+    tipo_categoria   = models.CharField(max_length=150, db_column='TipoCategoria')
+    descripcion      = models.CharField(max_length=500, db_column='Descripcion')
+
+    class Meta:
+        db_table = 'KPI_Categoria'
+
+    def __str__(self):
+        return self.tipo_categoria
+
+
+# =========================================================
+# TABLA: KPI_Cabecera
+# =========================================================
+class KpiCabecera(models.Model):
+    id_KPI      = models.AutoField(primary_key=True, db_column='id_KPI')
+    mes         = models.IntegerField(db_column='Mes')
+    anio        = models.IntegerField(db_column='Anio')
+    idEmpleado  = models.ForeignKey(Empleado, on_delete=models.CASCADE, db_column='idEmpleado')
+
+    class Meta:
+        db_table = 'KPI_Cabecera'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['idEmpleado', 'mes', 'anio'], 
+                name='UQ_Empleado_Mes_Anio'
+            )
+        ]
+
+    def __str__(self):
+        return f"KPI #{self.id_KPI} — {self.idEmpleado.idPersona.Nombre_Completo} ({self.mes}/{self.anio})"
