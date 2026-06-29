@@ -2492,11 +2492,6 @@ def crear_matriz_9box(request):
     return render(request, "matriz.html", context)
 
 
-
-
-# =========================================================
-# DASHBOARD RESULTADOS (CORREGIDA SIN ERRORES DE LOOKUP)
-# =========================================================
 # =========================================================
 # DASHBOARD RESULTADOS (CON PORCENTAJE DE DESEMPEÑO INTEGRADO)
 # =========================================================
@@ -2764,9 +2759,6 @@ def editar_premio(request, id):
 
 
 
-
-
-
 def crear_premio_asignado(request):
 
     if request.method == "POST":
@@ -2810,6 +2802,117 @@ def crear_premio_asignado(request):
     )
 
 
+# =========================================================================
+# VISTA: Dashboard / Historial de KPIs
+# =========================================================================
+def historial_kpi_view(request):
+
+    # ── Filtros desde GET ─────────────────────────────────────────────────
+    empleado_filtro_id = request.GET.get('empleado_filtro', '')
+    mes_filtro         = request.GET.get('mes_filtro', '')
+    anio_filtro        = request.GET.get('anio_filtro', '')
+
+    # ── Catálogos para los selects ────────────────────────────────────────
+    empleados  = Empleado.objects.filter(Activo=True).select_related('idPersona')
+    categorias = KpiCategoria.objects.all()
+
+    # ── Historial base ────────────────────────────────────────────────────
+    detalles = KpiDetalle.objects.select_related(
+        'id_KPI',
+        'id_KPI__idEmpleado',
+        'id_KPI__idEmpleado__idPersona',
+        'id_KPI__idEmpleado__idPuesto',
+        'id_KPI_Categoria',
+    ).all()
+
+    # ── Aplicar filtros ───────────────────────────────────────────────────
+    if empleado_filtro_id:
+        detalles = detalles.filter(id_KPI__idEmpleado_id=empleado_filtro_id)
+
+    if mes_filtro:
+        detalles = detalles.filter(id_KPI__mes=mes_filtro)
+
+    if anio_filtro:
+        detalles = detalles.filter(id_KPI__anio=anio_filtro)
+
+    detalles = detalles.order_by('-id_KPI__anio', '-id_KPI__mes')
+
+    # ── Estadísticas resumen ──────────────────────────────────────────────
+    total_kpis      = detalles.count()
+    total_bonos     = detalles.aggregate(t=Sum('Monto_Total'))['t'] or 0
+    pct_promedio    = detalles.aggregate(p=Avg('pct_Alcanzado'))['p'] or 0
+
+    # Premios asignados en el período filtrado
+    premios_qs = PremioAsignado.objects.select_related(
+        'idPremio',
+        'id_KPI',
+        'id_KPI__idEmpleado',
+        'id_KPI__idEmpleado__idPersona',
+        'idPremio__id_KPI_Categoria',
+    ).all()
+
+    if empleado_filtro_id:
+        premios_qs = premios_qs.filter(id_KPI__idEmpleado_id=empleado_filtro_id)
+    if mes_filtro:
+        premios_qs = premios_qs.filter(id_KPI__mes=mes_filtro)
+    if anio_filtro:
+        premios_qs = premios_qs.filter(id_KPI__anio=anio_filtro)
+
+    total_premios = premios_qs.count()
+
+    # ── Top colaboradores (por porcentaje promedio) ───────────────────────
+    top_colaboradores = (
+        KpiDetalle.objects
+        .values(
+            'id_KPI__idEmpleado__idPersona__Nombre_Completo',
+            'id_KPI__idEmpleado__idPuesto__Nombre',
+            'id_KPI__idEmpleado__idPersona__Foto',
+        )
+        .annotate(pct_prom=Avg('pct_Alcanzado'))
+        .order_by('-pct_prom')[:5]
+    )
+
+    # ── Resumen financiero ────────────────────────────────────────────────
+    resumen_financiero = (
+        KpiDetalle.objects
+        .values('id_KPI_Categoria__tipo_categoria')
+        .annotate(total=Sum('Monto_Total'))
+        .order_by('-total')
+    )
+
+    context = {
+        # Catálogos
+        'empleados'           : empleados,
+        'categorias'          : categorias,
+        # Filtros activos
+        'empleado_filtro_id'  : empleado_filtro_id,
+        'mes_filtro'          : mes_filtro,
+        'anio_filtro'         : anio_filtro,
+        # Historial
+        'detalles'            : detalles,
+        'premios_qs'          : premios_qs,
+        # Estadísticas
+        'total_kpis'          : total_kpis,
+        'total_bonos'         : total_bonos,
+        'pct_promedio'        : round(pct_promedio, 2),
+        'total_premios'       : total_premios,
+        # Rankings
+        'top_colaboradores'   : top_colaboradores,
+        'resumen_financiero'  : resumen_financiero,
+        # Meses para el select
+        'meses': [
+            (1,'Enero'),(2,'Febrero'),(3,'Marzo'),(4,'Abril'),
+            (5,'Mayo'),(6,'Junio'),(7,'Julio'),(8,'Agosto'),
+            (9,'Septiembre'),(10,'Octubre'),(11,'Noviembre'),(12,'Diciembre'),
+        ],
+    }
+
+    return render(request, 'kpi.html', context)
+
+
+
+
+
 
 
 def usuarios_view(request):
@@ -2827,8 +2930,7 @@ def reportes_view(request):
 
 
 
-def kpi_view(request):
-    return render(request, 'kpi.html')
+
 
 def onboarding_view(request):
     return render(request, 'onboarding.html')
