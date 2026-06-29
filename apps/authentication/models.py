@@ -1536,3 +1536,75 @@ class KpiCabecera(models.Model):
 
     def __str__(self):
         return f"KPI #{self.id_KPI} — {self.idEmpleado.idPersona.Nombre_Completo} ({self.mes}/{self.anio})"
+    
+
+class KpiDetalle(models.Model):
+    id_KPI_Detalle   = models.AutoField(primary_key=True, db_column='id_KPI_Detalle')
+    
+    # decimal(5,2) -> Hasta 999.99 (Ideal para porcentajes de cumplimiento)
+    pct_Alcanzado    = models.DecimalField(max_digits=5, decimal_places=2, db_column='pct_Alcanzado')
+    
+    # decimal(12,2) -> Hasta 9,999,999,999.99
+    Monto_Base       = models.DecimalField(max_digits=12, decimal_places=2, db_column='Monto_Base')
+    Monto_Total      = models.DecimalField(max_digits=12, decimal_places=2, db_column='Monto_Total')
+    
+    # Claves Foráneas (Relaciones)
+    id_KPI_Categoria = models.ForeignKey(
+        KpiCategoria, 
+        on_delete=models.CASCADE, 
+        db_column='id_KPI_Categoria',
+        related_name='detalles'
+    )
+    id_KPI           = models.ForeignKey(
+        KpiCabecera, 
+        on_delete=models.CASCADE, 
+        db_column='id_KPI',
+        related_name='detalles'
+    )
+
+    class Meta:
+        db_table = 'KPI_Detalle'
+        verbose_name = 'Detalle de KPI'
+        verbose_name_plural = 'Detalles de KPIs'
+        
+        # Mapea tu CONSTRAINT UQ_KPI_Categoria_Por_Mes UNIQUE (id_KPI, id_KPI_Categoria)
+        constraints = [
+            models.UniqueConstraint(
+                fields=['id_KPI', 'id_KPI_Categoria'], 
+                name='UQ_KPI_Categoria_Por_Mes'
+            )
+        ]
+
+    def __str__(self):
+        return f"Detalle #{self.id_KPI_Detalle} — Cabecera #{self.id_KPI.id_KPI} ({self.id_KPI_Categoria.tipo_categoria})"
+    
+
+
+
+class Premio(models.Model):
+    idPremio = models.AutoField(primary_key=True, db_column='idPremio')
+    Descripcion = models.CharField(max_length=200, db_column='Descripcion')
+    Alcance = models.CharField(max_length=200, db_column='Alcance')
+    Monto = models.DecimalField(max_digits=12, decimal_places=2, db_column='Monto')
+    
+    # Llaves Foráneas apuntando a las clases correctas del mismo archivo
+    id_KPI_Categoria = models.ForeignKey(
+        KpiCategoria, 
+        on_delete=models.CASCADE, 
+        db_column='id_KPI_Categoria',
+        related_name='premios'
+    )
+    idCuadrante_9box_Perfil = models.ForeignKey(
+        Cuadrante9BoxPerfil,  # <--- Corregido con la 'B' mayúscula
+        on_delete=models.CASCADE, 
+        db_column='idCuadrante_9box_Perfil',
+        related_name='premios'
+    )
+
+    class Meta:
+        db_table = 'Premio'
+        verbose_name = 'Premio'
+        verbose_name_plural = 'Premios'
+
+    def __str__(self):
+        return f"{self.Descripcion} - ${self.Monto}"

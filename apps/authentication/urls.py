@@ -94,8 +94,14 @@ urlpatterns = [
     # Ruta para el dashboard (pantalla de vista de resultados de la evaluación)
     path('dashboard-resultados/', views.dashboard_resultados, name='dashboard_resultados'),
     
+    #Ruta para el dashboard (pantalla de eleccion del tipo de componente de KPI)
+    path('elec_KPI.html/', views.elec_KPI_view, name='elec_KPI'),
     
+    # Ruta para el dashboard (pantalla de registro de KPI)
+    path('kpi/registrar/', views.registrar_kpi_view, name='registrar_kpi'),
 
+    # Ruta para el dashboard (pantalla de registro de KPI)
+     path('premios/nuevo/', views.crear_premio, name='crear_premio'),
     
     
   
@@ -106,14 +112,12 @@ urlpatterns = [
     path('configuraciones.html/', views.configuraciones_view, name='configuraciones'),
     # Ruta para el dashboard (pantalla de configuraciones del sistema)
     path('reportes.html/', views.reportes_view, name='reportes'),
-    #Ruta para el dashboard (pantalla de eleccion del tipo de componente de KPI)
-    path('elec_KPI.html/', views.elec_KPI_view, name='elec_KPI'),
+    
     # Ruta para el dashboard (pantalla de registro de KPI)
-    path('kpi_Registro.html/', views.kpi_Registro_view, name='kpi_Registro'),
+    
     # Ruta para el dashboard (pantalla de registro de KPI)
     path('kpi_Detalle.html/', views.kpi_Detalle_view, name='kpi_Detalle'),
-    # Ruta para el dashboard (pantalla de registro de KPI)
-    path('kpi_Premio.html/', views.kpi_Premio_view, name='kpi_Premio'),
+    
     # Ruta para el dashboard (pantalla de configuraciones del sistema)
     path('kpi.html/', views.kpi_view, name='kpi'),
     # Ruta para el dashboard (pantalla de onboarding)

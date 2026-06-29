@@ -174,6 +174,22 @@ urlpatterns = [
 
     path('dashboard-resultados/', views.dashboard_resultados, name='dashboard_resultados'),
 
+
+    
+    # Ruta para la carga inicial y el guardado de la Cabecera KPI
+    path('kpi/registrar/', views.registrar_kpi_view, name='registrar_kpi'),
+    
+    # Ruta independiente para procesar los detalles (se conecta con el redirect de tu segunda vista)
+    path('kpi/registrar-detalle/', views.registrar_kpi_detalle_view, name='registrar_kpi_detalle'),
+
+    path('premios/nuevo/', views.crear_premio, name='crear_premio'),
+
+    path('premios/editar/<int:id>/', views.editar_premio, name='editar_premio'),
+
+
+
+
+
 ]
 
 

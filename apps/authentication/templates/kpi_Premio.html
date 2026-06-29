@@ -29,9 +29,6 @@
         <!-- ======================================================
              MENÚ DE NAVEGACIÓN
         ====================================================== -->
-        <!-- =========================================================
-             MENÚ DE NAVEGACIÓN
-        ========================================================= -->
         <nav class="menu">
           <!-- Inicio -->
           <a href="{% url 'inicio' %}">
@@ -196,96 +193,254 @@
           </div>
 
           <div class="form-body">
-            <form action="#" method="POST">
-              {% csrf_token %}
-              <div class="form-section">
-                <h4 class="form-section-title">
-                  <i class="fas fa-gift"></i> Definición e Información del
-                  Premio
-                </h4>
+            <!-- Mensajes -->
+            {% if messages %}
+            <div class="messages-container" style="margin-bottom: 20px">
+              {% for message in messages %}
+              <div
+                class="alert alert-{{ message.tags }}"
+                style="padding:12px;
+                 border-radius:8px;
+                 margin-bottom:10px;
+                 background:{% if message.tags == 'success' %}#d4edda{% else %}#f8d7da{% endif %};
+                 color:{% if message.tags == 'success' %}#155724{% else %}#721c24{% endif %};"
+              >
+                <i
+                  class="fas {% if message.tags == 'success' %}fa-circle-check{% else %}fa-circle-exclamation{% endif %}"
+                ></i>
 
-                <div class="form-grid">
-                  <div class="field">
-                    <label for="idPremio">
-                      <i class="fas fa-hashtag field-icon"></i> ID Premio
-                    </label>
-                    <input
-                      type="number"
-                      id="idPremio"
-                      placeholder="Generado automáticamente"
-                      readonly
-                    />
-                  </div>
+                {{ message }}
+              </div>
+              {% endfor %}
+            </div>
+            {% endif %} {% if form.instance.pk %}
+            <form
+              method="POST"
+              action="{% url 'editar_premio' form.instance.pk %}"
+            >
+              {% else %}
+              <form method="POST" action="{% url 'crear_premio' %}">
+                {% endif %} {% csrf_token %}
 
-                  <div class="field">
-                    <label for="descripcion">
-                      <i class="fas fa-file-signature field-icon"></i>
-                      Descripción <span class="req">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="descripcion"
-                      placeholder="Ej. Bono Excelencia Trimestral"
-                      required
-                    />
-                  </div>
+                <div class="form-section">
+                  <h4 class="form-section-title">
+                    <i class="fas fa-gift"></i>
+                    Definición e Información del Premio
+                  </h4>
 
-                  <div class="field">
-                    <label for="indicador">
-                      <i class="fas fa-chart-line field-icon"></i> Indicador KPI
-                      Mínimo <span class="req">*</span>
-                    </label>
-                    <select id="indicador" required>
-                      <option value="" disabled selected>
-                        Seleccione un indicador...
-                      </option>
-                      <option value="cobro">Cobro Efectividad</option>
-                      <option value="comision">Comisión</option>
-                      <option value="supervisor">Evaluación Supervisor</option>
-                      <option value="monto">One Monto</option>
-                    </select>
-                  </div>
+                  <div class="form-grid">
+                    <!-- ID -->
+                    <div class="field">
+                      <label for="idPremio">
+                        <i class="fas fa-hashtag field-icon"></i>
+                        ID Premio
+                      </label>
 
-                  <div class="field">
-                    <label for="alcance">
-                      <i class="fas fa-bullseye field-icon"></i> Alcance
-                      Requerido <span class="req">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="alcance"
-                      placeholder="Ej. >= 95% de la cuota"
-                      required
-                    />
-                  </div>
+                      <input
+                        type="text"
+                        id="idPremio"
+                        value="{% if form.instance.pk %}{{ form.instance.pk }}{% else %}Generado automáticamente{% endif %}"
+                        readonly
+                      />
+                    </div>
 
-                  <div class="field">
-                    <label for="monto">
-                      <i class="fas fa-money-bill-wave field-icon"></i> Monto
-                      del Premio (₡) <span class="req">*</span>
-                    </label>
-                    <input
-                      type="number"
-                      id="monto"
-                      placeholder="0.00"
-                      step="0.01"
-                      required
-                    />
+                    <!-- Descripción -->
+                    <div class="field">
+                      <label for="{{ form.Descripcion.id_for_label }}">
+                        <i class="fas fa-file-signature field-icon"></i>
+                        Descripción <span class="req">*</span>
+                      </label>
+
+                      {{ form.Descripcion }} {% if form.Descripcion.errors %}
+                      <small class="error">
+                        {{ form.Descripcion.errors }}
+                      </small>
+                      {% endif %}
+                    </div>
+
+                    <!-- Categoría KPI -->
+                    <div class="field">
+                      <label for="{{ form.id_KPI_Categoria.id_for_label }}">
+                        <i class="fas fa-chart-line field-icon"></i>
+                        Categoría KPI
+                        <span class="req">*</span>
+                      </label>
+
+                      {{ form.id_KPI_Categoria }} {% if form.id_KPI_Categoria.errors %}
+                      <small class="error">
+                        {{ form.id_KPI_Categoria.errors }}
+                      </small>
+                      {% endif %}
+                    </div>
+
+                    <!-- Perfil 9 Box -->
+                    <div class="field">
+                      <label
+                        for="{{ form.idCuadrante_9box_Perfil.id_for_label }}"
+                      >
+                        <i class="fas fa-table-cells-large field-icon"></i>
+                        Perfil Cuadrante 9-Box
+                        <span class="req">*</span>
+                      </label>
+
+                      {{ form.idCuadrante_9box_Perfil }} {% if form.idCuadrante_9box_Perfil.errors %}
+                      <small class="error">
+                        {{ form.idCuadrante_9box_Perfil.errors }}
+                      </small>
+                      {% endif %}
+                    </div>
+
+                    <!-- Alcance -->
+                    <div class="field">
+                      <label for="{{ form.Alcance.id_for_label }}">
+                        <i class="fas fa-bullseye field-icon"></i>
+                        Alcance Requerido
+                        <span class="req">*</span>
+                      </label>
+
+                      {{ form.Alcance }} {% if form.Alcance.errors %}
+                      <small class="error"> {{ form.Alcance.errors }} </small>
+                      {% endif %}
+                    </div>
+
+                    <!-- Monto -->
+                    <div class="field">
+                      <label for="{{ form.Monto.id_for_label }}">
+                        <i class="fas fa-money-bill-wave field-icon"></i>
+                        Monto del Premio (₡)
+                        <span class="req">*</span>
+                      </label>
+
+                      {{ form.Monto }} {% if form.Monto.errors %}
+                      <small class="error"> {{ form.Monto.errors }} </small>
+                      {% endif %}
+                    </div>
                   </div>
+                </div>
+
+                <div class="form-footer">
+                  <button type="reset" class="btn btn-ghost">
+                    <i class="fas fa-rotate-left"></i>
+                    Limpiar Campos
+                  </button>
+
+                  <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-floppy-disk"></i>
+
+                    {% if form.instance.pk %} Actualizar Premio {% else %}
+                    Guardar Incentivo {% endif %}
+                  </button>
+                </div>
+              </form>
+            </form>
+          </div>
+
+          <!-- ======================================================
+                TABLA DE PREMIOS REGISTRADOS
+          ====================================================== -->
+          <section class="table-card">
+            <div class="table-card-header">
+              <div class="table-card-header-left">
+                <div class="table-card-icon">
+                  <i class="fas fa-table"></i>
+                </div>
+
+                <div>
+                  <h2 class="form-card-title">
+                    {% if form.instance.pk %} Modificar Premio KPI {% else %}
+                    Gestión de Premios KPI {% endif %}
+                  </h2>
+
+                  <p class="table-card-subtitle">
+                    Consulte los premios registrados y seleccione el botón de
+                    edición para modificar la información.
+                  </p>
                 </div>
               </div>
 
-              <div class="form-footer">
-                <button type="reset" class="btn btn-ghost">
-                  <i class="fas fa-rotate-left"></i> Limpiar Campos
-                </button>
+              <div class="table-search">
+                <i class="fas fa-search"></i>
 
-                <button type="submit" class="btn btn-primary">
-                  <i class="fas fa-floppy-disk"></i> Guardar Incentivo
-                </button>
+                <input
+                  type="text"
+                  id="buscarPremio"
+                  placeholder="Buscar premio..."
+                />
               </div>
-            </form>
-          </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="data-table" id="tablaPremios">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+
+                    <th>Descripción</th>
+
+                    <th>Categoría KPI</th>
+
+                    <th>Perfil 9-Box</th>
+
+                    <th>Alcance</th>
+
+                    <th>Monto</th>
+
+                    <th style="text-align: center">Acción</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {% for premio in premios %}
+
+                  <tr>
+                    <td>{{ premio.idPremio }}</td>
+
+                    <td>{{ premio.Descripcion }}</td>
+
+                    <td>{{ premio.id_KPI_Categoria }}</td>
+
+                    <td>{{ premio.idCuadrante_9box_Perfil }}</td>
+
+                    <td>{{ premio.Alcance }}</td>
+
+                    <td>₡ {{ premio.Monto }}</td>
+
+                    <td style="text-align: center">
+                      <a
+                        href="{% url 'editar_premio' premio.idPremio %}"
+                        class="btn btn-warning btn-sm"
+                        title="Editar Premio"
+                      >
+                        <i class="fas fa-pen-to-square"></i>
+                      </a>
+                    </td>
+                  </tr>
+
+                  {% empty %}
+
+                  <tr>
+                    <td
+                      colspan="7"
+                      style="text-align: center; padding: 30px; color: #777"
+                    >
+                      <i
+                        class="fas fa-folder-open"
+                        style="
+                          font-size: 22px;
+                          margin-bottom: 10px;
+                          display: block;
+                        "
+                      >
+                      </i>
+                      No existen premios registrados.
+                    </td>
+                  </tr>
+
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </section>
         </section>
 
         <footer class="footer">

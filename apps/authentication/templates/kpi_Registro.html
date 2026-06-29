@@ -1,4 +1,3 @@
-<!-- Cargar archivos estáticos -->
 {% load static %}
 
 <!doctype html>
@@ -9,7 +8,6 @@
     <title>Registro KPI</title>
 
     <link rel="stylesheet" href="{% static 'styles/kpi_Registro.css' %}" />
-
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
@@ -18,11 +16,7 @@
 
   <body>
     <div class="dashboard-container">
-      <!-- =====================================================
-           SIDEBAR
-      ====================================================== -->
       <aside class="sidebar">
-        <!-- Logo de la empresa -->
         <div class="logo-container">
           <img
             src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
@@ -31,7 +25,6 @@
           />
         </div>
 
-        <!-- MENÚ DE NAVEGACIÓN -->
         <nav class="menu">
           <a href="{% url 'inicio' %}"><i class="fas fa-house"></i> Inicio</a>
           <a href="{% url 'per_emp' %}"
@@ -88,11 +81,7 @@
         </div>
       </aside>
 
-      <!-- =====================================================
-           CONTENIDO PRINCIPAL
-      ====================================================== -->
       <main class="main-content">
-        <!-- BARRA SUPERIOR -->
         <header class="topbar">
           <div class="page-title">
             <h1>Registro de Desempeño</h1>
@@ -123,7 +112,6 @@
           </div>
         </header>
 
-        <!-- BREADCRUMB -->
         <div class="breadcrumb">
           <a href="{% url 'inicio' %}"> <i class="fas fa-house"></i> Inicio </a>
           <i class="fas fa-chevron-right sep"></i>
@@ -132,9 +120,27 @@
           <span class="current">Registrar KPI</span>
         </div>
 
-        <!-- =====================================================
-             FORMULARIO DE DOS PASOS (CABECERA Y DETALLE)
-        ====================================================== -->
+        {% if messages %}
+        <div class="django-messages" style="margin-bottom: 20px">
+          {% for message in messages %}
+          <div
+            class="alert alert-{{ message.tags }}"
+            style="
+                padding: 12px 20px;
+                margin-bottom: 10px;
+                border-radius: 6px;
+                font-weight: 500;
+                background-color: {% if message.tags == 'success' %}#d4edda{% else %}#f8d7da{% endif %};
+                color: {% if message.tags == 'success' %}#155724{% else %}#721c24{% endif %};
+                border: 1px solid {% if message.tags == 'success' %}#c3e6cb{% else %}#f5c6cb{% endif %};
+              "
+          >
+            {{ message }}
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
         <section class="form-card">
           <div class="form-card-header">
             <div class="form-card-header-left">
@@ -152,26 +158,34 @@
           </div>
 
           <div class="form-body">
-            <!-- ===================================================
-                 APARTADO 1: KPI CABECERA
-                 =================================================== -->
-            <form method="POST" action="">
+            <form
+              method="POST"
+              action="{% url 'registrar_kpi' %}"
+              id="form-cabecera"
+            >
               {% csrf_token %}
-              <!-- Un input oculto para decirle al backend que procese la cabecera -->
-              <input type="hidden" name="action" value="guardar_cabecera" />
 
               <div class="form-section">
                 <h4 class="form-section-title">
-                  1. Información General de la Evaluación
+                  <i class="fas fa-file-invoice"></i> 1. Información General de
+                  la Evaluación
                 </h4>
 
                 <div class="form-grid">
-                  <!-- EMPLEADO -->
                   <div class="field">
                     <label for="empleado">
                       <i class="fas fa-user field-icon"></i> Colaborador
                       <span class="req">*</span>
                     </label>
+
+                    {% if kpi_cabecera_id %}
+                    <input
+                      type="hidden"
+                      name="idEmpleado"
+                      value="{{ el_empleado_seleccionado }}"
+                    />
+                    {% endif %}
+
                     <select
                       id="empleado"
                       name="idEmpleado"
@@ -183,7 +197,17 @@
                       endif
                       %}
                     >
-                      <option disabled selected value="">
+                      <option
+                        value=""
+                        disabled
+                        {%
+                        if
+                        not
+                        el_empleado_seleccionado
+                        %}selected{%
+                        endif
+                        %}
+                      >
                         Seleccione un colaborador
                       </option>
                       {% for empleado in empleados %}
@@ -197,18 +221,26 @@
                         endif
                         %}
                       >
-                        {{ empleado.nombre }}
+                        {{ empleado.idPersona.Nombre_Completo }} — {{ empleado.idPuesto.Nombre }}
                       </option>
                       {% endfor %}
                     </select>
                   </div>
 
-                  <!-- MES -->
                   <div class="field">
                     <label for="mes">
                       <i class="fas fa-calendar field-icon"></i> Mes
                       <span class="req">*</span>
                     </label>
+
+                    {% if kpi_cabecera_id %}
+                    <input
+                      type="hidden"
+                      name="Mes"
+                      value="{{ el_mes_seleccionado }}"
+                    />
+                    {% endif %}
+
                     <select
                       id="mes"
                       name="Mes"
@@ -220,6 +252,19 @@
                       endif
                       %}
                     >
+                      <option
+                        disabled
+                        {%
+                        if
+                        not
+                        el_mes_seleccionado
+                        %}selected{%
+                        endif
+                        %}
+                        value=""
+                      >
+                        Seleccione el mes
+                      </option>
                       <option
                         value="1"
                         {%
@@ -367,7 +412,6 @@
                     </select>
                   </div>
 
-                  <!-- AÑO -->
                   <div class="field">
                     <label for="anio">
                       <i class="fas fa-clock field-icon"></i> Año
@@ -379,7 +423,7 @@
                       name="Anio"
                       min="2020"
                       max="2035"
-                      value="{{ el_anio_seleccionado|default:'2026' }}"
+                      value="{{ el_anio_seleccionado }}"
                       required
                       {%
                       if
@@ -402,11 +446,28 @@
                   {% else %}
                   <span
                     class="badge-success"
-                    style="color: green; font-weight: bold"
+                    style="
+                      color: #28a745;
+                      font-weight: bold;
+                      display: inline-flex;
+                      align-items: center;
+                      gap: 5px;
+                    "
                   >
                     <i class="fas fa-check-circle"></i> Cabecera Lista y
-                    Registrada
+                    Registrada (ID: {{ kpi_cabecera_id }})
                   </span>
+                  <a
+                    href="{% url 'registrar_kpi' %}"
+                    class="btn btn-ghost"
+                    style="
+                      margin-left: 15px;
+                      font-size: 13px;
+                      padding: 5px 10px;
+                    "
+                  >
+                    <i class="fas fa-arrows-rotate"></i> Nueva Evaluación
+                  </a>
                   {% endif %}
                 </div>
               </div>
@@ -414,15 +475,15 @@
 
             <hr style="border: 1px dashed #ccc; margin: 30px 0" />
 
-            <!-- ===================================================
-                 APARTADO 2: KPI DETALLE (Se desbloquea al tener kpi_cabecera_id)
-                 =================================================== -->
-            <form method="POST" action="">
+            <form
+              method="POST"
+              action="{% url 'registrar_kpi_detalle' %}"
+              id="form-detalle"
+            >
               {% csrf_token %}
-              <input type="hidden" name="action" value="guardar_detalle" />
 
-              <!-- Bloque visual si no hay ID de cabecera -->
               <div
+                id="section-detalle"
                 class="form-section {% if not kpi_cabecera_id %}section-disabled{% endif %}"
                 {%
                 if
@@ -442,10 +503,10 @@
                   "
                 >
                   <h4 class="form-section-title" style="margin: 0">
-                    2. Detalle de Indicadores KPI
+                    <i class="fas fa-list-check"></i> 2. Detalle de Indicadores
+                    KPI
                   </h4>
 
-                  <!-- Espacio asignado para ver y verificar el ID de Cabecera asignado -->
                   <div
                     class="field-id-verificacion"
                     style="
@@ -474,7 +535,7 @@
                       type="text"
                       id="id_KPI"
                       name="id_KPI"
-                      value="{{ kpi_cabecera_id|default:'SIN ASIGNAR' }}"
+                      value="{{ kpi_cabecera_id|default:'' }}"
                       readonly
                       style="
                         width: 110px;
@@ -493,7 +554,6 @@
                 </div>
 
                 <div class="form-grid">
-                  <!-- CATEGORÍA (Relacionada a KPI_Categoria) -->
                   <div class="field">
                     <label for="categoria">
                       <i class="fas fa-layer-group field-icon"></i> Categoría
@@ -516,13 +576,12 @@
                       </option>
                       {% for categoria in categorias %}
                       <option value="{{ categoria.id_KPI_Categoria }}">
-                        {{ categoria.TipoCategoria }}
+                        {{ categoria.tipo_categoria }}
                       </option>
                       {% endfor %}
                     </select>
                   </div>
 
-                  <!-- PORCENTAJE ALCANZADO (z) -->
                   <div class="field">
                     <label for="porcentaje">
                       <i class="fas fa-percent field-icon"></i> % Alcanzado
@@ -547,7 +606,6 @@
                     />
                   </div>
 
-                  <!-- MONTO BASE -->
                   <div class="field">
                     <label for="monto">
                       <i class="fas fa-coins field-icon"></i> Monto Base
@@ -572,7 +630,6 @@
                   </div>
                 </div>
 
-                <!-- BOTONES DETALLE -->
                 <div class="form-footer">
                   <button
                     type="reset"
@@ -608,62 +665,33 @@
           </div>
         </section>
 
-        <!-- FOOTER -->
         <footer class="footer">
           © 2026 Distribuidora Robasa - Sistema Gestión RH
         </footer>
       </main>
     </div>
 
-    <!-- Script de control de flujo Cabecera-Detalle -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        const formCabecera = document.getElementById("form-cabecera");
-        const sectionDetalle = document.getElementById("section-detalle");
         const idKPIInput = document.getElementById("id_KPI");
+        const sectionDetalle = document.getElementById("section-detalle");
 
-        // Elementos del detalle que necesitan ser desbloqueados
-        const inputsDetalle = sectionDetalle.querySelectorAll(
-          "select, input, button",
-        );
+        // Si Django ya generó y retornó un ID de cabecera válido
+        if (idKPIInput && idKPIInput.value !== "") {
+          if (sectionDetalle) {
+            // Desbloquear visualmente y habilitar la sección de detalles
+            sectionDetalle.classList.remove("section-disabled");
+            sectionDetalle.style.opacity = "1";
+            sectionDetalle.style.pointerEvents = "auto";
 
-        formCabecera.addEventListener("submit", function (e) {
-          // NOTA: Si usas recarga de página nativa de Django, este evento se puede omitir
-          // y el backend manejará el flujo. Si quieres manejarlo fluido en el cliente:
-          e.preventDefault();
-
-          // Simulación de respuesta de éxito del servidor generando un ID correlativo
-          // (En producción, aquí harías un fetch() a tu vista de Django y recibirías el id real)
-          const idCabeceraGenerado = Math.floor(Math.random() * 9000) + 1000;
-
-          // 1. Mostrar el ID asignado en la caja de verificación del detalle
-          idKPIInput.value = idCabeceraGenerado;
-
-          // 2. Quitar los bloqueos visuales de la sección detalle
-          sectionDetalle.classList.remove("section-disabled");
-          sectionDetalle.style.opacity = "1";
-          sectionDetalle.style.pointerEvents = "auto";
-
-          // 3. Habilitar todos los inputs, selectores y botones del detalle
-          inputsDetalle.forEach((elemento) => {
-            elemento.removeAttribute("disabled");
-          });
-
-          // 4. Bloquear la cabecera para que no alteren el empleado/mes mientras añaden detalles
-          formCabecera
-            .querySelectorAll("select, input, button")
-            .forEach((elemento) => {
-              if (elemento.type !== "hidden") {
-                elemento.setAttribute("disabled", "true");
-              }
+            const inputsDetalle = sectionDetalle.querySelectorAll(
+              "select, input, button",
+            );
+            inputsDetalle.forEach((elemento) => {
+              elemento.removeAttribute("disabled");
             });
-
-          // Mensaje de feedback visual para el usuario
-          alert(
-            "¡Cabecera registrada exitosamente! Se ha habilitado la sección de detalles vinculada al ID: " +
-              idCabeceraGenerado,
-          );
-        });
+          }
+        }
       });
     </script>
   </body>

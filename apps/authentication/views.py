@@ -7,6 +7,8 @@ from datetime import date, datetime
 from django.contrib import messages
 from .forms import AccionPersonalForm
 from django.db import transaction
+from django.db import IntegrityError
+from .forms import PremioForm
 from django.db.models import Q # Asegúrate de tener esta importación al inicio de tu archivo views.py
 
 #Importa todo lo que se encuentra en el archivo models.py
@@ -2608,6 +2610,163 @@ def dashboard_resultados(request):
 
 
 
+def elec_KPI_view(request):
+    return render(request, 'elec_KPI.html')
+
+
+# =========================================================================
+# 1. VISTA SÓLO PARA LA CABECERA (Carga inicial y Guardado de Cabecera)
+# =========================================================================
+def registrar_kpi_view(request):
+    kpi_cabecera_id = None
+    el_empleado_seleccionado = ""
+    el_mes_seleccionado = ""
+    el_anio_seleccionado = "2026"
+
+    if request.method == 'POST':
+        id_empleado = request.POST.get('idEmpleado')
+        mes = request.POST.get('Mes')
+        anio = request.POST.get('Anio')
+
+        # Mantener el estado en los inputs si ocurre un error (conversión segura)
+        el_empleado_seleccionado = int(id_empleado) if id_empleado else ""
+        el_mes_seleccionado = int(mes) if mes else ""
+        el_anio_seleccionado = int(anio) if anio else 2026
+
+        try:
+            empleado = Empleado.objects.get(pk=id_empleado)
+            
+            # Crear y guardar la cabecera adaptada a enteros de models.py
+            cabecera = KpiCabecera(
+                idEmpleado=empleado,
+                mes=int(mes),    # Adaptado a models.IntegerField
+                anio=int(anio)   # Adaptado a models.IntegerField
+            )
+            cabecera.save()
+
+            kpi_cabecera_id = cabecera.id_KPI
+            messages.success(request, f"¡Cabecera registrada con éxito! ID Asignado: {kpi_cabecera_id}")
+
+        except IntegrityError:
+            messages.error(request, "Error: Ya existe un registro de KPI para este colaborador en el mes y año seleccionados.")
+        except Empleado.DoesNotExist:
+            messages.error(request, "El colaborador seleccionado no es válido.")
+        except (ValueError, TypeError):
+            messages.error(request, "Error: Los datos de mes o año enviados no son válidos.")
+
+    # Catálogos necesarios para renderizar el formulario
+    empleados = Empleado.objects.filter(Activo=True)
+    categorias = KpiCategoria.objects.all()
+
+    context = {
+        'empleados': empleados,
+        'categorias': categorias,
+        'kpi_cabecera_id': kpi_cabecera_id,
+        'el_empleado_seleccionado': el_empleado_seleccionado,
+        'el_mes_seleccionado': el_mes_seleccionado,
+        'el_anio_seleccionado': el_anio_seleccionado,
+    }
+    return render(request, 'kpi_Registro.html', context)
+
+
+# =========================================================================
+# 2. VISTA SÓLO PARA AGREGAR EL DETALLE (Procesamiento independiente)
+# =========================================================================
+def registrar_kpi_detalle_view(request):
+    if request.method == 'POST':
+        id_kpi_cabecera = request.POST.get('id_KPI')
+        id_categoria = request.POST.get('id_KPI_Categoria')
+        pct_alcanzado = request.POST.get('pct_Alcanzado')
+        monto_base = request.POST.get('Monto_Base')
+
+        try:
+            cabecera = get_object_or_404(KpiCabecera, pk=id_kpi_cabecera)
+            categoria = get_object_or_404(KpiCategoria, pk=id_categoria)
+
+            # Cálculo manual de respaldo antes de insertar
+            monto_total = float(monto_base) * (float(pct_alcanzado) / 100.0)
+
+            # Crear y registrar el detalle vinculado a las FKs correctas
+            detalle = KpiDetalle(
+                id_KPI=cabecera,                       # Instancia de KpiCabecera
+                id_KPI_Categoria=categoria,             # Instancia de KpiCategoria
+                pct_Alcanzado=float(pct_alcanzado),     # Adaptado a DecimalField
+                Monto_Base=float(monto_base),           # Adaptado a DecimalField
+                Monto_Total=round(monto_total, 2)       # Redondeado a 2 decimales para DecimalField
+            )
+            detalle.save()
+            
+            messages.success(request, f"Indicador '{categoria.tipo_categoria}' añadido exitosamente.")
+
+        except IntegrityError:
+            # Captura la restricción UQ_KPI_Categoria_Por_Mes de tu Meta class
+            messages.error(request, "Error: Esta categoría ya fue evaluada en este mes para el colaborador.")
+        except Exception as e:
+            messages.error(request, f"Error al guardar el detalle: {str(e)}")
+
+    # Después de procesar el detalle, volvemos al flujo principal
+    return redirect('registrar_kpi')
+
+def crear_premio(request):
+    if request.method == 'POST':
+        form = PremioForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, '¡Premio guardado exitosamente!')
+            return redirect('crear_premio')
+    else:
+        form = PremioForm()
+
+    premios = Premio.objects.select_related(
+        'id_KPI_Categoria',
+        'idCuadrante_9box_Perfil'
+    ).all().order_by('idPremio')
+
+    return render(
+        request,
+        'kpi_Premio.html',
+        {
+            'form': form,
+            'premios': premios,
+        }
+    )
+
+
+def editar_premio(request, id):
+    premio = Premio.objects.get(pk=id)
+
+    if request.method == 'POST':
+        form = PremioForm(request.POST, instance=premio)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Premio actualizado correctamente.")
+            return redirect('crear_premio')
+
+    else:
+        form = PremioForm(instance=premio)
+
+    premios = Premio.objects.select_related(
+        'id_KPI_Categoria',
+        'idCuadrante_9box_Perfil'
+    ).order_by('idPremio')
+
+    return render(
+        request,
+        'kpi_Premio.html',
+        {
+            'form': form,
+            'premios': premios,
+        }
+    )
+
+
+
+
+
+
+
+
 def usuarios_view(request):
     return render(request, 'usuarios.html')
 
@@ -2617,17 +2776,12 @@ def configuraciones_view(request):
 def reportes_view(request):
     return render(request, 'reportes.html')
 
-def elec_KPI_view(request):
-    return render(request, 'elec_KPI.html')
 
-def kpi_Registro_view(request):
-    return render(request, 'kpi_Registro.html')
 
 def kpi_Detalle_view(request):
     return render(request, 'kpi_Detalle.html')
 
-def kpi_Premio_view(request):
-    return render(request, 'kpi_Premio.html')
+
 
 def kpi_view(request):
     return render(request, 'kpi.html')
