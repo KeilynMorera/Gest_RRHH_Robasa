@@ -159,6 +159,8 @@ urlpatterns = [
 
     path('obtener-salario/<int:idEmpleado>/', views.obtener_salario_actual, name='obtener_salario_actual'),
 
+    path('obtener-premio/<int:idEmpleado>/', views.obtener_premio_actual, name='obtener_premio_actual'),
+
 
 
     # =========================================================

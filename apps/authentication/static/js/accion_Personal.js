@@ -157,3 +157,20 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 });
+
+
+fetch(`/obtener-premio/${idEmpleado}/`)
+.then(r=>r.json())
+.then(data=>{
+
+    if(data.success){
+
+        document.getElementById("premio_actual").value =
+            "₡" + Number(data.premio).toLocaleString();
+
+        document.getElementById("idPremio").value =
+            data.idPremio;
+
+    }
+
+});

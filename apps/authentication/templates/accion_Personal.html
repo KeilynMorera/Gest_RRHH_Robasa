@@ -229,7 +229,8 @@
                       <i class="fas fa-calendar-check field-icon"></i> Fecha de
                       Aplicación <span class="req">*</span>
                     </label>
-                    {{ form_cabecera.Fecha }} {% if form_cabecera.Fecha.errors %}
+                    {{ form_cabecera.Fecha }} {% if form_cabecera.Fecha.errors
+                    %}
                     <div class="error-message">
                       {{ form_cabecera.Fecha.errors }}
                     </div>
@@ -316,22 +317,44 @@
                     </select>
                   </div>
 
+                  <!-- Premio actual -->
                   <div
                     class="field"
-                    id="contenedor-monto-premio"
+                    id="contenedor-premio-actual"
                     style="display: none"
                   >
-                    <label for="monto_premio">
-                      <i class="fas fa-trophy field-icon"></i> Monto del Premio
-                      (Según KPI) <span class="req">*</span>
+                    <label for="premio_actual">
+                      <i class="fas fa-trophy field-icon"></i>
+                      Premio Actual
                     </label>
+
+                    <input
+                      type="text"
+                      id="premio_actual"
+                      readonly
+                      placeholder="₡0.00"
+                    />
+                  </div>
+
+                  <!-- Nuevo premio -->
+                  <div
+                    class="field"
+                    id="contenedor-nuevo-premio"
+                    style="display: none"
+                  >
+                    <label for="nuevo_premio">
+                      <i class="fas fa-coins field-icon"></i>
+                      Nuevo Monto del Premio
+                      <span class="req">*</span>
+                    </label>
+
                     <input
                       type="number"
-                      id="monto_premio"
-                      name="monto_premio"
+                      id="nuevo_premio"
+                      name="nuevo_premio"
                       step="0.01"
                       min="0"
-                      placeholder="Ej: 50000"
+                      placeholder="Ej. 25000"
                     />
                   </div>
 
@@ -492,7 +515,8 @@
                   <td>{{ a.Detalle|truncatechars:60 }}</td>
 
                   <td>
-                    {% if a.Monto_TA %} ₡{{ a.Monto_TA }} {% else %} — {% endif %}
+                    {% if a.Monto_TA %} ₡{{ a.Monto_TA }} {% else %} — {% endif
+                    %}
                   </td>
 
                   <td>{{ a.idAccion.Fecha }}</td>

@@ -1054,80 +1054,6 @@ class DetalleAccion(models.Model):
 
 
 
-# =========================================================
-# TABLA: Accion_Tipo
-# Detalle específico de una acción de personal
-# =========================================================
-class AccionTipo(models.Model):
-
-    idAccion_Tipo = models.AutoField(
-        primary_key=True,
-        db_column='idAccion_Tipo'
-    )
-
-    Detalle = models.CharField(
-        max_length=600,
-        db_column='Detalle'
-    )
-
-    Monto_TA = models.DecimalField(
-        max_digits=12,
-        decimal_places=2,
-        null=True,
-        blank=True,
-        db_column='Monto_TA'
-    )
-
-    # Tipo de acción
-    id_Detalle_Accion = models.ForeignKey(
-
-        DetalleAccion,
-
-        on_delete=models.PROTECT,
-
-        db_column='id_Detalle_Accion',
-
-        related_name='acciones_tipo'
-    )
-
-    # Cabecera Accion_Personal
-    idAccion = models.ForeignKey(
-
-        AccionPersonal,
-
-        on_delete=models.CASCADE,
-
-        db_column='idAccion',
-
-        related_name='detalles_accion'
-    )
-
-    # Salario del empleado (solo para Ajuste Salarial o Ascenso)
-    idSalarioEmpleado = models.ForeignKey(
-
-        SalarioEmpleado,
-
-        on_delete=models.SET_NULL,
-
-        null=True,
-
-        blank=True,
-
-        db_column='idSalarioEmpleado',
-
-        related_name='acciones_salario'
-    )
-
-    class Meta:
-
-        managed = False
-
-        db_table = 'Accion_Tipo'
-
-    def __str__(self):
-
-        return f"{self.idAccion} - {self.id_Detalle_Accion}"
-    
 
 
 # =========================================================
@@ -1203,9 +1129,6 @@ class Evaluacion(models.Model):
 # =========================================================
 # TABLA: Detalle del desempeño de la cabecera (Desempeño empleado "corriente")
 # =========================================================
-from django.db import models
-
-
 class EvaluacionDesempeno(models.Model):
     id_desempeno = models.AutoField(db_column='id_Desempeno', primary_key=True)
 
@@ -1656,3 +1579,73 @@ class PremioAsignado(models.Model):
 
     def __str__(self):
         return f'Premio #{self.id_PremioAsignado}'
+    
+
+# =========================================================
+# TABLA: Accion_Tipo
+# Detalle específico de una acción de personal
+# =========================================================
+class AccionTipo(models.Model):
+
+    idAccion_Tipo = models.AutoField(
+        primary_key=True,
+        db_column='idAccion_Tipo'
+    )
+
+    Detalle = models.CharField(
+        max_length=600,
+        db_column='Detalle'
+    )
+
+    Monto_TA = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        db_column='Monto_TA'
+    )
+
+    # Tipo de acción
+    id_Detalle_Accion = models.ForeignKey(
+        DetalleAccion,
+        on_delete=models.PROTECT,
+        db_column='id_Detalle_Accion',
+        related_name='acciones_tipo'
+    )
+
+    # Cabecera de Acción de Personal
+    idAccion = models.ForeignKey(
+        AccionPersonal,
+        on_delete=models.CASCADE,
+        db_column='idAccion',
+        related_name='detalles_accion'
+    )
+
+    # Salario del empleado
+    # Se utiliza únicamente para Ajuste Salarial o Ascenso
+    idSalarioEmpleado = models.ForeignKey(
+        SalarioEmpleado,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        db_column='idSalarioEmpleado',
+        related_name='acciones_salario'
+    )
+
+    # Premio
+    # Se utiliza únicamente cuando el tipo de acción corresponde a un Premio
+    idPremio = models.ForeignKey(
+        Premio,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        db_column='idPremio',
+        related_name='acciones_premio'
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'Accion_Tipo'
+
+    def __str__(self):
+        return f"{self.idAccion} - {self.id_Detalle_Accion}"
