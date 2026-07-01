@@ -1203,54 +1203,58 @@ class Evaluacion(models.Model):
 # =========================================================
 # TABLA: Detalle del desempeño de la cabecera (Desempeño empleado "corriente")
 # =========================================================
-class EvaluacionDesempeno(models.Model):
-    id_Desempeno = models.AutoField(
-        primary_key=True,
-        db_column='id_Desempeno'
-    )
+from django.db import models
 
-    Cumple_Metas_Objetivos = models.BooleanField(
+
+class EvaluacionDesempeno(models.Model):
+    id_desempeno = models.AutoField(db_column='id_Desempeno', primary_key=True)
+
+    cumple_metas_objetivos = models.BooleanField(
         db_column='Cumple_Metas_Objetivos'
     )
 
-    Cumple_FuncionesAsig = models.BooleanField(
+    cumple_funciones_asig = models.BooleanField(
         db_column='Cumple_FuncionesAsig'
     )
 
-    Entregables_Calidad_Tiempo = models.BooleanField(
+    entregables_calidad_tiempo = models.BooleanField(
         db_column='Entregables_Calidad_Tiempo'
     )
 
-    Cumple_Asistencia = models.BooleanField(
+    cumple_asistencia = models.BooleanField(
         db_column='Cumple_Asistencia'
     )
 
-    Muestra_Compromiso_Colaboracion = models.BooleanField(
+    muestra_compromiso_colaboracion = models.BooleanField(
         db_column='Muestra_Compromiso_Colaboracion'
     )
 
-    pct_totalEv = models.DecimalField(
+    pct_total_ev = models.DecimalField(
+        db_column='pct_totalEv',
         max_digits=12,
         decimal_places=2,
         null=True,
-        blank=True,
-        db_column='pct_totalEv'
+        blank=True
     )
 
-    idEvaluacion = models.ForeignKey(
-        Evaluacion,
-        on_delete=models.CASCADE,
+    observaciones = models.CharField(
+        db_column='Observaciones',
+        max_length=500
+    )
+
+    evaluacion = models.ForeignKey(
+        'Evaluacion',
+        models.DO_NOTHING,
         db_column='idEvaluacion',
         related_name='desempenos'
     )
 
     class Meta:
-        managed = False  # 👈 ya existe en SQL Server
+        managed = False
         db_table = 'Evaluacion_Desempeno'
-        ordering = ['-id_Desempeno']
 
     def __str__(self):
-        return f"Desempeño {self.id_Desempeno} - Eval {self.idEvaluacion_id}"
+        return f"Evaluación de desempeño #{self.id_desempeno}"
     
 
 # =========================================================
@@ -1347,7 +1351,6 @@ class Cuadrante9BoxPerfil(models.Model):
 # =========================================================
 # TABLA: Cuadrante_9box
 # =========================================================
-
 class Cuadrante9Box(models.Model):
 
     idCuadrante_9box = models.AutoField(
