@@ -174,6 +174,8 @@ urlpatterns = [
 
     path('dashboard-resultados/', views.dashboard_resultados, name='dashboard_resultados'),
 
+    
+
 
     
     # Ruta para la carga inicial y el guardado de la Cabecera KPI
@@ -190,6 +192,8 @@ urlpatterns = [
     # PREMIOS ASIGNADOS
     # ===========================
     path("kpi/premios-asignados/", views.crear_premio_asignado, name="crear_premio_asignado"),
+
+    path('dashboard-kpi/historial/', views.historial_kpi_view, name='historial_kpi'),
 
 
 

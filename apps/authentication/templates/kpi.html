@@ -1,4 +1,3 @@
-<!-- Cargar la librería al inicio del template, para usar archivos estaticos -->
 {% load static %}
 
 <!doctype html>
@@ -18,11 +17,7 @@
   <body>
     <div class="dashboard-container">
       <aside class="sidebar">
-        <!-- =========================================================
-             LOGO DE LA EMPRESA
-        ========================================================= -->
         <div class="logo-container">
-          <!-- Imagen cargada desde archivos estáticos -->
           <img
             src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
             alt="Logo Robasa"
@@ -30,108 +25,23 @@
           />
         </div>
 
-        <!-- ======================================================
-             MENÚ DE NAVEGACIÓN
-        ====================================================== -->
-        <!-- =========================================================
-             MENÚ DE NAVEGACIÓN
-        ========================================================= -->
         <nav class="menu">
-          <!-- Inicio -->
-          <a href="{% url 'inicio' %}">
-            <i class="fas fa-house"></i>
-            Inicio
-          </a>
-
-          <!-- Personas o Empleados -->
-          <a href="{% url 'per_emp' %}">
-            <i class="fas fa-user-group"></i>
-            Personas o Empleados
-          </a>
-
-          <!-- Onboarding -->
-          <a href="{% url 'onboarding' %}">
-            <i class="fas fa-rocket"></i>
-            Onboarding / Entradas
-          </a>
-
-          <!-- Empresas -->
-          <a href="{% url 'empresas' %}">
-            <i class="fas fa-building"></i>
-            Empresas
-          </a>
-
-          <!-- Gerencias, Departamentos y Puestos -->
-          <a href="{% url 'comple_Empresa' %}">
-            <i class="fas fa-briefcase"></i>
-            Gerencias, Departamentos y Puestos
-          </a>
-
-          <!-- Salarios -->
-          <a href="{% url 'salarios' %}">
-            <i class="fas fa-money-bill-wave"></i>
-            Salarios
-          </a>
-
-          <!-- Reclutamiento -->
-          <a href="{% url 'reclutamiento' %}">
-            <i class="fas fa-wallet"></i>
-            Reclutamiento
-          </a>
-
-          <!-- Vacaciones -->
-          <a href="{% url 'vacaciones' %}">
-            <i class="fas fa-umbrella-beach"></i>
-            Vacaciones
-          </a>
-
-          <!-- Asistencia y Permisos -->
-          <a href="{% url 'elec_Asistencia' %}">
-            <i class="fas fa-clock"></i>
-            Asistencia y Permiso
-          </a>
-
-          <!-- Acciones o Rotaciones -->
-          <a href="{% url 'accion_rotacion' %}">
-            <i class="fas fa-clipboard-list"></i>
-            Acciones o Rotaciones del Personal
-          </a>
-
-          <!-- Evaluación de Desempeño -->
-          <a href="{% url 'evaluaciones' %}">
-            <i class="fas fa-chart-line"></i>
-            Evaluación de Desempeño
-          </a>
-
-          <!-- KPIs -->
-          <a href="{% url 'elec_KPI' %}">
-            <i class="fas fa-file-lines"></i>
-            KPIs
-          </a>
-
-          <!-- Offboarding -->
-          <a href="{% url 'elec_Offboarding' %}">
-            <i class="fas fa-door-open"></i>
-            Offboarding / Salidas
-          </a>
-
-          <!-- Reportes -->
-          <a href="{% url 'reportes' %}">
-            <i class="fas fa-file-lines"></i>
-            Reportes
-          </a>
-
-          <!-- Usuarios y Roles -->
-          <a href="{% url 'usuarios' %}">
-            <i class="fas fa-users-cog"></i>
-            Usuarios y Roles
-          </a>
-
-          <!-- Configuración -->
-          <a href="{% url 'configuraciones' %}">
-            <i class="fas fa-gear"></i>
-            Configuración
-          </a>
+          <a href="{% url 'inicio' %}"><i class="fas fa-house"></i> Inicio</a>
+          <a href="{% url 'per_emp' %}"><i class="fas fa-user-group"></i> Personas o Empleados</a>
+          <a href="{% url 'onboarding' %}"><i class="fas fa-rocket"></i> Onboarding / Entradas</a>
+          <a href="{% url 'empresas' %}"><i class="fas fa-building"></i> Empresas</a>
+          <a href="{% url 'comple_Empresa' %}"><i class="fas fa-briefcase"></i> Gerencias, Departamentos y Puestos</a>
+          <a href="{% url 'salarios' %}"><i class="fas fa-money-bill-wave"></i> Salarios</a>
+          <a href="{% url 'reclutamiento' %}"><i class="fas fa-wallet"></i> Reclutamiento</a>
+          <a href="{% url 'vacaciones' %}"><i class="fas fa-umbrella-beach"></i> Vacaciones</a>
+          <a href="{% url 'elec_Asistencia' %}"><i class="fas fa-clock"></i> Asistencia y Permiso</a>
+          <a href="{% url 'accion_rotacion' %}"><i class="fas fa-clipboard-list"></i> Acciones o Rotaciones del Personal</a>
+          <a href="{% url 'evaluaciones' %}"><i class="fas fa-chart-line"></i> Evaluación de Desempeño</a>
+          <a href="{% url 'elec_KPI' %}"><i class="fas fa-file-lines"></i> KPIs</a>
+          <a href="{% url 'elec_Offboarding' %}"><i class="fas fa-door-open"></i> Offboarding / Salidas</a>
+          <a href="{% url 'reportes' %}"><i class="fas fa-file-lines"></i> Reportes</a>
+          <a href="{% url 'usuarios' %}"><i class="fas fa-users-cog"></i> Usuarios y Roles</a>
+          <a href="{% url 'configuraciones' %}"><i class="fas fa-gear"></i> Configuración</a>
         </nav>
 
         <div class="logout">
@@ -150,10 +60,7 @@
 
           <div class="search-box">
             <i class="fas fa-search"></i>
-            <input
-              type="text"
-              placeholder="Buscar empleado, módulo, reporte..."
-            />
+            <input type="text" placeholder="Buscar empleado, módulo, reporte..." />
           </div>
 
           <div class="topbar-actions">
@@ -189,52 +96,63 @@
               <div>
                 <h2 class="form-card-title">Dashboard de KPIs</h2>
                 <p class="form-card-subtitle">
-                  Visualización general del desempeño mensual, premios e
-                  incentivos.
+                  Visualización general del desempeño mensual, premios e incentivos.
                 </p>
               </div>
             </div>
             <div class="dashboard-period">
               <i class="fas fa-calendar-days"></i>
-              <span> Julio 2026 </span>
+              <span> 
+                {% if mes_filtro %}
+                  {% for m in meses %}{% if m.0|stringformat:"s" == mes_filtro|stringformat:"s" %}{{ m.1 }}{% endif %}{% endfor %}
+                {% else %}Julio{% endif %} {{ anio_filtro|default:"2026" }}
+              </span>
             </div>
           </div>
 
           <div class="form-body">
-            <div class="filter-bar">
-              <div class="field filter-field">
-                <label>
-                  <i class="fas fa-building field-icon"></i> Departamento
-                </label>
-                <select>
-                  <option selected>Todos los departamentos</option>
-                  <option>Comercial</option>
-                  <option>Finanzas</option>
-                  <option>Recursos Humanos</option>
-                </select>
-              </div>
+            <form method="GET" action="">
+              <div class="filter-bar">
+                <div class="field filter-field">
+                  <label>
+                    <i class="fas fa-user field-icon"></i> Colaborador
+                  </label>
+                  <select name="empleado_filtro">
+                    <option value="">Todos los colaboradores</option>
+                    {% for emp in empleados %}
+                      <option value="{{ emp.idEmpleado }}" {% if empleado_filtro_id|stringformat:"s" == emp.idEmpleado|stringformat:"s" %}selected{% endif %}>
+                        {{ emp.idPersona.Nombre_Completo }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
 
-              <div class="field filter-field">
-                <label> <i class="fas fa-calendar field-icon"></i> Mes </label>
-                <select>
-                  <option selected>Julio</option>
-                  <option>Junio</option>
-                  <option>Mayo</option>
-                </select>
-              </div>
+                <div class="field filter-field">
+                  <label> <i class="fas fa-calendar field-icon"></i> Mes </label>
+                  <select name="mes_filtro">
+                    <option value="">Todos los meses</option>
+                    {% for m in meses %}
+                      <option value="{{ m.0 }}" {% if mes_filtro|stringformat:"s" == m.0|stringformat:"s" %}selected{% endif %}>
+                        {{ m.1 }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
 
-              <div class="field filter-field">
-                <label> <i class="fas fa-clock field-icon"></i> Año </label>
-                <select>
-                  <option selected>2026</option>
-                  <option>2025</option>
-                </select>
-              </div>
+                <div class="field filter-field">
+                  <label> <i class="fas fa-clock field-icon"></i> Año </label>
+                  <select name="anio_filtro">
+                    <option value="">Todos los años</option>
+                    <option value="2025" {% if anio_filtro == "2025" %}selected{% endif %}>2025</option>
+                    <option value="2026" {% if anio_filtro == "2026" or not anio_filtro %}selected{% endif %}>2026</option>
+                  </select>
+                </div>
 
-              <button class="btn btn-primary">
-                <i class="fas fa-magnifying-glass-chart"></i> Consultar
-              </button>
-            </div>
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-magnifying-glass-chart"></i> Consultar
+                </button>
+              </div>
+            </form>
 
             <div class="stats-grid">
               <div class="stat-card performance">
@@ -242,8 +160,8 @@
                   <span> KPIs Registrados </span>
                   <i class="fas fa-chart-column"></i>
                 </div>
-                <h2>124</h2>
-                <p>KPIs procesados este mes.</p>
+                <h2>{{ total_kpis }}</h2>
+                <p>KPIs procesados en el periodo.</p>
               </div>
 
               <div class="stat-card potential">
@@ -251,8 +169,8 @@
                   <span> Bonos Generados </span>
                   <i class="fas fa-money-bill-wave"></i>
                 </div>
-                <h2>₡4.8M</h2>
-                <p>Incentivos acumulados del periodo.</p>
+                <h2>₡{{ total_bonos }}</h2>
+                <p>Incentivos acumulados.</p>
               </div>
 
               <div class="stat-card semestral">
@@ -260,8 +178,8 @@
                   <span> Premios Asignados </span>
                   <i class="fas fa-award"></i>
                 </div>
-                <h2>18</h2>
-                <p>Colaboradores premiados.</p>
+                <h2>{{ total_premios }}</h2>
+                <p>Incentivos otorgados.</p>
               </div>
 
               <div class="stat-card cliente">
@@ -269,8 +187,8 @@
                   <span> Efectividad Global </span>
                   <i class="fas fa-bullseye"></i>
                 </div>
-                <h2>91%</h2>
-                <p>Cumplimiento promedio mensual.</p>
+                <h2>{{ pct_promedio }}%</h2>
+                <p>Cumplimiento promedio.</p>
               </div>
             </div>
 
@@ -285,50 +203,25 @@
                   </div>
 
                   <div class="ranking-list">
+                    {% for top in top_colaboradores %}
                     <div class="ranking-item">
-                      <div class="ranking-position">1</div>
+                      <div class="ranking-position">{{ forloop.counter }}</div>
                       <div class="ranking-user">
-                        <img
-                          src="https://i.pravatar.cc/100?img=11"
-                          alt="Avatar Carlos"
-                        />
+                        {% if top.id_KPI__idEmpleado__idPersona__Foto %}
+                          <img src="{{ top.id_KPI__idEmpleado__idPersona__Foto.url }}" alt="Avatar" />
+                        {% else %}
+                          <img src="https://i.pravatar.cc/100?img={{ forloop.counter|add:10 }}" alt="Avatar Alternativo" />
+                        {% endif %}
                         <div>
-                          <strong> Carlos Méndez </strong>
-                          <span> Comercial </span>
+                          <strong>{{ top.id_KPI__idEmpleado__idPersona__Nombre_Completo }}</strong>
+                          <span>{{ top.id_KPI__idEmpleado__idPuesto__Nombre }}</span>
                         </div>
                       </div>
-                      <div class="ranking-score"><strong> 98% </strong></div>
+                      <div class="ranking-score"><strong>{{ top.pct_prom|floatformat:0 }}%</strong></div>
                     </div>
-
-                    <div class="ranking-item">
-                      <div class="ranking-position">2</div>
-                      <div class="ranking-user">
-                        <img
-                          src="https://i.pravatar.cc/100?img=15"
-                          alt="Avatar Ana"
-                        />
-                        <div>
-                          <strong> Ana Rodríguez </strong>
-                          <span> Finanzas </span>
-                        </div>
-                      </div>
-                      <div class="ranking-score"><strong> 95% </strong></div>
-                    </div>
-
-                    <div class="ranking-item">
-                      <div class="ranking-position">3</div>
-                      <div class="ranking-user">
-                        <img
-                          src="https://i.pravatar.cc/100?img=21"
-                          alt="Avatar María"
-                        />
-                        <div>
-                          <strong> María López </strong>
-                          <span> RRHH </span>
-                        </div>
-                      </div>
-                      <div class="ranking-score"><strong> 92% </strong></div>
-                    </div>
+                    {% empty %}
+                    <div style="padding: 15px; text-align: center; color: #777;">No hay datos de ranking.</div>
+                    {% endfor %}
                   </div>
                 </div>
 
@@ -338,44 +231,19 @@
                   </div>
 
                   <div class="indicator-list">
+                    {% for cat in categorias|slice:":3" %}
                     <div class="indicator-item">
                       <div class="indicator-top">
-                        <span> Cobro Efectividad </span>
-                        <strong> 94% </strong>
+                        <span>{{ cat.tipo_categoria }}</span>
+                        <strong>{{ pct_promedio }}%</strong>
                       </div>
                       <div class="progress-bar">
-                        <div
-                          class="progress-fill performance"
-                          style="width: 94%"
-                        ></div>
+                        <div class="progress-fill performance" style="width: {{ pct_promedio }}%"></div>
                       </div>
                     </div>
-
-                    <div class="indicator-item">
-                      <div class="indicator-top">
-                        <span> Comisiones </span>
-                        <strong> 88% </strong>
-                      </div>
-                      <div class="progress-bar">
-                        <div
-                          class="progress-fill potential"
-                          style="width: 88%"
-                        ></div>
-                      </div>
-                    </div>
-
-                    <div class="indicator-item">
-                      <div class="indicator-top">
-                        <span> Evaluación Supervisor </span>
-                        <strong> 97% </strong>
-                      </div>
-                      <div class="progress-bar">
-                        <div
-                          class="progress-fill cliente"
-                          style="width: 97%"
-                        ></div>
-                      </div>
-                    </div>
+                    {% empty %}
+                    <div style="padding: 15px; text-align: center; color: #777;">Sin indicadores.</div>
+                    {% endfor %}
                   </div>
                 </div>
               </div>
@@ -387,35 +255,19 @@
                   </div>
 
                   <div class="awards-list">
+                    {% for premio_asig in premios_qs|slice:":3" %}
                     <div class="award-item">
-                      <div class="award-icon gold">
-                        <i class="fas fa-trophy"></i>
+                      <div class="award-icon {% cycle 'gold' 'silver' 'bronze' %}">
+                        <i class="fas fa-award"></i>
                       </div>
                       <div class="award-content">
-                        <strong> Bono Oro </strong>
-                        <span> Carlos Méndez - ₡150,000 </span>
+                        <strong>{{ premio_asig.idPremio.Descripcion }}</strong>
+                        <span>{{ premio_asig.id_KPI.idEmpleado.idPersona.Nombre_Completo }} - ₡{{ premio_asig.idPremio.Monto }}</span>
                       </div>
                     </div>
-
-                    <div class="award-item">
-                      <div class="award-icon silver">
-                        <i class="fas fa-medal"></i>
-                      </div>
-                      <div class="award-content">
-                        <strong> Incentivo Comercial </strong>
-                        <span> Ana Rodríguez - ₡85,000 </span>
-                      </div>
-                    </div>
-
-                    <div class="award-item">
-                      <div class="award-icon bronze">
-                        <i class="fas fa-star"></i>
-                      </div>
-                      <div class="award-content">
-                        <strong> Reconocimiento </strong>
-                        <span> María López - ₡50,000 </span>
-                      </div>
-                    </div>
+                    {% empty %}
+                    <div style="padding: 15px; text-align: center; color: #777;">No se asignaron premios en este periodo.</div>
+                    {% endfor %}
                   </div>
                 </div>
 
@@ -425,24 +277,18 @@
                   </div>
 
                   <div class="financial-summary">
+                    {% for item in resumen_financiero %}
                     <div class="financial-item">
-                      <span> Total Comisiones </span>
-                      <strong> ₡2,350,000 </strong>
+                      <span>{{ item.id_KPI_Categoria__tipo_categoria }}</span>
+                      <strong>₡{{ item.total }}</strong>
                     </div>
-
-                    <div class="financial-item">
-                      <span> Bonos KPI </span>
-                      <strong> ₡1,240,000 </strong>
-                    </div>
-
-                    <div class="financial-item">
-                      <span> Premios Especiales </span>
-                      <strong> ₡980,000 </strong>
-                    </div>
+                    {% empty %}
+                    <div style="padding: 15px; text-align: center; color: #777;">Sin resumen de gastos.</div>
+                    {% endfor %}
 
                     <div class="financial-item total">
                       <span> Total General </span>
-                      <strong> ₡4,570,000 </strong>
+                      <strong>₡{{ total_bonos }}</strong>
                     </div>
                   </div>
                 </div>
@@ -450,7 +296,7 @@
             </div>
 
             <div class="form-section">
-              <h4 class="form-section-title">Historial KPI del Mes</h4>
+              <h4 class="form-section-title">Historial KPI del Periodo</h4>
 
               <div class="table-container">
                 <table class="results-table">
@@ -460,33 +306,28 @@
                       <th>Categoría</th>
                       <th>% Alcanzado</th>
                       <th>Monto</th>
-                      <th>Premio</th>
                       <th>Estado</th>
                     </tr>
                   </thead>
 
                   <tbody>
+                    {% for detalle in detalles %}
                     <tr>
-                      <td data-label="Empleado">Carlos Méndez</td>
-                      <td data-label="Categoría">Cobro efectividad</td>
-                      <td data-label="% Alcanzado">98%</td>
-                      <td data-label="Monto">₡250,000</td>
-                      <td data-label="Premio">Bono Oro</td>
-                      <td data-label="Estado">
-                        <span class="status-badge success"> Completado </span>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td data-label="Empleado">Ana Rodríguez</td>
-                      <td data-label="Categoría">Comisión</td>
-                      <td data-label="% Alcanzado">92%</td>
-                      <td data-label="Monto">₡180,000</td>
-                      <td data-label="Premio">Incentivo Comercial</td>
+                      <td data-label="Empleado">{{ detalle.id_KPI.idEmpleado.idPersona.Nombre_Completo }}</td>
+                      <td data-label="Categoría">{{ detalle.id_KPI_Categoria.tipo_categoria }}</td>
+                      <td data-label="% Alcanzado">{{ detalle.pct_Alcanzado }}%</td>
+                      <td data-label="Monto">₡{{ detalle.Monto_Total }}</td>
                       <td>
-                        <span class="status-badge pending"> En revisión </span>
+                        <span class="status-badge success"> Procesado </span>
                       </td>
                     </tr>
+                    {% empty %}
+                    <tr>
+                      <td colspan="5" style="text-align: center; color: #777; padding: 15px;">
+                        No se encontraron registros de KPI con los filtros seleccionados.
+                      </td>
+                    </tr>
+                    {% endfor %}
                   </tbody>
                 </table>
               </div>

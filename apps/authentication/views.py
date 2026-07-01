@@ -11,6 +11,9 @@ from django.db import IntegrityError
 from .forms import PremioForm
 from django.utils import timezone
 from .forms import PremioAsignadoForm
+from django.shortcuts import render
+# ── AQUÍ SE AGREGA LA IMPORTACIÓN PARA CORREGIR EL ERROR ─────────────────
+from django.db.models import Avg, Sum 
 from django.db.models import Q # Asegúrate de tener esta importación al inicio de tu archivo views.py
 
 #Importa todo lo que se encuentra en el archivo models.py
@@ -2802,6 +2805,8 @@ def crear_premio_asignado(request):
     )
 
 
+
+
 # =========================================================================
 # VISTA: Dashboard / Historial de KPIs
 # =========================================================================
@@ -2840,7 +2845,7 @@ def historial_kpi_view(request):
     # ── Estadísticas resumen ──────────────────────────────────────────────
     total_kpis      = detalles.count()
     total_bonos     = detalles.aggregate(t=Sum('Monto_Total'))['t'] or 0
-    pct_promedio    = detalles.aggregate(p=Avg('pct_Alcanzado'))['p'] or 0
+    pct_promedio    = detalles.aggregate(p=Avg('pct_Alcanzado'))['p'] or 0 # <-- Ya no fallará
 
     # Premios asignados en el período filtrado
     premios_qs = PremioAsignado.objects.select_related(
@@ -2868,7 +2873,7 @@ def historial_kpi_view(request):
             'id_KPI__idEmpleado__idPuesto__Nombre',
             'id_KPI__idEmpleado__idPersona__Foto',
         )
-        .annotate(pct_prom=Avg('pct_Alcanzado'))
+        .annotate(pct_prom=Avg('pct_Alcanzado')) # <-- Ya no fallará
         .order_by('-pct_prom')[:5]
     )
 
@@ -2876,7 +2881,7 @@ def historial_kpi_view(request):
     resumen_financiero = (
         KpiDetalle.objects
         .values('id_KPI_Categoria__tipo_categoria')
-        .annotate(total=Sum('Monto_Total'))
+        .annotate(total=Sum('Monto_Total')) # <-- Ya no fallará
         .order_by('-total')
     )
 
