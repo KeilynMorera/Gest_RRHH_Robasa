@@ -157,9 +157,9 @@ urlpatterns = [
 
     path('guardar-detalle-accion/', views.guardar_detalle_accion, name='guardar_detalle_accion'),
 
-    path('obtener-salario/<int:idEmpleado>/', views.obtener_salario_actual, name='obtener_salario_actual'),
-
-    path('obtener-premio/<int:idEmpleado>/', views.obtener_premio_actual, name='obtener_premio_actual'),
+    path("obtener-salario/<int:idEmpleado>/", views.obtener_salario_actual, name="obtener_salario_actual"),
+    
+    path("obtener-premio/<int:idEmpleado>/", views.obtener_premio_actual, name="obtener_premio_actual"),
 
 
 

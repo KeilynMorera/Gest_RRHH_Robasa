@@ -316,7 +316,54 @@
                     </select>
                   </div>
 
-                  <!-- Premio actual -->
+                  <!-- ==========================
+                        SALARIO ACTUAL
+                  ========================== -->
+                  <div
+                    class="field"
+                    id="contenedor-salario-actual"
+                    style="display: none"
+                  >
+                    <label for="salario_actual">
+                      <i class="fas fa-money-bill-wave field-icon"></i>
+                      Salario Neto Actual
+                    </label>
+
+                    <input type="text" id="salario_actual" readonly />
+
+                    <input
+                      type="hidden"
+                      id="idSalarioEmpleado"
+                      name="idSalarioEmpleado"
+                    />
+                  </div>
+
+                  <!-- ==========================
+                        NUEVO SALARIO
+                  ========================== -->
+                  <div
+                    class="field"
+                    id="contenedor-nuevo-salario"
+                    style="display: none"
+                  >
+                    <label for="nuevo_salario">
+                      <i class="fas fa-coins field-icon"></i>
+                      Nuevo Salario Neto
+                      <span class="req">*</span>
+                    </label>
+
+                    <input
+                      type="number"
+                      id="nuevo_salario"
+                      name="nuevo_salario"
+                      step="0.01"
+                      min="0"
+                    />
+                  </div>
+
+                  <!-- ==========================
+                        PREMIO ACTUAL
+                  ========================== -->
                   <div
                     class="field"
                     id="contenedor-premio-actual"
@@ -327,23 +374,22 @@
                       Premio Actual
                     </label>
 
-                    <input
-                      type="text"
-                      id="premio_actual"
-                      readonly
-                      placeholder="₡0.00"
-                    />
+                    <input type="text" id="premio_actual" readonly />
+
+                    <input type="hidden" id="idPremio" name="idPremio" />
                   </div>
 
-                  <!-- Nuevo premio -->
+                  <!-- ==========================
+                        NUEVO PREMIO
+                  ========================== -->
                   <div
                     class="field"
                     id="contenedor-nuevo-premio"
                     style="display: none"
                   >
                     <label for="nuevo_premio">
-                      <i class="fas fa-coins field-icon"></i>
-                      Nuevo Monto del Premio
+                      <i class="fas fa-medal field-icon"></i>
+                      Nuevo Premio
                       <span class="req">*</span>
                     </label>
 
@@ -353,43 +399,6 @@
                       name="nuevo_premio"
                       step="0.01"
                       min="0"
-                      placeholder="Ej. 25000"
-                    />
-                  </div>
-
-                  <div
-                    class="field"
-                    id="contenedor-salario-actual"
-                    style="display: none"
-                  >
-                    <label for="salario_actual">
-                      <i class="fas fa-money-bill-wave field-icon"></i> Salario
-                      Bruto Actual
-                    </label>
-                    <input
-                      type="text"
-                      id="salario_actual"
-                      readonly
-                      placeholder="₡0.00"
-                    />
-                  </div>
-
-                  <div
-                    class="field"
-                    id="contenedor-nuevo-salario"
-                    style="display: none"
-                  >
-                    <label for="nuevo_salario">
-                      <i class="fas fa-coins field-icon"></i> Nuevo Salario
-                      Bruto Propuesto <span class="req">*</span>
-                    </label>
-                    <input
-                      type="number"
-                      id="nuevo_salario"
-                      name="nuevo_salario"
-                      step="0.01"
-                      min="0"
-                      placeholder="Ej: 450000"
                     />
                   </div>
                 </div>

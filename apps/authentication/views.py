@@ -2269,68 +2269,6 @@ def guardar_detalle_accion(request):
     )
 
 
-def obtener_salario_actual(request, idEmpleado):
-
-    salario = SalarioEmpleado.objects.filter(
-        idEmpleado=idEmpleado
-    ).order_by(
-        '-idSalarioEmpleado'
-    ).first()
-
-    if salario:
-
-        return JsonResponse({
-
-            'success': True,
-
-            'salario': float(salario.Salario_Sem_Neto),
-
-            'idSalario': salario.idSalarioEmpleado
-
-        })
-
-    return JsonResponse({
-
-        'success': False,
-
-        'salario': 0,
-
-        'idSalario': None
-
-    })
-
-
-def obtener_premio_actual(request, idEmpleado):
-
-    premio = Premio.objects.filter(
-        idEmpleado=idEmpleado
-    ).order_by(
-        '-idPremio'
-    ).first()
-
-    if premio:
-
-        return JsonResponse({
-
-            'success': True,
-
-            'premio': float(premio.Monto),
-
-            'idPremio': premio.idPremio
-
-        })
-
-    return JsonResponse({
-
-        'success': False,
-
-        'premio': 0,
-
-        'idPremio': None
-
-    })
-
-
 def rotacion_Personal_view(request):
     return render(request, 'rotacion_Personal.html')
 
@@ -2998,6 +2936,78 @@ def historial_kpi_view(request):
     return render(request, 'kpi.html', context)
 
 
+def obtener_salario_actual(request, idEmpleado):
+
+    salario = (
+        SalarioEmpleado.objects
+        .filter(idEmpleado=idEmpleado)
+        .order_by('-idSalarioEmpleado')
+        .first()
+    )
+
+    if salario:
+
+        return JsonResponse({
+
+            "success": True,
+
+            "idSalario": salario.idSalarioEmpleado,
+
+            "salario_neto": float(salario.Salario_Sem_Neto),
+
+        })
+
+    return JsonResponse({
+
+        "success": False,
+
+        "idSalario": None,
+
+        "salario_neto": 0
+
+    })
+
+
+def obtener_premio_actual(request, idEmpleado):
+
+    premio_asignado = (
+        PremioAsignado.objects
+        .select_related(
+            "idPremio",
+            "id_KPI"
+        )
+        .filter(
+            id_KPI__idEmpleado=idEmpleado
+        )
+        .order_by("-Fecha_Registro")
+        .first()
+    )
+
+    if premio_asignado:
+
+        return JsonResponse({
+
+            "success": True,
+
+            "idPremioAsignado": premio_asignado.idPremioAsignado,
+
+            "idPremio": premio_asignado.idPremio.idPremio,
+
+            "premio": float(premio_asignado.idPremio.Monto)
+
+        })
+
+    return JsonResponse({
+
+        "success": False,
+
+        "idPremioAsignado": None,
+
+        "idPremio": None,
+
+        "premio": 0
+
+    })
 
 
 

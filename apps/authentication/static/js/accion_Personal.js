@@ -159,18 +159,101 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-fetch(`/obtener-premio/${idEmpleado}/`)
-.then(r=>r.json())
-.then(data=>{
+const tipoAccion = document.getElementById("Tipo_Accion");
 
-    if(data.success){
+tipoAccion.addEventListener("change", mostrarCamposAccion);
 
-        document.getElementById("premio_actual").value =
-            "₡" + Number(data.premio).toLocaleString();
+function ocultarCampos(){
 
-        document.getElementById("idPremio").value =
-            data.idPremio;
+    document.getElementById("contenedor-salario-actual").style.display="none";
+    document.getElementById("contenedor-nuevo-salario").style.display="none";
+
+    document.getElementById("contenedor-premio-actual").style.display="none";
+    document.getElementById("contenedor-nuevo-premio").style.display="none";
+
+}
+
+function mostrarCamposAccion(){
+
+    ocultarCampos();
+
+    const accion =
+        tipoAccion.options[tipoAccion.selectedIndex]
+        .dataset.name;
+
+    if(
+        accion==="Ajuste Salarial" ||
+        accion==="Ascenso"
+    ){
+
+        document.getElementById("contenedor-salario-actual").style.display="block";
+        document.getElementById("contenedor-nuevo-salario").style.display="block";
+
+        cargarSalario();
 
     }
 
-});
+    else if(accion==="Premio"){
+
+        document.getElementById("contenedor-premio-actual").style.display="block";
+        document.getElementById("contenedor-nuevo-premio").style.display="block";
+
+        cargarPremio();
+
+    }
+
+}
+
+function cargarSalario(){
+
+    const empleado =
+        document.getElementById("idEmpleado").value;
+
+    if(!empleado) return;
+
+    fetch(`/obtener_salario_actual/${empleado}/`)
+
+    .then(r=>r.json())
+
+    .then(data=>{
+
+        if(data.success){
+
+            document.getElementById("salario_actual").value =
+                "₡"+Number(data.salario_neto).toLocaleString();
+
+            document.getElementById("idSalarioEmpleado").value =
+                data.idSalario;
+
+        }
+
+    });
+
+}
+
+function cargarPremio(){
+
+    const empleado =
+        document.getElementById("idEmpleado").value;
+
+    if(!empleado) return;
+
+    fetch(`/obtener_premio_actual/${empleado}/`)
+
+    .then(r=>r.json())
+
+    .then(data=>{
+
+        if(data.success){
+
+            document.getElementById("premio_actual").value =
+                "₡"+Number(data.premio).toLocaleString();
+
+            document.getElementById("idPremio").value =
+                data.idPremio;
+
+        }
+
+    });
+
+}
