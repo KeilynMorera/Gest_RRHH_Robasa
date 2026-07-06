@@ -251,12 +251,11 @@
 
                       <span class="req">*</span>
                     </label>
-                    
+
                     {{ form_detalle.idActividad }}
                   </div>
 
                   <!-- Estado -->
-
                   <div class="field">
                     <label
                       for="{{ form_detalle.id_Estatus_Vacante.id_for_label }}"
@@ -314,9 +313,113 @@
                 </button>
               </div>
             </form>
-
             {% endif %}
           </div>
+
+          <!-- ======================================================
+                TABLA: ACTIVIDADES DEL ONBOARDING
+          ====================================================== -->
+          <section class="table-card">
+            <div class="table-card-header">
+              <div class="table-card-header-left">
+                <div class="table-card-icon">
+                  <i class="fas fa-list-check"></i>
+                </div>
+
+                <div>
+                  <h2 class="table-card-title">Actividades registradas</h2>
+
+                  <p class="table-card-subtitle">
+                    Consulte las actividades asignadas al proceso de onboarding
+                    y su estado actual.
+                  </p>
+                </div>
+              </div>
+
+              <div class="table-search">
+                <i class="fas fa-search"></i>
+
+                <input
+                  type="text"
+                  id="filtro-actividades"
+                  placeholder="Buscar actividad..."
+                />
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="data-table" id="tabla-actividades">
+                <thead>
+                  <tr>
+                    <th>Actividad</th>
+                    <th>Estado</th>
+                    <th>Fecha Programada</th>
+                    <th>Fecha Realizada</th>
+                    <th>Observaciones</th>
+                    <th class="col-accion">Acción</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {% for actividad in actividades %}
+
+                  <tr>
+                    <td>
+                      <strong> {{ actividad.idActividad.Actividad }} </strong>
+                    </td>
+
+                    <td>{{ actividad.id_Estatus_Vacante.Nombre }}</td>
+
+                    <td>{{ actividad.Fecha_Programada|date:"d/m/Y" }}</td>
+
+                    <td>
+                      {% if actividad.Fecha_Realizada %} {{ actividad.Fecha_Realizada|date:"d/m/Y" }} {% else %} — {% endif %}
+                    </td>
+
+                    <td>
+                      {{ actividad.Observaciones|default:"Sin observaciones" }}
+                    </td>
+
+                    <td class="col-accion">
+                      <!-- Editar -->
+                      <a
+                        href="#"
+                        class="btn btn-warning btn-sm"
+                        title="Editar actividad"
+                      >
+                        <i class="fas fa-pen-to-square"></i>
+                      </a>
+
+                      <!-- Eliminar -->
+                      <a
+                        href="#"
+                        class="btn btn-danger btn-sm"
+                        title="Eliminar actividad"
+                        onclick="
+                          return confirm('¿Desea eliminar esta actividad?');
+                        "
+                      >
+                        <i class="fas fa-trash"></i>
+                      </a>
+                    </td>
+                  </tr>
+
+                  {% empty %}
+
+                  <tr>
+                    <td colspan="6" class="tabla-vacia">
+                      <i class="fas fa-list-check"></i>
+
+                      No existen actividades registradas para este proceso de
+                      onboarding.
+                    </td>
+                  </tr>
+
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </section>
         </section>
 
         <footer class="footer">
@@ -324,7 +427,5 @@
         </footer>
       </main>
     </div>
-
-    <script src="/static/js/onboarding.js"></script>
   </body>
 </html>
