@@ -197,6 +197,13 @@ urlpatterns = [
 
 
 
+
+    path("onboarding/", views.registrar_onboarding, name="crear_onboarding"),
+
+    path("onboarding/<int:pk>/", views.registrar_onboarding, name="gestionar_onboarding"),
+
+    path("onboarding/empleados/", views.obtener_empleados_departamento, name="obtener_empleados_departamento"),
+
 ]
 
 

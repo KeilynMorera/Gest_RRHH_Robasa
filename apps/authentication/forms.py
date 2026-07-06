@@ -1,6 +1,7 @@
 from django import forms
 from .models import AccionPersonal, Empleado
 from .models import Premio, KpiCategoria, Cuadrante9BoxPerfil
+from .models import Onboarding
 from .models import PremioAsignado
 
 class AccionPersonalForm(forms.ModelForm):
@@ -112,3 +113,55 @@ class PremioAsignadoForm(forms.ModelForm):
         self.fields["id_KPI"].queryset = KpiCabecera.objects.none()
 
         self.fields["idPremio"].queryset = Premio.objects.all().order_by("Descripcion")
+
+
+
+# =========================================================
+# FORMULARIO: Onboarding
+# =========================================================
+class OnboardingForm(forms.ModelForm):
+
+    class Meta:
+
+        model = Onboarding
+
+        fields = [
+            "idEmpleado",
+            "idDepartamento",
+            "Fecha_Inicio"
+        ]
+
+        widgets = {
+
+            "idEmpleado": forms.Select(
+                attrs={
+                    "class": "form-select",
+                    "id": "idEmpleado"
+                }
+            ),
+
+            "idDepartamento": forms.Select(
+                attrs={
+                    "class": "form-select",
+                    "id": "idDepartamento"
+                }
+            ),
+
+            "Fecha_Inicio": forms.DateInput(
+                attrs={
+                    "type": "date",
+                    "class": "form-control"
+                }
+            )
+
+        }
+
+        labels = {
+
+            "idEmpleado": "Empleado",
+
+            "idDepartamento": "Departamento",
+
+            "Fecha_Inicio": "Fecha de Inicio"
+
+        }

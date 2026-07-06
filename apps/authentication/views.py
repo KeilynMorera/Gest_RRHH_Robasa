@@ -5,12 +5,10 @@ from django.db.models import Max
 from django.db.models import Sum
 from datetime import date, datetime
 from django.contrib import messages
-from .forms import AccionPersonalForm
+from .forms import AccionPersonalForm, PremioForm, PremioAsignadoForm, OnboardingForm
 from django.db import transaction
 from django.db import IntegrityError
-from .forms import PremioForm
 from django.utils import timezone
-from .forms import PremioAsignadoForm
 from django.shortcuts import render
 # ── AQUÍ SE AGREGA LA IMPORTACIÓN PARA CORREGIR EL ERROR ─────────────────
 from django.db.models import Avg, Sum 
@@ -2292,9 +2290,6 @@ def obtener_premio_empleado(request):
     })
 
 
-
-
-
 def rotacion_Personal_view(request):
     return render(request, 'rotacion_Personal.html')
 
@@ -2852,8 +2847,6 @@ def crear_premio_asignado(request):
     )
 
 
-
-
 # =========================================================================
 # VISTA: Dashboard / Historial de KPIs
 # =========================================================================
@@ -2963,6 +2956,118 @@ def historial_kpi_view(request):
 
 
 
+# =========================================================
+# GUARDAR CABECERA DEL ONBOARDING
+# =========================================================
+def registrar_onboarding(request, pk=None):
+
+    onboarding = None
+    paso_dos_habilitado = False
+
+    if pk:
+        onboarding = get_object_or_404(
+            Onboarding,
+            pk=pk
+        )
+        paso_dos_habilitado = True
+
+    if request.method == "POST":
+
+        form = OnboardingForm(
+            request.POST,
+            instance=onboarding
+        )
+
+        if form.is_valid():
+
+            nuevo = form.save()
+
+            messages.success(
+                request,
+                f"Proceso de Onboarding #{nuevo.id_Onboarding} creado correctamente."
+            )
+
+            return redirect(
+                "gestionar_onboarding",
+                pk=nuevo.id_Onboarding
+            )
+
+        else:
+
+            messages.error(
+                request,
+                "Revise los datos del formulario."
+            )
+
+    else:
+
+        form = OnboardingForm(
+            instance=onboarding
+        )
+
+    context = {
+        "form": form,
+        "onboarding": onboarding,
+        "paso_dos_habilitado": paso_dos_habilitado,
+        "departamentos": Departamento.objects.all(),
+        "empleados": Empleado.objects.select_related(
+            "idPersona"
+        ).all()
+    }
+
+    return render(
+        request,
+        "onboarding.html",
+        context
+    )
+
+
+# =========================================================
+# OBTENER EMPLEADOS POR DEPARTAMENTO
+# =========================================================
+def obtener_empleados_departamento(request):
+
+    id_departamento = request.GET.get("idDepartamento")
+
+    empleados = Empleado.objects.filter(
+
+        idDepartamento=id_departamento
+
+    ).select_related(
+
+        "idPersona"
+
+    ).order_by(
+
+        "idPersona__Nombre"
+
+    )
+
+    lista = []
+
+    for empleado in empleados:
+
+        lista.append({
+
+            "idEmpleado": empleado.idEmpleado,
+
+            "nombre": (
+                f"{empleado.idPersona.Nombre} "
+                f"{empleado.idPersona.Apellido1} "
+                f"{empleado.idPersona.Apellido2}"
+            )
+
+        })
+
+    return JsonResponse({
+
+        "success": True,
+
+        "empleados": lista
+
+    })
+
+
 def usuarios_view(request):
     return render(request, 'usuarios.html')
 
@@ -2980,8 +3085,7 @@ def reportes_view(request):
 
 
 
-def onboarding_view(request):
-    return render(request, 'onboarding.html')
+
 
 
 

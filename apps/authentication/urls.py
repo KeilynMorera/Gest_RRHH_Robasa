@@ -75,7 +75,7 @@ urlpatterns = [
     # Ruta para el dashboard (pantalla de registro de acciones del personal)
     path('accion/gestionar/', views.registrar_cabecera_accion, name='crear_accion'),
 
-    
+
     # Ruta para el dashboard (pantalla de registro de rotación)
     path('rotacion_Personal.html/', views.rotacion_Personal_view, name='rotacion_Personal'),
 
@@ -110,7 +110,8 @@ urlpatterns = [
     # Ruta para el dashboard (pantalla de configuraciones del sistema)
     path('dashboard-kpi/historial/', views.historial_kpi_view, name='historial_kpi'),
 
-
+    # Ruta para el dashboard (pantalla de onboarding)
+    path("onboarding/", views.registrar_onboarding, name="crear_onboarding"),
 
 
 
@@ -128,8 +129,7 @@ urlpatterns = [
     
     
     
-    # Ruta para el dashboard (pantalla de onboarding)
-    path('onboarding.html/', views.onboarding_view, name='onboarding'),
+    
     
     # Ruta para el dashboard (pantalla de eleccion de offboarding)
     path('elec_Offboarding.html/', views.elec_Offboarding_view, name='elec_Offboarding'),

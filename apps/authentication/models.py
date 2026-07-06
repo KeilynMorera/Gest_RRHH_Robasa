@@ -1651,3 +1651,138 @@ class AccionTipo(models.Model):
             f"{self.idAccion} - "
             f"{self.id_Detalle_Accion}"
         )
+
+
+
+# =========================================================
+# TABLA: Onboarding
+# Proceso de ingreso de un nuevo empleado
+# =========================================================
+class Onboarding(models.Model):
+
+    id_Onboarding = models.AutoField(
+        primary_key=True,
+        db_column='id_Onboarding'
+    )
+
+    # Empleado que se encuentra en proceso de ingreso
+    idEmpleado = models.ForeignKey(
+        Empleado,
+        on_delete=models.CASCADE,
+        db_column='idEmpleado',
+        related_name='onboardings'
+    )
+
+    # Departamento responsable del proceso
+    idDepartamento = models.ForeignKey(
+        Departamento,
+        on_delete=models.PROTECT,
+        db_column='idDepartamento',
+        related_name='onboardings'
+    )
+
+    Fecha_Inicio = models.DateField(
+        db_column='Fecha_Inicio'
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'Onboarding'
+        verbose_name = 'Onboarding'
+        verbose_name_plural = 'Onboardings'
+        ordering = ['-Fecha_Inicio']
+
+    def __str__(self):
+        return (
+            f"Onboarding #{self.id_Onboarding} - "
+            f"{self.idEmpleado}"
+        )
+    
+
+# =========================================================
+# TABLA: On_Actividad
+# Catálogo de actividades del proceso de Onboarding
+# =========================================================
+class OnActividad(models.Model):
+
+    idActividad = models.AutoField(
+        primary_key=True,
+        db_column='idActividad'
+    )
+
+    Actividad = models.CharField(
+        max_length=300,
+        db_column='Actividad'
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'On_Actividad'
+        verbose_name = 'Actividad de Onboarding'
+        verbose_name_plural = 'Actividades de Onboarding'
+        ordering = ['Actividad']
+
+    def __str__(self):
+        return self.Actividad
+    
+
+# =========================================================
+# TABLA: Onboarding_Actividad
+# Detalle de actividades del proceso de Onboarding
+# =========================================================
+class OnboardingActividad(models.Model):
+
+    id_Detalle_On = models.AutoField(
+        primary_key=True,
+        db_column='id_Detalle_On'
+    )
+
+    Fecha_Programada = models.DateField(
+        db_column='Fecha_Programada'
+    )
+
+    Fecha_Realizada = models.DateField(
+        db_column='Fecha_Realizada'
+    )
+
+    Observaciones = models.CharField(
+        max_length=600,
+        db_column='Observaciones'
+    )
+
+    # Estado de la actividad
+    id_Estatus_Vacante = models.ForeignKey(
+        Estatus,
+        on_delete=models.PROTECT,
+        db_column='id_Estatus_Vacante',
+        related_name='actividades_onboarding'
+    )
+
+    # Actividad del catálogo
+    idActividad = models.ForeignKey(
+        OnActividad,
+        on_delete=models.PROTECT,
+        db_column='idActividad',
+        related_name='detalles_onboarding'
+    )
+
+    # Cabecera del proceso de Onboarding
+    id_Onboarding = models.ForeignKey(
+        Onboarding,
+        on_delete=models.CASCADE,
+        db_column='id_Onboarding',
+        related_name='actividades'
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'Onboarding_Actividad'
+        verbose_name = 'Actividad de Onboarding'
+        verbose_name_plural = 'Actividades de Onboarding'
+        ordering = ['Fecha_Programada']
+
+    def __str__(self):
+        return (
+            f"Onboarding #{self.id_Onboarding_id} - "
+            f"{self.idActividad.Actividad}"
+        )

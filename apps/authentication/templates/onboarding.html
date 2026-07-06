@@ -9,37 +9,78 @@
 
     <link rel="stylesheet" href="{% static 'styles/onboarding.css' %}" />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
   </head>
 
   <body>
     <div class="dashboard-container">
       <aside class="sidebar">
         <div class="logo-container">
-          <img src="{% static 'imagenes/diseno_img/logoRobasa.png' %}" alt="Logo Robasa" class="logo-img" />
+          <img
+            src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
+            alt="Logo Robasa"
+            class="logo-img"
+          />
         </div>
 
         <nav class="menu">
           <a href="{% url 'inicio' %}"><i class="fas fa-house"></i> Inicio</a>
-          <a href="{% url 'per_emp' %}"><i class="fas fa-user-group"></i> Personas o Empleados</a>
-          <a href="{% url 'onboarding' %}"><i class="fas fa-rocket"></i> Onboarding / Entradas</a>
-          <a href="{% url 'empresas' %}"><i class="fas fa-building"></i> Empresas</a>
-          <a href="{% url 'comple_Empresa' %}"><i class="fas fa-briefcase"></i> Gerencias, Departamentos y Puestos</a>
-          <a href="{% url 'salarios' %}"><i class="fas fa-money-bill-wave"></i> Salarios</a>
-          <a href="{% url 'reclutamiento' %}"><i class="fas fa-wallet"></i> Reclutamiento</a>
-          <a href="{% url 'vacaciones' %}"><i class="fas fa-umbrella-beach"></i> Vacaciones</a>
-          <a href="{% url 'elec_Asistencia' %}"><i class="fas fa-clock"></i> Asistencia y Permiso</a>
-          <a href="{% url 'accion_rotacion' %}"><i class="fas fa-clipboard-list"></i> Acciones o Rotaciones del Personal</a>
-          <a href="{% url 'evaluaciones' %}"><i class="fas fa-chart-line"></i> Evaluación de Desempeño</a>
-          <a href="{% url 'elec_KPI' %}"><i class="fas fa-file-lines"></i> KPIs</a>
-          <a href="{% url 'elec_Offboarding' %}"><i class="fas fa-door-open"></i> Offboarding / Salidas</a>
-          <a href="{% url 'reportes' %}"><i class="fas fa-file-lines"></i> Reportes</a>
-          <a href="{% url 'usuarios' %}"><i class="fas fa-users-cog"></i> Usuarios y Roles</a>
-          <a href="{% url 'configuraciones' %}"><i class="fas fa-gear"></i> Configuración</a>
+          <a href="{% url 'per_emp' %}"
+            ><i class="fas fa-user-group"></i> Personas o Empleados</a
+          >
+          <a href="{% url 'crear_onboarding' %}">
+            <i class="fas fa-rocket"></i> Onboarding / Entradas</a
+          >
+          <a href="{% url 'empresas' %}"
+            ><i class="fas fa-building"></i> Empresas</a
+          >
+          <a href="{% url 'comple_Empresa' %}"
+            ><i class="fas fa-briefcase"></i> Gerencias, Departamentos y
+            Puestos</a
+          >
+          <a href="{% url 'salarios' %}"
+            ><i class="fas fa-money-bill-wave"></i> Salarios</a
+          >
+          <a href="{% url 'reclutamiento' %}"
+            ><i class="fas fa-wallet"></i> Reclutamiento</a
+          >
+          <a href="{% url 'vacaciones' %}"
+            ><i class="fas fa-umbrella-beach"></i> Vacaciones</a
+          >
+          <a href="{% url 'elec_Asistencia' %}"
+            ><i class="fas fa-clock"></i> Asistencia y Permiso</a
+          >
+          <a href="{% url 'accion_rotacion' %}"
+            ><i class="fas fa-clipboard-list"></i> Acciones o Rotaciones del
+            Personal</a
+          >
+          <a href="{% url 'evaluaciones' %}"
+            ><i class="fas fa-chart-line"></i> Evaluación de Desempeño</a
+          >
+          <a href="{% url 'elec_KPI' %}"
+            ><i class="fas fa-file-lines"></i> KPIs</a
+          >
+          <a href="{% url 'elec_Offboarding' %}"
+            ><i class="fas fa-door-open"></i> Offboarding / Salidas</a
+          >
+          <a href="{% url 'reportes' %}"
+            ><i class="fas fa-file-lines"></i> Reportes</a
+          >
+          <a href="{% url 'usuarios' %}"
+            ><i class="fas fa-users-cog"></i> Usuarios y Roles</a
+          >
+          <a href="{% url 'configuraciones' %}"
+            ><i class="fas fa-gear"></i> Configuración</a
+          >
         </nav>
 
         <div class="logout">
-          <a href="login.html"><i class="fas fa-right-from-bracket"></i> Cerrar sesión</a>
+          <a href="login.html"
+            ><i class="fas fa-right-from-bracket"></i> Cerrar sesión</a
+          >
         </div>
       </aside>
 
@@ -52,7 +93,10 @@
 
           <div class="search-box">
             <i class="fas fa-search"></i>
-            <input type="text" placeholder="Buscar empleado, módulo, reporte..." />
+            <input
+              type="text"
+              placeholder="Buscar empleado, módulo, reporte..."
+            />
           </div>
 
           <div class="topbar-actions">
@@ -74,7 +118,9 @@
         <div class="breadcrumb">
           <a href="{% url 'inicio' %}"><i class="fas fa-house"></i> Inicio</a>
           <i class="fas fa-chevron-right sep"></i>
-          <a href="{% url 'onboarding' %}"> Proceso Onboarding/Entrada </a>
+          <a href="{% url 'crear_onboarding' %}">
+            Proceso Onboarding/Entrada
+          </a>
           <i class="fas fa-chevron-right sep"></i>
           <span class="current"> Logística Onboarding </span>
         </div>
@@ -86,17 +132,29 @@
                 <i class="fas fa-passport"></i>
               </div>
               <div>
-                <h2 class="form-card-title">Control de Actividades de Ingreso</h2>
+                <h2 class="form-card-title">
+                  Control de Actividades de Ingreso
+                </h2>
                 <p class="form-card-subtitle">
-                  Asigne y verifique las tareas críticas de TI, contratos y entrega de equipos de manera secuencial.
+                  Asigne y verifique las tareas críticas de TI, contratos y
+                  entrega de equipos de manera secuencial.
                 </p>
               </div>
             </div>
-            <p class="required-note">Los campos con <span>*</span> son obligatorios</p>
+            <p class="required-note">
+              Los campos con <span>*</span> son obligatorios
+            </p>
           </div>
 
           <div class="form-body">
-            <form action="#" method="POST">
+            <!-- ===================================================== -->
+            <!-- FORMULARIO 1 - CABECERA -->
+            <!-- ===================================================== -->
+            <form
+              method="POST"
+              action="{% if onboarding %}{% url 'gestionar_onboarding' onboarding.id_Onboarding %}{% else %}{% url 'crear_onboarding' %}{% endif %}"
+              id="form-cabecera"
+            >
               {% csrf_token %}
 
               <div class="form-section">
@@ -106,218 +164,248 @@
                 </h4>
 
                 <div class="form-grid">
+                  <!-- ID -->
                   <div class="field">
-                    <label for="id_Onboarding">
-                      <i class="fas fa-hashtag field-icon"></i>
-                      ID Onboarding
-                    </label>
-                    <input 
-                      type="text" 
-                      id="id_Onboarding" 
-                      name="id_Onboarding"
-                      value="{% if onboarding.id_Onboarding %}{{ onboarding.id_Onboarding }}{% else %}Automático{% endif %}" 
-                      readonly 
+                    <label> ID Onboarding </label>
+
+                    <input
+                      type="text"
+                      value="{% if onboarding %}{{ onboarding.id_Onboarding }}{% else %}Automático{% endif %}"
+                      readonly
                     />
                   </div>
 
+                  <!-- Departamento -->
                   <div class="field">
-                    <label for="idEmpleado">
-                      <i class="fas fa-user field-icon"></i>
-                      Colaborador a Ingresar <span class="req">*</span>
-                    </label>
-                    <select id="idEmpleado" name="idEmpleado" required {% if onboarding.id_Onboarding %}disabled{% endif %}>
-                      <option value="" disabled {% if not onboarding.id_Onboarding %}selected{% endif %}>
-                        Seleccione el nuevo ingreso...
-                      </option>
-                      <option value="101" {% if onboarding.idEmpleado == 101 %}selected{% endif %}>Juan Carlos Pérez</option>
-                      <option value="102" {% if onboarding.idEmpleado == 102 %}selected{% endif %}>Lucía Méndez Solano</option>
-                      <option value="103" {% if onboarding.idEmpleado == 103 %}selected{% endif %}>Ramiro Arce Vega</option>
-                    </select>
-                  </div>
-
-                  <div class="field">
-                    <label for="idDepartamento_Cabecera">
+                    <label for="{{ form.idDepartamento.id_for_label }}">
                       <i class="fas fa-building field-icon"></i>
-                      Departamento Responsable <span class="req">*</span>
+                      Departamento Responsable
+                      <span class="req">*</span>
                     </label>
-                    <select id="idDepartamento_Cabecera" name="idDepartamento" required {% if onboarding.id_Onboarding %}disabled{% endif %}>
-                      <option value="" disabled {% if not onboarding.id_Onboarding %}selected{% endif %}>Seleccione área encargada...</option>
-                      <option value="1" {% if onboarding.idDepartamento == 1 %}selected{% endif %}>Recursos Humanos</option>
-                      <option value="2" {% if onboarding.idDepartamento == 2 %}selected{% endif %}>Operaciones</option>
+
+                    <select
+                      id="idDepartamento"
+                      name="idDepartamento"
+                      required
+                      {%
+                      if
+                      paso_dos_habilitado
+                      %}disabled{%
+                      endif
+                      %}
+                    >
+                      <option value="">Seleccione...</option>
+
+                      {% for departamento in departamentos %}
+
+                      <option
+                        value="{{ departamento.idDepartamento }}"
+                        {%
+                        if
+                        form.instance.idDepartamento
+                        and
+                        form.instance.idDepartamento.idDepartamento=""
+                        ="departamento.idDepartamento"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        {{ departamento.Nombre_Departamento }}
+                      </option>
+
+                      {% endfor %}
                     </select>
                   </div>
 
+                  <!-- Empleado -->
                   <div class="field">
-                    <label for="Fecha_Inicio">
-                      <i class="fas fa-calendar-day field-icon"></i>
-                      Fecha de Inicio <span class="req">*</span>
+                    <label for="{{ form.idEmpleado.id_for_label }}">
+                      <i class="fas fa-user field-icon"></i>
+                      Colaborador
+                      <span class="req">*</span>
                     </label>
-                    <input 
-                      type="date" 
-                      id="Fecha_Inicio" 
-                      name="Fecha_Inicio" 
-                      value="{{ onboarding.Fecha_Inicio|date:'Y-m-d' }}" 
-                      required 
-                      {% if onboarding.id_Onboarding %}disabled{% endif %} 
+
+                    <select
+                      id="idEmpleado"
+                      name="idEmpleado"
+                      required
+                      {%
+                      if
+                      paso_dos_habilitado
+                      %}disabled{%
+                      endif
+                      %}
+                    >
+                      {% if onboarding %}
+
+                      <option
+                        value="{{ onboarding.idEmpleado.idEmpleado }}"
+                        selected
+                      >
+                        {{ onboarding.idEmpleado.idPersona.Nombre }} {{
+                        onboarding.idEmpleado.idPersona.Apellido1 }} {{
+                        onboarding.idEmpleado.idPersona.Apellido2 }}
+                      </option>
+
+                      {% else %}
+
+                      <option value="">
+                        Seleccione un departamento primero...
+                      </option>
+
+                      {% endif %}
+                    </select>
+                  </div>
+
+                  <!-- Fecha -->
+                  <div class="field">
+                    <label for="{{ form.Fecha_Inicio.id_for_label }}">
+                      <i class="fas fa-calendar-day field-icon"></i>
+                      Fecha Inicio
+                      <span class="req">*</span>
+                    </label>
+
+                    <input
+                      type="date"
+                      id="Fecha_Inicio"
+                      name="Fecha_Inicio"
+                      value="{{ form.Fecha_Inicio.value|default:'' }}"
+                      required
+                      {%
+                      if
+                      paso_dos_habilitado
+                      %}disabled{%
+                      endif
+                      %}
                     />
                   </div>
                 </div>
 
-                {% if not onboarding.id_Onboarding %}
-                  <div style="margin-top: 15px; text-align: right;">
-                    <button type="submit" name="guardar_cabecera" class="btn btn-primary">
-                      <i class="fas fa-play"></i> Iniciar Proceso y Desbloquear Actividades
-                    </button>
-                  </div>
+                {% if not paso_dos_habilitado %}
+
+                <div style="margin-top: 20px; text-align: right">
+                  <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-play"></i>
+
+                    Iniciar Proceso
+                  </button>
+                </div>
+
                 {% endif %}
               </div>
+            </form>
 
-              <div class="form-section {% if not onboarding.id_Onboarding %}seccion-bloqueada{% endif %}">
+            <!-- ===================================================== -->
+            <!-- FORMULARIO 2 - DETALLE -->
+            <!-- ===================================================== -->
+
+            {% if onboarding %}
+
+            <form
+              method="POST"
+              action="{% url 'guardar_detalle_onboarding' onboarding.id_Onboarding %}"
+              id="form-detalle"
+            >
+              {% csrf_token %}
+
+              <input
+                type="hidden"
+                name="id_Onboarding"
+                value="{{ onboarding.id_Onboarding }}"
+              />
+
+              <div class="form-section">
                 <h4 class="form-section-title">
                   <i class="fas fa-tasks"></i>
-                  2. Registro y Modificación de la Actividad Individual
+
+                  2. Actividad del Onboarding
                 </h4>
 
                 <div class="form-grid">
+                  <!-- Actividad -->
+
                   <div class="field" style="grid-column: span 2">
-                    <label for="idActividad">
-                      <i class="fas fa-list field-icon"></i>
-                      Seleccionar Actividad Estándar <span class="req">*</span>
+                    <label>
+                      Actividad
+
+                      <span class="req">*</span>
                     </label>
-                    <select id="idActividad" name="idActividad" {% if not onboarding.id_Onboarding %}disabled{% endif %}>
-                      <option value="" disabled selected>Elija una actividad del catálogo...</option>
-                      <option value="1">Firma de contrato laboral y políticas Robasa</option>
-                      <option value="2">Configuración de Laptop corporativa y cuenta de correo</option>
-                      <option value="3">Entrega de Botas de Seguridad y Uniforme Corporativo</option>
+
+                    <select name="idActividad" required>
+                      <option value="">Seleccione...</option>
+
+                      {% for actividad in actividades_catalogo %}
+
+                      <option value="{{ actividad.idActividad }}">
+                        {{ actividad.Actividad }}
+                      </option>
+
+                      {% endfor %}
                     </select>
                   </div>
 
+                  <!-- Estado -->
+
                   <div class="field">
-                    <label for="id_Estatus_Vacante">
-                      <i class="fas fa-info-circle field-icon"></i>
-                      Estado de la Tarea <span class="req">*</span>
+                    <label>
+                      Estado
+
+                      <span class="req">*</span>
                     </label>
-                    <select id="id_Estatus_Vacante" name="id_Estatus_Vacante" {% if not onboarding.id_Onboarding %}disabled{% endif %}>
-                      <option value="1">Pendiente</option>
-                      <option value="2">En Proceso</option>
-                      <option value="3">Completado</option>
+
+                    <select name="id_Estatus_Vacante" required>
+                      {% for estado in estados %}
+
+                      <option value="{{ estado.id_Estatus_Vacante }}">
+                        {{ estado.Nombre }}
+                      </option>
+
+                      {% endfor %}
                     </select>
                   </div>
-                </div>
 
-                <div class="form-grid" style="margin-top: 15px">
-                  <div class="field">
-                    <label for="Fecha_Programada">
-                      <i class="fas fa-calendar-clock field-icon"></i>
-                      Fecha Programada <span class="req">*</span>
-                    </label>
-                    <input type="date" id="Fecha_Programada" name="Fecha_Programada" {% if not onboarding.id_Onboarding %}disabled{% endif %} />
-                  </div>
+                  <!-- Fecha Programada -->
 
                   <div class="field">
-                    <label for="Fecha_Realizada">
-                      <i class="fas fa-calendar-check field-icon"></i>
-                      Fecha Realizada (Cierre)
-                    </label>
-                    <input type="date" id="Fecha_Realizada" name="Fecha_Realizada" {% if not onboarding.id_Onboarding %}disabled{% endif %} />
+                    <label> Fecha Programada </label>
+
+                    <input type="date" name="Fecha_Programada" required />
                   </div>
+
+                  <!-- Fecha Realizada -->
+
+                  <div class="field">
+                    <label> Fecha Realizada </label>
+
+                    <input type="date" name="Fecha_Realizada" />
+                  </div>
+
+                  <!-- Observaciones -->
 
                   <div class="field" style="grid-column: span 2">
-                    <label for="Observaciones">
-                      <i class="fas fa-comment-dots field-icon"></i>
-                      Observaciones o Notas de Seguimiento
-                    </label>
-                    <input 
-                      type="text" 
-                      id="Observaciones" 
-                      name="Observaciones" 
-                      placeholder="Números de serie de activos, folios firmados, etc." 
-                      {% if not onboarding.id_Onboarding %}disabled{% endif %} 
-                    />
+                    <label> Observaciones </label>
+
+                    <textarea
+                      name="Observaciones"
+                      rows="4"
+                      maxlength="600"
+                    ></textarea>
                   </div>
-                </div>
-              </div>
-
-              <div class="form-section {% if not onboarding.id_Onboarding %}seccion-bloqueada{% endif %}">
-                <h4 class="form-section-title">
-                  <i class="fas fa-chart-pie"></i>
-                  Estado de Alistamiento General
-                </h4>
-
-                <div class="summary-grid">
-                  <div class="summary-card">
-                    <span>Tareas Totales Asignadas</span>
-                    <strong>{% if onboarding.id_Onboarding %}{{ actividades|length }} Actividades{% else %}0 Actividades{% endif %}</strong>
-                  </div>
-                  <div class="summary-card">
-                    <span>Progreso del Proceso</span>
-                    <strong>{% if onboarding.id_Onboarding %}En Gestión{% else %}Esperando Cabecera{% endif %}</strong>
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-section {% if not onboarding.id_Onboarding %}seccion-bloqueada{% endif %}">
-                <h4 class="form-section-title">
-                  <i class="fas fa-th-list"></i>
-                  Cronograma de Actividades Asignadas
-                </h4>
-
-                <div class="table-container">
-                  <table class="results-table">
-                    <thead>
-                      <tr>
-                        <th>ID Reg</th>
-                        <th>Actividad / Tarea Logística</th>
-                        <th>Área Responsable</th>
-                        <th>F. Programada</th>
-                        <th>F. Realizada</th>
-                        <th>Estado</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {% if onboarding.id_Onboarding %}
-                        {% for item in actividades %}
-                          <tr>
-                            <td>{{ item.idOnboardingActividad }}</td>
-                            <td><strong>{{ item.idActividad.Actividad }}</strong></td> 
-                            <td>{{ item.id_Departamento.Nombre_Departamento }}</td>
-                            <td>{{ item.Fecha_Programada|date:"d/m/Y" }}</td>
-                            <td>{% if item.Fecha_Realizada %}{{ item.Fecha_Realizada|date:"d/m/Y" }}{% else %}--{% endif %}</td>
-                            <td>
-                              {% if item.id_Estatus_Vacante == 3 %}
-                                <span style="color: #2e7d32; font-weight: bold;"><i class="fas fa-circle-check"></i> Completado</span>
-                              {% elif item.id_Estatus_Vacante == 2 %}
-                                <span style="color: #e65100; font-weight: bold;"><i class="fas fa-clock"></i> En Proceso</span>
-                              {% else %}
-                                <span style="color: #c62828; font-weight: bold;"><i class="fas fa-circle-xmark"></i> Pendiente</span>
-                              {% endif %}
-                            </td>
-                          </tr>
-                        {% endfor %}
-                      {% else %}
-                        <tr>
-                          <td colspan="6" class="text-center" style="color: #757575; padding: 20px;">
-                            <i class="fas fa-lock" style="margin-right: 8px;"></i> Las actividades e historial se cargarán de forma automática una vez que guarde el encabezado.
-                          </td>
-                        </tr>
-                      {% endif %}
-                    </tbody>
-                  </table>
                 </div>
               </div>
 
               <div class="form-footer">
-                <button type="reset" class="btn btn-ghost" {% if not onboarding.id_Onboarding %}disabled{% endif %}>
-                  <i class="fas fa-arrow-rotate-left"></i> Descartar Cambios
+                <button type="reset" class="btn btn-ghost">Limpiar</button>
+
+                <button type="submit" class="btn btn-success">
+                  Guardar Actividad
                 </button>
-                
-                {% if onboarding.id_Onboarding %}
-                  <button type="submit" name="agregar_actividad" class="btn btn-success">
-                    <i class="fas fa-plus"></i> Modificar / Registrar Tarea
-                  </button>
-                {% endif %}
               </div>
             </form>
+
+            {% endif %}
           </div>
         </section>
 
