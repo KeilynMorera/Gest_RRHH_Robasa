@@ -5,7 +5,6 @@ from django.db.models import Max
 from django.db.models import Sum
 from datetime import date, datetime
 from django.contrib import messages
-from .forms import AccionPersonalForm, PremioForm, PremioAsignadoForm, OnboardingForm
 from django.db import transaction
 from django.db import IntegrityError
 from django.utils import timezone
@@ -17,6 +16,8 @@ from django.db.models import Q # Asegúrate de tener esta importación al inicio
 #Importa todo lo que se encuentra en el archivo models.py
 #Donde se encuentran los modelos de las tablas de la base de datos
 from .models import *
+
+from .forms import *
 
 # =========================================================
 # Vista: Login
@@ -3011,8 +3012,12 @@ def registrar_onboarding(request, pk=None):
             instance=onboarding
         )
 
+    # Crear el formulario del detalle
+    form_detalle = OnboardingActividadForm()
+
     context = {
-        "form": form,
+       "form": form,
+        "form_detalle": form_detalle,
         "onboarding": onboarding,
         "paso_dos_habilitado": paso_dos_habilitado,
     }
@@ -3021,6 +3026,46 @@ def registrar_onboarding(request, pk=None):
         request,
         "onboarding.html",
         context
+    )
+
+
+# =========================================================
+# GUARDAR DETALLE DE ACTIVIDAD DEL ONBOARDING
+# =========================================================
+def guardar_detalle_onboarding(request, pk):
+
+    onboarding = get_object_or_404(
+        Onboarding,
+        pk=pk
+    )
+
+    if request.method == "POST":
+
+        form = OnboardingActividadForm(
+            request.POST
+        )
+
+        if form.is_valid():
+
+            detalle = form.save(commit=False)
+            detalle.id_Onboarding = onboarding
+            detalle.save()
+
+            messages.success(
+                request,
+                "Actividad registrada correctamente."
+            )
+
+        else:
+
+            messages.error(
+                request,
+                "Revise los datos de la actividad."
+            )
+
+    return redirect(
+        "gestionar_onboarding",
+        pk=onboarding.id_Onboarding
     )
 
 

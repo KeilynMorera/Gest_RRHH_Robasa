@@ -1,8 +1,7 @@
 from django import forms
-from .models import AccionPersonal, Departamento, Empleado
-from .models import Premio, KpiCategoria, Cuadrante9BoxPerfil
-from .models import Onboarding
 from .models import PremioAsignado
+
+from .models import *
 
 class AccionPersonalForm(forms.ModelForm):
     class Meta:
@@ -183,3 +182,63 @@ class OnboardingForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         self.fields["idDepartamento"].queryset = Departamento.objects.all()
+
+
+
+# =========================================================
+# FORMULARIO: Detalle de Actividad de Onboarding
+# =========================================================
+class OnboardingActividadForm(forms.ModelForm):
+
+    class Meta:
+        model = OnboardingActividad
+        fields = [
+            "idActividad",
+            "id_Estatus_Vacante",
+            "Fecha_Programada",
+            "Fecha_Realizada",
+            "Observaciones"
+        ]
+
+        widgets = {
+            "idActividad": forms.Select(
+                attrs={
+                    "class": "form-select"
+                }
+            ),
+
+            "id_Estatus_Vacante": forms.Select(
+                attrs={
+                    "class": "form-select"
+                }
+            ),
+
+            "Fecha_Programada": forms.DateInput(
+                attrs={
+                    "type": "date",
+                    "class": "form-control"
+                }
+            ),
+
+            "Fecha_Realizada": forms.DateInput(
+                attrs={
+                    "type": "date",
+                    "class": "form-control"
+                }
+            ),
+
+            "Observaciones": forms.Textarea(
+                attrs={
+                    "class": "form-control",
+                    "rows": 3
+                }
+            )
+        }
+
+        labels = {
+            "idActividad": "Actividad",
+            "id_Estatus_Vacante": "Estado",
+            "Fecha_Programada": "Fecha Programada",
+            "Fecha_Realizada": "Fecha Realizada",
+            "Observaciones": "Observaciones"
+        }

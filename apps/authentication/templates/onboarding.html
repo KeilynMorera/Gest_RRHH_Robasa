@@ -230,16 +230,10 @@
 
             <form
               method="POST"
-              action=""
+              action="{% url 'guardar_detalle_onboarding' onboarding.id_Onboarding %}"
               id="form-detalle"
             >
               {% csrf_token %}
-
-              <input
-                type="hidden"
-                name="id_Onboarding"
-                value="{{ onboarding.id_Onboarding }}"
-              />
 
               <div class="form-section">
                 <h4 class="form-section-title">
@@ -252,71 +246,62 @@
                   <!-- Actividad -->
 
                   <div class="field" style="grid-column: span 2">
-                    <label>
+                    <label for="{{ form_detalle.idActividad.id_for_label }}">
                       Actividad
 
                       <span class="req">*</span>
                     </label>
-
-                    <select name="idActividad" required>
-                      <option value="">Seleccione...</option>
-
-                      {% for actividad in actividades_catalogo %}
-
-                      <option value="{{ actividad.idActividad }}">
-                        {{ actividad.Actividad }}
-                      </option>
-
-                      {% endfor %}
-                    </select>
+                    
+                    {{ form_detalle.idActividad }}
                   </div>
 
                   <!-- Estado -->
 
                   <div class="field">
-                    <label>
+                    <label
+                      for="{{ form_detalle.id_Estatus_Vacante.id_for_label }}"
+                    >
                       Estado
 
                       <span class="req">*</span>
                     </label>
 
-                    <select name="id_Estatus_Vacante" required>
-                      {% for estado in estados %}
-
-                      <option value="{{ estado.id_Estatus_Vacante }}">
-                        {{ estado.Nombre }}
-                      </option>
-
-                      {% endfor %}
-                    </select>
+                    {{ form_detalle.id_Estatus_Vacante }}
                   </div>
 
                   <!-- Fecha Programada -->
 
                   <div class="field">
-                    <label> Fecha Programada </label>
+                    <label
+                      for="{{ form_detalle.Fecha_Programada.id_for_label }}"
+                    >
+                      Fecha Programada
+                      <span class="req">*</span>
+                    </label>
 
-                    <input type="date" name="Fecha_Programada" required />
+                    {{ form_detalle.Fecha_Programada }}
                   </div>
 
                   <!-- Fecha Realizada -->
 
                   <div class="field">
-                    <label> Fecha Realizada </label>
+                    <label
+                      for="{{ form_detalle.Fecha_Realizada.id_for_label }}"
+                    >
+                      Fecha Realizada
+                    </label>
 
-                    <input type="date" name="Fecha_Realizada" />
+                    {{ form_detalle.Fecha_Realizada }}
                   </div>
 
                   <!-- Observaciones -->
 
                   <div class="field" style="grid-column: span 2">
-                    <label> Observaciones </label>
+                    <label for="{{ form_detalle.Observaciones.id_for_label }}">
+                      Observaciones
+                    </label>
 
-                    <textarea
-                      name="Observaciones"
-                      rows="4"
-                      maxlength="600"
-                    ></textarea>
+                    {{ form_detalle.Observaciones }}
                   </div>
                 </div>
               </div>
@@ -340,9 +325,6 @@
       </main>
     </div>
 
-    <script>
-      window.urlEmpleadosPorDepartamento = "...";
-    </script>
     <script src="/static/js/onboarding.js"></script>
   </body>
 </html>
