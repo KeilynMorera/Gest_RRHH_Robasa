@@ -1,259 +1,199 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // ==============================
-    // ELEMENTOS PRINCIPALES
-    // ==============================
-    const formCabecera = document.getElementById("form-cabecera");
 
-    const selectorAccion = document.getElementById("Tipo_Accion");
-    const selectorEmpleado = document.getElementById("idEmpleado");
+    //==============================
+    // ELEMENTOS
+    //==============================
 
-    const contPremio = document.getElementById("contenedor-monto-premio");
-    const inputPremio = document.getElementById("monto_premio");
+    const empleado = document.getElementById("idEmpleado");
+    const tipoAccion = document.getElementById("Tipo_Accion");
 
-    const contSalActual = document.getElementById(
-        "contenedor-salario-actual",
-    );
-    const contNuevSal = document.getElementById("contenedor-nuevo-salario");
+    const contSalarioActual = document.getElementById("contenedor-salario-actual");
+    const contNuevoSalario = document.getElementById("contenedor-nuevo-salario");
 
-    const inputSalActual = document.getElementById("salario_actual");
-    const inputNuevSal = document.getElementById("nuevo_salario");
+    const contPremioActual = document.getElementById("contenedor-premio-actual");
+    const contNuevoPremio = document.getElementById("contenedor-nuevo-premio");
 
-    const colSelect = document.getElementById("columna-tipo-accion");
-    const labelNuevoSalario = document.querySelector(
-        "label[for='nuevo_salario']",
-    );
+    const salarioActual = document.getElementById("salario_actual");
+    const idSalarioEmpleado = document.getElementById("idSalarioEmpleado");
 
-    // ==============================
-    // FUNCIONES AUXILIARES
-    // ==============================
+    const premioActual = document.getElementById("premio_actual");
+    const idPremioAsignado = document.getElementById("idPremioAsignado");
 
-    function actualizarSalarioActual() {
-        const opcion =
-            selectorEmpleado.options[selectorEmpleado.selectedIndex];
-        const salario = opcion?.dataset.salario || "0";
 
-        inputSalActual.value =
-            "₡" +
-            parseFloat(salario).toLocaleString("es-CR", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-            });
-        }
 
-    function resetCampos() {
-        contPremio.style.display = "none";
-        contSalActual.style.display = "none";
-        contNuevSal.style.display = "none";
+    //==============================
+    // OCULTAR TODO
+    //==============================
 
-        inputPremio.required = false;
-        inputPremio.value = "";
+    function ocultarCampos(){
 
-        inputNuevSal.required = false;
-        inputNuevSal.value = "";
+        contSalarioActual.style.display = "none";
+        contNuevoSalario.style.display = "none";
+
+        contPremioActual.style.display = "none";
+        contNuevoPremio.style.display = "none";
+
+        salarioActual.value = "";
+        premioActual.value = "";
+
+        idSalarioEmpleado.value = "";
+        idPremioAsignado.value = "";
     }
 
-    // ==============================
-    // VALIDACIÓN FORM CABECERA
-    // ==============================
-    formCabecera.addEventListener("submit", function (e) {
-        const empleadoInput = document.querySelector("[name='idEmpleado']");
-        const fechaInput = document.querySelector("[name='Fecha']");
-        
-        if (!empleadoInput.value || !fechaInput.value) {
-            e.preventDefault();
-            alert("Debe seleccionar colaborador y fecha.");
-        }
-    });
 
-    // ==============================
-    // CAMBIO DE EMPLEADO
-    // ==============================
-    selectorEmpleado.addEventListener("change", function () {
-        actualizarSalarioActual();
-    });
 
-    // ==============================
-    // CAMBIO DE TIPO DE ACCIÓN
-    // ==============================
-    selectorAccion.addEventListener("change", function () {
-        const opcion = this.options[this.selectedIndex];
-        const nombreAccion = opcion?.getAttribute("data-name");
+    //==============================
+    // OBTENER SALARIO
+    //==============================
 
-        resetCampos();
+    function cargarSalario(idEmpleado){
 
-        colSelect.style.gridColumn = "span 2";
+        fetch(`/accion/obtener-salario/?idEmpleado=${idEmpleado}`)
 
-        if (nombreAccion === "Premio") {
-            colSelect.style.gridColumn = "span 1";
-            contPremio.style.display = "block";
-            inputPremio.required = true;
-        } else if (
-            nombreAccion === "Ajuste Salarial" ||
-            nombreAccion === "Ascenso"
-        ) {
-            contSalActual.style.display = "block";
-            contNuevSal.style.display = "block";
-            inputNuevSal.required = true;
+        .then(response => response.json())
 
-            actualizarSalarioActual();
-            
-            if (nombreAccion === "Ascenso") {
-                labelNuevoSalario.innerHTML =
-                    '<i class="fas fa-arrow-up-right-dots field-icon"></i> Nuevo Salario por Ascenso <span class="req">*</span>';
-                inputNuevSal.placeholder = "Ej: 550000";
-            } else {
-                labelNuevoSalario.innerHTML =
-                    '<i class="fas fa-coins field-icon"></i> Nuevo Salario Bruto Propuesto <span class="req">*</span>';
-                inputNuevSal.placeholder = "Ej: 450000";
+        .then(data=>{
+
+            if(data.success){
+
+                salarioActual.value =
+                    Number(data.salario).toLocaleString(
+                        "es-CR",
+                        {
+                            minimumFractionDigits:2,
+                            maximumFractionDigits:2
+                        }
+                    );
+
+                idSalarioEmpleado.value =
+                    data.idSalarioEmpleado;
+
+            }else{
+
+                salarioActual.value = "";
+                idSalarioEmpleado.value = "";
+
+                alert(data.mensaje);
             }
+
+        });
+
+    }
+
+
+
+    //==============================
+    // OBTENER PREMIO
+    //==============================
+
+    function cargarPremio(idEmpleado){
+
+        fetch(`/accion/obtener-premio/?idEmpleado=${idEmpleado}`)
+
+        .then(response=>response.json())
+
+        .then(data=>{
+
+            if(data.success){
+
+                premioActual.value =
+                Number(data.monto).toLocaleString(
+                    "es-CR",
+                    {
+                        minimumFractionDigits:2,
+                        maximumFractionDigits:2
+                    }
+                );
+
+                idPremioAsignado.value = data.idPremioAsignado;
+
+                // ESTE ES EL QUE SE ENVIARÁ AL BACKEND
+                document.getElementById("monto_premio").value = data.monto;
+
+            }else{
+
+                premioActual.value="";
+                idPremioAsignado.value="";
+
+                alert(data.mensaje);
+
+            }
+
+        });
+
+    }
+
+
+
+    //==============================
+    // CAMBIO DE TIPO DE ACCIÓN
+    //==============================
+
+    tipoAccion.addEventListener("change", function(){
+
+        ocultarCampos();
+
+        if(!empleado.value){
+            alert("Seleccione primero un empleado.");
+            this.selectedIndex = 0;
+            return;
         }
+
+        const nombre =
+            this.options[this.selectedIndex]
+                .dataset.name;
+
+
+
+        //--------------------------
+        // ASCENSO O AJUSTE
+        //--------------------------
+
+        if(
+            nombre==="Ascenso" ||
+            nombre==="Ajuste Salarial"
+        ){
+
+            contSalarioActual.style.display="block";
+            contNuevoSalario.style.display="block";
+
+            cargarSalario(
+                empleado.value
+            );
+
+        }
+
+
+
+        //--------------------------
+        // PREMIO
+        //--------------------------
+
+        else if(nombre==="Premio"){
+
+            contPremioActual.style.display="block";
+            contNuevoPremio.style.display="block";
+
+            cargarPremio(
+                empleado.value
+            );
+
+        }
+
     });
 
-    // ==============================
-    // RESET LIMPIAR
-    // ==============================
-    document
-    .getElementById("btn-limpiar")
-    .addEventListener("click", function () {
-        setTimeout(() => {
-            selectorAccion.dispatchEvent(new Event("change"));
-        }, 10);
+
+
+    //==============================
+    // SI CAMBIAN EL EMPLEADO
+    //==============================
+
+    empleado.addEventListener("change",function(){
+
+        ocultarCampos();
+
+        tipoAccion.selectedIndex=0;
+
     });
+
 });
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
-
-  const input = document.getElementById("filtro-acciones");
-  const tabla = document.getElementById("tabla-acciones");
-  const filas = tabla.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-
-  input.addEventListener("keyup", function () {
-
-    const filtro = this.value.toLowerCase().trim();
-
-    for (let i = 0; i < filas.length; i++) {
-
-      const celdas = filas[i].getElementsByTagName("td");
-
-      if (celdas.length === 0) continue; // por el empty row
-
-      const empleado = celdas[1].textContent.toLowerCase(); // Columna Empleado
-      const fecha = celdas[5].textContent.toLowerCase();     // Columna Fecha
-      const accion = celdas[2].textContent.toLowerCase();    // opcional
-
-      if (
-        empleado.includes(filtro) ||
-        fecha.includes(filtro) ||
-        accion.includes(filtro)
-      ) {
-        filas[i].style.display = "";
-      } else {
-        filas[i].style.display = "none";
-      }
-    }
-
-  });
-
-});
-
-
-const tipoAccion = document.getElementById("Tipo_Accion");
-
-tipoAccion.addEventListener("change", mostrarCamposAccion);
-
-function ocultarCampos(){
-
-    document.getElementById("contenedor-salario-actual").style.display="none";
-    document.getElementById("contenedor-nuevo-salario").style.display="none";
-
-    document.getElementById("contenedor-premio-actual").style.display="none";
-    document.getElementById("contenedor-nuevo-premio").style.display="none";
-
-}
-
-function mostrarCamposAccion(){
-
-    ocultarCampos();
-
-    const accion =
-        tipoAccion.options[tipoAccion.selectedIndex]
-        .dataset.name;
-
-    if(
-        accion==="Ajuste Salarial" ||
-        accion==="Ascenso"
-    ){
-
-        document.getElementById("contenedor-salario-actual").style.display="block";
-        document.getElementById("contenedor-nuevo-salario").style.display="block";
-
-        cargarSalario();
-
-    }
-
-    else if(accion==="Premio"){
-
-        document.getElementById("contenedor-premio-actual").style.display="block";
-        document.getElementById("contenedor-nuevo-premio").style.display="block";
-
-        cargarPremio();
-
-    }
-
-}
-
-function cargarSalario(){
-
-    const empleado =
-        document.getElementById("idEmpleado").value;
-
-    if(!empleado) return;
-
-    fetch(`/obtener_salario_actual/${empleado}/`)
-
-    .then(r=>r.json())
-
-    .then(data=>{
-
-        if(data.success){
-
-            document.getElementById("salario_actual").value =
-                "₡"+Number(data.salario_neto).toLocaleString();
-
-            document.getElementById("idSalarioEmpleado").value =
-                data.idSalario;
-
-        }
-
-    });
-
-}
-
-function cargarPremio(){
-
-    const empleado =
-        document.getElementById("idEmpleado").value;
-
-    if(!empleado) return;
-
-    fetch(`/obtener_premio_actual/${empleado}/`)
-
-    .then(r=>r.json())
-
-    .then(data=>{
-
-        if(data.success){
-
-            document.getElementById("premio_actual").value =
-                "₡"+Number(data.premio).toLocaleString();
-
-            document.getElementById("idPremio").value =
-                data.idPremio;
-
-        }
-
-    });
-
-}

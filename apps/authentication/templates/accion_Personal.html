@@ -212,14 +212,9 @@
                       <option value="">Seleccione...</option>
 
                       {% for emp in empleados %}
-
-                      <option
-                        value="{{ emp.idEmpleado }}"
-                        data-salario="{{ emp.salario_actual }}"
-                      >
+                      <option value="{{ emp.idEmpleado }}">
                         {{ emp.idPersona.Nombre_Completo }}
                       </option>
-
                       {% endfor %}
                     </select>
                   </div>
@@ -260,15 +255,22 @@
               </div>
             </form>
 
-            <form method="POST" action="{% url 'guardar_detalle_accion' %}">
+            {% if accion_cabecera %}
+
+            <form
+              method="POST"
+              action="{% url 'guardar_accion_tipo' accion_cabecera.idAccion %}"
+              id="form-detalle"
+            >
               {% csrf_token %}
-              <input type="hidden" name="action" value="finalizar_accion" />
 
               <input
                 type="hidden"
                 name="idAccion_padre"
                 value="{{ accion_cabecera.idAccion }}"
               />
+
+              {% endif %}
 
               <div
                 class="form-section {% if not paso_dos_habilitado %}disabled-section{% endif %}"
@@ -289,28 +291,15 @@
                       <i class="fas fa-sliders field-icon"></i> Tipo de Acción
                       <span class="req">*</span>
                     </label>
-                    <select
-                      id="Tipo_Accion"
-                      name="Tipo_Accion"
-                      required
-                      {%
-                      if
-                      not
-                      paso_dos_habilitado
-                      %}disabled{%
-                      endif
-                      %}
-                    >
-                      <option value="" disabled selected>
-                        Seleccione la acción...
-                      </option>
+                    <select id="Tipo_Accion" name="Tipo_Accion" required>
+                      <option value="">Seleccione...</option>
+
                       {% for tipo in tipos_accion %}
                       <option
                         value="{{ tipo.id_Detalle_Accion }}"
                         data-name="{{ tipo.Accion }}"
                       >
-                        {{ tipo.Accion }} {% if tipo.valor_accion > 0 %}— Base:
-                        ₡{{ tipo.valor_accion }}{% endif %}
+                        {{ tipo.Accion }}
                       </option>
                       {% endfor %}
                     </select>
@@ -324,10 +313,7 @@
                     id="contenedor-salario-actual"
                     style="display: none"
                   >
-                    <label for="salario_actual">
-                      <i class="fas fa-money-bill-wave field-icon"></i>
-                      Salario Neto Actual
-                    </label>
+                    <label> Salario Neto Actual </label>
 
                     <input type="text" id="salario_actual" readonly />
 
@@ -346,18 +332,13 @@
                     id="contenedor-nuevo-salario"
                     style="display: none"
                   >
-                    <label for="nuevo_salario">
-                      <i class="fas fa-coins field-icon"></i>
-                      Nuevo Salario Neto
-                      <span class="req">*</span>
-                    </label>
+                    <label> Nuevo Salario </label>
 
                     <input
                       type="number"
-                      id="nuevo_salario"
                       name="nuevo_salario"
+                      id="nuevo_salario"
                       step="0.01"
-                      min="0"
                     />
                   </div>
 
@@ -369,16 +350,16 @@
                     id="contenedor-premio-actual"
                     style="display: none"
                   >
-                    <label for="premio_actual">
-                      <i class="fas fa-trophy field-icon"></i>
-                      Premio Actual
-                    </label>
+                    <label> Premio Actual </label>
 
                     <input type="text" id="premio_actual" readonly />
 
-                    <input type="hidden" id="idPremio" name="idPremio" />
+                    <input
+                      type="hidden"
+                      id="idPremioAsignado"
+                      name="idPremioAsignado"
+                    />
                   </div>
-
                   <!-- ==========================
                         NUEVO PREMIO
                   ========================== -->
@@ -387,19 +368,7 @@
                     id="contenedor-nuevo-premio"
                     style="display: none"
                   >
-                    <label for="nuevo_premio">
-                      <i class="fas fa-medal field-icon"></i>
-                      Nuevo Premio
-                      <span class="req">*</span>
-                    </label>
-
-                    <input
-                      type="number"
-                      id="nuevo_premio"
-                      name="nuevo_premio"
-                      step="0.01"
-                      min="0"
-                    />
+                    ...
                   </div>
                 </div>
 

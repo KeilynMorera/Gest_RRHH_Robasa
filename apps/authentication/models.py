@@ -573,7 +573,6 @@ class Vacante_Asig(models.Model):
 # =========================================================
 # FASE DEL CANDIDATO
 # =========================================================
-
 class FaseCandidato(models.Model):
     id_Fase = models.AutoField(
         primary_key=True,
@@ -1605,7 +1604,7 @@ class AccionTipo(models.Model):
         db_column='Monto_TA'
     )
 
-    # Tipo de acción
+    # Tipo de acción (Ascenso, Premio, Ajuste Salarial, etc.)
     id_Detalle_Accion = models.ForeignKey(
         DetalleAccion,
         on_delete=models.PROTECT,
@@ -1613,7 +1612,7 @@ class AccionTipo(models.Model):
         related_name='acciones_tipo'
     )
 
-    # Cabecera de Acción de Personal
+    # Cabecera de la Acción de Personal
     idAccion = models.ForeignKey(
         AccionPersonal,
         on_delete=models.CASCADE,
@@ -1621,8 +1620,7 @@ class AccionTipo(models.Model):
         related_name='detalles_accion'
     )
 
-    # Salario del empleado
-    # Se utiliza únicamente para Ajuste Salarial o Ascenso
+    # Se utiliza únicamente para Ajuste Salarial y Ascenso
     idSalarioEmpleado = models.ForeignKey(
         SalarioEmpleado,
         on_delete=models.SET_NULL,
@@ -1632,20 +1630,24 @@ class AccionTipo(models.Model):
         related_name='acciones_salario'
     )
 
-    # Premio
-    # Se utiliza únicamente cuando el tipo de acción corresponde a un Premio
-    idPremio = models.ForeignKey(
-        Premio,
+    # Se utiliza únicamente cuando la acción corresponde a un Premio
+    id_PremioAsignado = models.ForeignKey(
+        PremioAsignado,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        db_column='idPremio',
+        db_column='id_PremioAsignado',
         related_name='acciones_premio'
     )
 
     class Meta:
         managed = False
         db_table = 'Accion_Tipo'
+        verbose_name = 'Acción Tipo'
+        verbose_name_plural = 'Acciones Tipo'
 
     def __str__(self):
-        return f"{self.idAccion} - {self.id_Detalle_Accion}"
+        return (
+            f"{self.idAccion} - "
+            f"{self.id_Detalle_Accion}"
+        )

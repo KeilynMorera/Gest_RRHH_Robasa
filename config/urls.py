@@ -151,16 +151,14 @@ urlpatterns = [
     
     # Ruta limpia para el paso 1 (GET y POST de cabecera)
     path('accion/gestionar/', views.registrar_cabecera_accion, name='crear_accion'),
-    
     # RUTA CORREGIDA: Es la que recibe el ID de la cabecera una vez guardado
     path('accion/gestionar/<int:pk>/', views.registrar_cabecera_accion, name='gestionar_accion'),
-
-    path('guardar-detalle-accion/', views.guardar_detalle_accion, name='guardar_detalle_accion'),
-
-    path("obtener-salario/<int:idEmpleado>/", views.obtener_salario_actual, name="obtener_salario_actual"),
     
-    path("obtener-premio/<int:idEmpleado>/", views.obtener_premio_actual, name="obtener_premio_actual"),
+    path("accion/guardar-detalle/<int:id_accion>/", views.guardar_accion_tipo, name="guardar_accion_tipo"),
 
+    path("accion/obtener-salario/", views.obtener_salario_empleado, name="obtener_salario_empleado"),
+
+    path("accion/obtener-premio/", views.obtener_premio_empleado, name="obtener_premio_empleado"),
 
 
     # =========================================================

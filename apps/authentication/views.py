@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from django.db.models import Max
 from django.db.models import Sum
 from datetime import date, datetime
@@ -1968,10 +1968,86 @@ def guardar_permiso(request):
 
     )
 
+    from decimal import Decimal
+
+
+
+
+
+# =========================================================
+# GUARDAR DETALLE DE LA ACCIÓN DE PERSONAL
+# =========================================================
+@transaction.atomic
+def guardar_accion_tipo(request, id_accion):
+
+    if request.method != "POST":
+        return redirect("gestionar_accion")
+
+    accion = get_object_or_404(
+        AccionPersonal,
+        pk=id_accion
+    )
+
+    tipo_accion = get_object_or_404(
+        DetalleAccion,
+        pk=request.POST.get("Tipo_Accion")
+    )
+
+    detalle = request.POST.get("Detalle")
+
+    accion_tipo = AccionTipo(
+        idAccion=accion,
+        id_Detalle_Accion=tipo_accion,
+        Detalle=detalle
+    )
+
+    # =====================================================
+    # ASCENSO / AJUSTE SALARIAL
+    # =====================================================
+    if tipo_accion.Accion in ["Ascenso", "Ajuste Salarial"]:
+
+        salario = get_object_or_404(
+            SalarioEmpleado,
+            pk=request.POST.get("idSalarioEmpleado")
+        )
+
+        nuevo_salario = Decimal(
+            request.POST.get("nuevo_salario")
+        )
+
+        salario.Salario_Sem_Neto = nuevo_salario
+        salario.save()
+
+        accion_tipo.idSalarioEmpleado = salario
+        accion_tipo.Monto_TA = nuevo_salario
+
+    # =====================================================
+    # PREMIO
+    # =====================================================
+    elif tipo_accion.Accion == "Premio":
+
+        premio = get_object_or_404(
+            PremioAsignado,
+            pk=request.POST.get("idPremioAsignado")
+        )
+
+        accion_tipo.id_PremioAsignado = premio
+        accion_tipo.Monto_TA = premio.Monto_Liquidado
+
+    accion_tipo.save()
+
+    messages.success(
+        request,
+        "La Acción de Personal fue registrada correctamente."
+    )
+
+    return redirect("accion_rotacion")
+
 
 
 def accion_rotacion_view(request):
     return render(request, 'accion_rotacion.html')
+
 
 # =========================================================
 # GUARDAR CABECERA DE LA ACCIÓN DEL PERSONAL
@@ -2036,54 +2112,57 @@ def registrar_cabecera_accion(request, pk=None):
                 if id_salario_empleado:
                     salario_obj = get_object_or_404(SalarioEmpleado, pk=id_salario_empleado)
 
-                # 6. Creamos y guardamos directamente en la tabla 'Accion_Tipo'
-                nuevo_movimiento = AccionTipo(
-                    idAccion=cabecera_obj,               # Instancia de AccionPersonal
-                    id_Detalle_Accion=catalogo_accion,   # Instancia de DetalleAccion
-                    idSalarioEmpleado=salario_obj,       # Instancia de SalarioEmpleado (o None)
-                    Detalle=detalle_texto                # Texto libre (max_length=600)
-                )
+                id_premio_asignado = request.POST.get("idPremioAsignado")
+                premio_asignado = None
+
+                if id_premio_asignado:
+                    premio_asignado = get_object_or_404(
+                        PremioAsignado,
+                        pk=id_premio_asignado
+                    )
                 
-                # Ejecuta el INSERT en la base de datos SQL Server
-                nuevo_movimiento.save()
+                #-----------------------------------------
+                # Determinar el monto que se guardará
+                #-----------------------------------------
 
                 monto = None
-                premio_obj = None
 
                 if catalogo_accion.Accion == "Premio":
+
+                    # El monto viene oculto desde el HTML
                     monto = Decimal(
                         request.POST.get("monto_premio")
                     )
-                    
-                    premio_obj = Premio.objects.create(
-                        Monto=monto
-                    )
+
                 elif catalogo_accion.Accion in ["Ascenso", "Ajuste Salarial"]:
+
                     monto = Decimal(
                         request.POST.get("nuevo_salario")
                     )
-                    
+
                     if salario_obj:
                         salario_obj.Salario_Sem_Neto = monto
                         salario_obj.save()
-                        
-                        nuevo_movimiento = AccionTipo(
-                            idAccion=cabecera_obj,
 
-                            id_Detalle_Accion=catalogo_accion,
 
-                            idSalarioEmpleado=salario_obj,
+                #-----------------------------------------
+                # Crear UNA sola Acción Tipo
+                #-----------------------------------------
 
-                            idPremio=premio_obj,
-                            
-                            Monto_TA=monto,
+                nuevo_movimiento = AccionTipo.objects.create(
 
-                            Detalle=detalle_texto
+                    idAccion=cabecera_obj,
 
+                    id_Detalle_Accion=catalogo_accion,
+
+                    idSalarioEmpleado=salario_obj,
+
+                    id_PremioAsignado=premio_asignado,
+
+                    Monto_TA=monto,
+
+                    Detalle=detalle_texto
                 )
-
-                nuevo_movimiento.save()
-
 
                 messages.success(request, f"El movimiento administrativo del Folio {cabecera_obj.idAccion} se ha sellado y guardado correctamente.")
                 
@@ -2137,136 +2216,83 @@ def registrar_cabecera_accion(request, pk=None):
     
     return render(request, 'accion_Personal.html', context)
 
+# =========================================================
+# OBTENER SALARIO ACTUAL DEL EMPLEADO
+# =========================================================
+def obtener_salario_empleado(request):
+
+    id_empleado = request.GET.get("idEmpleado")
+
+    salario = SalarioEmpleado.objects.filter(
+        idEmpleado=id_empleado
+    ).order_by(
+        "-idSalarioEmpleado"
+    ).first()
+
+    if salario:
+
+        return JsonResponse({
+
+            "success": True,
+
+            "idSalarioEmpleado":
+                salario.idSalarioEmpleado,
+
+            "salario":
+                float(salario.Salario_Sem_Neto)
+
+        })
+
+    return JsonResponse({
+
+        "success": False,
+
+        "mensaje": "El empleado no posee salario registrado."
+
+    })
 
 # =========================================================
-# GUARDAR DETALLE DE LA ACCIÓN ANTERIORMENTE REGISTRADA
+# OBTENER PREMIO DEL EMPLEADO
 # =========================================================
-def guardar_detalle_accion(request):
+def obtener_premio_empleado(request):
 
-    if request.method != 'POST':
-        return redirect('accion_rotacion')
+    id_empleado = request.GET.get("idEmpleado")
 
-    cabecera = get_object_or_404(
-        AccionPersonal,
-        pk=request.POST.get('idAccion_padre')
-    )
+    premio = PremioAsignado.objects.filter(
+        id_KPI__idEmpleado=id_empleado
+    ).select_related(
+        "idPremio"
+    ).order_by(
+        "-Fecha_Registro"
+    ).first()
 
-    tipo_accion = get_object_or_404(
-        DetalleAccion,
-        pk=request.POST.get('Tipo_Accion')
-    )
+    if premio:
 
-    descripcion = request.POST.get('Detalle')
+        return JsonResponse({
 
-    monto = None
-    salario = None
-    premio = None
+            "success": True,
 
-    # ==========================================================
-    # PREMIO
-    # ==========================================================
-    if tipo_accion.Accion == "Premio":
+            "idPremioAsignado":
+                premio.id_PremioAsignado,
 
-        monto = Decimal(
-            request.POST.get("nuevo_monto_premio")
-        )
+            "monto":
+                float(premio.Monto_Liquidado),
 
-        # Buscar el premio actual del empleado
-        premio = Premio.objects.filter(
-            idEmpleado=cabecera.idEmpleado
-        ).order_by(
-            "-idPremio"
-        ).first()
+            "descripcion":
+                premio.idPremio.Descripcion
 
-        if premio:
-            premio.Monto = monto
-            premio.save()
+        })
 
-        if premio:
+    return JsonResponse({
 
-            premio.Monto = monto
-            premio.save()
+        "success": False,
 
-        else:
+        "mensaje": "El empleado no posee premios registrados."
 
-            premio = Premio.objects.create(
-
-                idEmpleado=cabecera.idEmpleado,
-
-                Monto=monto
-            )
+    })
 
 
-    # ==========================================================
-    # AJUSTE SALARIAL
-    # ==========================================================
-    elif tipo_accion.Accion == "Ajuste Salarial":
 
-        monto = Decimal(
-            request.POST.get("nuevo_salario")
-        )
-
-        salario = SalarioEmpleado.objects.filter(
-            idEmpleado=cabecera.idEmpleado
-        ).order_by(
-            "-idSalarioEmpleado"
-        ).first()
-
-        if salario:
-
-            salario.Salario_Sem_Neto = monto
-            salario.save()
-
-    # ==========================================================
-    # ASCENSO
-    # ==========================================================
-    elif tipo_accion.Accion == "Ascenso":
-
-        monto = Decimal(
-            request.POST.get("nuevo_salario")
-        )
-
-        salario = SalarioEmpleado.objects.filter(
-            idEmpleado=cabecera.idEmpleado
-        ).order_by(
-            "-idSalarioEmpleado"
-        ).first()
-
-        if salario:
-
-            salario.Salario_Sem_Neto = monto
-            salario.save()
-
-    # ==========================================================
-    # GUARDAR MOVIMIENTO
-    # ==========================================================
-    movimiento = AccionTipo(
-
-        idAccion=cabecera,
-
-        id_Detalle_Accion=tipo_accion,
-
-        Detalle=descripcion,
-
-        Monto_TA=monto,
-
-        idSalarioEmpleado=salario,
-
-        idPremio=premio
-
-    )
-
-    movimiento.save()
-
-    messages.success(
-        request,
-        "Acción registrada correctamente."
-    )
-
-    return redirect(
-        "gestionar_accion",
-        pk=cabecera.idAccion
-    )
 
 
 def rotacion_Personal_view(request):
@@ -2934,82 +2960,6 @@ def historial_kpi_view(request):
     }
 
     return render(request, 'kpi.html', context)
-
-
-def obtener_salario_actual(request, idEmpleado):
-
-    salario = (
-        SalarioEmpleado.objects
-        .filter(idEmpleado=idEmpleado)
-        .order_by('-idSalarioEmpleado')
-        .first()
-    )
-
-    if salario:
-
-        return JsonResponse({
-
-            "success": True,
-
-            "idSalario": salario.idSalarioEmpleado,
-
-            "salario_neto": float(salario.Salario_Sem_Neto),
-
-        })
-
-    return JsonResponse({
-
-        "success": False,
-
-        "idSalario": None,
-
-        "salario_neto": 0
-
-    })
-
-
-def obtener_premio_actual(request, idEmpleado):
-
-    premio_asignado = (
-        PremioAsignado.objects
-        .select_related(
-            "idPremio",
-            "id_KPI"
-        )
-        .filter(
-            id_KPI__idEmpleado=idEmpleado
-        )
-        .order_by("-Fecha_Registro")
-        .first()
-    )
-
-    if premio_asignado:
-
-        return JsonResponse({
-
-            "success": True,
-
-            "idPremioAsignado": premio_asignado.idPremioAsignado,
-
-            "idPremio": premio_asignado.idPremio.idPremio,
-
-            "premio": float(premio_asignado.idPremio.Monto)
-
-        })
-
-    return JsonResponse({
-
-        "success": False,
-
-        "idPremioAsignado": None,
-
-        "idPremio": None,
-
-        "premio": 0
-
-    })
-
-
 
 
 

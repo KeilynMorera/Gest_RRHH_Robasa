@@ -41,15 +41,27 @@ class PremioForm(forms.ModelForm):
 
 
 
+from django import forms
+from django.utils import timezone
+
+from .models import (
+    PremioAsignado,
+    Premio,
+    Empleado,
+    KpiCabecera,
+)
+
+
 class PremioAsignadoForm(forms.ModelForm):
 
+    # Campo auxiliar (no pertenece al modelo)
     empleado = forms.ModelChoiceField(
-        queryset=Empleado.objects.filter(Activo=True),
-        label="Empleado",
+        queryset=Empleado.objects.filter(Activo=True).select_related("idPersona"),
         required=False,
+        label="Empleado",
         widget=forms.Select(attrs={
-            'class': 'form-control',
-            'id': 'idEmpleado'
+            "class": "form-control",
+            "id": "idEmpleado"
         })
     )
 
@@ -57,9 +69,46 @@ class PremioAsignadoForm(forms.ModelForm):
         model = PremioAsignado
 
         fields = [
-            'empleado',          # Campo auxiliar
-            'id_KPI',
-            'idPremio',
-            'Monto_Liquidado',
-            'Fecha_Registro',
+            "empleado",
+            "id_KPI",
+            "idPremio",
+            "Monto_Liquidado",
+            "Fecha_Registro",
         ]
+
+        widgets = {
+
+            "id_KPI": forms.Select(attrs={
+                "class": "form-control",
+                "id": "id_KPI",
+            }),
+
+            "idPremio": forms.Select(attrs={
+                "class": "form-control",
+                "id": "idPremio",
+            }),
+
+            "Monto_Liquidado": forms.NumberInput(attrs={
+                "class": "form-control",
+                "id": "Monto_Liquidado",
+                "readonly": True,
+            }),
+
+            "Fecha_Registro": forms.DateInput(attrs={
+                "class": "form-control",
+                "type": "date",
+            }),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Fecha actual por defecto
+        if not self.instance.pk:
+            self.fields["Fecha_Registro"].initial = timezone.now().date()
+
+        # Inicialmente el combo de KPI queda vacío.
+        # Luego el JavaScript lo llena cuando se selecciona un empleado.
+        self.fields["id_KPI"].queryset = KpiCabecera.objects.none()
+
+        self.fields["idPremio"].queryset = Premio.objects.all().order_by("Descripcion")
