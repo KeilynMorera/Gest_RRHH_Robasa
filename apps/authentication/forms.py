@@ -1,5 +1,5 @@
 from django import forms
-from .models import AccionPersonal, Empleado
+from .models import AccionPersonal, Departamento, Empleado
 from .models import Premio, KpiCategoria, Cuadrante9BoxPerfil
 from .models import Onboarding
 from .models import PremioAsignado
@@ -117,14 +117,41 @@ class PremioAsignadoForm(forms.ModelForm):
 
 
 # =========================================================
+# CAMPO PERSONALIZADO: Empleado con Departamento visible
+# =========================================================
+class EmpleadoConDepartamentoField(forms.ModelChoiceField):
+
+    def label_from_instance(self, obj):
+        return (
+            f"{obj.idPersona.Nombre_Completo} "
+            f"— {obj.idPuesto.idDepartamento.Nombre}"
+        )
+
+
+# =========================================================
 # FORMULARIO: Onboarding
 # =========================================================
 class OnboardingForm(forms.ModelForm):
 
+    idEmpleado = EmpleadoConDepartamentoField(
+        queryset=Empleado.objects.select_related(
+            "idPersona",
+            "idPuesto__idDepartamento"
+        ).order_by(
+            "idPuesto__idDepartamento",
+            "idPersona__Nombre_Completo"
+        ),
+        widget=forms.Select(
+            attrs={
+                "class": "form-select",
+                "id": "idEmpleado"
+            }
+        ),
+        label="Empleado"
+    )
+
     class Meta:
-
         model = Onboarding
-
         fields = [
             "idEmpleado",
             "idDepartamento",
@@ -132,14 +159,6 @@ class OnboardingForm(forms.ModelForm):
         ]
 
         widgets = {
-
-            "idEmpleado": forms.Select(
-                attrs={
-                    "class": "form-select",
-                    "id": "idEmpleado"
-                }
-            ),
-
             "idDepartamento": forms.Select(
                 attrs={
                     "class": "form-select",
@@ -153,15 +172,14 @@ class OnboardingForm(forms.ModelForm):
                     "class": "form-control"
                 }
             )
-
         }
 
         labels = {
-
-            "idEmpleado": "Empleado",
-
             "idDepartamento": "Departamento",
-
             "Fecha_Inicio": "Fecha de Inicio"
-
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["idDepartamento"].queryset = Departamento.objects.all()

@@ -183,40 +183,7 @@
                       <span class="req">*</span>
                     </label>
 
-                    <select
-                      id="idDepartamento"
-                      name="idDepartamento"
-                      required
-                      {%
-                      if
-                      paso_dos_habilitado
-                      %}disabled{%
-                      endif
-                      %}
-                    >
-                      <option value="">Seleccione...</option>
-
-                      {% for departamento in departamentos %}
-
-                      <option
-                        value="{{ departamento.idDepartamento }}"
-                        {%
-                        if
-                        form.instance.idDepartamento
-                        and
-                        form.instance.idDepartamento.idDepartamento=""
-                        ="departamento.idDepartamento"
-                        %}
-                        selected
-                        {%
-                        endif
-                        %}
-                      >
-                        {{ departamento.Nombre_Departamento }}
-                      </option>
-
-                      {% endfor %}
-                    </select>
+                    {{ form.idDepartamento }}
                   </div>
 
                   <!-- Empleado -->
@@ -227,36 +194,7 @@
                       <span class="req">*</span>
                     </label>
 
-                    <select
-                      id="idEmpleado"
-                      name="idEmpleado"
-                      required
-                      {%
-                      if
-                      paso_dos_habilitado
-                      %}disabled{%
-                      endif
-                      %}
-                    >
-                      {% if onboarding %}
-
-                      <option
-                        value="{{ onboarding.idEmpleado.idEmpleado }}"
-                        selected
-                      >
-                        {{ onboarding.idEmpleado.idPersona.Nombre }} {{
-                        onboarding.idEmpleado.idPersona.Apellido1 }} {{
-                        onboarding.idEmpleado.idPersona.Apellido2 }}
-                      </option>
-
-                      {% else %}
-
-                      <option value="">
-                        Seleccione un departamento primero...
-                      </option>
-
-                      {% endif %}
-                    </select>
+                    {{ form.idEmpleado }}
                   </div>
 
                   <!-- Fecha -->
@@ -267,19 +205,7 @@
                       <span class="req">*</span>
                     </label>
 
-                    <input
-                      type="date"
-                      id="Fecha_Inicio"
-                      name="Fecha_Inicio"
-                      value="{{ form.Fecha_Inicio.value|default:'' }}"
-                      required
-                      {%
-                      if
-                      paso_dos_habilitado
-                      %}disabled{%
-                      endif
-                      %}
-                    />
+                    {{ form.Fecha_Inicio }}
                   </div>
                 </div>
 
@@ -300,7 +226,6 @@
             <!-- ===================================================== -->
             <!-- FORMULARIO 2 - DETALLE -->
             <!-- ===================================================== -->
-
             {% if onboarding %}
 
             <form
@@ -414,5 +339,10 @@
         </footer>
       </main>
     </div>
+
+    <script>
+      window.urlEmpleadosPorDepartamento = "...";
+    </script>
+    <script src="/static/js/onboarding.js"></script>
   </body>
 </html>

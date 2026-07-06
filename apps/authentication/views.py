@@ -2958,6 +2958,7 @@ def historial_kpi_view(request):
 
 # =========================================================
 # GUARDAR CABECERA DEL ONBOARDING
+# Selección de Departamento y Empleado, y guardado en BD
 # =========================================================
 def registrar_onboarding(request, pk=None):
 
@@ -2980,7 +2981,12 @@ def registrar_onboarding(request, pk=None):
 
         if form.is_valid():
 
-            nuevo = form.save()
+            nuevo = form.save(commit=False)
+
+            # Los campos idEmpleado e idDepartamento ya vienen
+            # asignados directamente por el ModelForm gracias a
+            # los ModelChoiceField del formulario.
+            nuevo.save()
 
             messages.success(
                 request,
@@ -3009,10 +3015,6 @@ def registrar_onboarding(request, pk=None):
         "form": form,
         "onboarding": onboarding,
         "paso_dos_habilitado": paso_dos_habilitado,
-        "departamentos": Departamento.objects.all(),
-        "empleados": Empleado.objects.select_related(
-            "idPersona"
-        ).all()
     }
 
     return render(
@@ -3020,52 +3022,6 @@ def registrar_onboarding(request, pk=None):
         "onboarding.html",
         context
     )
-
-
-# =========================================================
-# OBTENER EMPLEADOS POR DEPARTAMENTO
-# =========================================================
-def obtener_empleados_departamento(request):
-
-    id_departamento = request.GET.get("idDepartamento")
-
-    empleados = Empleado.objects.filter(
-
-        idDepartamento=id_departamento
-
-    ).select_related(
-
-        "idPersona"
-
-    ).order_by(
-
-        "idPersona__Nombre"
-
-    )
-
-    lista = []
-
-    for empleado in empleados:
-
-        lista.append({
-
-            "idEmpleado": empleado.idEmpleado,
-
-            "nombre": (
-                f"{empleado.idPersona.Nombre} "
-                f"{empleado.idPersona.Apellido1} "
-                f"{empleado.idPersona.Apellido2}"
-            )
-
-        })
-
-    return JsonResponse({
-
-        "success": True,
-
-        "empleados": lista
-
-    })
 
 
 def usuarios_view(request):

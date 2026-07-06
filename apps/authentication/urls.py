@@ -116,7 +116,6 @@ urlpatterns = [
 
 
 
-
     # Ruta para el dashboard (pantalla de resgistro usuarios con permisos)
     path('usuarios.html/', views.usuarios_view, name='usuarios'),
     # Ruta para el dashboard (pantalla de configuraciones del sistema)
