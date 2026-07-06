@@ -1677,7 +1677,7 @@ class Onboarding(models.Model):
     idDepartamento = models.ForeignKey(
         Departamento,
         on_delete=models.PROTECT,
-        db_column='id_Departamento',   # ✅ Coincide exactamente con la BD (typo incluido)
+        db_column='id_Depertamento',   # ✅ CON el typo, confirmado con INFORMATION_SCHEMA
         related_name='onboardings'
     )
 
