@@ -1726,6 +1726,7 @@ class OnActividad(models.Model):
         return self.Actividad
     
 
+
 # =========================================================
 # TABLA: Onboarding_Actividad
 # Detalle de actividades del proceso de Onboarding
@@ -1786,3 +1787,36 @@ class OnboardingActividad(models.Model):
             f"Onboarding #{self.id_Onboarding_id} - "
             f"{self.idActividad.Actividad}"
         )
+    
+
+
+# =========================================================
+# TABLA: Causa_Salida
+# Catálogo de causas de salida de la empresa
+# =========================================================
+class CausaSalida(models.Model):
+
+    idCausa = models.AutoField(
+        primary_key=True,
+        db_column='idCausa'
+    )
+
+    Causa = models.CharField(
+        max_length=150,
+        db_column='Causa'
+    )
+
+    Categoria = models.CharField(
+        max_length=80,
+        db_column='Categoria'
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'Causa_Salida'
+        verbose_name = 'Causa de Salida'
+        verbose_name_plural = 'Causas de Salida'
+        ordering = ['Categoria', 'Causa']
+
+    def __str__(self):
+        return f"{self.Categoria} - {self.Causa}"
