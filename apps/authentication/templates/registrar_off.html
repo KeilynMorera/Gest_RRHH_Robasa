@@ -194,7 +194,7 @@
           <!-- Separador -->
           <i class="fas fa-chevron-right sep"></i>
 
-          !-- Sección -->
+          <!-- Sección -->
           <a href="{% url 'elec_Offboarding' %}"> Offboarding/Salidas </a>
 
           <!-- Separador -->
@@ -210,6 +210,7 @@
               <div class="form-card-icon">
                 <i class="fas fa-user-minus"></i>
               </div>
+
               <div>
                 <h2 class="form-card-title">
                   Formulario de Baja de Colaborador
@@ -217,86 +218,66 @@
               </div>
             </div>
           </div>
+
           <div class="form-body">
-            <form action="#" method="POST">
+            <form
+              method="POST"
+              action="{% if offboarding %}{% url 'gestionar_offboarding' offboarding.id_Offboarding %}{% else %}{% url 'crear_offboarding' %}{% endif %}"
+            >
               {% csrf_token %}
+
               <div class="form-grid">
+                <!-- Empleado -->
                 <div class="field">
-                  <label for="idEmpleado"
-                    ><i class="fas fa-user-tie"></i> Colaborador Egresante
-                    <span>*</span></label
-                  >
-                  <select id="idEmpleado" name="idEmpleado" required>
-                    <option value="" disabled selected>
-                      Seleccione el empleado...
-                    </option>
-                    <option value="1">Juan Pérez - Almacén</option>
-                    <option value="2">Sofía Castro - Contabilidad</option>
-                  </select>
+                  <label for="{{ form.idEmpleado.id_for_label }}">
+                    <i class="fas fa-user-tie"></i>
+                    Colaborador Egresante
+                    <span>*</span>
+                  </label>
+
+                  {{ form.idEmpleado }}
                 </div>
 
+                <!-- Causa -->
                 <div class="field">
-                  <label for="idCausa"
-                    ><i class="fas fa-gavel"></i> Causa de Salida (Catálogo)
-                    <span>*</span></label
-                  >
-                  <select id="idCausa" name="idCausa" required>
-                    <option value="" disabled selected>
-                      Seleccione la causa legal...
-                    </option>
-                    <optgroup label="Voluntaria">
-                      <option value="10">Renuncia Voluntaria</option>
-                      <option value="11">Jubilación</option>
-                    </optgroup>
-                    <optgroup label="Involuntaria">
-                      <option value="20">
-                        Despido con Responsabilidad Patronal
-                      </option>
-                      <option value="21">
-                        Despido sin Responsabilidad Patronal
-                      </option>
-                      <option value="22">
-                        Fin de Contrato por Tiempo Determinado
-                      </option>
-                    </optgroup>
-                    <optgroup label="Casos Fuerza Mayor">
-                      <option value="30">Defunción</option>
-                    </optgroup>
-                  </select>
+                  <label for="{{ form.idCausa.id_for_label }}">
+                    <i class="fas fa-gavel"></i>
+                    Causa de Salida
+                    <span>*</span>
+                  </label>
+
+                  {{ form.idCausa }}
                 </div>
 
+                <!-- Fecha -->
                 <div class="field">
-                  <label for="Fecha_Salida"
-                    ><i class="fas fa-calendar-day"></i> Fecha Efectiva de
-                    Salida <span>*</span></label
-                  >
-                  <input
-                    type="date"
-                    id="Fecha_Salida"
-                    name="Fecha_Salida"
-                    required
-                  />
+                  <label for="{{ form.Fecha_Salida.id_for_label }}">
+                    <i class="fas fa-calendar-day"></i>
+                    Fecha Efectiva de Salida
+                    <span>*</span>
+                  </label>
+
+                  {{ form.Fecha_Salida }}
                 </div>
               </div>
 
+              <!-- Descripción -->
               <div class="field" style="margin-bottom: 24px">
-                <label for="Descrip_Causa"
-                  ><i class="fas fa-comment-alt-file"></i> Observaciones y
-                  Detalles de la Entrevista de Salida</label
-                >
-                <textarea
-                  id="Descrip_Causa"
-                  name="Descrip_Causa"
-                  rows="4"
-                  placeholder="Redacte minuciosamente los acuerdos, comentarios de la entrevista de egreso o motivos de despido..."
-                ></textarea>
+                <label for="{{ form.Descrip_Causa.id_for_label }}">
+                  <i class="fas fa-comment-alt"></i>
+                  Observaciones y Detalles de la Entrevista de Salida
+                </label>
+
+                {{ form.Descrip_Causa }}
               </div>
 
               <div class="form-footer">
                 <button type="reset" class="btn btn-ghost">Limpiar</button>
+
                 <button type="submit" class="btn btn-primary">
-                  <i class="fas fa-arrow-right-to-bracket"></i> Iniciar Proceso
-                  de Salida
+                  <i class="fas fa-arrow-right-to-bracket"></i>
+                  {% if offboarding %} Actualizar Proceso {% else %} Iniciar
+                  Proceso de Salida {% endif %}
                 </button>
               </div>
             </form>

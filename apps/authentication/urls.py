@@ -113,6 +113,12 @@ urlpatterns = [
     # Ruta para el dashboard (pantalla de onboarding)
     path("onboarding/", views.registrar_onboarding, name="crear_onboarding"),
 
+    # Ruta para el dashboard (pantalla de eleccion de offboarding)
+    path('elec_Offboarding.html/', views.elec_Offboarding_view, name='elec_Offboarding'),
+    
+    # Ruta para el dashboard (pantalla de registro de offboarding)
+    path("offboarding/", views.registrar_offboarding, name="crear_offboarding"),
+
 
 
 
@@ -130,10 +136,7 @@ urlpatterns = [
     
     
     
-    # Ruta para el dashboard (pantalla de eleccion de offboarding)
-    path('elec_Offboarding.html/', views.elec_Offboarding_view, name='elec_Offboarding'),
-    # Ruta para el dashboard (pantalla de registro de offboarding)
-    path('registrar_off.html/', views.registrar_off_view, name='registrar_off'),
+    
     # Ruta para el dashboard (pantalla de checklist de offboarding)
     path('checklist_off.html/', views.checklist_off_view, name='checklist_off'),
    

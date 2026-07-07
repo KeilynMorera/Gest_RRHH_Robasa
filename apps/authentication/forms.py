@@ -1,5 +1,6 @@
 from django import forms
 from .models import PremioAsignado
+from itertools import groupby
 
 from .models import *
 
@@ -242,3 +243,114 @@ class OnboardingActividadForm(forms.ModelForm):
             "Fecha_Realizada": "Fecha Realizada",
             "Observaciones": "Observaciones"
         }
+
+
+
+# =========================================================
+# FORMULARIO: Offboarding
+# =========================================================
+class OffboardingForm(forms.ModelForm):
+
+    class Meta:
+
+        model = Offboarding
+
+        fields = [
+            "idEmpleado",
+            "idCausa",
+            "Fecha_Salida",
+            "Descrip_Causa"
+        ]
+
+        widgets = {
+
+            "idEmpleado": forms.Select(
+                attrs={
+                    "class": "form-select",
+                    "id": "idEmpleado"
+                }
+            ),
+
+            "idCausa": forms.Select(
+                attrs={
+                    "class": "form-select",
+                    "id": "idCausa"
+                }
+            ),
+
+            "Fecha_Salida": forms.DateInput(
+                attrs={
+                    "type": "date",
+                    "class": "form-control"
+                }
+            ),
+
+            "Descrip_Causa": forms.Textarea(
+                attrs={
+                    "class": "form-control",
+                    "rows": 3,
+                    "placeholder": "Describa brevemente el motivo de la salida..."
+                }
+            )
+
+        }
+
+        labels = {
+
+            "idEmpleado": "Empleado",
+
+            "idCausa": "Causa de Salida",
+
+            "Fecha_Salida": "Fecha de Salida",
+
+            "Descrip_Causa": "Descripción de la Causa"
+
+        }
+
+    def __init__(self, *args, **kwargs):
+
+        super().__init__(*args, **kwargs)
+
+        # =====================================================
+        # EMPLEADOS
+        # =====================================================
+        self.fields["idEmpleado"].queryset = Empleado.objects.select_related(
+            "idPersona"
+        ).order_by(
+            "idPersona__Nombre_Completo"
+        )
+
+        # =====================================================
+        # CAUSAS DE SALIDA
+        # =====================================================
+        self.fields["idCausa"].queryset = CausaSalida.objects.order_by(
+            "Categoria",
+            "Causa"
+        )
+
+        # Agrupar las causas por categoría
+        self.fields["idCausa"].choices = [
+            ("", "Seleccione la causa legal...")
+        ]
+
+        categorias = {}
+
+        for causa in self.fields["idCausa"].queryset:
+
+            categorias.setdefault(
+                causa.Categoria,
+                []
+            ).append(
+                (
+                    causa.idCausa,
+                    causa.Causa
+                )
+            )
+
+        self.fields["idCausa"].choices += [
+            (
+                categoria,
+                opciones
+            )
+            for categoria, opciones in categorias.items()
+        ]

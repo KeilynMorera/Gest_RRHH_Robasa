@@ -203,6 +203,13 @@ urlpatterns = [
     path("onboarding/<int:pk>/", views.registrar_onboarding, name="gestionar_onboarding"),
 
     path("onboarding/<int:pk>/detalle/", views.guardar_detalle_onboarding, name="guardar_detalle_onboarding"),
+
+
+    # Crear proceso
+    path("offboarding/", views.registrar_offboarding, name="crear_offboarding"),
+
+    # Editar / gestionar proceso existente
+    path("offboarding/<int:pk>/", views.registrar_offboarding,name="gestionar_offboarding"),
 ]
 
 

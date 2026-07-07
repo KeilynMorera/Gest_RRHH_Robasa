@@ -3069,6 +3069,77 @@ def guardar_detalle_onboarding(request, pk):
     )
 
 
+
+def elec_Offboarding_view(request):
+    return render(request, 'elec_Offboarding.html')
+
+
+# =========================================================
+# GUARDAR CABECERA DEL OFFBOARDING
+# Proceso de salida de un empleado
+# =========================================================
+def registrar_offboarding(request, pk=None):
+
+    offboarding = None
+    paso_dos_habilitado = False
+
+    if pk:
+
+        offboarding = get_object_or_404(
+            Offboarding,
+            pk=pk
+        )
+
+        paso_dos_habilitado = True
+
+    if request.method == "POST":
+
+        form = OffboardingForm(
+            request.POST,
+            instance=offboarding
+        )
+
+        if form.is_valid():
+
+            nuevo = form.save()
+
+            messages.success(
+                request,
+                f"Proceso de Offboarding #{nuevo.id_Offboarding} creado correctamente."
+            )
+
+            return redirect(
+                "gestionar_offboarding",
+                pk=nuevo.id_Offboarding
+            )
+
+        else:
+
+            messages.error(
+                request,
+                "Revise los datos del formulario."
+            )
+
+    else:
+
+        form = OffboardingForm(
+            instance=offboarding
+        )
+
+    context = {
+        "form": form,
+        "offboarding": offboarding,
+        "paso_dos_habilitado": paso_dos_habilitado,
+    }
+
+    return render(
+        request,
+        "registrar_off.html",
+        context
+    )
+
+
+
 def usuarios_view(request):
     return render(request, 'usuarios.html')
 
@@ -3094,11 +3165,8 @@ def reportes_view(request):
 
 
 
-def elec_Offboarding_view(request):
-    return render(request, 'elec_Offboarding.html')
 
-def registrar_off_view(request):
-    return render(request, 'registrar_off.html')
+
 
 def checklist_off_view(request):
     return render(request, 'checklist_off.html')

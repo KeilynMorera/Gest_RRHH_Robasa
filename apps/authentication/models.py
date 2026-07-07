@@ -1820,3 +1820,52 @@ class CausaSalida(models.Model):
 
     def __str__(self):
         return f"{self.Categoria} - {self.Causa}"
+    
+
+# =========================================================
+# TABLA: Offboarding
+# Proceso de salida de un empleado
+# =========================================================
+class Offboarding(models.Model):
+
+    id_Offboarding = models.AutoField(
+        primary_key=True,
+        db_column='id_Offboarding'
+    )
+
+    Fecha_Salida = models.DateField(
+        db_column='Fecha_Salida'
+    )
+
+    Descrip_Causa = models.TextField(
+        db_column='Descrip_Causa'
+    )
+
+    # Empleado que sale de la empresa
+    idEmpleado = models.ForeignKey(
+        Empleado,
+        on_delete=models.CASCADE,
+        db_column='idEmpleado',
+        related_name='offboardings'
+    )
+
+    # Causa de la salida
+    idCausa = models.ForeignKey(
+        CausaSalida,
+        on_delete=models.PROTECT,
+        db_column='idCausa',
+        related_name='offboardings'
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'Offboarding'
+        verbose_name = 'Offboarding'
+        verbose_name_plural = 'Offboardings'
+        ordering = ['-Fecha_Salida']
+
+    def __str__(self):
+        return (
+            f"Offboarding #{self.id_Offboarding} - "
+            f"{self.idEmpleado}"
+        )
