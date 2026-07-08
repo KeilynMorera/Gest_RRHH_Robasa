@@ -32,13 +32,7 @@ urlpatterns = [
     # URLs de authentication
     path('', include('apps.authentication.urls')),
 
-    # Registro de personas
-    path('personas/', views.registrar_persona, name='personas'),
-    #Modificar personas
-    path('personas/editar/<int:id_persona>/', views.editar_persona, name='editar_persona'),
-    # Eliminar personas
-    path('personas/eliminar/<int:id_persona>/', views.eliminar_persona, name='eliminar_persona'),
-
+    
     # Registro de empresas
     path('empresas/', views.registrar_empresa, name='empresas'),
     #  Modificar empresas
@@ -74,6 +68,17 @@ urlpatterns = [
     path('compensacion-puesto/', views.compensacion_puesto_view, name='compensacion_puesto'),
     path('compensacion-puesto/editar/<int:pk>/', views.editar_compensacion_puesto_view, name='editar_compensacion_puesto'),
     path('compensacion-puesto/eliminar/<int:pk>/', views.eliminar_compensacion_puesto_view, name='eliminar_compensacion_puesto'), #Se puede quitar más adelante
+
+
+    # Ruta para el dashboard (pantalla de eleccion (Personas o Empleado))
+    path('per_emp.html/', views.per_emp_view, name='per_emp'),
+
+    # Registro de personas
+    path('personas/', views.registrar_persona, name='personas'),
+    #Modificar personas
+    path('personas/editar/<int:id_persona>/', views.editar_persona, name='editar_persona'),
+    # Eliminar personas
+    path('personas/eliminar/<int:id_persona>/', views.eliminar_persona, name='eliminar_persona'),
 
 
     # =========================================================
@@ -205,11 +210,23 @@ urlpatterns = [
     path("onboarding/<int:pk>/detalle/", views.guardar_detalle_onboarding, name="guardar_detalle_onboarding"),
 
 
+
+
+    # Ruta para el dashboard (pantalla de eleccion de offboarding)
+    path('elec_Offboarding.html/', views.elec_Offboarding_view, name='elec_Offboarding'),
+
     # Crear proceso
     path("offboarding/", views.registrar_offboarding, name="crear_offboarding"),
 
     # Editar / gestionar proceso existente
     path("offboarding/<int:pk>/", views.registrar_offboarding,name="gestionar_offboarding"),
+
+    # Dashboard del checklist
+    # =========================================================
+    # CHECKLIST DEL OFFBOARDING
+    # =========================================================
+    path("offboarding/guardar-checklist/", views.guardar_checklist_offboarding, name="guardar_checklist_offboarding"),
+    
 ]
 
 

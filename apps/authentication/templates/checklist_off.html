@@ -27,9 +27,6 @@
         <!-- ======================================================
              MENÚ DE NAVEGACIÓN
         ====================================================== -->
-        <!-- =========================================================
-             MENÚ DE NAVEGACIÓN
-        ========================================================= -->
         <nav class="menu">
           <!-- Inicio -->
           <a href="{% url 'inicio' %}">
@@ -204,115 +201,144 @@
               <h3>Nueva Actividad</h3>
             </div>
 
-            <form method="POST" action="#">
+            <form
+              method="POST"
+              action="{% url 'guardar_checklist_offboarding' %}"
+            >
               {% csrf_token %}
 
-              <div class="field-block">
-                <label for="Num_Etapa"
-                  >Número de Etapa <span class="req">*</span></label
-                >
-                <input
-                  type="number"
-                  id="Num_Etapa"
-                  name="Num_Etapa"
-                  class="input-style"
-                  placeholder="Ej: 1"
-                  min="1"
-                  max="255"
-                  required
-                />
+              <!-- =====================================================
+                    CABECERA DEL OFFBOARDING
+              ===================================================== -->
+
+              <div class="card-panel">
+                <div class="panel-header">
+                  <i class="fas fa-door-open"></i>
+
+                  <h3>Información del proceso de salida</h3>
+                </div>
+
+                <div class="field-block">
+                  <label>
+                    Proceso de Offboarding
+                    <span class="req">*</span>
+                  </label>
+
+                  <select name="id_Offboarding" required>
+                    <option value="">Seleccione una salida...</option>
+
+                    {% for off in offboardings %}
+
+                    <option value="{{ off.id_Offboarding }}">
+                      {{ off.idEmpleado }} - Salida {{ off.Fecha_Salida }}
+                    </option>
+
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div class="field-block">
+                  <label>
+                    Estado del proceso
+                    <span class="req">*</span>
+                  </label>
+
+                  <select name="id_Estatus_Vacante" required>
+                    <option value="">Seleccione estado</option>
+
+                    {% for estado in estados %}
+
+                    <option value="{{ estado.id_Estatus_Vacante }}">
+                      {{ estado.Detalle }}
+                    </option>
+
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div class="field-block">
+                  <label> Fecha de completado </label>
+
+                  <input type="date" name="Fecha_Comp" />
+                </div>
+
+                <div class="field-block">
+                  <label> Observaciones generales </label>
+
+                  <textarea
+                    name="Observacion"
+                    maxlength="500"
+                    rows="4"
+                    placeholder="Ingrese observaciones del proceso..."
+                  ></textarea>
+                </div>
               </div>
 
-              <div class="field-block">
-                <label for="Etapa"
-                  >Nombre de la Etapa <span class="req">*</span></label
-                >
-                <input
-                  type="text"
-                  id="Etapa"
-                  name="Etapa"
-                  class="input-style"
-                  placeholder="Ej: Tecnologías de Información"
-                  maxlength="80"
-                  required
-                />
-              </div>
+              <!-- =====================================================
+                    SELECCION DE ACTIVIDADES
+              ===================================================== -->
+              <div class="card-panel">
+                <div class="panel-header">
+                  <i class="fas fa-list-check"></i>
 
-              <div class="field-block">
-                <label for="Actividad"
-                  >Descripción de la Actividad <span class="req">*</span></label
-                >
-                <textarea
-                  id="Actividad"
-                  name="Actividad"
-                  class="textarea-style"
-                  placeholder="Escriba la acción obligatoria a realizar..."
-                  maxlength="300"
-                  required
-                ></textarea>
+                  <h3>Actividades del Checklist</h3>
+                </div>
+
+                <div class="data-table-container">
+                  <table class="custom-table">
+                    <thead>
+                      <tr>
+                        <th style="width: 70px">Seleccionar</th>
+
+                        <th>Etapa</th>
+
+                        <th>Actividad</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {% for actividad in catalogo %}
+
+                      <tr>
+                        <td style="text-align: center">
+                          <input
+                            type="checkbox"
+                            name="actividades[]"
+                            value="{{ actividad.idCatalogo }}"
+                          />
+                        </td>
+
+                        <td>
+                          <span class="badge-num">
+                            {{ actividad.Num_Etapa }}
+                          </span>
+
+                          {{ actividad.Etapa }}
+                        </td>
+
+                        <td>{{ actividad.Actividad }}</td>
+                      </tr>
+
+                      {% empty %}
+
+                      <tr>
+                        <td colspan="3">
+                          No existen actividades configuradas.
+                        </td>
+                      </tr>
+
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
               </div>
 
               <button type="submit" class="btn-block">
-                <i class="fas fa-floppy-disk"></i> Guardar en Catálogo
+                <i class="fas fa-save"></i>
+
+                Guardar Checklist
               </button>
             </form>
-          </div>
-
-          <div class="card-panel">
-            <div class="panel-header">
-              <i class="fas fa-folder-open"></i>
-              <h3>Actividades Registradas en el Sistema</h3>
-            </div>
-
-            <div class="data-table-container">
-              <table class="custom-table">
-                <thead>
-                  <tr>
-                    <th style="width: 70px; text-align: center">N° Etapa</th>
-                    <th style="width: 200px">Etapa</th>
-                    <th>Actividad Operativa</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td style="text-align: center">
-                      <span class="badge-num">1</span>
-                    </td>
-                    <td style="font-weight: 600; color: #26317a">
-                      Notificación y Legal
-                    </td>
-                    <td>
-                      Firmar carta de rescisión de contrato o aceptación de
-                      renuncia.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="text-align: center">
-                      <span class="badge-num">1</span>
-                    </td>
-                    <td style="font-weight: 600; color: #26317a">
-                      Notificación y Legal
-                    </td>
-                    <td>
-                      Envío de aviso de baja a la Caja Costarricense de Seguro
-                      Social (CCSS).
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="text-align: center">
-                      <span class="badge-num">2</span>
-                    </td>
-                    <td style="font-weight: 600; color: #26317a">
-                      Tecnologías de Información
-                    </td>
-                    <td>
-                      Revocación de accesos al ERP, correos corporativos y bases
-                      de datos.
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
           </div>
         </div>
 

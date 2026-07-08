@@ -3130,6 +3130,10 @@ def registrar_offboarding(request, pk=None):
         "form": form,
         "offboarding": offboarding,
         "paso_dos_habilitado": paso_dos_habilitado,
+        "offboardings": Offboarding.objects.select_related(
+            "idEmpleado__idPersona",
+            "idCausa"
+        ).order_by("-Fecha_Salida")
     }
 
     return render(
@@ -3137,6 +3141,160 @@ def registrar_offboarding(request, pk=None):
         "registrar_off.html",
         context
     )
+
+
+def guardar_checklist_offboarding(request):
+
+    if request.method == "POST":
+
+        try:
+
+            id_offboarding = request.POST.get(
+                "id_Offboarding"
+            )
+
+            id_estatus = request.POST.get(
+                "id_Estatus_Vacante"
+            )
+
+            fecha_comp = request.POST.get(
+                "Fecha_Comp"
+            )
+
+            observacion = request.POST.get(
+                "Observacion"
+            )
+
+
+            offboarding = get_object_or_404(
+                Offboarding,
+                id_Offboarding=id_offboarding
+            )
+
+
+            estado = get_object_or_404(
+                Estatus,
+                id_Estatus_Vacante=id_estatus
+            )
+
+
+            actividades = request.POST.getlist(
+                "actividades[]"
+            )
+
+
+            if not actividades:
+
+                messages.warning(
+                    request,
+                    "Debe seleccionar al menos una actividad."
+                )
+
+
+            else:
+
+                registros_creados = 0
+
+
+                for id_catalogo in actividades:
+
+
+                    actividad = get_object_or_404(
+                        OffboardingCatalogo,
+                        idCatalogo=id_catalogo
+                    )
+
+
+                    try:
+
+                        OffboardingChecklist.objects.create(
+
+                            id_Offboarding=offboarding,
+
+                            idCatalogo=actividad,
+
+                            id_Estatus_Vacante=estado,
+
+                            Fecha_Comp=fecha_comp
+                            if fecha_comp
+                            else None,
+
+                            Observacion=observacion
+
+                        )
+
+
+                        registros_creados += 1
+
+
+                    except IntegrityError:
+
+                        continue
+
+
+
+                messages.success(
+                    request,
+                    f"Checklist generado correctamente. "
+                    f"Actividades creadas: {registros_creados}"
+                )
+
+
+
+        except Exception as e:
+
+            messages.error(
+                request,
+                f"Error al generar checklist: {str(e)}"
+            )
+
+
+
+    # =====================================================
+    # DATOS QUE NECESITA checklist_off.html
+    # =====================================================
+
+    context = {
+
+
+        # Procesos de salida para seleccionar
+        "offboardings": Offboarding.objects.select_related(
+            "idEmpleado"
+        ).all().order_by(
+            "-Fecha_Salida"
+        ),
+
+
+        # Estados disponibles
+        "estados": Estatus.objects.all(),
+
+
+        # Catálogo de actividades con checkbox
+        "catalogo": OffboardingCatalogo.objects.all().order_by(
+            "Num_Etapa",
+            "idCatalogo"
+        ),
+
+
+        # Registros ya creados
+        "checklists": OffboardingChecklist.objects.select_related(
+            "id_Offboarding",
+            "idCatalogo",
+            "id_Estatus_Vacante"
+        ).all().order_by(
+            "-Fecha_Asignacion"
+        )
+
+    }
+
+
+    return render(
+        request,
+        "checklist_off.html",
+        context
+    )
+
+
 
 
 
@@ -3148,25 +3306,3 @@ def configuraciones_view(request):
 
 def reportes_view(request):
     return render(request, 'reportes.html')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def checklist_off_view(request):
-    return render(request, 'checklist_off.html')

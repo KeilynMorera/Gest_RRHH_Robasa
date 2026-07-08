@@ -306,47 +306,68 @@
               </tr>
             </thead>
             <tbody>
+              {% for proceso in offboardings %}
               <tr>
-                <td><strong>#OFF-104</strong></td>
-                <td>Juan Pérez</td>
                 <td>
-                  <span class="badge-category bg-voluntaria">Voluntaria</span> -
-                  Renuncia
+                  <strong>#OFF-{{ proceso.id_Offboarding }}</strong>
                 </td>
-                <td>30/05/2026</td>
+
+                <td>{{ proceso.idEmpleado.idPersona.Nombre_Completo }}</td>
+
                 <td>
+                  {% if proceso.idCausa.Categoria == "Voluntaria" %}
+                  <span class="badge-category bg-voluntaria">
+                    {{ proceso.idCausa.Categoria }}
+                  </span>
+
+                  {% elif proceso.idCausa.Categoria == "Involuntaria" %}
+                  <span class="badge-category bg-involuntaria">
+                    {{ proceso.idCausa.Categoria }}
+                  </span>
+
+                  {% else %}
+                  <span class="badge-category">
+                    {{ proceso.idCausa.Categoria }}
+                  </span>
+                  {% endif %} - {{ proceso.idCausa.Causa }}
+                </td>
+
+                <td>{{ proceso.Fecha_Salida|date:"d/m/Y" }}</td>
+
+                <td>
+                  {% if proceso.id_Offboarding == offboarding.id_Offboarding %}
+
                   <a
-                    href="{% url 'checklist_off' %}"
+                    href="{% url 'gestionar_offboarding' proceso.id_Offboarding %}"
                     class="btn btn-primary"
                     style="padding: 4px 10px; font-size: 11px"
-                    ><i class="fas fa-list-check"></i> Ir al Checklist</a
                   >
-                </td>
-              </tr>
-              <tr>
-                <td><strong>#OFF-103</strong></td>
-                <td>Sofía Castro</td>
-                <td>
-                  <span class="badge-category bg-involuntaria"
-                    >Involuntaria</span
-                  >
-                  - Fin Contrato
-                </td>
-                <td>15/05/2026</td>
-                <td>
+                    <i class="fas fa-list-check"></i>
+                    Continuar
+                  </a>
+
+                  {% else %}
+
                   <a
-                    href="{% url 'checklist_off' %}"
+                    href="{% url 'gestionar_offboarding' proceso.id_Offboarding %}"
                     class="btn btn-ghost"
-                    style="
-                      padding: 4px 10px;
-                      font-size: 11px;
-                      background: #e8ecf6;
-                      border: none;
-                    "
-                    ><i class="fas fa-check-double"></i> Completado</a
-                  >
+                    style="padding: 4px 10px; font-size: 11px"
+
+                  >{% endif %}
                 </td>
               </tr>
+
+              {% empty %}
+
+              <tr>
+                <td colspan="5" style="text-align: center; padding: 20px">
+                  <i class="fas fa-door-open"></i>
+
+                  No existen procesos de Offboarding registrados.
+                </td>
+              </tr>
+
+              {% endfor %}
             </tbody>
           </table>
         </div>

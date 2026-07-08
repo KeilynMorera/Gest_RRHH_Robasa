@@ -119,7 +119,8 @@ urlpatterns = [
     # Ruta para el dashboard (pantalla de registro de offboarding)
     path("offboarding/", views.registrar_offboarding, name="crear_offboarding"),
 
-
+    path("offboarding/guardar-checklist/", views.guardar_checklist_offboarding, name="guardar_checklist_offboarding"),
+    
 
 
     # Ruta para el dashboard (pantalla de resgistro usuarios con permisos)
@@ -128,17 +129,6 @@ urlpatterns = [
     path('configuraciones.html/', views.configuraciones_view, name='configuraciones'),
     # Ruta para el dashboard (pantalla de configuraciones del sistema)
     path('reportes.html/', views.reportes_view, name='reportes'),
-    
-    # Ruta para el dashboard (pantalla de registro de KPI)
-    
-    
-    
-    
-    
-    
-    
-    # Ruta para el dashboard (pantalla de checklist de offboarding)
-    path('checklist_off.html/', views.checklist_off_view, name='checklist_off'),
    
 ]
 

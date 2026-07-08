@@ -1869,3 +1869,162 @@ class Offboarding(models.Model):
             f"Offboarding #{self.id_Offboarding} - "
             f"{self.idEmpleado}"
         )
+    
+
+# =========================================================
+# TABLA: Offboarding_Catalogo
+# Catálogo fijo de actividades predefinidas del proceso
+# de Offboarding.
+# Se carga una sola vez al instalar el sistema.
+# =========================================================
+
+class OffboardingCatalogo(models.Model):
+
+    idCatalogo = models.AutoField(
+        primary_key=True,
+        db_column="idCatalogo"
+    )
+
+
+    Num_Etapa = models.PositiveSmallIntegerField(
+        db_column="Num_Etapa"
+    )
+
+
+    Etapa = models.CharField(
+        max_length=80,
+        db_column="Etapa"
+    )
+
+
+    Actividad = models.CharField(
+        max_length=300,
+        db_column="Actividad"
+    )
+
+
+    class Meta:
+
+        managed = False
+
+        db_table = "Offboarding_Catalogo"
+
+        verbose_name = "Actividad del Catálogo Offboarding"
+
+        verbose_name_plural = "Actividades del Catálogo Offboarding"
+
+        ordering = [
+            "Num_Etapa",
+            "idCatalogo"
+        ]
+
+
+    def __str__(self):
+
+        return (
+            f"Etapa {self.Num_Etapa} - "
+            f"{self.Actividad}"
+        )
+    
+
+# =========================================================
+# TABLA: Offboarding_Checklist
+# Registro de cada actividad asignada dentro de un proceso
+# específico de Offboarding
+# =========================================================
+
+class OffboardingChecklist(models.Model):
+
+    id_Check = models.AutoField(
+        primary_key=True,
+        db_column="id_Check"
+    )
+
+
+    # Fecha en que la actividad fue asignada
+    Fecha_Asignacion = models.DateField(
+        db_column="Fecha_Asignacion"
+    )
+
+
+    # Fecha en que la actividad fue completada
+    Fecha_Comp = models.DateField(
+        db_column="Fecha_Comp",
+        null=True,
+        blank=True
+    )
+
+
+    # Comentarios / observaciones del seguimiento
+    Observacion = models.CharField(
+        max_length=500,
+        db_column="Observacion",
+        null=True,
+        blank=True
+    )
+
+
+    # Proceso de Offboarding al que pertenece
+    id_Offboarding = models.ForeignKey(
+        Offboarding,
+        on_delete=models.CASCADE,
+        db_column="id_Offboarding",
+        related_name="checklist"
+    )
+
+
+    # Actividad seleccionada del catálogo
+    idCatalogo = models.ForeignKey(
+        OffboardingCatalogo,
+        on_delete=models.PROTECT,
+        db_column="idCatalogo",
+        related_name="checklists"
+    )
+
+
+    # Estado actual de la actividad
+    id_Estatus_Vacante = models.ForeignKey(
+        Estatus,
+        on_delete=models.PROTECT,
+        db_column="id_Estatus_Vacante",
+        related_name="checklist_offboarding"
+    )
+
+
+    class Meta:
+
+        managed = False
+
+        db_table = "Offboarding_Checklist"
+
+        verbose_name = "Checklist de Offboarding"
+
+        verbose_name_plural = "Checklist de Offboarding"
+
+
+        # Replica el UNIQUE de SQL Server
+        constraints = [
+
+            models.UniqueConstraint(
+                fields=[
+                    "id_Offboarding",
+                    "idCatalogo"
+                ],
+                name="UQ_Offboarding_Catalogo"
+            )
+
+        ]
+
+
+        ordering = [
+            "Fecha_Asignacion",
+            "id_Check"
+        ]
+
+
+    def __str__(self):
+
+        return (
+            f"Offboarding #{self.id_Offboarding_id} - "
+            f"{self.idCatalogo.Actividad}"
+        )
