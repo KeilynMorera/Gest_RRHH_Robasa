@@ -3143,150 +3143,166 @@ def registrar_offboarding(request, pk=None):
     )
 
 
+from decimal import Decimal
+from django.db import transaction, IntegrityError
+from django.shortcuts import render, get_object_or_404
+from django.contrib import messages
+
+
 def guardar_checklist_offboarding(request):
 
     if request.method == "POST":
 
         try:
 
-            id_offboarding = request.POST.get(
-                "id_Offboarding"
-            )
+            id_offboarding = request.POST.get("id_Offboarding")
+            id_estatus = request.POST.get("id_Estatus_Vacante")
+            fecha_comp = request.POST.get("Fecha_Comp")
+            observacion = request.POST.get("Observacion")
 
-            id_estatus = request.POST.get(
-                "id_Estatus_Vacante"
-            )
+            actividades = request.POST.getlist("actividades[]")
 
-            fecha_comp = request.POST.get(
-                "Fecha_Comp"
-            )
+            # ===============================
+            # VALIDACIONES
+            # ===============================
 
-            observacion = request.POST.get(
-                "Observacion"
-            )
+            if not id_offboarding:
 
+                messages.error(
+                    request,
+                    "Debe seleccionar un proceso de Offboarding."
+                )
 
-            offboarding = get_object_or_404(
-                Offboarding,
-                id_Offboarding=id_offboarding
-            )
+            elif not id_estatus:
 
+                messages.error(
+                    request,
+                    "Debe seleccionar un estado."
+                )
 
-            estado = get_object_or_404(
-                Estatus,
-                id_Estatus_Vacante=id_estatus
-            )
-
-
-            actividades = request.POST.getlist(
-                "actividades[]"
-            )
-
-
-            if not actividades:
+            elif not actividades:
 
                 messages.warning(
                     request,
                     "Debe seleccionar al menos una actividad."
                 )
 
-
             else:
+
+                offboarding = get_object_or_404(
+                    Offboarding,
+                    pk=id_offboarding
+                )
+
+                estado = get_object_or_404(
+                    Estatus,
+                    pk=id_estatus
+                )
+
+                # =====================================
+                # CALCULAR PORCENTAJE COMPLETADO
+                # =====================================
+
+                total_catalogo = OffboardingCatalogo.objects.count()
+
+                total_seleccionadas = len(actividades)
+
+                if total_catalogo > 0:
+
+                    pct_listo = round(
+                        (total_seleccionadas / total_catalogo) * 100,
+                        2
+                    )
+
+                else:
+
+                    pct_listo = Decimal("0.00")
 
                 registros_creados = 0
 
+                with transaction.atomic():
 
-                for id_catalogo in actividades:
+                    for id_catalogo in actividades:
 
+                        actividad = get_object_or_404(
+                            OffboardingCatalogo,
+                            pk=id_catalogo
+                        )
 
-                    actividad = get_object_or_404(
-                        OffboardingCatalogo,
-                        idCatalogo=id_catalogo
-                    )
-
-
-                    try:
-
-                        OffboardingChecklist.objects.create(
+                        _, creado = OffboardingChecklist.objects.get_or_create(
 
                             id_Offboarding=offboarding,
 
                             idCatalogo=actividad,
 
-                            id_Estatus_Vacante=estado,
+                            defaults={
 
-                            Fecha_Comp=fecha_comp
-                            if fecha_comp
-                            else None,
+                                "id_Estatus_Vacante": estado,
 
-                            Observacion=observacion
+                                "Fecha_Comp": (
+                                    fecha_comp
+                                    if fecha_comp
+                                    else None
+                                ),
+
+                                "Observacion": observacion,
+
+                                "pct_listo": pct_listo
+
+                            }
 
                         )
 
+                        if creado:
 
-                        registros_creados += 1
-
-
-                    except IntegrityError:
-
-                        continue
-
-
+                            registros_creados += 1
 
                 messages.success(
                     request,
-                    f"Checklist generado correctamente. "
-                    f"Actividades creadas: {registros_creados}"
+                    f"Checklist guardado correctamente. "
+                    f"Actividades registradas: {registros_creados}"
                 )
 
+        except IntegrityError:
 
+            messages.error(
+                request,
+                "Ya existen actividades registradas para este proceso."
+            )
 
         except Exception as e:
 
             messages.error(
                 request,
-                f"Error al generar checklist: {str(e)}"
+                f"Error: {str(e)}"
             )
-
-
-
-    # =====================================================
-    # DATOS QUE NECESITA checklist_off.html
-    # =====================================================
 
     context = {
 
-
-        # Procesos de salida para seleccionar
         "offboardings": Offboarding.objects.select_related(
             "idEmpleado"
-        ).all().order_by(
+        ).order_by(
             "-Fecha_Salida"
         ),
 
-
-        # Estados disponibles
-        "estados": Estatus.objects.all(),
-
-
-        # Catálogo de actividades con checkbox
-        "catalogo": OffboardingCatalogo.objects.all().order_by(
+        "catalogo": OffboardingCatalogo.objects.order_by(
             "Num_Etapa",
             "idCatalogo"
         ),
 
-
-        # Registros ya creados
         "checklists": OffboardingChecklist.objects.select_related(
             "id_Offboarding",
             "idCatalogo",
             "id_Estatus_Vacante"
-        ).all().order_by(
+        ).order_by(
             "-Fecha_Asignacion"
+        ),
+
+        "estados": Estatus.objects.order_by(
+            "id_Estatus_Vacante"
         )
 
     }
-
 
     return render(
         request,

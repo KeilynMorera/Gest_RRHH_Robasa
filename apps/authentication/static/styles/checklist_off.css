@@ -10,7 +10,7 @@
 body {
   font-family: "Segoe UI", sans-serif; /* Tipografía limpia y moderna */
   background: #f4f7fb; /* Color de fondo gris claro azulado para el dashboard */
-  color: #d35b1a; /* Color principal de texto (tono naranja/óxido) */
+  color: #000000; /* Color principal de texto (tono naranja/óxido) */
 }
 
 /* Contenedor padre que divide la pantalla en dos columnas principales */
@@ -376,167 +376,259 @@ body {
 }
 
 /* =========================================================
-         ESTILOS PARA ADMINISTRACIÓN DEL CATÁLOGO (SPLIT VIEW)
-      ========================================================= */
-.admin-layout {
-  display: grid;
-  grid-template-columns: 350px 1fr;
-  gap: 25px;
-  align-items: start;
-  margin-top: 20px;
+   CHECKLIST OFFBOARDING
+========================================================= */
+
+/* Contenedor principal */
+.admin-layout{
+    margin-top:25px;
 }
 
-@media (max-width: 900px) {
-  .admin-layout {
-    grid-template-columns: 1fr;
-  }
+/* Layout horizontal */
+.checklist-layout{
+    display:flex;
+    gap:30px;
+    align-items:flex-start;
 }
 
-.card-panel {
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(30, 42, 94, 0.05);
-  padding: 24px;
-  border: 1px solid #e8ecf6;
+/* Paneles */
+.card-panel{
+    background:#fff;
+    border-radius:12px;
+    box-shadow:0 4px 20px rgba(30,42,94,.05);
+    border:1px solid #e8ecf6;
+    padding:24px;
 }
 
-.panel-header {
-  border-bottom: 2px solid #f0f2fa;
-  padding-bottom: 12px;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+/* Panel izquierdo */
+.form-panel{
+    width:34%;
+    min-width:320px;
 }
 
-.panel-header h3 {
-  font-size: 15px;
-  color: #26317a;
-  font-weight: 700;
-  margin: 0;
+/* Panel derecho */
+.table-panel{
+    flex:1;
 }
 
-.panel-header i {
-  color: #e8600a;
+/* Encabezados */
+.panel-header{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:20px;
+    padding-bottom:12px;
+    border-bottom:2px solid #eef1fa;
 }
 
-.field-block {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 16px;
+.panel-header h3{
+    margin:0;
+    color:#26317a;
+    font-size:16px;
+    font-weight:700;
 }
 
-.field-block label {
-  font-size: 13px;
-  font-weight: 600;
-  color: #1a2042;
+.panel-header i{
+    color:#e8600a;
+    font-size:18px;
 }
 
-.field-block label .req {
-  color: #e8600a;
+/* Campos */
+.field-block{
+    display:flex;
+    flex-direction:column;
+    margin-bottom:18px;
 }
 
-.input-style {
-  width: 100%;
-  border: 1.5px solid #dde2f0;
-  border-radius: 6px;
-  padding: 10px 12px;
-  font-size: 13.5px;
-  background: #f7f8fc;
-  outline: none;
-  font-family: inherit;
-  color: #1a2042;
-  transition: all 0.3s ease;
+.field-block label{
+    margin-bottom:7px;
+    font-size:13px;
+    font-weight:600;
+    color:#26317a;
 }
 
-.input-style:focus {
-  border-color: #26317a;
-  background-color: #ffffff;
+.req{
+    color:#d9534f;
 }
 
-.textarea-style {
-  width: 100%;
-  border: 1.5px solid #dde2f0;
-  border-radius: 6px;
-  padding: 10px 12px;
-  font-size: 13.5px;
-  background: #f7f8fc;
-  outline: none;
-  font-family: inherit;
-  color: #1a2042;
-  resize: vertical;
-  min-height: 80px;
+/* Inputs */
+.field-block select,
+.field-block input[type="date"],
+.field-block textarea{
+    width:100%;
+    border:1px solid #d8dceb;
+    border-radius:8px;
+    padding:11px 14px;
+    font-size:14px;
+    background:#fff;
+    transition:.25s;
+    font-family:inherit;
 }
 
-.textarea-style:focus {
-  border-color: #26317a;
-  background-color: #ffffff;
+.field-block select:focus,
+.field-block input:focus,
+.field-block textarea:focus{
+    border-color:#26317a;
+    outline:none;
+    box-shadow:0 0 0 3px rgba(38,49,122,.08);
 }
 
-/* Estilos de Tabla de Datos */
-.data-table-container {
-  overflow-x: auto;
+.field-block textarea{
+    resize:vertical;
+    min-height:170px;
 }
 
-.custom-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-  text-align: left;
+/* Tabla */
+.data-table-container{
+    overflow:auto;
+    max-height:650px;
 }
 
-.custom-table th {
-  background: #f0f2fa;
-  color: #26317a;
-  padding: 12px;
-  font-weight: 700;
-  border-bottom: 2px solid #dde2f0;
+.custom-table{
+    width:100%;
+    border-collapse:collapse;
 }
 
-.custom-table td {
-  padding: 12px;
-  border-bottom: 1px solid #f0f2fa;
-  color: #4a547a;
-  vertical-align: middle;
+.custom-table thead{
+    background:#26317a;
+    color:#fff;
 }
 
-.custom-table tr:hover td {
-  background: #f8f9fd;
+.custom-table th{
+    padding:14px;
+    font-size:14px;
+    text-align:left;
 }
 
-.badge-num {
-  background: #26317a;
-  color: #ffffff;
-  width: 22px;
-  height: 22px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  font-size: 11px;
-  font-weight: bold;
+.custom-table td{
+    padding:13px;
+    border-bottom:1px solid #edf0f7;
+    vertical-align:middle;
+    font-size:14px;
 }
 
-.btn-block {
-  width: 100%;
-  background: #e8600a;
-  color: white;
-  border: none;
-  padding: 12px;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 13.5px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 10px;
+.custom-table tbody tr:hover{
+    background:#f8f9fd;
 }
 
-.btn-block:hover {
-  background: #cf5204;
+/* Encabezados */
+.custom-table th:nth-child(2),
+.custom-table th:nth-child(3){
+    text-align:center;
+}
+
+/* Columna Etapa */
+.custom-table td:nth-child(2){
+    text-align:center;
+    vertical-align:middle;
+}
+
+/* Columna Actividad */
+.custom-table td:nth-child(3){
+    text-align:center;
+    vertical-align:middle;
+}
+
+/* Columna Etapa */
+.col-etapa{
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    gap:10px;
+    text-align:left;
+}
+
+/* Número de etapa */
+.badge-num{
+    width:28px;
+    height:28px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:#26317a;
+    color:#fff;
+    font-size:12px;
+    font-weight:bold;
+    flex-shrink:0;
+}
+
+/* Nombre de la etapa */
+.nombre-etapa{
+    color:#26317a;
+    font-weight:600;
+}
+
+/* Badge etapa */
+.badge-num{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    background:#26317a;
+    color:#fff;
+    font-size:12px;
+    font-weight:bold;
+    margin-right:8px;
+}
+
+/* Checkbox */
+.custom-table input[type="checkbox"]{
+    transform:scale(1.2);
+    cursor:pointer;
+}
+
+/* Botón inferior */
+.btn-footer{
+    display:flex;
+    justify-content:center;
+    margin-top:30px;
+}
+
+.btn-block{
+    width:320px;
+    background:#e8600a;
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    padding:14px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    transition:.3s;
+}
+
+.btn-block:hover{
+    background:#cf5204;
+    transform:translateY(-2px);
+}
+
+/* Responsive */
+@media(max-width:1100px){
+
+    .checklist-layout{
+        flex-direction:column;
+    }
+
+    .form-panel{
+        width:100%;
+        min-width:100%;
+    }
+
+    .table-panel{
+        width:100%;
+    }
+
+    .btn-block{
+        width:100%;
+    }
+
 }
 
 /* ==========================================================================

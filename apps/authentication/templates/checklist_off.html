@@ -194,150 +194,179 @@
           <span class="current"> Mantenimiento de Catálogo </span>
         </div>
 
+        {% if messages %}
+        <div style="margin: 15px 0">
+          {% for message in messages %}
+          <div
+            style="
+              padding: 12px 16px;
+              margin-bottom: 8px;
+              border-radius: 6px;
+              background: #fee;
+              border-left: 4px solid #c00;
+              color: #900;
+            "
+          >
+            {{ message }}
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
         <div class="admin-layout">
           <div class="card-panel">
             <div class="panel-header">
               <i class="fas fa-plus-circle"></i>
-              <h3>Nueva Actividad</h3>
+              <h3>Checklist de Offboarding</h3>
             </div>
 
+            <!-- =====================================================
+         FORMULARIO
+    ====================================================== -->
             <form
               method="POST"
               action="{% url 'guardar_checklist_offboarding' %}"
             >
               {% csrf_token %}
 
-              <!-- =====================================================
-                    CABECERA DEL OFFBOARDING
-              ===================================================== -->
+              <div class="checklist-layout">
+                <!-- ==========================================
+             PANEL IZQUIERDO
+        =========================================== -->
 
-              <div class="card-panel">
-                <div class="panel-header">
-                  <i class="fas fa-door-open"></i>
+                <div class="card-panel form-panel">
+                  <div class="panel-header">
+                    <i class="fas fa-door-open"></i>
+                    <h3>Información del proceso</h3>
+                  </div>
 
-                  <h3>Información del proceso de salida</h3>
-                </div>
+                  <div class="field-block">
+                    <label>
+                      Proceso de Offboarding
+                      <span class="req">*</span>
+                    </label>
 
-                <div class="field-block">
-                  <label>
-                    Proceso de Offboarding
-                    <span class="req">*</span>
-                  </label>
+                    <select name="id_Offboarding" required>
+                      <option value="">Seleccione una salida...</option>
 
-                  <select name="id_Offboarding" required>
-                    <option value="">Seleccione una salida...</option>
+                      {% for off in offboardings %}
 
-                    {% for off in offboardings %}
-
-                    <option value="{{ off.id_Offboarding }}">
-                      {{ off.idEmpleado }} - Salida {{ off.Fecha_Salida }}
-                    </option>
-
-                    {% endfor %}
-                  </select>
-                </div>
-
-                <div class="field-block">
-                  <label>
-                    Estado del proceso
-                    <span class="req">*</span>
-                  </label>
-
-                  <select name="id_Estatus_Vacante" required>
-                    <option value="">Seleccione estado</option>
-
-                    {% for estado in estados %}
-
-                    <option value="{{ estado.id_Estatus_Vacante }}">
-                      {{ estado.Detalle }}
-                    </option>
-
-                    {% endfor %}
-                  </select>
-                </div>
-
-                <div class="field-block">
-                  <label> Fecha de completado </label>
-
-                  <input type="date" name="Fecha_Comp" />
-                </div>
-
-                <div class="field-block">
-                  <label> Observaciones generales </label>
-
-                  <textarea
-                    name="Observacion"
-                    maxlength="500"
-                    rows="4"
-                    placeholder="Ingrese observaciones del proceso..."
-                  ></textarea>
-                </div>
-              </div>
-
-              <!-- =====================================================
-                    SELECCION DE ACTIVIDADES
-              ===================================================== -->
-              <div class="card-panel">
-                <div class="panel-header">
-                  <i class="fas fa-list-check"></i>
-
-                  <h3>Actividades del Checklist</h3>
-                </div>
-
-                <div class="data-table-container">
-                  <table class="custom-table">
-                    <thead>
-                      <tr>
-                        <th style="width: 70px">Seleccionar</th>
-
-                        <th>Etapa</th>
-
-                        <th>Actividad</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {% for actividad in catalogo %}
-
-                      <tr>
-                        <td style="text-align: center">
-                          <input
-                            type="checkbox"
-                            name="actividades[]"
-                            value="{{ actividad.idCatalogo }}"
-                          />
-                        </td>
-
-                        <td>
-                          <span class="badge-num">
-                            {{ actividad.Num_Etapa }}
-                          </span>
-
-                          {{ actividad.Etapa }}
-                        </td>
-
-                        <td>{{ actividad.Actividad }}</td>
-                      </tr>
-
-                      {% empty %}
-
-                      <tr>
-                        <td colspan="3">
-                          No existen actividades configuradas.
-                        </td>
-                      </tr>
+                      <option value="{{ off.id_Offboarding }}">
+                        {{ off.idEmpleado }} - {{ off.Fecha_Salida }}
+                      </option>
 
                       {% endfor %}
-                    </tbody>
-                  </table>
+                    </select>
+                  </div>
+
+                  <div class="field-block">
+                    <label>
+                      Estado
+                      <span class="req">*</span>
+                    </label>
+
+                    <select name="id_Estatus_Vacante" required>
+                      <option value="">Seleccione...</option>
+                      {% for estado in estados %}
+                      <option value="{{ estado.pk }}">{{ estado }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <div class="field-block">
+                    <label> Fecha de completado </label>
+
+                    <input type="date" name="Fecha_Comp" />
+                  </div>
+
+                  <div class="field-block">
+                    <label> Observaciones </label>
+
+                    <textarea
+                      name="Observacion"
+                      rows="6"
+                      maxlength="500"
+                      placeholder="Ingrese observaciones..."
+                    ></textarea>
+                  </div>
+                </div>
+
+                <!-- ==========================================
+             TABLA DERECHA
+        =========================================== -->
+
+                <div class="card-panel table-panel">
+                  <div class="panel-header">
+                    <i class="fas fa-list-check"></i>
+                    <h3>Actividades del Checklist</h3>
+                  </div>
+
+                  <div class="data-table-container">
+                    <table class="custom-table">
+                      <thead>
+                        <tr>
+                          <th style="width: 70px">✓</th>
+
+                          <th style="width: 160px">Etapa</th>
+
+                          <th>Actividad</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {% for actividad in catalogo %}
+
+                        <tr>
+                          <td style="text-align: center">
+                            <input
+                              type="checkbox"
+                              name="actividades[]"
+                              value="{{ actividad.idCatalogo }}"
+                            />
+                          </td>
+
+                          <td class="col-etapa">
+                            <span class="badge-num">
+                              {{ actividad.Num_Etapa }}
+                            </span>
+
+                            <span class="nombre-etapa">
+                              {{ actividad.Etapa }}
+                            </span>
+                          </td>
+
+                          <td>{{ actividad.Actividad }}</td>
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+                          <td
+                            colspan="3"
+                            style="text-align: center; padding: 30px"
+                          >
+                            No existen actividades configuradas.
+                          </td>
+                        </tr>
+
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
 
-              <button type="submit" class="btn-block">
-                <i class="fas fa-save"></i>
+              <!-- ==========================================
+           BOTÓN GUARDAR
+      =========================================== -->
 
-                Guardar Checklist
-              </button>
+              <div class="btn-footer">
+                <button type="submit" class="btn-block">
+                  <i class="fas fa-save"></i>
+
+                  Guardar Checklist
+                </button>
+              </div>
             </form>
           </div>
         </div>

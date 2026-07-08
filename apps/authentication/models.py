@@ -1927,6 +1927,7 @@ class OffboardingCatalogo(models.Model):
         )
     
 
+
 # =========================================================
 # TABLA: Offboarding_Checklist
 # Registro de cada actividad asignada dentro de un proceso
@@ -1941,13 +1942,13 @@ class OffboardingChecklist(models.Model):
     )
 
 
-    # Fecha en que la actividad fue asignada
+    # Fecha en que fue asignada la actividad
     Fecha_Asignacion = models.DateField(
         db_column="Fecha_Asignacion"
     )
 
 
-    # Fecha en que la actividad fue completada
+    # Fecha en que fue completada
     Fecha_Comp = models.DateField(
         db_column="Fecha_Comp",
         null=True,
@@ -1955,7 +1956,7 @@ class OffboardingChecklist(models.Model):
     )
 
 
-    # Comentarios / observaciones del seguimiento
+    # Observaciones del proceso
     Observacion = models.CharField(
         max_length=500,
         db_column="Observacion",
@@ -1964,7 +1965,16 @@ class OffboardingChecklist(models.Model):
     )
 
 
-    # Proceso de Offboarding al que pertenece
+    # Porcentaje del checklist completado
+    pct_listo = models.DecimalField(
+        db_column="pct_listo",
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+
+    # Proceso de Offboarding
     id_Offboarding = models.ForeignKey(
         Offboarding,
         on_delete=models.CASCADE,
@@ -1973,7 +1983,7 @@ class OffboardingChecklist(models.Model):
     )
 
 
-    # Actividad seleccionada del catálogo
+    # Actividad del catálogo
     idCatalogo = models.ForeignKey(
         OffboardingCatalogo,
         on_delete=models.PROTECT,
@@ -1982,7 +1992,7 @@ class OffboardingChecklist(models.Model):
     )
 
 
-    # Estado actual de la actividad
+    # Estado de la actividad
     id_Estatus_Vacante = models.ForeignKey(
         Estatus,
         on_delete=models.PROTECT,
@@ -2001,8 +2011,6 @@ class OffboardingChecklist(models.Model):
 
         verbose_name_plural = "Checklist de Offboarding"
 
-
-        # Replica el UNIQUE de SQL Server
         constraints = [
 
             models.UniqueConstraint(
@@ -2015,16 +2023,15 @@ class OffboardingChecklist(models.Model):
 
         ]
 
-
         ordering = [
-            "Fecha_Asignacion",
-            "id_Check"
+            "-Fecha_Asignacion",
+            "idCatalogo"
         ]
 
 
     def __str__(self):
 
         return (
-            f"Offboarding #{self.id_Offboarding_id} - "
+            f"{self.id_Offboarding} - "
             f"{self.idCatalogo.Actividad}"
         )
