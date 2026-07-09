@@ -3144,9 +3144,18 @@ def registrar_offboarding(request, pk=None):
 
 
 from decimal import Decimal
+from django.contrib import messages
+from django.db import transaction, IntegrityError
+from datetime import date
+from django.shortcuts import render, get_object_or_404
+
+
+from decimal import Decimal
+from datetime import date
+
+from django.contrib import messages
 from django.db import transaction, IntegrityError
 from django.shortcuts import render, get_object_or_404
-from django.contrib import messages
 
 
 def guardar_checklist_offboarding(request):
@@ -3155,16 +3164,29 @@ def guardar_checklist_offboarding(request):
 
         try:
 
-            id_offboarding = request.POST.get("id_Offboarding")
-            id_estatus = request.POST.get("id_Estatus_Vacante")
-            fecha_comp = request.POST.get("Fecha_Comp")
-            observacion = request.POST.get("Observacion")
+            id_offboarding = request.POST.get(
+                "id_Offboarding"
+            )
 
-            actividades = request.POST.getlist("actividades[]")
+            id_estatus = request.POST.get(
+                "id_Estatus_Vacante"
+            )
 
-            # ===============================
+            fecha_comp = request.POST.get(
+                "Fecha_Comp"
+            )
+
+            observacion = request.POST.get(
+                "Observacion"
+            )
+
+            actividades = request.POST.getlist(
+                "actividades[]"
+            )
+
+            # ===========================================
             # VALIDACIONES
-            # ===============================
+            # ===========================================
 
             if not id_offboarding:
 
@@ -3191,26 +3213,27 @@ def guardar_checklist_offboarding(request):
 
                 offboarding = get_object_or_404(
                     Offboarding,
-                    pk=id_offboarding
+                    id_Offboarding=id_offboarding
                 )
 
                 estado = get_object_or_404(
                     Estatus,
-                    pk=id_estatus
+                    id_Estatus_Vacante=id_estatus
                 )
-
-                # =====================================
-                # CALCULAR PORCENTAJE COMPLETADO
-                # =====================================
 
                 total_catalogo = OffboardingCatalogo.objects.count()
 
-                total_seleccionadas = len(actividades)
+                total_seleccionadas = len(
+                    actividades
+                )
 
                 if total_catalogo > 0:
 
                     pct_listo = round(
-                        (total_seleccionadas / total_catalogo) * 100,
+                        (
+                            total_seleccionadas /
+                            total_catalogo
+                        ) * 100,
                         2
                     )
 
@@ -3226,55 +3249,91 @@ def guardar_checklist_offboarding(request):
 
                         actividad = get_object_or_404(
                             OffboardingCatalogo,
-                            pk=id_catalogo
+                            idCatalogo=id_catalogo
                         )
 
-                        _, creado = OffboardingChecklist.objects.get_or_create(
+                        existe = OffboardingChecklist.objects.filter(
+
+                            id_Offboarding=offboarding,
+
+                            idCatalogo=actividad
+
+                        ).exists()
+
+                        if existe:
+
+                            continue
+
+                        OffboardingChecklist.objects.create(
+
+                            # ===================================
+                            # NUEVO
+                            # ===================================
+                            Fecha_Asignacion=date.today(),
 
                             id_Offboarding=offboarding,
 
                             idCatalogo=actividad,
 
-                            defaults={
+                            id_Estatus_Vacante=estado,
 
-                                "id_Estatus_Vacante": estado,
+                            Fecha_Comp=(
+                                fecha_comp
+                                if fecha_comp
+                                else None
+                            ),
 
-                                "Fecha_Comp": (
-                                    fecha_comp
-                                    if fecha_comp
-                                    else None
-                                ),
+                            Observacion=observacion,
 
-                                "Observacion": observacion,
-
-                                "pct_listo": pct_listo
-
-                            }
+                            pct_listo=pct_listo
 
                         )
 
-                        if creado:
+                        registros_creados += 1
 
-                            registros_creados += 1
+                if registros_creados == 0:
 
-                messages.success(
-                    request,
-                    f"Checklist guardado correctamente. "
-                    f"Actividades registradas: {registros_creados}"
-                )
+                    messages.warning(
 
-        except IntegrityError:
+                        request,
+
+                        "Las actividades seleccionadas ya estaban registradas para este proceso."
+
+                    )
+
+                else:
+
+                    messages.success(
+
+                        request,
+
+                        f"Checklist guardado correctamente. "
+                        f"Actividades registradas: {registros_creados}"
+
+                    )
+
+        except IntegrityError as e:
+
+            print("ERROR SQL:", e)
 
             messages.error(
+
                 request,
-                "Ya existen actividades registradas para este proceso."
+
+                f"Error de base de datos: {e}"
+
             )
 
         except Exception as e:
 
+            print("ERROR GENERAL:", e)
+
             messages.error(
+
                 request,
-                f"Error: {str(e)}"
+
+                f"Error: {e}"
+
             )
 
     context = {
@@ -3309,7 +3368,6 @@ def guardar_checklist_offboarding(request):
         "checklist_off.html",
         context
     )
-
 
 
 

@@ -267,8 +267,13 @@
 
                     <select name="id_Estatus_Vacante" required>
                       <option value="">Seleccione...</option>
+
                       {% for estado in estados %}
-                      <option value="{{ estado.pk }}">{{ estado }}</option>
+
+                      <option value="{{ estado.id_Estatus_Vacante }}">
+                        {{ estado.TipoEstatus }}
+                      </option>
+
                       {% endfor %}
                     </select>
                   </div>

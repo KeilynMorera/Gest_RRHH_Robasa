@@ -1942,9 +1942,11 @@ class OffboardingChecklist(models.Model):
     )
 
 
-    # Fecha en que fue asignada la actividad
     Fecha_Asignacion = models.DateField(
-        db_column="Fecha_Asignacion"
+        db_column="Fecha_Asignacion",
+        blank=True,
+        null=True,
+        editable=False
     )
 
 
