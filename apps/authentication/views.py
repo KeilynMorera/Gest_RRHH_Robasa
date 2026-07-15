@@ -2291,8 +2291,215 @@ def obtener_premio_empleado(request):
     })
 
 
-def rotacion_Personal_view(request):
-    return render(request, 'rotacion_Personal.html')
+from decimal import Decimal
+from django.contrib import messages
+from django.db import IntegrityError
+from django.shortcuts import render
+
+
+def rotacion_personal(request):
+
+    data_calculada = {}
+    registro = {}
+
+    if request.method == "POST":
+
+        action = request.POST.get("action")
+
+        anio = int(request.POST.get("Anio"))
+        mes = request.POST.get("Mes")
+
+        if mes:
+            mes = int(mes)
+        else:
+            mes = None
+
+        #=========================================================
+        # CONTRATACIONES
+        #=========================================================
+
+        contratados = Onboarding.objects.filter(
+            Fecha_Inicio__year=anio
+        )
+
+        if mes:
+            contratados = contratados.filter(
+                Fecha_Inicio__month=mes
+            )
+
+        A_Contratados = contratados.count()
+
+        #=========================================================
+        # DESVINCULADOS
+        #=========================================================
+
+        desvinculados = Offboarding.objects.filter(
+            Fecha_Salida__year=anio
+        )
+
+        if mes:
+            desvinculados = desvinculados.filter(
+                Fecha_Salida__month=mes
+            )
+
+        D_Desvinculados = desvinculados.exclude(
+            idCausa__Categoria__in=[
+                "Retiro",
+                "Fuerza Mayor"
+            ]
+        ).count()
+
+        D_Jubilaciones_Defuncionales = desvinculados.filter(
+            idCausa__Categoria__in=[
+                "Retiro",
+                "Fuerza Mayor"
+            ]
+        ).count()
+
+        D_Total_Bajas = (
+            D_Desvinculados +
+            D_Jubilaciones_Defuncionales
+        )
+
+        #=========================================================
+        # PERSONAL INICIAL
+        #=========================================================
+
+        empleados_inicio = Empleado.objects.filter(
+            Fecha_Ingreso__year__lt=anio,
+            Activo=True
+        ).count()
+
+        if mes:
+
+            empleados_inicio = Empleado.objects.filter(
+                Fecha_Ingreso__lt=f"{anio}-{mes:02d}-01",
+                Activo=True
+            ).count()
+
+        F1_Inicio = empleados_inicio
+
+        #=========================================================
+        # PERSONAL FINAL
+        #=========================================================
+
+        F2_Final = (
+            F1_Inicio +
+            A_Contratados -
+            D_Total_Bajas
+        )
+
+        #=========================================================
+        # PROMEDIO DEL PERSONAL
+        #=========================================================
+
+        promedio = (
+            F1_Inicio +
+            F2_Final
+        ) / 2
+
+        if promedio > 0:
+
+            IRP = round(
+                (
+                    D_Total_Bajas /
+                    promedio
+                ) * 100,
+                2
+            )
+
+        else:
+
+            IRP = Decimal("0.00")
+
+        IRP_Sugerido_Min = Decimal("1.00")
+        IRP_Sugerido_Max = Decimal("4.00")
+
+        data_calculada = {
+
+            "A_Contratados": A_Contratados,
+            "D_Desvinculados": D_Desvinculados,
+            "D_Jubilaciones_Defuncionales": D_Jubilaciones_Defuncionales,
+            "D_Total_Bajas": D_Total_Bajas,
+            "F1_Inicio": F1_Inicio,
+            "F2_Final": F2_Final,
+            "irp": IRP,
+            "irp_Sugerido_min": IRP_Sugerido_Min,
+            "irp_Sugerido_max": IRP_Sugerido_Max,
+
+        }
+
+        registro = {
+
+            "Anio": anio,
+            "Mes": mes
+
+        }
+
+        #=========================================================
+        # GUARDAR HISTORIAL
+        #=========================================================
+
+        if action == "guardar":
+
+            try:
+
+                RotacionPersonal.objects.create(
+
+                    Anio=anio,
+
+                    Mes=mes,
+
+                    A_Contratados=A_Contratados,
+
+                    D_Desvinculados=D_Desvinculados,
+
+                    D_Jubilaciones_Defuncionales=D_Jubilaciones_Defuncionales,
+
+                    D_Total_Bajas=D_Total_Bajas,
+
+                    F1_Inicio=F1_Inicio,
+
+                    F2_Final=F2_Final,
+
+                    IRP=IRP,
+
+                    IRP_Sugerido_Min=IRP_Sugerido_Min,
+
+                    IRP_Sugerido_Max=IRP_Sugerido_Max
+
+                )
+
+                messages.success(
+                    request,
+                    "Historial del período guardado correctamente."
+                )
+
+            except IntegrityError as e:
+
+                messages.error(
+                    request,
+                    str(e)
+                )
+
+    context = {
+
+        "registro": registro,
+
+        "data_calculada": data_calculada,
+
+        "historial": RotacionPersonal.objects.order_by(
+            "-Anio",
+            "-Mes"
+        )
+
+    }
+
+    return render(
+        request,
+        "rotacion_Personal.html",
+        context
+    )
 
 
 

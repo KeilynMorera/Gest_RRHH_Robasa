@@ -166,6 +166,10 @@ urlpatterns = [
     path("accion/obtener-premio/", views.obtener_premio_empleado, name="obtener_premio_empleado"),
 
 
+    path("rotacion-personal/", views.rotacion_personal, name="rotacion_personal"),
+
+
+
     # =========================================================
     # VISTAS PARA EVALUACIONES DE PERSONAL
     # =========================================================
@@ -230,7 +234,9 @@ urlpatterns = [
     path("checklist_off/ver/<int:id_check>/", views.ver_checklist_offboarding, name="ver_checklist_offboarding"),
     
     path("checklist_off/<int:id_check>/editar/", views.editar_checklist_offboarding, name="editar_checklist_offboarding"),
-    
+
+
+   
 ]
 
 

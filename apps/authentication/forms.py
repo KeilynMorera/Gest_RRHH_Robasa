@@ -354,6 +354,3 @@ class OffboardingForm(forms.ModelForm):
             )
             for categoria, opciones in categorias.items()
         ]
-
-
-
