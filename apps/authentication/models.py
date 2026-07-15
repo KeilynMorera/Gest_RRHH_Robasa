@@ -1930,8 +1930,8 @@ class OffboardingCatalogo(models.Model):
 
 # =========================================================
 # TABLA: Offboarding_Checklist
-# Registro de cada actividad asignada dentro de un proceso
-# específico de Offboarding
+# Cabecera del checklist de un proceso de Offboarding
+# Un proceso de Offboarding posee un único checklist.
 # =========================================================
 
 class OffboardingChecklist(models.Model):
@@ -1941,7 +1941,6 @@ class OffboardingChecklist(models.Model):
         db_column="id_Check"
     )
 
-
     Fecha_Asignacion = models.DateField(
         db_column="Fecha_Asignacion",
         blank=True,
@@ -1949,32 +1948,25 @@ class OffboardingChecklist(models.Model):
         editable=False
     )
 
-
-    # Fecha en que fue completada
     Fecha_Comp = models.DateField(
         db_column="Fecha_Comp",
-        null=True,
-        blank=True
+        blank=True,
+        null=True
     )
 
-
-    # Observaciones del proceso
     Observacion = models.CharField(
         max_length=500,
         db_column="Observacion",
-        null=True,
-        blank=True
+        blank=True,
+        null=True
     )
 
-
-    # Porcentaje del checklist completado
     pct_listo = models.DecimalField(
         db_column="pct_listo",
-        max_digits=12,
+        max_digits=5,
         decimal_places=2,
         default=0
     )
-
 
     # Proceso de Offboarding
     id_Offboarding = models.ForeignKey(
@@ -1984,24 +1976,13 @@ class OffboardingChecklist(models.Model):
         related_name="checklist"
     )
 
-
-    # Actividad del catálogo
-    idCatalogo = models.ForeignKey(
-        OffboardingCatalogo,
-        on_delete=models.PROTECT,
-        db_column="idCatalogo",
-        related_name="checklists"
-    )
-
-
-    # Estado de la actividad
+    # Estado del proceso
     id_Estatus_Vacante = models.ForeignKey(
         Estatus,
         on_delete=models.PROTECT,
         db_column="id_Estatus_Vacante",
-        related_name="checklist_offboarding"
+        related_name="checklists_offboarding"
     )
-
 
     class Meta:
 
@@ -2011,29 +1992,100 @@ class OffboardingChecklist(models.Model):
 
         verbose_name = "Checklist de Offboarding"
 
-        verbose_name_plural = "Checklist de Offboarding"
+        verbose_name_plural = "Checklists de Offboarding"
 
         constraints = [
 
             models.UniqueConstraint(
                 fields=[
-                    "id_Offboarding",
-                    "idCatalogo"
+                    "id_Offboarding"
                 ],
-                name="UQ_Offboarding_Catalogo"
+                name="UQ_Check_Offboarding"
             )
 
         ]
 
         ordering = [
-            "-Fecha_Asignacion",
-            "idCatalogo"
+            "-Fecha_Asignacion"
         ]
-
 
     def __str__(self):
 
         return (
-            f"{self.id_Offboarding} - "
+            f"Checklist #{self.id_Check} - "
+            f"{self.id_Offboarding}"
+        )
+
+
+# =========================================================
+# TABLA: Offboarding_Checklist_Detalle
+# Detalle de actividades pertenecientes a un Checklist
+# =========================================================
+
+class OffboardingChecklistDetalle(models.Model):
+
+    idDetalle = models.AutoField(
+        primary_key=True,
+        db_column="idDetalle"
+    )
+
+    Fecha_Actualizacion = models.DateTimeField(
+        db_column="Fecha_Actualizacion",
+        blank=True,
+        null=True,
+        editable=False
+    )
+
+    Completado = models.BooleanField(
+        db_column="Completado",
+        default=False
+    )
+
+    # Cabecera del checklist
+    id_Check = models.ForeignKey(
+        OffboardingChecklist,
+        on_delete=models.CASCADE,
+        db_column="id_Check",
+        related_name="detalles"
+    )
+
+    # Actividad del catálogo
+    idCatalogo = models.ForeignKey(
+        OffboardingCatalogo,
+        on_delete=models.PROTECT,
+        db_column="idCatalogo",
+        related_name="detalle_checklist"
+    )
+
+    class Meta:
+
+        managed = False
+
+        db_table = "Offboarding_Checklist_Detalle"
+
+        verbose_name = "Detalle del Checklist"
+
+        verbose_name_plural = "Detalles del Checklist"
+
+        constraints = [
+
+            models.UniqueConstraint(
+                fields=[
+                    "id_Check",
+                    "idCatalogo"
+                ],
+                name="UQ_Check_Catalogo"
+            )
+
+        ]
+
+        ordering = [
+            "idCatalogo"
+        ]
+
+    def __str__(self):
+
+        return (
+            f"{self.id_Check} - "
             f"{self.idCatalogo.Actividad}"
         )
