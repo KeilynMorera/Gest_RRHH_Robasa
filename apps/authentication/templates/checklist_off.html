@@ -250,7 +250,18 @@
 
                       {% for off in offboardings %}
 
-                      <option value="{{ off.id_Offboarding }}">
+                      <option
+                        value="{{ off.id_Offboarding }}"
+                        {%
+                        if
+                        checklist.id_Offboarding.id_Offboarding=""
+                        ="off.id_Offboarding"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
                         {{ off.idEmpleado }} - {{ off.Fecha_Salida }}
                       </option>
 
@@ -269,7 +280,18 @@
 
                       {% for estado in estados %}
 
-                      <option value="{{ estado.id_Estatus_Vacante }}">
+                      <option
+                        value="{{ estado.id_Estatus_Vacante }}"
+                        {%
+                        if
+                        checklist.id_Estatus_Vacante.id_Estatus_Vacante=""
+                        ="estado.id_Estatus_Vacante"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
                         {{ estado.TipoEstatus }}
                       </option>
 
@@ -280,7 +302,11 @@
                   <div class="field-block">
                     <label> Fecha de completado </label>
 
-                    <input type="date" name="Fecha_Comp" />
+                    <input
+                      type="date"
+                      name="Fecha_Comp"
+                      value="{{ checklist.Fecha_Comp|date:'Y-m-d' }}"
+                    />
                   </div>
 
                   <div class="field-block">
@@ -291,7 +317,9 @@
                       rows="6"
                       maxlength="500"
                       placeholder="Ingrese observaciones..."
-                    ></textarea>
+                    >
+                    {{ checklist.Observacion }}</textarea
+                    >
                   </div>
                 </div>
 
@@ -325,6 +353,16 @@
                               type="checkbox"
                               name="actividades[]"
                               value="{{ actividad.idCatalogo }}"
+                              {%
+                              if
+                              actividad.idCatalogo
+                              in
+                              checks_seleccionados
+                              %}
+                              checked
+                              {%
+                              endif
+                              %}
                             />
                           </td>
 
@@ -360,18 +398,93 @@
               </div>
 
               <!-- ==========================================
-           BOTÓN GUARDAR
-      =========================================== -->
+                    BOTÓN GUARDAR
+              =========================================== -->
 
+              {% if not modo_ver %}
               <div class="btn-footer">
                 <button type="submit" class="btn-block">
                   <i class="fas fa-save"></i>
-
                   Guardar Checklist
                 </button>
               </div>
+              {% endif %}
             </form>
           </div>
+
+          <!-- ======================================================
+                TARJETA: ASISTENCIA DE EMPLEADOS
+            ===================================================== -->
+          <section class="table-card">
+            <div class="data-table-container">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Empleado</th>
+                    <th>Fecha salida</th>
+                    <th>Estado</th>
+                    <th>% Completo</th>
+                    <th>Fecha registro</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {% for check in checklists %}
+
+                  <tr>
+                    <td>{{ check.id_Check }}</td>
+
+                    <td>{{ check.id_Offboarding.idEmpleado }}</td>
+
+                    <td>{{ check.id_Offboarding.Fecha_Salida }}</td>
+
+                    <td>{{ check.id_Estatus_Vacante.TipoEstatus }}</td>
+
+                    <td>
+                      <div class="progress-container">
+                        <div
+                          class="progress-bar"
+                          style="width: {{ check.pct_listo }}%;"
+                        ></div>
+
+                        <span>{{ check.pct_listo }}%</span>
+                      </div>
+                    </td>
+
+                    <td>{{ check.Fecha_Asignacion }}</td>
+
+                    <td>
+                      <a
+                        href="{% url 'editar_checklist_offboarding' check.id_Check %}"
+                        class="btn-edit"
+                      >
+                        <i class="fas fa-pen"></i>
+                      </a>
+
+                      <a
+                        href="{% url 'ver_checklist_offboarding' check.id_Check %}"
+                        class="btn-view"
+                      >
+                        <i class="fas fa-eye"></i>
+                      </a>
+                    </td>
+                  </tr>
+
+                  {% empty %}
+
+                  <tr>
+                    <td colspan="7" style="text-align: center">
+                      No existen checklists registrados.
+                    </td>
+                  </tr>
+
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </section>
         </div>
 
         <footer class="footer">

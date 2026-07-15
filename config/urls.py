@@ -226,6 +226,10 @@ urlpatterns = [
     # CHECKLIST DEL OFFBOARDING
     # =========================================================
     path("offboarding/guardar-checklist/", views.guardar_checklist_offboarding, name="guardar_checklist_offboarding"),
+
+    path("checklist_off/ver/<int:id_check>/", views.ver_checklist_offboarding, name="ver_checklist_offboarding"),
+    
+    path("checklist_off/<int:id_check>/editar/", views.editar_checklist_offboarding, name="editar_checklist_offboarding"),
     
 ]
 

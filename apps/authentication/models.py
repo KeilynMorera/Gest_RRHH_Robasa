@@ -2089,3 +2089,120 @@ class OffboardingChecklistDetalle(models.Model):
             f"{self.id_Check} - "
             f"{self.idCatalogo.Actividad}"
         )
+    
+
+
+# =========================================================
+# TABLA: Rotacion_Personal
+# Historial del Índice de Rotación de Personal (IRP)
+# Todos los valores son calculados automáticamente
+# a partir de Onboarding, Offboarding y Empleado.
+# =========================================================
+
+class RotacionPersonal(models.Model):
+
+    idRotacion = models.AutoField(
+        primary_key=True,
+        db_column="idRotacion"
+    )
+
+    # Año del período
+    Anio = models.PositiveSmallIntegerField(
+        db_column="Anio"
+    )
+
+    # Mes del período (NULL cuando el cálculo es anual)
+    Mes = models.PositiveSmallIntegerField(
+        db_column="Mes",
+        null=True,
+        blank=True
+    )
+
+    # Contrataciones realizadas
+    A_Contratados = models.PositiveIntegerField(
+        db_column="A_Contratados"
+    )
+
+    # Bajas voluntarias e involuntarias
+    D_Desvinculados = models.PositiveIntegerField(
+        db_column="D_Desvinculados"
+    )
+
+    # Jubilaciones y defunciones
+    D_Jubilaciones_Defuncionales = models.PositiveIntegerField(
+        db_column="D_Jubilaciones_Defuncionales"
+    )
+
+    # Total de bajas
+    D_Total_Bajas = models.PositiveIntegerField(
+        db_column="D_Total_Bajas"
+    )
+
+    # Personal al inicio del período
+    F1_Inicio = models.PositiveIntegerField(
+        db_column="F1_Inicio"
+    )
+
+    # Personal al final del período
+    F2_Final = models.PositiveIntegerField(
+        db_column="F2_Final"
+    )
+
+    # Índice de Rotación de Personal
+    IRP = models.DecimalField(
+        db_column="IRP",
+        max_digits=5,
+        decimal_places=2
+    )
+
+    # Rango mínimo sugerido
+    IRP_Sugerido_Min = models.DecimalField(
+        db_column="IRP_Sugerido_Min",
+        max_digits=5,
+        decimal_places=2
+    )
+
+    # Rango máximo sugerido
+    IRP_Sugerido_Max = models.DecimalField(
+        db_column="IRP_Sugerido_Max",
+        max_digits=5,
+        decimal_places=2
+    )
+
+    # Período del cálculo
+    idPeriodo = models.ForeignKey(
+        Periodo,
+        on_delete=models.PROTECT,
+        db_column="idPeriodo",
+        null=True,
+        blank=True,
+        related_name="rotaciones_personal"
+    )
+
+    class Meta:
+
+        managed = False
+
+        db_table = "Rotacion_Personal"
+
+        verbose_name = "Rotación de Personal"
+
+        verbose_name_plural = "Rotación de Personal"
+
+        ordering = [
+            "-Anio",
+            "-Mes"
+        ]
+
+    def __str__(self):
+
+        if self.Mes:
+
+            return (
+                f"Rotación "
+                f"{self.Mes:02}/{self.Anio}"
+            )
+
+        return (
+            f"Rotación {self.Anio}"
+        )

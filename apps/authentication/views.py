@@ -3143,6 +3143,79 @@ def registrar_offboarding(request, pk=None):
     )
 
 
+from django.shortcuts import render, get_object_or_404
+
+
+def ver_checklist_offboarding(request, id_check):
+
+    checklist = get_object_or_404(
+        OffboardingChecklist.objects.select_related(
+            "id_Offboarding",
+            "id_Offboarding__idEmpleado",
+            "id_Estatus_Vacante"
+        ),
+        pk=id_check
+    )
+
+    # ===============================
+    # CHECKS SELECCIONADOS
+    # ===============================
+
+    checks_seleccionados = list(
+
+        OffboardingChecklistDetalle.objects.filter(
+
+            id_Check=checklist
+
+        ).values_list(
+
+            "idCatalogo_id",
+
+            flat=True
+
+        )
+
+    )
+
+    context = {
+
+        "modo_ver": True,
+
+        "checklist": checklist,
+
+        "offboardings": Offboarding.objects.select_related(
+            "idEmpleado"
+        ).order_by(
+            "-Fecha_Salida"
+        ),
+
+        "catalogo": OffboardingCatalogo.objects.order_by(
+            "Num_Etapa",
+            "idCatalogo"
+        ),
+
+        "checks_seleccionados": checks_seleccionados,
+
+        "estados": Estatus.objects.order_by(
+            "id_Estatus_Vacante"
+        ),
+
+        "checklists": OffboardingChecklist.objects.select_related(
+            "id_Offboarding",
+            "id_Estatus_Vacante"
+        ).order_by(
+            "-Fecha_Asignacion"
+        )
+
+    }
+
+    return render(
+        request,
+        "checklist_off.html",
+        context
+    )
+
+
 from decimal import Decimal
 from datetime import date
 
@@ -3355,6 +3428,159 @@ def guardar_checklist_offboarding(request):
         ),
 
         "estados": Estatus.objects.order_by(
+            "id_Estatus_Vacante"
+        )
+
+    }
+
+    return render(
+        request,
+        "checklist_off.html",
+        context
+    )
+
+
+from decimal import Decimal
+from datetime import date
+
+from django.contrib import messages
+from django.db import transaction
+from django.shortcuts import get_object_or_404, render, redirect
+
+
+def editar_checklist_offboarding(request, id_check):
+
+    checklist = get_object_or_404(
+        OffboardingChecklist,
+        pk=id_check
+    )
+
+    if request.method == "POST":
+
+        try:
+
+            estado = get_object_or_404(
+                Estatus,
+                pk=request.POST.get("id_Estatus_Vacante")
+            )
+
+            checklist.id_Estatus_Vacante = estado
+
+            checklist.Fecha_Comp = (
+                request.POST.get("Fecha_Comp")
+                or None
+            )
+
+            checklist.Observacion = request.POST.get(
+                "Observacion"
+            )
+
+            actividades = request.POST.getlist(
+                "actividades[]"
+            )
+
+            total_catalogo = OffboardingCatalogo.objects.count()
+
+            if total_catalogo > 0:
+
+                checklist.pct_listo = round(
+
+                    (
+                        len(actividades)
+                        / total_catalogo
+                    ) * 100,
+
+                    2
+
+                )
+
+            else:
+
+                checklist.pct_listo = Decimal("0.00")
+
+            with transaction.atomic():
+
+                checklist.save()
+
+                # borrar el detalle anterior
+                OffboardingChecklistDetalle.objects.filter(
+                    id_Check=checklist
+                ).delete()
+
+                # crear nuevamente el detalle
+                for id_catalogo in actividades:
+
+                    actividad = OffboardingCatalogo.objects.get(
+                        pk=id_catalogo
+                    )
+
+                    OffboardingChecklistDetalle.objects.create(
+
+                        id_Check=checklist,
+
+                        idCatalogo=actividad,
+
+                        Completado=True
+
+                    )
+
+            messages.success(
+                request,
+                "Checklist actualizado correctamente."
+            )
+
+            return redirect(
+                "guardar_checklist_offboarding"
+            )
+
+        except Exception as e:
+
+            messages.error(
+                request,
+                str(e)
+            )
+
+    # ==========================================
+    # CHECKS SELECCIONADOS
+    # ==========================================
+
+    checks_seleccionados = list(
+
+        OffboardingChecklistDetalle.objects.filter(
+
+            id_Check=checklist
+
+        ).values_list(
+
+            "idCatalogo",
+
+            flat=True
+
+        )
+
+    )
+
+    context = {
+
+        "modo_edicion": True,
+
+        "checklist": checklist,
+
+        "offboardings": Offboarding.objects.select_related(
+            "idEmpleado"
+        ),
+
+        "catalogo": OffboardingCatalogo.objects.order_by(
+            "Num_Etapa",
+            "idCatalogo"
+        ),
+
+        "checks_seleccionados": checks_seleccionados,
+
+        "estados": Estatus.objects.all(),
+
+        "checklists": OffboardingChecklist.objects.select_related(
+            "id_Offboarding",
             "id_Estatus_Vacante"
         )
 
