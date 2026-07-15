@@ -111,11 +111,11 @@ urlpatterns = [
     # Ruta para el dashboard (pantalla de configuraciones del sistema)
     path('dashboard-kpi/historial/', views.historial_kpi_view, name='historial_kpi'),
 
-    # Ruta para el dashboard (pantalla de onboarding)
-    path("onboarding/", views.registrar_onboarding, name="crear_onboarding"),
-
     # Ruta para el dashboard (pantalla de eleccion de offboarding)
     path('elec_Offboarding.html/', views.elec_Offboarding_view, name='elec_Offboarding'),
+
+    # Ruta para el dashboard (pantalla de onboarding)
+    path("onboarding/", views.registrar_onboarding, name="crear_onboarding"),
     
     # Ruta para el dashboard (pantalla de registro de offboarding)
     path("offboarding/", views.registrar_offboarding, name="crear_offboarding"),
