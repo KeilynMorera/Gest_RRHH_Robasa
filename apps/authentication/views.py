@@ -3801,9 +3801,216 @@ def editar_checklist_offboarding(request, id_check):
 
 
 
+from django.contrib import messages
+from django.contrib.auth.hashers import make_password
+from django.db import IntegrityError
+from django.shortcuts import render, redirect
 
-def usuarios_view(request):
-    return render(request, 'usuarios.html')
+
+def guardar_usuario_sistema(request):
+
+    # Empleados disponibles
+    empleados = Empleado.objects.select_related(
+        "idPersona",
+        "idPuesto"
+    ).filter(
+        Activo=True
+    ).order_by(
+        "idPersona__Nombre_Completo"
+    )
+
+
+    # Roles disponibles
+    roles = Roles.objects.all().order_by(
+        "TipoRol"
+    )
+
+
+    if request.method == "POST":
+
+        try:
+
+            correo = request.POST.get("Correo")
+            contrasenia = request.POST.get("Contrasenia")
+            idRol = request.POST.get("idRol")
+            idEmpleado = request.POST.get("idEmpleado_Admin")
+            activo = request.POST.get("Activo")
+
+
+            # =========================================
+            # VALIDACIONES
+            # =========================================
+
+            if not correo:
+
+                messages.error(
+                    request,
+                    "Debe ingresar un correo."
+                )
+
+            elif not contrasenia:
+
+                messages.error(
+                    request,
+                    "Debe ingresar una contraseña."
+                )
+
+            elif not idRol:
+
+                messages.error(
+                    request,
+                    "Debe seleccionar un rol."
+                )
+
+            elif not idEmpleado:
+
+                messages.error(
+                    request,
+                    "Debe seleccionar un empleado."
+                )
+
+            elif not activo:
+
+                messages.error(
+                    request,
+                    "Debe seleccionar el estado del usuario."
+                )
+
+            elif UsuarioSistema.objects.filter(
+                Correo=correo
+            ).exists():
+
+                messages.error(
+                    request,
+                    "Ya existe un usuario con ese correo."
+                )
+
+            elif UsuarioSistema.objects.filter(
+                idEmpleado_Admin=idEmpleado
+            ).exists():
+
+                messages.error(
+                    request,
+                    "El empleado ya tiene un usuario asignado."
+                )
+
+            else:
+
+
+                # =========================================
+                # OBTENER RELACIONES
+                # =========================================
+
+                rol = Roles.objects.get(
+                    idRol=idRol
+                )
+
+
+                empleado = Empleado.objects.get(
+                    idEmpleado=idEmpleado
+                )
+
+
+                # =========================================
+                # CIFRAR CONTRASEÑA
+                # =========================================
+
+                password_cifrada = make_password(
+                    contrasenia
+                )
+
+
+                # =========================================
+                # CONVERTIR RADIO BUTTON
+                # =========================================
+
+                estado_usuario = True if activo == "1" else False
+
+
+                # =========================================
+                # GUARDAR USUARIO
+                # =========================================
+
+                UsuarioSistema.objects.create(
+
+                    Correo=correo,
+
+                    Contrasenia=password_cifrada,
+
+                    idRol=rol,
+
+                    Activo=estado_usuario,
+
+                    idEmpleado_Admin=empleado
+
+                )
+
+
+                messages.success(
+                    request,
+                    "Usuario registrado correctamente."
+                )
+
+
+                return redirect(
+                    "guardar_usuario_sistema"
+                )
+
+
+        except Roles.DoesNotExist:
+
+            messages.error(
+                request,
+                "El rol seleccionado no existe."
+            )
+
+
+        except Empleado.DoesNotExist:
+
+            messages.error(
+                request,
+                "El empleado seleccionado no existe."
+            )
+
+
+        except IntegrityError as e:
+
+            messages.error(
+                request,
+                f"Error de integridad: {e}"
+            )
+
+
+        except Exception as e:
+
+            messages.error(
+                request,
+                f"Ocurrió un error al guardar: {e}"
+            )
+
+
+    context = {
+
+        "empleados": empleados,
+
+        "roles": roles,
+
+        "usuarios": UsuarioSistema.objects.select_related(
+            "idRol",
+            "idEmpleado_Admin"
+        ).order_by(
+            "Correo"
+        )
+
+    }
+
+
+    return render(
+        request,
+        "usuarios.html",
+        context
+    )
+
 
 def configuraciones_view(request):
     return render(request, 'configuraciones.html')

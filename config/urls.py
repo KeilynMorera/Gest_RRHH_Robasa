@@ -236,7 +236,8 @@ urlpatterns = [
     path("checklist_off/<int:id_check>/editar/", views.editar_checklist_offboarding, name="editar_checklist_offboarding"),
 
 
-   
+
+   path("usuarios/guardar/", views.guardar_usuario_sistema, name="guardar_usuario_sistema"),
 ]
 
 

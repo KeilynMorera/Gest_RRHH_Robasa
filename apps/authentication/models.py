@@ -2208,3 +2208,101 @@ class RotacionPersonal(models.Model):
             return f"{self.get_mes_display()} {self.Anio}"
 
         return f"Año {self.Anio}"
+
+
+
+# =========================================================
+# TABLA: Roles
+# Roles disponibles para el acceso al sistema
+# =========================================================
+
+class Roles(models.Model):
+
+    idRol = models.AutoField(
+        primary_key=True,
+        db_column="idRol"
+    )
+
+    TipoRol = models.CharField(
+        max_length=50,
+        db_column="TipoRol"
+    )
+
+    class Meta:
+
+        managed = False
+
+        db_table = "Roles"
+
+        verbose_name = "Rol"
+
+        verbose_name_plural = "Roles"
+
+        ordering = [
+            "TipoRol"
+        ]
+
+    def __str__(self):
+
+        return self.TipoRol
+
+
+# =========================================================
+# TABLA: UsuarioSistema
+# Usuarios autorizados para ingresar al sistema
+# =========================================================
+
+class UsuarioSistema(models.Model):
+
+    id_Admin = models.AutoField(
+        primary_key=True,
+        db_column="id_Admin"
+    )
+
+    Correo = models.EmailField(
+        max_length=200,
+        db_column="Correo"
+    )
+
+    # Contraseña cifrada mediante make_password()
+    Contrasenia = models.CharField(
+        max_length=128,
+        db_column="Contrasenia"
+    )
+
+    idRol = models.ForeignKey(
+        Roles,
+        on_delete=models.PROTECT,
+        db_column="idRol",
+        related_name="usuarios"
+    )
+
+    Activo = models.BooleanField(
+        db_column="Activo",
+        default=True
+    )
+
+    idEmpleado_Admin = models.ForeignKey(
+        Empleado,
+        on_delete=models.PROTECT,
+        db_column="idEmpleado_Admin",
+        related_name="usuarios_sistema"
+    )
+
+    class Meta:
+
+        managed = False
+
+        db_table = "UsuarioSistema"
+
+        verbose_name = "Usuario del Sistema"
+
+        verbose_name_plural = "Usuarios del Sistema"
+
+        ordering = [
+            "Correo"
+        ]
+
+    def __str__(self):
+
+        return f"{self.Correo} ({self.idRol.TipoRol})"
