@@ -35,7 +35,6 @@ body {
   top: 0;
   left: 0;
   bottom: 0;
-
   /* Permite que el contenido haga scroll vertical */
   overflow-y: auto;
   overflow-x: hidden;
@@ -44,7 +43,6 @@ body {
 /* =========================
    LOGO ROBASA
 ========================= */
-
 .logo {
   text-align: center;
   margin-bottom: 35px;
@@ -55,33 +53,24 @@ body {
   width: 320px;
   max-width: 100%;
   height: auto;
-
   display: block;
   margin: 0 auto 25px;
-
   /* Hace que resalte */
   padding: 18px;
-
   border-radius: 22px;
-
   background: rgba(255, 255, 255, 0.08);
-
   border: 1px solid rgba(255, 255, 255, 0.12);
-
   backdrop-filter: blur(6px);
-
   /* Glow */
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25))
     drop-shadow(0 0 25px rgba(255, 255, 255, 0.12)) brightness(1.18)
     contrast(1.15);
-
   transition: all 0.3s ease;
 }
 
 /* Hover elegante */
 .logo-img:hover {
   transform: scale(1.03);
-
   filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))
     drop-shadow(0 0 32px rgba(255, 255, 255, 0.18)) brightness(1.25)
     contrast(1.2);
@@ -123,7 +112,7 @@ body {
   width: 20px;
 }
 
-/* Opcional: personalizar la barra de scroll */
+/* Personalizar la barra de scroll */
 .sidebar::-webkit-scrollbar {
   width: 6px;
 }
@@ -168,7 +157,6 @@ body {
   flex: 1;
   margin-left: 280px;
   padding: 30px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -180,7 +168,6 @@ body {
 .topbar {
   width: 100%;
   max-width: 1500px;
-
   display: flex;
   align-items: center;
   gap: 20px;
@@ -423,12 +410,6 @@ body {
 
 .form-body {
   width: 100%;
-}
-
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 22px;
 }
 
 /* ── Secciones internas ───────────────────────────── */
@@ -676,10 +657,7 @@ body {
 
 /* ============================================================
    ESTILOS ADICIONALES — Tabla de consulta y modificación
-   Agregar al final de personas.css
    ============================================================ */
-
-/* ── Textarea del formulario ─────────────────────────────────── */
 textarea {
   width: 100%;
   border: 1.5px solid #dde2f0;
@@ -700,7 +678,7 @@ textarea:focus {
   background: #fff;
 }
 
-/* ── Botón Guardar Cambios (naranja suave / warning) ─────────── */
+/* Botón Guardar Cambios */
 .btn-warning {
   background: #f0a500;
   color: #ffffff;
@@ -717,7 +695,7 @@ textarea:focus {
   display: none !important;
 }
 
-/* ── Tarjeta de la tabla ─────────────────────────────────────── */
+/* Tarjeta de la tabla */
 .table-card {
   background: #ffffff;
   border-radius: 14px;
@@ -727,7 +705,7 @@ textarea:focus {
   overflow: hidden;
 }
 
-/* ── Encabezado de la tarjeta tabla ─────────────────────────── */
+/* Encabezado de la tarjeta tabla */
 .table-card-header {
   display: flex;
   align-items: center;
@@ -770,15 +748,16 @@ textarea:focus {
   margin: 0;
 }
 
-/* ── Buscador de la tabla ────────────────────────────────────── */
-.table-search input {
-  width: 100%;
-  min-width: 180px;
+/* Buscador de la tabla */
+.table-search {
+  position: relative;
 }
 
 .table-search i {
   position: absolute;
   left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
   color: #6b7499;
   font-size: 13px;
   pointer-events: none;
@@ -803,13 +782,13 @@ textarea:focus {
   background: #fff;
 }
 
-/* ── Contenedor con scroll horizontal ───────────────────────── */
+/* Contenedor con scroll horizontal */
 .table-wrapper {
   overflow-x: auto;
   padding: 0 0 8px;
 }
 
-/* ── Tabla ───────────────────────────────────────────────────── */
+/* Tabla */
 .data-table {
   width: 100%;
   min-width: 0;
@@ -871,57 +850,13 @@ textarea:focus {
   text-overflow: ellipsis;
 }
 
-/* Columna acción: centrada */
+/* Columna acción */
 .col-accion {
   text-align: center;
   white-space: nowrap;
 }
 
-/* Celda vacía */
-.tabla-vacia {
-  text-align: center;
-  padding: 40px 20px;
-  color: #6b7499;
-  font-size: 14px;
-}
-.tabla-vacia i {
-  display: block;
-  font-size: 32px;
-  margin-bottom: 10px;
-  color: #c5cbdf;
-}
-
-/* ── Botón editar en la tabla ────────────────────────────────── */
-.btn-editar {
-  background: rgba(30, 42, 94, 0.08);
-  border: none;
-  border-radius: 8px;
-  width: 36px;
-  height: 36px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #1e2a5e;
-  font-size: 15px;
-  cursor: pointer;
-  transition:
-    background 0.2s,
-    color 0.2s,
-    transform 0.15s;
-}
-.btn-editar:hover {
-  background: #e8600a;
-  color: #ffffff;
-  transform: scale(1.1);
-}
-
-/* ── Columna acción ───────────────────────────────────────── */
-.col-accion {
-  text-align: center;
-  white-space: nowrap;
-}
-
-/* ── Botones de acción (Editar / Eliminar) ────────────────── */
+/* Botones de acción (Editar / Eliminar) */
 .col-accion .btn {
   width: 36px;
   height: 36px;
@@ -934,7 +869,7 @@ textarea:focus {
   transition: all 0.2s ease;
 }
 
-/* Botón editar */
+/* Botón editar en tabla */
 .col-accion .btn-warning {
   background: rgba(240, 165, 0, 0.12);
   color: #f0a500;
@@ -962,19 +897,13 @@ textarea:focus {
   box-shadow: 0 4px 10px rgba(220, 53, 69, 0.35);
 }
 
-/* Tamaño de iconos */
 .col-accion .btn i {
   font-size: 14px;
 }
 
-/* =====================================================
-   RESPONSIVE GENERAL
-===================================================== */
-
-/* =====================================================
+/* ==========================================================================
    CONFIGURACIÓN GLOBAL ANTI-SCROLL HORIZONTAL
-===================================================== */
-
+========================================================================== */
 html,
 body {
   width: 100%;
@@ -1003,36 +932,9 @@ body {
   margin-right: auto;
 }
 
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
-}
-
-/* ==========================================================================
-   RESPONSIVE — personas.css
-   Pegar al FINAL del archivo personas.css
-   ========================================================================== */
-
-/* ==========================================================================
-   BASE GLOBAL — Previene scroll horizontal
-   ========================================================================== */
-html,
-body {
-  overflow-x: hidden;
-  width: 100%;
-}
-
-.dashboard-container {
-  display: flex;
-  min-height: 100vh;
-  width: 100%;
-  overflow-x: hidden;
-}
-
 /* ==========================================================================
    PANTALLAS GRANDES (≥ 1024px) — Layout normal
-   ========================================================================== */
+========================================================================== */
 @media (min-width: 1024px) {
   .sidebar {
     width: 280px;
@@ -1053,7 +955,7 @@ body {
 /* ==========================================================================
    PANTALLAS MEDIANAS Y PEQUEÑAS (< 1024px)
    Sidebar colapsado a solo iconos (68px)
-   ========================================================================== */
+========================================================================== */
 @media (max-width: 1023px) {
   /* ── Sidebar reducido ── */
   .sidebar {
@@ -1083,7 +985,7 @@ body {
     padding: 4px;
     border-radius: 8px;
     margin: 0;
-    filter: none; /* Quita el glow en tamaño pequeño para que no se vea recortado */
+    filter: none; /* Quita el glow en tamaño pequeño */
   }
 
   /* ── Menú: solo iconos ── */
@@ -1186,28 +1088,27 @@ body {
     width: calc(100% - 68px);
     padding: 16px;
     overflow-x: hidden;
-    align-items: stretch; /* Anula el align-items: center del base en móvil */
+    align-items: stretch; /* Anula el center en móvil */
   }
 
-  /* ── Topbar ── */
+  /* ── Topbar Adaptada ── */
   .topbar {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 16px;
+    gap: 16px;
+    margin-bottom: 20px;
     width: 100%;
     max-width: 100%;
   }
 
   .page-title {
     flex: 1;
-    min-width: 0;
     min-width: unset;
   }
 
   .page-title h1 {
-    font-size: 20px;
+    font-size: 24px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1220,7 +1121,7 @@ body {
     text-overflow: ellipsis;
   }
 
-  /* Buscador pasa a segunda fila */
+  /* Buscador pasa a una nueva fila completa */
   .search-box {
     order: 4;
     width: 100%;
@@ -1230,12 +1131,32 @@ body {
 
   .search-box input {
     width: 100%;
+    padding: 12px 16px 12px 42px; /* Un poco más compacto */
   }
 
+  .search-box i {
+    left: 14px;
+  }
+
+  /* Acciones alineadas a la derecha de la primera fila */
   .topbar-actions {
     margin-left: auto;
-    gap: 12px;
+    gap: 18px;
     flex-shrink: 0;
+  }
+
+  /* Ajustes finos de tamaño para notificaciones y usuario en tablet */
+  .notification {
+    font-size: 20px;
+  }
+
+  .user-profile {
+    padding: 6px 12px;
+  }
+
+  .user-profile img {
+    width: 38px;
+    height: 38px;
   }
 
   /* ── Breadcrumb ── */
@@ -1258,7 +1179,7 @@ body {
     max-width: 100%;
   }
 
-  /* ── Encabezado tarjeta formulario ── */
+  /* ── Encabezados ── */
   .form-card-header {
     flex-direction: column;
     align-items: flex-start;
@@ -1266,7 +1187,6 @@ body {
     padding: 16px;
   }
 
-  /* ── Encabezado tarjeta tabla ── */
   .table-card-header {
     flex-direction: column;
     align-items: flex-start;
@@ -1303,14 +1223,9 @@ body {
   /* ── Buscador de tabla ── */
   .table-search {
     width: 100%;
-    position: relative;
   }
 
   .table-search input {
-    width: 100%;
-  }
-
-  .table-search input:focus {
     width: 100%;
   }
 
@@ -1329,27 +1244,55 @@ body {
 
 /* ==========================================================================
    PANTALLAS MUY PEQUEÑAS (< 480px)
-   ========================================================================== */
+========================================================================== */
 @media (max-width: 479px) {
   .main-content {
     padding: 10px;
+  }
+
+  .topbar {
+    gap: 8px;
   }
 
   .page-title h1 {
     font-size: 18px;
   }
 
-  /* Ocultar nombre del usuario */
+  /* Ocultar texto/info del usuario para ahorrar espacio */
   .user-info {
     display: none;
   }
 
   .user-profile {
-    padding: 6px;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
     border-radius: 50%;
   }
 
-  /* Foto aún más pequeña */
+  .user-profile img {
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid #dde2f0;
+  }
+
+  .topbar-actions {
+    gap: 14px;
+  }
+
+  .notification {
+    font-size: 18px;
+  }
+
+  .badge {
+    width: 16px;
+    height: 16px;
+    font-size: 9px;
+    top: -6px;
+    right: -6px;
+  }
+
+  /* Foto de subida aún más pequeña */
   .photo-preview {
     width: 70px;
     height: 70px;
@@ -1357,8 +1300,8 @@ body {
 }
 
 /* ==========================================================================
-   TABLA — scroll interno, nunca rompe el layout
-   ========================================================================== */
+   TABLA — Scroll interno
+========================================================================== */
 .table-wrapper {
   width: 100%;
   overflow-x: auto;
@@ -1367,7 +1310,7 @@ body {
 
 .data-table {
   width: 100%;
-  min-width: 600px; /* Activa scroll horizontal en .table-wrapper */
+  min-width: 600px; /* Activa scroll horizontal controlado */
 }
 
 .data-table td {
