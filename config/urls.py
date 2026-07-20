@@ -76,7 +76,8 @@ urlpatterns = [
     # Registro de personas
     path('personas/', views.registrar_persona, name='personas'),
     #Modificar personas
-    path('personas/editar/<int:id_persona>/', views.editar_persona, name='editar_persona'),
+    # Editar persona
+    path("personas/editar/<int:id_persona>/", views.editar_persona, name="editar_persona"),
     # Eliminar personas
     path('personas/eliminar/<int:id_persona>/', views.eliminar_persona, name='eliminar_persona'),
 

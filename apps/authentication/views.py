@@ -577,38 +577,97 @@ def registrar_persona(request):
 
 def editar_persona(request, id_persona):
 
+    # =========================================
+    # OBTENER LA PERSONA A MODIFICAR
+    # =========================================
     persona = get_object_or_404(
         Persona,
         pk=id_persona
     )
 
-    if request.method == 'POST':
+    # =========================================
+    # SI PRESIONA GUARDAR CAMBIOS
+    # =========================================
+    if request.method == "POST":
 
-        persona.Nombre_Completo = request.POST.get('nombre_completo')
-        persona.Cedula = request.POST.get('cedula')
-        persona.Sexo = request.POST.get('sexo')
-        persona.FechaNacimiento = request.POST.get('fecha_nacimiento')
-        persona.Telefono = request.POST.get('telefono')
-        persona.Celular = request.POST.get('celular')
-        persona.Correo = request.POST.get('correo')
-        persona.Direccion = request.POST.get('direccion')
+        try:
 
-        if request.FILES.get('foto'):
-            persona.Foto = request.FILES['foto']
+            persona.Nombre_Completo = request.POST.get(
+                "nombre_completo"
+            )
 
-        persona.save()
+            persona.Cedula = request.POST.get(
+                "cedula"
+            )
 
-        return redirect('personas')
+            persona.idSexo = PersonaSexo.objects.get(
+                pk=request.POST.get("sexo")
+            )
 
-    personas = Persona.objects.all()
-    sexos = PersonaSexo.objects.all()
-    
-    return render(
-        request, 'personas.html', {
-            'persona_editar': persona,
-            'personas': personas,'sexos': sexos
+            persona.Fecha_Nacimiento = request.POST.get(
+                "fecha_nacimiento"
+            )
+
+            persona.Telefono = request.POST.get(
+                "telefono"
+            )
+
+            persona.Celular = request.POST.get(
+                "celular"
+            )
+
+            persona.Correo = request.POST.get(
+                "correo"
+            )
+
+            persona.Direccion = request.POST.get(
+                "direccion"
+            )
+
+            # Solo reemplaza la foto si se seleccionó otra
+            if request.FILES.get("foto"):
+
+                persona.Foto = request.FILES["foto"]
+
+            # Guarda los cambios
+            persona.save()
+
+            messages.success(
+                request,
+                "La información fue actualizada correctamente."
+            )
+
+            return redirect("personas")
+
+        except Exception as e:
+
+            messages.error(
+                request,
+                f"Ocurrió un error: {e}"
+            )
+
+    # =========================================
+    # CARGAR EL FORMULARIO CON LOS DATOS
+    # =========================================
+    context = {
+
+        "persona_editar": persona,
+
+        "personas": Persona.objects.select_related(
+            "idSexo"
+        ).order_by(
+            "Nombre_Completo"
+        ),
+
+        "sexos": PersonaSexo.objects.all()
+
     }
-)
+
+    return render(
+        request,
+        "personas.html",
+        context
+    )
 
 # =========================================================
 # Vista: Eliminar Persona
