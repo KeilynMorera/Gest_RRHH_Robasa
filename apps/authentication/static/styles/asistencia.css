@@ -10,7 +10,7 @@
 body {
   font-family: "Segoe UI", sans-serif; /* Tipografía para el proyecto */
   background: #f4f7fb; /* Color de fondo gris-azulado claro */
-  color: #d35b1a; /* Color de texto principal naranja */
+  color: #000000; /* Color de texto principal naranja */
 }
 
 /* ==========================================================================
@@ -865,387 +865,6 @@ body {
   pointer-events: none; /* Hace que los clics atraviesen el texto y actúen en el input */
 }
 
-/* ==========================================================================
-   RESPONSIVE DESIGN - Adaptabilidad móvil
-   ========================================================================== */
-
-/* ==========================================================================
-   PANTALLAS ULTRA GRANDES (1400px o más)
-   ========================================================================== */
-@media screen and (min-width: 1400px) {
-  .main-content {
-    padding: 35px 45px;
-  }
-  .form-card {
-    max-width: 1500px;
-    margin: 25px auto;
-  } /* Centra el formulario con tope máximo */
-  .form-grid {
-    grid-template-columns: repeat(3, 1fr);
-  } /* Crece de 2 a 3 columnas para aprovechar espacio */
-  .page-title h1 {
-    font-size: 38px;
-  }
-  .search-box {
-    max-width: 520px;
-  }
-}
-
-/* ==========================================================================
-   LAPTOPS Y PANTALLAS MEDIANAS (Menos de 1200px)
-   ========================================================================== */
-@media screen and (max-width: 1200px) {
-  .sidebar {
-    width: 240px;
-    padding: 25px 15px;
-  } /* Sidebar se compacta ligeramente */
-  .main-content {
-    margin-left: 240px;
-    padding: 25px;
-  }
-  .logo-img {
-    width: 220px;
-  }
-  .menu a {
-    font-size: 14px;
-    padding: 12px 14px;
-  }
-  .form-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .topbar {
-    gap: 15px;
-  }
-  .search-box {
-    max-width: 100%;
-  }
-}
-
-/* ==========================================================================
-   TABLETS (Menos de 992px) -> AQUÍ CAMBIA EL DISEÑO RADICALMENTE
-   ========================================================================== */
-@media screen and (max-width: 992px) {
-  /* El sidebar pasa a medir solo 95px. Se convierte en una barra de iconos compacta */
-  .sidebar {
-    width: 95px;
-    padding: 20px 10px;
-    align-items: center; /* Centra los iconos de forma vertical */
-  }
-
-  .logo-img {
-    width: 60px;
-    padding: 10px;
-  }
-
-  .menu {
-    width: 100%;
-    align-items: center;
-  }
-
-  /* Truco de invisibilidad: font-size: 0 elimina el texto de los enlaces de menú
-     y justify-content: center deja los iconos solos en el centro exacto */
-  .menu a {
-    justify-content: center;
-    padding: 14px 10px;
-    width: 100%;
-    font-size: 0; /* Oculta los textos por completo */
-    border-radius: 14px;
-  }
-
-  .menu a i {
-    font-size: 20px;
-    width: auto;
-  } /* Engrandece el icono para mejor experiencia touch */
-
-  /* Aplica la misma regla de ocultar texto para el botón de logout */
-  .logout {
-    width: 100%;
-  }
-  .logout a {
-    justify-content: center;
-    font-size: 0;
-  }
-  .logout a i {
-    font-size: 20px;
-  }
-
-  /* Re-ajuste del espacio del contenido principal basado en el nuevo ancho del sidebar (95px) */
-  .main-content {
-    margin-left: 95px;
-    padding: 20px;
-    width: calc(100% - 95px);
-  }
-
-  /* Cambios en la barra superior para organizarse en bloques apilados */
-  .topbar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 15px;
-    margin-bottom: 15px;
-  }
-  .page-title {
-    width: 100%;
-    min-width: unset;
-  }
-  .page-title h1 {
-    font-size: 30px;
-  }
-  .search-box {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .topbar-actions {
-    width: 100%;
-    margin-left: 0;
-    justify-content: space-between;
-  }
-  
-  /* Oculta texto del usuario */
-  .user-info {
-    display: none;
-  }
-
-
-  /* Reducción de rejillas a 1 sola columna vertical */
-  .breadcrumb {
-    padding: 0;
-    margin-bottom: 15px;
-    flex-wrap: wrap;
-  }
-  .form-card {
-    margin: 0;
-    width: 100%;
-  }
-  .form-card-header {
-    padding: 20px;
-  }
-  .form-body {
-    padding: 20px;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-  .field-full {
-    grid-column: auto;
-  } /* Desactiva la expansión forzada */
-
-  .summary-grid {
-    grid-template-columns: 1fr;
-  }
-  .summary-item {
-    width: 100%;
-  }
-
-  /* Botones adaptables al 100% del ancho */
-  .form-footer {
-    justify-content: stretch;
-  }
-  .btn {
-    width: 100%;
-    justify-content: center;
-  }
-  .results-table {
-    min-width: 700px;
-  }
-}
-
-/* ==========================================================================
-   CELULARES (Menos de 576px)
-   ========================================================================== */
-@media screen and (max-width: 576px) {
-  body {
-    overflow-x: hidden;
-  } /* Evita cualquier desborde o descuadre de pantalla lateral */
-  .dashboard-container {
-    width: 100%;
-    overflow-x: hidden;
-  }
-
-  /* El sidebar se vuelve extremadamente delgado (78px) */
-  .sidebar {
-    width: 78px;
-    padding: 15px 8px;
-  }
-  .logo {
-    margin-bottom: 20px;
-  }
-  .logo-img {
-    width: 52px;
-    padding: 6px;
-    border-radius: 12px;
-  }
-  .menu {
-    gap: 6px;
-  }
-  .menu a {
-    padding: 12px 6px;
-    border-radius: 10px;
-  }
-  .menu a i {
-    font-size: 18px;
-  }
-  .logout a i {
-    font-size: 18px;
-  }
-
-  /* Re-ajuste del espacio del contenido principal para los 78px del sidebar */
-  .main-content {
-    margin-left: 78px;
-    width: calc(100% - 78px);
-    padding: 14px;
-  }
-
-  .topbar {
-    margin-bottom: 10px;
-    gap: 10px;
-  }
-  .menu-toggle {
-    display: none;
-  } /* En celulares se asume que la barra compacta es fija y no requiere toggle */
-
-  .page-title {
-    width: 100%;
-  }
-  .page-title h1 {
-    font-size: 22px;
-    line-height: 1.2;
-  }
-  .page-title p {
-    font-size: 13px;
-    line-height: 1.4;
-  }
-
-  .search-box {
-    width: 100%;
-    max-width: 100%;
-  }
-  .search-box input {
-    font-size: 13px;
-    padding: 12px 14px 12px 42px;
-  }
-
-  .topbar-actions {
-    width: 100%;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: 0;
-  }
-  .notification {
-    font-size: 20px;
-  }
-
-  /* Oculta texto del usuario */
-  .user-info {
-    display: none;
-  }
-
-  .breadcrumb {
-    font-size: 12px;
-    gap: 5px;
-    margin-bottom: 12px;
-  }
-
-  /* Tarjetas y formularios optimizados para dedos */
-  .form-card {
-    border-radius: 12px;
-  }
-  .form-card-header {
-    padding: 16px;
-    gap: 15px;
-  }
-  .form-card-header-left {
-    align-items: flex-start;
-  }
-  .form-card-icon {
-    width: 40px;
-    height: 40px;
-    font-size: 16px;
-  }
-  .form-card-title {
-    font-size: 15px;
-    line-height: 1.4;
-  }
-  .form-card-subtitle {
-    font-size: 11px;
-    line-height: 1.5;
-  }
-  .required-note {
-    font-size: 11px;
-  }
-
-  .form-body {
-    padding: 16px;
-  }
-  .form-section {
-    margin-bottom: 24px;
-  }
-  .form-section-title {
-    font-size: 11px;
-    line-height: 1.5;
-  }
-
-  .field label {
-    font-size: 12px;
-    line-height: 1.4;
-  }
-  .field input,
-  .field select,
-  .field textarea {
-    font-size: 13px;
-    padding: 11px 12px;
-  }
-  .field textarea {
-    min-height: 90px;
-  }
-
-  .summary-box {
-    padding: 15px;
-  }
-  .summary-grid {
-    gap: 12px;
-  }
-  .summary-item {
-    padding: 12px;
-  }
-  .summary-value {
-    font-size: 18px;
-  }
-
-  /* Tabla de resultados adaptable mediante scrollbar interno */
-  .table-container {
-    overflow-x: auto;
-    border-radius: 10px;
-  }
-  .results-table {
-    min-width: 650px;
-    font-size: 12px;
-  }
-  .results-table th,
-  .results-table td {
-    padding: 10px 12px;
-  }
-
-  .form-footer {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .btn {
-    width: 100%;
-    padding: 12px;
-    font-size: 13px;
-  }
-
-  .footer {
-    font-size: 12px;
-    line-height: 1.5;
-    margin-top: 20px;
-    padding-bottom: 10px;
-  }
-}
-
 /* ============================================================
    ESTILOS ADICIONALES — Tabla de consulta y modificación
    Agregar al final de personas.css
@@ -1539,16 +1158,423 @@ textarea:focus {
   font-size: 14px;
 }
 
-
-
+/* ==========================================================================
+   RESPONSIVE DESIGN - Adaptabilidad móvil
+   ========================================================================== */
 
 /* ==========================================================================
-   CELULARES EXTRA PEQUEÑOS (Menos de 400px - Dispositivos antiguos o muy angostos)
+   PANTALLAS ULTRA GRANDES (1400px o más)
+   ========================================================================== */
+@media screen and (min-width: 1400px) {
+  .main-content {
+    padding: 35px 45px;
+  }
+  .form-card {
+    max-width: 1500px;
+    margin: 25px auto;
+  } /* Centra el formulario con tope máximo */
+  .form-grid {
+    grid-template-columns: repeat(3, 1fr);
+  } /* Crece de 2 a 3 columnas para aprovechar espacio */
+  .page-title h1 {
+    font-size: 38px;
+  }
+  .search-box {
+    max-width: 520px;
+  }
+}
+
+/* ==========================================================================
+   LAPTOPS Y PANTALLAS MEDIANAS (Menos de 1200px)
+   ========================================================================== */
+@media screen and (max-width: 1200px) {
+  .sidebar {
+    width: 240px;
+    padding: 25px 15px;
+  } /* Sidebar se compacta ligeramente */
+  .main-content {
+    margin-left: 240px;
+    padding: 25px;
+  }
+  .logo-img {
+    width: 220px;
+  }
+  .menu a {
+    font-size: 14px;
+    padding: 12px 14px;
+  }
+  .form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .topbar {
+    gap: 15px;
+  }
+  .search-box {
+    max-width: 100%;
+  }
+}
+
+/* ==========================================================
+   RESPONSIVE - PANTALLAS MEDIANAS (max-width: 992px)
+   ========================================================== */
+@media (max-width: 992px) {
+  .sidebar {
+    width: 90px;
+    padding: 20px 10px;
+  }
+
+  .main-content {
+    margin-left: 90px;
+    width: calc(100% - 90px);
+    padding: 15px 20px;
+    box-sizing: border-box;
+  }
+
+  .logo span {
+    display: none;
+  }
+
+  .logo-img {
+    width: 55px;
+    padding: 8px;
+  }
+
+  /* Menú solo iconos */
+  .menu a,
+  .logout a {
+    justify-content: center;
+    padding: 14px 0;
+    gap: 0;
+    font-size: 0;
+  }
+
+  .menu a span,
+  .logout a span {
+    display: none;
+  }
+
+  .menu i,
+  .logout i {
+    font-size: 20px;
+    width: auto;
+    margin: 0;
+  }
+
+  /* ==========================================================
+     TOPBAR & ESTRUCTURA EN 2 FILAS
+     ========================================================== */
+
+  /* ==========================================================
+     TOPBAR & ALINEACIÓN EN UNA SOLA FILA
+     ========================================================== */
+
+  .topbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+  }
+
+  .page-title {
+    order: 1;
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  /* 
+    TRUCO CSS: 'display: contents' libera a .notification y .user-profile 
+    para que se alineen directamente en el Flexbox padre (.topbar) 
+  */
+  .topbar-actions {
+    display: contents;
+  }
+
+  /* 1. NOTIFICACIÓN A LA IZQUIERDA */
+  .notification {
+    order: 2;
+    flex-shrink: 0;
+    margin: 0;
+  }
+
+  /* 2. USUARIO AL CENTRO / A CONTINUACIÓN */
+  .user-profile {
+    order: 3;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  .user-info {
+    display: flex !important;
+    flex-direction: column;
+  }
+
+  /* 3. BARRA DE BÚSQUEDA A LA DERECHA (Ocupa el resto del espacio) */
+  .search-box {
+    order: 4;
+    flex: 1;
+    min-width: 180px; /* Ancho mínimo flexible para no romperse */
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .search-box input {
+    width: 100%;
+    padding: 9px 14px 9px 38px;
+    font-size: 13px;
+  }
+
+  /* ==========================================================
+     FORMULARIO CENTRADO
+     ========================================================== */
+
+  .form-card {
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  .form-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px 22px;
+  }
+
+  .form-card-title {
+    font-size: 17px;
+  }
+
+  .form-body {
+    padding: 22px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .field label {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    padding: 10px 14px;
+    font-size: 13.5px;
+    border-radius: 8px;
+  }
+}
+
+/* ==========================================================================
+   CELULARES (Menos de 576px)
+   ========================================================================== */
+@media screen and (max-width: 576px) {
+  body,
+  .dashboard-container {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .sidebar {
+    width: 78px;
+    padding: 15px 8px;
+  }
+  .logo {
+    margin-bottom: 20px;
+  }
+  .logo-img {
+    width: 52px;
+    padding: 6px;
+    border-radius: 12px;
+  }
+  .menu {
+    gap: 6px;
+  }
+  .menu a {
+    padding: 12px 6px;
+    border-radius: 10px;
+  }
+  .menu a i,
+  .logout a i {
+    font-size: 18px;
+  }
+
+  .main-content {
+    margin-left: 78px;
+    width: calc(100% - 78px);
+    padding: 14px;
+  }
+
+  .topbar {
+    margin-bottom: 10px;
+    gap: 12px;
+  }
+  .menu-toggle {
+    display: none;
+  }
+
+  .page-title h1 {
+    font-size: 22px;
+    line-height: 1.2;
+  }
+  .page-title p {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  /* Alineación interna en móviles manteniendo la estructura requerida */
+  .topbar-actions {
+    flex-wrap: wrap; /* En pantallas pequeñas se apila si no hay espacio horizontal suficiente */
+    gap: 10px;
+  }
+
+  .notification {
+    order: 1;
+    font-size: 20px;
+  }
+
+  .user-profile {
+    order: 2;
+    margin: 0;
+    gap: 8px;
+    padding: 4px 8px;
+  }
+
+  .user-info {
+    display: flex !important; /* Mantiene nombre y puesto visibles */
+  }
+
+  .user-info strong {
+    font-size: 12px;
+  }
+
+  .user-info span {
+    font-size: 10px;
+  }
+
+  .search-box {
+    order: 3;
+    width: 100%;
+    max-width: 100%; /* Pasa a ocupar la fila inferior si la pantalla es muy estrecha */
+  }
+
+  .search-box input {
+    font-size: 12px;
+    padding: 9px 12px 9px 36px;
+  }
+
+  .breadcrumb {
+    font-size: 12px;
+    gap: 5px;
+    margin-bottom: 12px;
+  }
+
+  .form-card {
+    border-radius: 12px;
+  }
+  .form-card-header {
+    padding: 16px;
+    gap: 15px;
+  }
+  .form-card-header-left {
+    align-items: flex-start;
+  }
+  .form-card-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+  .form-card-title {
+    font-size: 15px;
+    line-height: 1.4;
+  }
+  .form-card-subtitle,
+  .required-note {
+    font-size: 11px;
+  }
+
+  .form-body {
+    padding: 16px;
+  }
+  .form-section {
+    margin-bottom: 24px;
+  }
+  .form-section-title {
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  .field label {
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 13px;
+    padding: 11px 12px;
+  }
+  .field textarea {
+    min-height: 90px;
+  }
+
+  .summary-box {
+    padding: 15px;
+  }
+  .summary-grid {
+    gap: 12px;
+  }
+  .summary-item {
+    padding: 12px;
+  }
+  .summary-value {
+    font-size: 18px;
+  }
+
+  .table-container {
+    overflow-x: auto;
+    border-radius: 10px;
+  }
+  .results-table {
+    min-width: 650px;
+    font-size: 12px;
+  }
+  .results-table th,
+  .results-table td {
+    padding: 10px 12px;
+  }
+
+  .form-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 13px;
+  }
+
+  .footer {
+    font-size: 12px;
+    line-height: 1.5;
+    margin-top: 20px;
+    padding-bottom: 10px;
+  }
+}
+
+/* ==========================================================================
+   CELULARES EXTRA PEQUEÑOS (Menos de 400px)
    ========================================================================== */
 @media screen and (max-width: 400px) {
   .sidebar {
     width: 70px;
-  } /* Lleva el sidebar a su tamaño más estricto */
+  }
   .main-content {
     margin-left: 70px;
     width: calc(100% - 70px);
@@ -1567,23 +1593,21 @@ textarea:focus {
     padding: 14px;
   }
 
-  .search-box input {
-    padding: 12px 14px 12px 42px; /* Reajuste del padding interno del buscador */
-    font-size: 13px;
-  }
-
   .user-profile {
-    gap: 8px;
-    padding: 6px 8px;
+    gap: 6px;
+    padding: 4px 6px;
   }
 
   .user-profile img {
-    width: 38px;
-    height: 38px; /* Foto de perfil más pequeña */
+    width: 32px;
+    height: 32px;
   }
 
-  /* OCULTA el bloque de textos del usuario. En pantallas de menos de 480px sólo queda la foto */
-  .user-info {
-    display: none;
+  .user-info strong {
+    font-size: 11px;
+  }
+
+  .user-info span {
+    font-size: 9.5px;
   }
 }

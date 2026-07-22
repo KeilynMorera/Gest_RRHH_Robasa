@@ -596,11 +596,7 @@
                     </td>
 
                     <td>
-                      {% if asistencia.Horas_Extra
-                      %}{{asistencia.Horas_Extra|time:"G" }}h {% if
-                      asistencia.Horas_Extra|time:"i" != "00"
-                      %}{{asistencia.Horas_Extra|time:"i" }}m{% endif %}{%
-                      else%}—{% endif %}
+                      {% if asistencia.Horas_Extra %}{{asistencia.Horas_Extra|time:"G" }}h {% if asistencia.Horas_Extra|time:"i" != "00" %}{{asistencia.Horas_Extra|time:"i" }}m{% endif %}{% else%}—{% endif %}
                     </td>
 
                     <td>{{ asistencia.idAsis_Estado.TipoEstado }}</td>
