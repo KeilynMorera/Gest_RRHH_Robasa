@@ -4359,8 +4359,163 @@ def modificar_usuario_sistema(request, id_Admin):
     )
 
 
+from django.contrib import messages
+from django.contrib.auth.hashers import check_password
+from django.shortcuts import render, redirect
+
+from .models import UsuarioSistema
+
+
+def login_usuario(request):
+
+    # =========================================================
+    # SI EL USUARIO ENVÍA EL FORMULARIO
+    # =========================================================
+
+    if request.method == "POST":
+
+        # =====================================================
+        # OBTENER DATOS DEL FORMULARIO
+        # =====================================================
+
+        correo = request.POST.get(
+            "Correo",
+            ""
+        ).strip()
+
+        contrasenia = request.POST.get(
+            "Contrasenia",
+            ""
+        ).strip()
+
+
+        # =====================================================
+        # VALIDAR CAMPOS VACÍOS
+        # =====================================================
+
+        if not correo or not contrasenia:
+
+            messages.error(
+                request,
+                "Debe ingresar el correo electrónico y la contraseña."
+            )
+
+            return render(
+                request,
+                "login.html"
+            )
+
+
+        # =====================================================
+        # BUSCAR USUARIO POR CORREO
+        # =====================================================
+
+        usuario = UsuarioSistema.objects.filter(
+            Correo=correo
+        ).select_related(
+            "idRol",
+            "idEmpleado_Admin",
+            "idEmpleado_Admin__idPersona"
+        ).first()
+
+
+        # =====================================================
+        # VALIDAR CORREO Y CONTRASEÑA
+        # =====================================================
+
+        if usuario is None or not check_password(
+            contrasenia,
+            usuario.Contrasenia
+        ):
+
+            messages.error(
+                request,
+                "El correo electrónico o la contraseña son incorrectos."
+            )
+
+            return render(
+                request,
+                "login.html"
+            )
+
+
+        # =====================================================
+        # VALIDAR SI EL USUARIO ESTÁ ACTIVO
+        # =====================================================
+
+        if not usuario.Activo:
+
+            messages.error(
+                request,
+                "Su cuenta se encuentra inactiva. Contacte al administrador del sistema."
+            )
+
+            return render(
+                request,
+                "login.html"
+            )
+
+
+        # =====================================================
+        # GUARDAR INFORMACIÓN EN LA SESIÓN
+        # =====================================================
+
+        request.session["usuario_id"] = usuario.id_Admin
+
+        request.session["usuario_correo"] = usuario.Correo
+
+        request.session["usuario_rol_id"] = usuario.idRol.idRol
+
+        request.session["usuario_rol"] = usuario.idRol.TipoRol
+
+        request.session["empleado_id"] = usuario.idEmpleado_Admin.idEmpleado
+
+        request.session["empleado_nombre"] = (
+            usuario.idEmpleado_Admin
+            .idPersona
+            .Nombre_Completo
+        )
+
+
+        # =====================================================
+        # MENSAJE DE BIENVENIDA
+        # =====================================================
+
+        messages.success(
+            request,
+            f"Bienvenido(a), {usuario.idEmpleado_Admin.idPersona.Nombre_Completo}."
+        )
+
+
+        # =====================================================
+        # REDIRIGIR AL INICIO DEL SISTEMA
+        # =====================================================
+
+        return redirect(
+            "inicio"
+        )
+
+
+    # =========================================================
+    # MOSTRAR LOGIN
+    # =========================================================
+
+    return render(
+        request,
+        "login.html"
+    )
+
+
 def configuraciones_view(request):
     return render(request, 'configuraciones.html')
 
 def reportes_view(request):
     return render(request, 'reportes.html')
+
+
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
+def cerrar_sesion(request):
+    logout(request)
+    return redirect('login_usuario')

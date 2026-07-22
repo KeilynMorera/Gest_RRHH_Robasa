@@ -8,9 +8,7 @@
 
 <!-- Idioma principal del sitio -->
 <html lang="es">
-
   <head>
-
     <!-- Codificación de caracteres -->
     <meta charset="UTF-8" />
 
@@ -34,82 +32,66 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
-
   </head>
 
   <body>
-
     <!-- =====================================================
          CONTENEDOR PRINCIPAL DEL LOGIN
          Divide la pantalla en panel izquierdo y derecho
     ===================================================== -->
     <div class="login-container">
-
       <!-- =====================================================
            PANEL IZQUIERDO
            Contiene logo, información y diseño visual
       ===================================================== -->
       <div class="left-panel">
-
         <!-- Capa overlay para efectos visuales -->
         <div class="overlay"></div>
 
         <!-- Contenido interno del panel izquierdo -->
         <div class="left-content">
-
           <!-- =====================================================
                LOGO DE LA EMPRESA
           ===================================================== -->
           <div class="logo">
-
             <!-- Imagen del logo desde archivos estáticos -->
             <img
               src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
               alt="Logo Robasa"
               class="logo-img"
             />
-
           </div>
 
           <!-- =====================================================
                TÍTULO PRINCIPAL
           ===================================================== -->
           <h2 class="subtitulo-login">
-
-            <!-- Texto con span para resaltar palabras -->
-            Sistema de Gestión de <span>Talento Humano</span>
-
+            Sistema de Gestión de
+            <span>Talento Humano</span>
           </h2>
 
           <!-- =====================================================
                DESCRIPCIÓN DEL SISTEMA
           ===================================================== -->
           <p class="intro-login">
-
             Administre, gestione y potencie el talento de su empresa desde una
             sola plataforma.
-
           </p>
 
           <!-- =====================================================
                ICONO DECORATIVO
           ===================================================== -->
           <div class="illustration">
-
             <!-- Icono de Font Awesome -->
             <i class="fas fa-chart-line"></i>
-
           </div>
 
           <!-- =====================================================
                FRASE MOTIVACIONAL
           ===================================================== -->
           <blockquote>
-
             “La gestión de las personas impulsa el éxito de las organizaciones.”
-
           </blockquote>
-
         </div>
       </div>
 
@@ -118,38 +100,75 @@
            Contiene el formulario de login
       ===================================================== -->
       <div class="right-panel">
-
         <!-- Caja principal del login -->
         <div class="login-box">
-
-          <!-- Título de bienvenida -->
+          <!-- =====================================================
+               TÍTULO DE BIENVENIDA
+          ===================================================== -->
           <h2>Bienvenido de nuevo</h2>
 
           <!-- Texto descriptivo -->
           <p>Inicie sesión para continuar</p>
 
           <!-- =====================================================
-               FORMULARIO DE LOGIN
+               MENSAJES DE DJANGO
+               
+               Aquí se mostrarán mensajes enviados desde la vista:
+               
+               - Correo o contraseña incorrectos
+               - Cuenta inactiva
+               - Campos vacíos
+               - Mensajes de bienvenida
           ===================================================== -->
-          <form>
+          {% if messages %} {% for message in messages %}
+
+          <div class="info-box {{ message.tags }}">{{ message }}</div>
+
+          {% endfor %} {% endif %}
+
+          <!-- =====================================================
+               FORMULARIO DE LOGIN
+
+               IMPORTANTE:
+               method="POST" permite enviar los datos a Django.
+
+               action="{% url 'login_usuario' %}"
+               envía los datos a la vista login_usuario.
+          ===================================================== -->
+          <form method="POST" action="{% url 'login_usuario' %}">
+            <!-- Protección CSRF de Django -->
+            {% csrf_token %}
 
             <!-- =====================================================
                  CAMPO DE CORREO ELECTRÓNICO
             ===================================================== -->
             <div class="input-group">
-
               <!-- Etiqueta -->
-              <label>Correo electrónico</label>
+              <label for="Correo"> Correo electrónico </label>
 
               <!-- Contenedor del input -->
               <div class="input-wrapper">
-
                 <!-- Icono -->
                 <i class="fas fa-envelope"></i>
 
-                <!-- Campo email -->
-                <input type="email" placeholder="ejemplo@empresa.com" />
+                <!--
+                  IMPORTANTE:
 
+                  name="Correo"
+
+                  Este nombre debe coincidir con:
+
+                  request.POST.get("Correo", "")
+                -->
+                <input
+                  type="email"
+                  id="Correo"
+                  name="Correo"
+                  placeholder="ejemplo@empresa.com"
+                  value="{{ request.POST.Correo|default:'' }}"
+                  autocomplete="email"
+                  required
+                />
               </div>
             </div>
 
@@ -157,90 +176,153 @@
                  CAMPO DE CONTRASEÑA
             ===================================================== -->
             <div class="input-group">
-
               <!-- Etiqueta -->
-              <label>Contraseña</label>
+              <label for="Contrasenia"> Contraseña </label>
 
               <!-- Contenedor -->
               <div class="input-wrapper">
-
                 <!-- Icono candado -->
                 <i class="fas fa-lock"></i>
 
-                <!-- Campo password -->
-                <input type="password" placeholder="Ingrese su contraseña" />
+                <!--
+                  IMPORTANTE:
 
-                <!-- Icono mostrar contraseña -->
-                <i class="fas fa-eye"></i>
+                  name="Contrasenia"
 
+                  Este nombre debe coincidir con:
+
+                  request.POST.get("Contrasenia", "")
+                -->
+                <input
+                  type="password"
+                  id="Contrasenia"
+                  name="Contrasenia"
+                  placeholder="Ingrese su contraseña"
+                  autocomplete="current-password"
+                  required
+                />
+
+                <!-- =====================================================
+                     ICONO PARA MOSTRAR / OCULTAR CONTRASEÑA
+                ===================================================== -->
+                <i
+                  class="fas fa-eye"
+                  id="togglePassword"
+                  style="cursor: pointer"
+                  title="Mostrar contraseña"
+                ></i>
               </div>
             </div>
 
             <!-- =====================================================
                  ENLACE RECUPERAR CONTRASEÑA
+
+                 Por el momento no tiene una funcionalidad implementada.
             ===================================================== -->
-            <a href="#" class="forgot-password">
-
-              ¿Olvidó su contraseña?
-
-            </a>
+            <a href="#" class="forgot-password"> ¿Olvidó su contraseña? </a>
 
             <!-- =====================================================
                  BOTÓN INICIAR SESIÓN
-                 Redirige a la vista "inicio"
+
+                 IMPORTANTE:
+
+                 Antes estaba como:
+
+                 type="button"
+
+                 y redirigía directamente a inicio.
+
+                 Ahora debe ser:
+
+                 type="submit"
+
+                 para enviar el formulario a Django.
             ===================================================== -->
-
-             <!-- Redirección usando URL de Django -->
-            <button
-              type="button"
-              class="btn-login"
-              onclick="window.location.href='{% url 'inicio' %}'"
-            >
-
+            <button type="submit" class="btn-login">
               <!-- Icono -->
               <i class="fas fa-right-to-bracket"></i>
 
               Iniciar sesión
-
             </button>
-
           </form>
 
           <!-- =====================================================
                DIVISOR VISUAL
+               
+               Por el momento se mantiene visualmente.
           ===================================================== -->
           <div class="divider">
-
             <span>o continuar con</span>
-
           </div>
 
           <!-- =====================================================
                BOTÓN LOGIN CON GOOGLE
-          ===================================================== -->
-          <button class="btn-google">
 
+               Actualmente es solamente visual.
+               No está conectado con autenticación de Google.
+          ===================================================== -->
+          <button type="button" class="btn-google">
             <!-- Icono Google -->
             <i class="fab fa-google"></i>
 
             Continuar con Google
-
           </button>
 
           <!-- =====================================================
                TEXTO CONTACTAR ADMINISTRADOR
           ===================================================== -->
           <p class="contact-admin">
-
             ¿No tiene una cuenta?
 
-            <a href="#">Contacte al administrador</a>
-
+            <a href="#"> Contacte al administrador </a>
           </p>
-
         </div>
       </div>
     </div>
 
+    <!-- =====================================================
+         JAVASCRIPT
+         MOSTRAR / OCULTAR CONTRASEÑA
+    ===================================================== -->
+    <script>
+      // Obtener el campo de contraseña
+      const passwordInput = document.getElementById("Contrasenia");
+
+      // Obtener el icono del ojo
+      const togglePassword = document.getElementById("togglePassword");
+
+      // Verificar que ambos elementos existan
+      if (passwordInput && togglePassword) {
+        // Evento al hacer clic en el icono
+        togglePassword.addEventListener("click", function () {
+          // Verificar el tipo actual del campo
+          const tipoActual = passwordInput.getAttribute("type");
+
+          // Si está oculto, mostrarlo
+          if (tipoActual === "password") {
+            passwordInput.setAttribute("type", "text");
+
+            // Cambiar icono a ojo tachado
+            togglePassword.classList.remove("fa-eye");
+
+            togglePassword.classList.add("fa-eye-slash");
+
+            togglePassword.setAttribute("title", "Ocultar contraseña");
+          }
+
+          // Si está visible, ocultarlo
+          else {
+            passwordInput.setAttribute("type", "password");
+
+            // Cambiar icono a ojo normal
+            togglePassword.classList.remove("fa-eye-slash");
+
+            togglePassword.classList.add("fa-eye");
+
+            togglePassword.setAttribute("title", "Mostrar contraseña");
+          }
+        });
+      }
+    </script>
   </body>
 </html>

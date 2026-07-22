@@ -16,6 +16,7 @@ class Empresa(models.Model):
 
     class Meta:
         db_table = 'Empresas'
+        managed = False
 
     def __str__(self):
         return self.Nombre
@@ -41,6 +42,7 @@ class Gerencia(models.Model):
 
     class Meta:
         db_table = 'Gerencia'
+        managed = False
 
     def __str__(self):
         return self.Nombre
@@ -67,6 +69,7 @@ class Departamento(models.Model):
 
     class Meta:
         db_table = 'Departamento'
+        managed = False
 
     def __str__(self):
         return self.Nombre
@@ -99,6 +102,7 @@ class Puesto(models.Model):
 
     class Meta:
         db_table = 'Puesto'
+        managed = False
         
 
     def __str__(self):
@@ -178,8 +182,9 @@ class Compensacion_Puesto(models.Model):
                 ],
                 name='uq_puesto_vigencia'
             )
-
         ]
+
+        managed = False
 
     def __str__(self):
 
@@ -199,6 +204,7 @@ class PersonaSexo(models.Model):
 
     class Meta:
         db_table = 'PersonaSexo'
+        managed = False
 
     def __str__(self):
         return self.Sexo
@@ -229,6 +235,7 @@ class Persona(models.Model):
 
     class Meta:
         db_table = 'Persona'
+        managed = False
 
     def __str__(self):
         return self.Nombre_Completo   # ← era self.Nombre (no existe ese campo)
@@ -281,6 +288,7 @@ class Empleado(models.Model):
 
     class Meta:
         db_table = 'Empleado'
+        managed = False
 
     def __str__(self):
         return f"{self.idPersona.Nombre_Completo} — {self.idPuesto.Nombre}"
@@ -320,6 +328,7 @@ class Pasante(models.Model):
 
     class Meta:
         db_table = 'Pasante'
+        managed = False
 
     def __str__(self):
         return f"{self.idPersona.Nombre_Completo} — {self.idPuesto.Nombre}"
@@ -405,6 +414,7 @@ class SalarioEmpleado(models.Model):
         db_table = 'Salario_Empleado'
         verbose_name = 'Salario Empleado'
         verbose_name_plural = 'Salarios Empleados'
+        managed = False
 
     # ✅ CORRECTO — calcula Compensacion_Total antes de guardar
     def save(self, *args, **kwargs):
@@ -447,6 +457,7 @@ class Estatus(models.Model):
         db_table = 'Estatus'
         verbose_name = 'Estatus'
         verbose_name_plural = 'Estatus'
+        managed = False
 
     def __str__(self):
         return self.TipoEstatus
@@ -496,6 +507,7 @@ class Vacante(models.Model):
 
     class Meta:
         db_table = 'Vacante'
+        managed = False
 
 
 # =========================================================
@@ -564,6 +576,7 @@ class Vacante_Asig(models.Model):
         db_table = 'Vacante_Asig'
         verbose_name = 'Asignación de Vacante'
         verbose_name_plural = 'Asignaciones de Vacantes'
+        managed = False
 
     def __str__(self):
         return f'Vacante #{self.id_Vacante_id} - {self.idPuesto}'
@@ -587,6 +600,7 @@ class FaseCandidato(models.Model):
     class Meta:
         managed = False
         db_table = 'FaseCandidato'
+        managed = False
 
     def __str__(self):
         return self.Fase_Actual
@@ -611,6 +625,7 @@ class ProcesoFase(models.Model):
     class Meta:
         managed = False
         db_table = 'ProcesoFase'
+        managed = False
 
     def __str__(self):
         return self.Resultado_Av
@@ -743,6 +758,7 @@ class VacacionSaldo(models.Model):
 
     class Meta:
         db_table = 'Vacacion_Saldo'
+        managed = False
 
     def __str__(self):
         return f"{self.idEmpleado_Sal_Vac} - {self.Anio}"
@@ -826,6 +842,7 @@ class AsistenciaEstado(models.Model):
 
     class Meta:
         db_table = 'Asistencia_Estado'
+        managed = False
 
     def __str__(self):
 
@@ -869,8 +886,8 @@ class Asistencia(models.Model):
     class Meta:
 
         db_table = 'Asistencia'
-
         ordering = ['-Fecha']
+        managed = False
 
     def __str__(self):
 
@@ -929,7 +946,6 @@ class TipoPermiso(models.Model):
     class Meta:
 
         managed = False
-
         db_table = 'TipoPermiso'
 
     def __str__(self):
@@ -994,7 +1010,6 @@ class Permiso(models.Model):
     class Meta:
 
         managed = False
-
         db_table = 'Permiso'
 
     def __str__(self):
@@ -1436,6 +1451,7 @@ class KpiCategoria(models.Model):
 
     class Meta:
         db_table = 'KPI_Categoria'
+        managed = False
 
     def __str__(self):
         return self.tipo_categoria
@@ -1458,6 +1474,8 @@ class KpiCabecera(models.Model):
                 name='UQ_Empleado_Mes_Anio'
             )
         ]
+
+        managed = False
 
     def __str__(self):
         return f"KPI #{self.id_KPI} — {self.idEmpleado.idPersona.Nombre_Completo} ({self.mes}/{self.anio})"
@@ -1500,6 +1518,8 @@ class KpiDetalle(models.Model):
             )
         ]
 
+        managed = False
+
     def __str__(self):
         return f"Detalle #{self.id_KPI_Detalle} — Cabecera #{self.id_KPI.id_KPI} ({self.id_KPI_Categoria.tipo_categoria})"
     
@@ -1530,6 +1550,7 @@ class Premio(models.Model):
         db_table = 'Premio'
         verbose_name = 'Premio'
         verbose_name_plural = 'Premios'
+        managed = False
 
     def __str__(self):
         return f"{self.Descripcion} - ${self.Monto}"
