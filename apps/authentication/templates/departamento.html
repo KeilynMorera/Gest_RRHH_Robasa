@@ -3,34 +3,40 @@
 ====================================================== -->
 
 <!-- 
-  Carga la librería "static" de Django.
-  Permite utilizar archivos estáticos como CSS, JS e imágenes.
+  Carga la librería static de Django.
+  Permite utilizar archivos estáticos como:
+  - CSS
+  - Imágenes
+  - JavaScript
 -->
 {% load static %}
 
 <!doctype html>
 
-<!-- Idioma principal del documento -->
+<!-- Idioma principal de la página -->
 <html lang="es">
   <head>
     <!-- ======================================================
-         CONFIGURACIONES BÁSICAS DEL DOCUMENTO
+         CONFIGURACIÓN GENERAL DEL DOCUMENTO
     ====================================================== -->
 
-    <!-- Define la codificación de caracteres UTF-8 -->
+    <!-- Codificación de caracteres UTF-8 -->
     <meta charset="UTF-8" />
 
-    <!-- Hace que el sitio sea responsive en dispositivos móviles -->
+    <!-- 
+      Hace que el diseño sea responsive.
+      Adapta correctamente el contenido a celulares y tablets.
+    -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Título mostrado en la pestaña del navegador -->
-    <title>Registro de Puestos - Gestión de Talento Humano</title>
+    <!-- Título que aparece en la pestaña del navegador -->
+    <title>Registro de Departamento - Gestión de Talento Humano</title>
 
     <!-- ======================================================
-         HOJAS DE ESTILO
+         ARCHIVOS CSS
     ====================================================== -->
 
-    <!-- Archivo CSS personalizado -->
+    <!-- Hoja de estilos principal del sistema -->
     <link rel="stylesheet" href="{% static 'styles/pasantes.css' %}" />
 
     <!-- Librería de iconos Font Awesome -->
@@ -53,7 +59,7 @@
              LOGO DE LA EMPRESA
         ====================================================== -->
         <div class="logo-container">
-          <!-- Imagen del logo institucional -->
+          <!-- Imagen del logo corporativo -->
           <img
             src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
             alt="Logo Robasa"
@@ -185,12 +191,20 @@
                TÍTULO DE LA PÁGINA
           ====================================================== -->
           <div class="page-title">
-            <h1>Puestos</h1>
-            <p>Registro de un nuevo puesto</p>
+            <!-- Nombre del módulo -->
+            <h1>Departamento</h1>
+
+            <!-- Descripción -->
+            <p>Registro de un nuevo departamento</p>
+            <p class="form-card-subtitle">
+              {% if departamento_editar %} Modifique los datos del departamento
+              seleccionado {% else %} Complete los campos requeridos para crear
+              el perfil del departamento {% endif %}
+            </p>
           </div>
 
           <!-- ======================================================
-               BUSCADOR
+               BUSCADOR GLOBAL
           ====================================================== -->
           <div class="search-box">
             <!-- Icono de búsqueda -->
@@ -204,18 +218,23 @@
           </div>
 
           <!-- ======================================================
-               ACCIONES DE LA BARRA SUPERIOR
+               ACCIONES DEL TOPBAR
           ====================================================== -->
           <div class="topbar-actions">
-            <!-- Notificaciones -->
+            <!-- ======================================================
+                 NOTIFICACIONES
+            ====================================================== -->
             <div class="notification">
+              <!-- Icono de campana -->
               <i class="fas fa-bell"></i>
 
-              <!-- Badge de cantidad -->
+              <!-- Cantidad de notificaciones -->
               <span class="badge">3</span>
             </div>
 
-            <!-- Perfil del usuario -->
+            <!-- ======================================================
+                 PERFIL DEL USUARIO
+            ====================================================== -->
             <div class="user-profile">
               <!-- Imagen del usuario -->
               <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
@@ -242,46 +261,45 @@
           <!-- Separador -->
           <i class="fas fa-chevron-right sep"></i>
 
-          <!-- Sección -->
+          <!-- Módulo anterior -->
           <a href="{% url 'comple_Empresa' %}"> Puestos y Gerencias </a>
 
           <!-- Separador -->
           <i class="fas fa-chevron-right sep"></i>
 
           <!-- Página actual -->
-          <span class="current"> Registro de nuevo Puesto </span>
+          <span class="current"> Registro de nuevo Departamento </span>
         </div>
 
         <!-- ======================================================
-             TARJETA PRINCIPAL DEL FORMULARIO
+             TARJETA DEL FORMULARIO
         ====================================================== -->
         <section class="form-card">
           <!-- ======================================================
-               ENCABEZADO DE LA TARJETA
+               ENCABEZADO DEL FORMULARIO
           ====================================================== -->
           <div class="form-card-header">
+            <!-- Parte izquierda -->
             <div class="form-card-header-left">
               <!-- Icono decorativo -->
               <div class="form-card-icon">
-                <i class="fas fa-id-card-clip"></i>
+                <i class="fas fa-network-wired"></i>
               </div>
 
-              <!-- Título y descripción -->
+              <!-- Títulos -->
               <div>
-                <h1 class="table-card-title">Puestos registrados</h1>
-                <h2 class="form-card-title">
-                  {% if puesto_editar %} Editar Puesto {% else %} Registro de un
-                  Puesto {% endif %}
-                </h2>
+                <!-- Título principal -->
+                <h2 class="form-card-title">Registro de un Departamento</h2>
 
-                <p class="table-card-subtitle">
-                  Busque un puesto y seleccione el ícono de edición para
-                  modificar sus datos.
+                <!-- Subtítulo -->
+                <p class="form-card-subtitle">
+                  Complete los campos requeridos para crear el perfil del
+                  departamento
                 </p>
               </div>
             </div>
 
-            <!-- Texto informativo -->
+            <!-- Nota de campos obligatorios -->
             <p class="required-note">
               Los campos marcados con <span>*</span> son obligatorios
             </p>
@@ -291,112 +309,96 @@
                CUERPO DEL FORMULARIO
           ====================================================== -->
           <div class="form-body">
-            <!-- Formulario principal -->
-            <form method="POST" action="{% url 'puestos' %}">
+            <!-- ======================================================
+                 FORMULARIO
+            ====================================================== -->
+            <form method="POST" action="{% url 'departamentos' %}">
               <!-- Token de seguridad CSRF -->
               {% csrf_token %}
 
               <!-- ======================================================
-                   SECCIÓN DE DATOS DEL PUESTO
+                   SECCIÓN DE DATOS DEL DEPARTAMENTO
               ====================================================== -->
               <div class="form-section">
                 <!-- Título de sección -->
-                <h4 class="form-section-title">Datos sobre el Puesto</h4>
+                <h4 class="form-section-title">Datos sobre el Departamento</h4>
 
-                <!-- Grid de campos -->
+                <!-- Grid del formulario -->
                 <div class="form-grid">
+                  <!-- ── Campo oculto: ID al editar ── -->
                   <input
                     type="hidden"
-                    name="puesto_id"
-                    value="{{ puesto_editar.idPuesto|default:'' }}"
+                    name="departamento_id"
+                    value="{{ departamento_editar.idDepartamento|default:'' }}"
                   />
 
                   <!-- ======================================================
-                       NOMBRE DEL PUESTO
+                       CAMPO: NOMBRE DEL DEPARTAMENTO
                   ====================================================== -->
                   <div class="field field-full">
-                    <label for="nombre_puesto">
-                      <i class="fas fa-briefcase field-icon"></i>
+                    <label for="nombre_departamento">
+                      <!-- Icono -->
+                      <i class="fas fa-folder-tree field-icon"></i>
 
-                      Nombre puesto <span class="req">*</span>
+                      <!-- Texto -->
+                      Nombre departamento <span class="req">*</span>
                     </label>
 
+                    <!-- Input -->
                     <input
                       type="text"
-                      id="nombre_puesto"
-                      name="nombre_puesto"
-                      maxlength="150"
-                      placeholder="Ingrese el nombre del puesto"
-                      value="{{ puesto_editar.Nombre|default:'' }}"
+                      id="nombre_departamento"
+                      name="nombre_departamento"
+                      maxlength="200"
+                      placeholder="Ingrese el nombre del departamento"
+                      value="{{ departamento_editar.Nombre|default:'' }}"
                       required
                     />
                   </div>
 
                   <!-- ======================================================
-                       DESCRIPCIÓN DEL PUESTO
-                  ====================================================== -->
-                  <div class="field field-full">
-                    <label for="descripcion_puesto">
-                      <i class="fas fa-file-signature field-icon"></i>
-
-                      Descripción sobre el Puesto
-                      <span class="req">*</span>
-                    </label>
-
-                    <!-- Área de texto -->
-                    <textarea
-                      id="descripcion"
-                      name="descripcion"
-                      rows="5"
-                      maxlength="400"
-                      placeholder="Ingrese una descripción del puesto"
-                      required
-                    >
-                    {{ puesto_editar.Descripcion|default:'' }}</textarea
-                    >
-                    <!-- Texto de ayuda -->
-                    <small class="field-help">
-                      Puede ingresar hasta 1000 caracteres.
-                    </small>
-                  </div>
-
-                  <!-- ======================================================
-                       SELECCIÓN DE DEPARTAMENTO
+                       CAMPO: GERENCIA
                   ====================================================== -->
                   <div class="field">
-                    <label for="departamento">
-                      <i class="fas fa-network-wired field-icon"></i>
+                    <label for="gerencia">
+                      <!-- Icono -->
+                      <i class="fas fa-sitemap field-icon"></i>
 
-                      Departamento <span class="req">*</span>
+                      <!-- Texto -->
+                      Gerencia <span class="req">*</span>
                     </label>
 
-                    <!-- Select dinámico -->
-                    <select id="departamento" name="departamento" required>
-                      <option value="">Seleccione un departamento...</option>
-
-                      {% for departamento in departamentos %}
-
+                    <!-- Select -->
+                    <select id="gerencia" name="gerencia" required>
                       <option
-                        value="{{ departamento.pk }}"
+                        value=""
+                        disabled
                         {%
                         if
-                        puesto_editar
-                        and
-                        puesto_editar.idDepartamento.pk=""
-                        ="departamento.pk"
+                        not
+                        departamento_editar
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        Seleccione una gerencia…
+                      </option>
+
+                      {% for gerencia in gerencias %}
+                      <option
+                        value="{{ gerencia.idGerencia }}"
+                        {%
+                        if
+                        departamento_editar.idGerencia.idGerencia=""
+                        ="gerencia.idGerencia"
                         %}
                         selected
                         {%
                         endif
                         %}
                       >
-                        {{ departamento.Nombre }}
+                        {{ gerencia.Nombre }}
                       </option>
-
-                      {% empty %}
-
-                      <option value="">No hay departamentos registrados</option>
-
                       {% endfor %}
                     </select>
                   </div>
@@ -410,14 +412,12 @@
                 <!-- Botón cancelar -->
                 <a href="{% url 'comple_Empresa' %}" class="btn btn-ghost">
                   <i class="fas fa-arrow-left"></i>
-
                   Cancelar
                 </a>
 
                 <!-- Botón limpiar -->
                 <button type="reset" class="btn btn-secondary">
                   <i class="fas fa-rotate-left"></i>
-
                   Limpiar
                 </button>
 
@@ -425,15 +425,15 @@
                 <button type="submit" class="btn btn-primary">
                   <i class="fas fa-floppy-disk"></i>
 
-                  {% if puesto_editar %} Guardar cambios {% else %} Guardar
-                  puesto {% endif %}
+                  {% if departamento_editar %} Guardar cambios {% else %}
+                  Guardar departamento {% endif %}
                 </button>
               </div>
             </form>
           </div>
 
           <!-- ======================================================
-               TARJETA: TABLA DE PUESTOS
+               TARJETA: TABLA DE GERENCIAS
           ====================================================== -->
           <section class="table-card">
             <div class="table-card-header">
@@ -442,9 +442,9 @@
                   <i class="fas fa-sitemap"></i>
                 </div>
                 <div>
-                  <h2 class="table-card-title">Puestos registrados</h2>
+                  <h2 class="table-card-title">Departamentos registrados</h2>
                   <p class="table-card-subtitle">
-                    Busque un puesto y seleccione el ícono de edición para
+                    Busque un departamento y seleccione el ícono de edición para
                     modificar sus datos.
                   </p>
                 </div>
@@ -455,50 +455,42 @@
                 <input
                   type="text"
                   id="filtro-tabla"
-                  placeholder="Buscar puesto..."
+                  placeholder="Buscar departamento..."
                 />
               </div>
             </div>
 
             <div class="table-wrapper">
-              <table class="data-table" id="tabla-puestos">
+              <table class="data-table" id="tabla-departamentos">
                 <thead>
                   <tr>
-                    <th>ID</th>
-                    <th>Nombre Puesto</th>
-                    <th>Descripción</th>
-                    <th>Departamento</th>
+                    <th>Nombre Departamento</th>
+                    <th>Gerencia</th>
                     <th class="col-accion">Acción</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {% for puesto in puestos %}
+                  {% for departamento in departamentos %}
                   <tr>
-                    <td>{{ puesto.idPuesto }}</td>
-
-                    <td>
-                      <strong>{{ puesto.Nombre }}</strong>
-                    </td>
-
-                    <td>{{ puesto.Descripcion }}</td>
-
-                    <td>{{ puesto.idDepartamento.Nombre }}</td>
-
+                    <td><strong>{{ departamento.Nombre }}</strong></td>
+                    <td>{{ departamento.idGerencia.Nombre }}</td>
                     <td class="col-accion">
+                      <!-- Editar: redirige a la misma página con el ID -->
                       <a
-                        href="{% url 'editar_puesto' puesto.idPuesto %}"
+                        href="{% url 'editar_departamento' departamento.id_Departamento %}"
                         class="btn btn-warning btn-sm"
-                        title="Editar puesto"
+                        title="Editar departamento"
                       >
                         <i class="fas fa-pen-to-square"></i>
                       </a>
 
+                      <!-- Eliminar -->
                       <a
-                        href="{% url 'eliminar_puesto' puesto.idPuesto %}"
+                        href="{% url 'eliminar_departamento' departamento.id_Departamento %}"
                         class="btn btn-danger btn-sm"
-                        title="Eliminar puesto"
+                        title="Eliminar departamento"
                         onclick="
-                          return confirm('¿Desea eliminar este puesto?');
+                          return confirm('¿Desea eliminar este departamento?');
                         "
                       >
                         <i class="fas fa-trash"></i>
@@ -507,9 +499,9 @@
                   </tr>
                   {% empty %}
                   <tr>
-                    <td colspan="5" class="tabla-vacia">
-                      <i class="fas fa-briefcase"></i>
-                      No existen puestos registrados.
+                    <td colspan="4" class="tabla-vacia">
+                      <i class="fas fa-sitemap"></i>
+                      No existen departamentos registrados.
                     </td>
                   </tr>
                   {% endfor %}
@@ -523,6 +515,7 @@
              FOOTER
         ====================================================== -->
         <footer class="footer">
+          <!-- Derechos del sistema -->
           © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
         </footer>
       </main>
@@ -532,6 +525,6 @@
          ARCHIVO JS LOCAL
          Funcionalidades interactivas personalizadas
     ====================================================== -->
-    <script src="{% static 'js/puesto.js' %}"></script>
+    <script src="{% static 'js/departamento.js' %}"></script>
   </body>
 </html>
