@@ -1208,6 +1208,75 @@ body {
 }
 
 /* ==========================================================================
+   ESTILOS GENERALES DE LA FORM-CARD (Agrandado interno sin mover el layout)
+   ========================================================================== */
+.form-card {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(30, 42, 94, 0.1);
+  margin: 20px 0 30px;
+  overflow: hidden;
+}
+
+/* Header del formulario más amplio */
+.form-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 36px; /* Más padding interno */
+  border-bottom: 1.5px solid #e8ecf6;
+  gap: 20px;
+}
+
+.form-card-title {
+  font-size: 20px; /* Un poco más grande */
+  font-weight: 700;
+  color: #1a2042;
+}
+
+/* Cuerpo del formulario con más espacio */
+.form-body {
+  padding: 36px; /* Relleno amplio para mayor visibilidad */
+}
+
+.form-section {
+  margin-bottom: 32px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px 32px; /* Mayor separación entre columnas y filas */
+}
+
+/* Entradas de texto, selects y textareas más altos y legibles */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field > label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a2042;
+}
+
+.field input[type="text"],
+.field input[type="number"],
+.field input[type="date"],
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 12px 16px; /* Tamaño del campo de texto ampliado */
+  font-size: 14.5px;
+  border-radius: 10px;
+  border: 1.5px solid #dde2f0;
+  outline: none;
+}
+
+/* ==========================================================================
    PANTALLAS GRANDES (≥ 1024px) — Layout normal sin cambios
    ========================================================================== */
 @media (min-width: 1024px) {
@@ -1239,6 +1308,19 @@ body {
     margin-left: 68px;
     width: calc(100% - 68px);
     padding: 16px;
+  }
+
+  /* ── Ajustes del Formulario en pantallas medianas ── */
+  .form-card-header {
+    padding: 20px 24px;
+  }
+
+  .form-body {
+    padding: 24px;
+  }
+
+  .form-grid {
+    gap: 18px 20px;
   }
 
   /* ── Logo: solo imagen pequeña centrada ── */
@@ -1346,8 +1428,8 @@ body {
   }
 
   /* ==========================================================================
-     REORDENAMIENTO DE LA TOPBAR (Título arriba | Buscador -> Notificación -> Usuario abajo)
-     ========================================================================== */
+      REORDENAMIENTO DE LA TOPBAR (Título arriba | Buscador -> Notificación -> Usuario abajo)
+      ========================================================================== */
   .topbar {
     display: flex;
     flex-wrap: wrap; /* Permite saltar de línea */
@@ -1438,6 +1520,14 @@ body {
 
     .user-profile {
       order: 3;
+    }
+
+    .form-grid {
+      grid-template-columns: 1fr; /* Pasa a 1 columna en teléfonos pequeños */
+    }
+
+    .form-body {
+      padding: 16px;
     }
   }
 }
