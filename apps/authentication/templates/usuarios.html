@@ -165,7 +165,10 @@
           {% endfor %} {% endif %}
 
           <!-- Formulario -->
-          <form method="POST" action="{% url 'guardar_usuario_sistema' %}">
+          <form
+            method="POST"
+            action="{% if usuario_editar %}{% url 'modificar_usuario_sistema' usuario_editar.id_Admin %}{% else %}{% url 'guardar_usuario_sistema' %}{% endif %}"
+          >
             {% csrf_token %}
 
             <div class="form-grid">
@@ -182,10 +185,26 @@
                   required
                 >
                   <option value="">Seleccione un empleado</option>
+
                   {% for empleado in empleados %}
-                  <option value="{{ empleado.idEmpleado }}">
+
+                  <option
+                    value="{{ empleado.idEmpleado }}"
+                    {%
+                    if
+                    usuario_editar
+                    and
+                    usuario_editar.idEmpleado_Admin.idEmpleado=""
+                    ="empleado.idEmpleado"
+                    %}
+                    selected
+                    {%
+                    endif
+                    %}
+                  >
                     {{ empleado }}
                   </option>
+
                   {% endfor %}
                 </select>
               </div>
@@ -202,6 +221,7 @@
                   id="Correo"
                   class="form-control"
                   placeholder="ejemplo@robasa.com"
+                  value="{% if usuario_editar %}{{ usuario_editar.Correo }}{% endif %}"
                   required
                 />
               </div>
@@ -218,8 +238,14 @@
                   id="Contrasenia"
                   class="form-control"
                   maxlength="15"
-                  placeholder="Máximo 15 caracteres"
-                  required
+                  placeholder="{% if usuario_editar %}Dejar vacío para conservar la contraseña actual{% else %}Máximo 15 caracteres{% endif %}"
+                  {%
+                  if
+                  not
+                  usuario_editar
+                  %}required{%
+                  endif
+                  %}
                 />
               </div>
 
@@ -231,8 +257,26 @@
                 </label>
                 <select name="idRol" id="idRol" class="form-control" required>
                   <option value="">Seleccione un rol</option>
+
                   {% for rol in roles %}
-                  <option value="{{ rol.idRol }}">{{ rol.TipoRol }}</option>
+
+                  <option
+                    value="{{ rol.idRol }}"
+                    {%
+                    if
+                    usuario_editar
+                    and
+                    usuario_editar.idRol.idRol=""
+                    ="rol.idRol"
+                    %}
+                    selected
+                    {%
+                    endif
+                    %}
+                  >
+                    {{ rol.TipoRol }}
+                  </option>
+
                   {% endfor %}
                 </select>
               </div>
@@ -244,22 +288,63 @@
                   <span class="req" style="color: #e53935">*</span>
                 </label>
                 <div class="status-group">
+                  <!-- ESTADO ACTIVO -->
                   <div class="status-option">
                     <input
                       type="radio"
                       name="Activo"
                       id="activo_1"
                       value="1"
+                      {%
+                      if
+                      usuario_editar
+                      %}
+                      {%
+                      if
+                      usuario_editar.Activo
+                      %}
                       checked
+                      {%
+                      endif
+                      %}
+                      {%
+                      else
+                      %}
+                      checked
+                      {%
+                      endif
+                      %}
                     />
+
                     <label for="activo_1">
-                      <span class="dot"></span> Activo
+                      <span class="dot"></span>
+                      Activo
                     </label>
                   </div>
+
+                  <!-- ESTADO INACTIVO -->
                   <div class="status-option">
-                    <input type="radio" name="Activo" id="activo_0" value="0" />
+                    <input
+                      type="radio"
+                      name="Activo"
+                      id="activo_0"
+                      value="0"
+                      {%
+                      if
+                      usuario_editar
+                      and
+                      not
+                      usuario_editar.Activo
+                      %}
+                      checked
+                      {%
+                      endif
+                      %}
+                    />
+
                     <label for="activo_0">
-                      <span class="dot"></span> Inactivo
+                      <span class="dot"></span>
+                      Inactivo
                     </label>
                   </div>
                 </div>
@@ -272,9 +357,16 @@
                 <i class="fas fa-xmark"></i> Cancelar
               </a>
               <button type="submit" class="btn btn-primary">
-                <i class="fas fa-floppy-disk"></i> Otorgar Permisos y Guardar
+                {% if usuario_editar %}
+
+                <i class="fas fa-pen-to-square"></i>
+                Guardar Modificaciones {% else %}
+
+                <i class="fas fa-floppy-disk"></i>
+                Otorgar Permisos y Guardar {% endif %}
               </button>
             </div>
+
             <section class="table-card">
               <div class="table-card-header">
                 <div class="table-card-header-left">
