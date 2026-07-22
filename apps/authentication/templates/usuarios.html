@@ -14,7 +14,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
 
-    <!-- Se hereda el archivo de estilos base del dashboard/formularios -->
+    <!-- Archivo de estilos base -->
     <link rel="stylesheet" href="{% static 'styles/usuarios.css' %}" />
   </head>
   <body>
@@ -23,11 +23,8 @@
            SIDEBAR / MENÚ LATERAL
       ========================================================= -->
       <aside class="sidebar">
-        <!-- ======================================================
-             CONTENEDOR DEL LOGO
-        ====================================================== -->
-        <div class="logo-container">
-          <!-- Imagen del logo cargada desde archivos estáticos -->
+        <!-- CONTENEDOR DEL LOGO -->
+        <div class="logo">
           <img
             src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
             alt="Logo Robasa"
@@ -35,113 +32,77 @@
           />
         </div>
 
-        <!-- ======================================================
-             MENÚ DE NAVEGACIÓN
-        ====================================================== -->
+        <!-- MENÚ DE NAVEGACIÓN -->
         <nav class="menu">
-          <!-- Opción Inicio -->
           <a href="{% url 'inicio' %}">
             <i class="fas fa-house"></i>
             Inicio
           </a>
-
-          <!-- Opción Personas o Empleados -->
           <a href="{% url 'per_emp' %}">
             <i class="fas fa-user-group"></i>
             Personas o Empleados
           </a>
-
-          <!-- Opción Onboarding -->
           <a href="{% url 'crear_onboarding' %}">
             <i class="fas fa-rocket"></i>
             Onboarding / Entradas
           </a>
-
-          <!-- Opción Empresas -->
           <a href="{% url 'empresas' %}">
             <i class="fas fa-building"></i>
             Empresas
           </a>
-
-          <!-- Opción Gerencias, Departamentos y Puestos -->
           <a href="{% url 'comple_Empresa' %}">
             <i class="fas fa-briefcase"></i>
             Gerencias, Departamentos y Puestos
           </a>
-
-          <!-- Opción Salarios -->
           <a href="{% url 'salarios' %}">
             <i class="fas fa-money-bill-wave"></i>
             Salarios
           </a>
-
-          <!-- Opción Reclutamiento -->
           <a href="{% url 'reclutamiento' %}">
             <i class="fas fa-wallet"></i>
             Reclutamiento
           </a>
-
-          <!-- Opción Vacaciones -->
           <a href="{% url 'vacaciones' %}">
             <i class="fas fa-umbrella-beach"></i>
             Vacaciones
           </a>
-
-          <!-- Opción Asistencia y Permisos -->
           <a href="{% url 'elec_Asistencia' %}">
             <i class="fas fa-clock"></i>
             Asistencia y Permiso
           </a>
-
-          <!-- Acción o Rotación de Personal -->
           <a href="{% url 'accion_rotacion' %}">
             <i class="fas fa-clipboard-list"></i>
             Acciones o Rotaciones del Personal
           </a>
-
-          <!-- Opción Evaluaciones -->
           <a href="{% url 'evaluaciones' %}">
             <i class="fas fa-chart-line"></i>
             Evaluación de Desempeño
           </a>
-
-          <!-- Opción KPIs -->
           <a href="{% url 'elec_KPI' %}">
             <i class="fas fa-file-lines"></i>
             KPIs
           </a>
-
-          <!-- Opción Offboarding -->
           <a href="{% url 'elec_Offboarding' %}">
             <i class="fas fa-door-open"></i>
             Offboarding / Salidas
           </a>
-
-          <!-- Opción Reportes -->
           <a href="{% url 'reportes' %}">
             <i class="fas fa-file-lines"></i>
             Reportes
           </a>
-
-          <!-- Opción Usuarios y Roles -->
-          <a href="{% url 'guardar_usuario_sistema' %}">
+          <a href="{% url 'guardar_usuario_sistema' %}" class="active">
             <i class="fas fa-users-cog"></i>
             Usuarios y Roles
           </a>
-
-          <!-- Opción Configuración -->
           <a href="{% url 'configuraciones' %}">
             <i class="fas fa-gear"></i>
             Configuración
           </a>
         </nav>
 
-        <!-- ======================================================
-             BOTÓN CERRAR SESIÓN
-        ====================================================== -->
+        <!-- BOTÓN CERRAR SESIÓN -->
         <div class="logout">
           <a href="login.html">
-            <!-- Icono de cerrar sesión -->
             <i class="fas fa-right-from-bracket"></i>
             Cerrar sesión
           </a>
@@ -152,6 +113,7 @@
            CONTENIDO PRINCIPAL
       ========================================================= -->
       <main class="main-content">
+        <!-- TOPBAR -->
         <header class="topbar">
           <div class="page-title">
             <h1>Alta de Credenciales y Accesos</h1>
@@ -177,43 +139,49 @@
           </div>
         </header>
 
-        <!-- Breadcrumb (Línea de tiempo / Ruta de navegación) -->
+        <!-- BREADCRUMB -->
         <div class="breadcrumb">
-          <a href="{% url 'inicio' %}"> <i class="fas fa-house"></i> Inicio </a>
+          <a href="{% url 'inicio' %}"><i class="fas fa-house"></i> Inicio</a>
           <i class="fas fa-chevron-right sep"></i>
           <a href="{% url 'guardar_usuario_sistema' %}">Usuarios y Roles</a>
           <i class="fas fa-chevron-right sep"></i>
           <span class="current">Crear Usuario</span>
         </div>
 
-        <!-- Contenedor del Formulario de Registro -->
+        <!-- CONTENEDOR DEL FORMULARIO DE REGISTRO -->
         <div class="form-container">
+          <!-- Banner instructivo / Alerta Informativa -->
           <div class="form-instructions">
-            <i
-              class="fas fa-circle-info"
-              style="color: #26317a; margin-right: 6px"
-            ></i>
+            <i class="fas fa-circle-info" style="margin-right: 6px"></i>
             <strong>Nota de seguridad:</strong> Cada cuenta de acceso debe estar
             ligada obligatoriamente a un colaborador activo en la base de datos
             de personal. La contraseña debe cumplir un máximo estricto de 15
             caracteres según los parámetros del sistema.
           </div>
 
-          <!-- Formulario hacia la vista de procesamiento de Django -->
+          <!-- Mensajes de Django -->
+          {% if messages %} {% for message in messages %}
+          <div class="info-box {{ message.tags }}">{{ message }}</div>
+          {% endfor %} {% endif %}
+
+          <!-- Formulario -->
           <form method="POST" action="{% url 'guardar_usuario_sistema' %}">
-            {% csrf_token %} {% if messages %} {% for message in messages %}
-            <div class="alert {{ message.tags }}">{{ message }}</div>
-            {% endfor %} {% endif %}
+            {% csrf_token %}
 
             <div class="form-grid">
-              <!-- Colaborador Asociado (FK: idEmpleado_Admin) -->
+              <!-- Colaborador Asociado -->
               <div class="form-group">
                 <label for="idEmpleado_Admin">
                   <i class="fas fa-user-tie"></i> Colaborador Asociado
+                  <span class="req" style="color: #e53935">*</span>
                 </label>
-                <select name="idEmpleado_Admin" required>
+                <select
+                  name="idEmpleado_Admin"
+                  id="idEmpleado_Admin"
+                  class="form-control"
+                  required
+                >
                   <option value="">Seleccione un empleado</option>
-
                   {% for empleado in empleados %}
                   <option value="{{ empleado.idEmpleado }}">
                     {{ empleado }}
@@ -222,33 +190,46 @@
                 </select>
               </div>
 
-              <!-- Correo Electrónico (Campo: Correo) -->
+              <!-- Correo Electrónico -->
               <div class="form-group">
                 <label for="Correo">
                   <i class="fas fa-envelope"></i> Correo Electrónico Corporativo
-                </label>
-                <input type="email" name="Correo" required />
-              </div>
-
-              <!-- Contraseña de Acceso (Campo: Contrasenia) -->
-              <div class="form-group">
-                <label for="Contrasenia">
-                  <i class="fas fa-key"></i> Contraseña de Acceso
+                  <span class="req" style="color: #e53935">*</span>
                 </label>
                 <input
-                  type="password"
-                  name="Contrasenia"
-                  maxlength="15"
+                  type="email"
+                  name="Correo"
+                  id="Correo"
+                  class="form-control"
+                  placeholder="ejemplo@robasa.com"
                   required
                 />
               </div>
 
-              <!-- Rol del Sistema (Campo: Rol) -->
+              <!-- Contraseña de Acceso -->
               <div class="form-group">
-                <label for="Rol">
-                  <i class="fas fa-user-shield"></i> Rol / Perfil de Permisos
+                <label for="Contrasenia">
+                  <i class="fas fa-key"></i> Contraseña de Acceso
+                  <span class="req" style="color: #e53935">*</span>
                 </label>
-                <select name="idRol" required>
+                <input
+                  type="password"
+                  name="Contrasenia"
+                  id="Contrasenia"
+                  class="form-control"
+                  maxlength="15"
+                  placeholder="Máximo 15 caracteres"
+                  required
+                />
+              </div>
+
+              <!-- Rol del Sistema -->
+              <div class="form-group">
+                <label for="idRol">
+                  <i class="fas fa-user-shield"></i> Rol / Perfil de Permisos
+                  <span class="req" style="color: #e53935">*</span>
+                </label>
+                <select name="idRol" id="idRol" class="form-control" required>
                   <option value="">Seleccione un rol</option>
                   {% for rol in roles %}
                   <option value="{{ rol.idRol }}">{{ rol.TipoRol }}</option>
@@ -256,23 +237,31 @@
                 </select>
               </div>
 
-              <div class="field">
+              <!-- Estado Activo / Inactivo -->
+              <div class="form-group field-full">
                 <label>
-                  <i class="fas fa-toggle-on field-icon"></i>
-                  Estado
-                  <span class="req">*</span>
+                  <i class="fas fa-toggle-on"></i> Estado de la Cuenta
+                  <span class="req" style="color: #e53935">*</span>
                 </label>
-
-                <div class="radio-group">
-                  <label class="radio-option">
-                    <input type="radio" name="Activo" value="1" checked />
-                    Activo
-                  </label>
-
-                  <label class="radio-option">
-                    <input type="radio" name="Activo" value="0" />
-                    Inactivo
-                  </label>
+                <div class="status-group">
+                  <div class="status-option">
+                    <input
+                      type="radio"
+                      name="Activo"
+                      id="activo_1"
+                      value="1"
+                      checked
+                    />
+                    <label for="activo_1">
+                      <span class="dot"></span> Activo
+                    </label>
+                  </div>
+                  <div class="status-option">
+                    <input type="radio" name="Activo" id="activo_0" value="0" />
+                    <label for="activo_0">
+                      <span class="dot"></span> Inactivo
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -282,10 +271,87 @@
               <a href="{% url 'inicio' %}" class="btn-cancel">
                 <i class="fas fa-xmark"></i> Cancelar
               </a>
-              <button type="submit" class="btn-save" style="margin: 0">
+              <button type="submit" class="btn btn-primary">
                 <i class="fas fa-floppy-disk"></i> Otorgar Permisos y Guardar
               </button>
             </div>
+            <section class="table-card">
+              <div class="table-card-header">
+                <div class="table-card-header-left">
+                  <div class="table-card-icon">
+                    <i class="fas fa-users-cog"></i>
+                  </div>
+                  <div>
+                    <h2 class="table-card-title">
+                      Usuarios del sistema registrados
+                    </h2>
+                    <p class="table-card-subtitle">
+                      Busque un usuario y seleccione el ícono de edición para
+                      modificar sus accesos o rol.
+                    </p>
+                  </div>
+                </div>
+                <div class="table-search">
+                  <i class="fas fa-search"></i>
+                  <input
+                    type="text"
+                    id="filtro-tabla"
+                    placeholder="Buscar usuario..."
+                  />
+                </div>
+              </div>
+
+              <div class="table-wrapper">
+                <table class="data-table" id="tabla-usuarios">
+                  <thead>
+                    <tr>
+                      <th>Colaborador</th>
+                      <th>Correo Electrónico</th>
+                      <th>Rol asignado</th>
+                      <th>Estado</th>
+                      <th>Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for usuario in usuarios %}
+                    <tr>
+                      <td>
+                        {{ usuario.idEmpleado_Admin.idPersona.Nombre_Completo }}
+                      </td>
+                      <td>{{ usuario.Correo }}</td>
+                      <td>{{ usuario.idRol.TipoRol }}</td>
+                      <td>
+                        {% if usuario.Activo %}
+                        <span class="estado-activo">
+                          <i class="fas fa-circle"></i> Activo
+                        </span>
+                        {% else %}
+                        <span class="estado-inactivo">
+                          <i class="fas fa-circle"></i> Inactivo
+                        </span>
+                        {% endif %}
+                      </td>
+
+                      <td class="col-accion">
+                        <a
+                          href="{% url 'modificar_usuario_sistema' usuario.id_Admin %}"
+                          class="btn btn-warning"
+                        >
+                          <i class="fas fa-pen-to-square"></i>
+                        </a>
+                      </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                      <td colspan="6" class="tabla-vacia">
+                        No existen usuarios del sistema registrados.
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </section>
           </form>
         </div>
 

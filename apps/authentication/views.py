@@ -4071,6 +4071,294 @@ def guardar_usuario_sistema(request):
     )
 
 
+from django.contrib import messages
+from django.contrib.auth.hashers import make_password
+from django.db import IntegrityError
+from django.shortcuts import render, redirect, get_object_or_404
+
+from .models import UsuarioSistema, Roles, Empleado
+
+
+def modificar_usuario_sistema(request, id_Admin):
+
+    # =========================================================
+    # OBTENER USUARIO QUE SE VA A MODIFICAR
+    # =========================================================
+
+    usuario = get_object_or_404(
+        UsuarioSistema.objects.select_related(
+            "idRol",
+            "idEmpleado_Admin"
+        ),
+        id_Admin=id_Admin
+    )
+
+
+    # =========================================================
+    # EMPLEADOS DISPONIBLES
+    # =========================================================
+
+    empleados = Empleado.objects.select_related(
+        "idPersona",
+        "idPuesto"
+    ).filter(
+        Activo=True
+    ).order_by(
+        "idPersona__Nombre_Completo"
+    )
+
+
+    # =========================================================
+    # ROLES DISPONIBLES
+    # =========================================================
+
+    roles = Roles.objects.all().order_by(
+        "TipoRol"
+    )
+
+
+    # =========================================================
+    # PROCESAR FORMULARIO
+    # =========================================================
+
+    if request.method == "POST":
+
+        try:
+
+            correo = request.POST.get("Correo", "").strip()
+            contrasenia = request.POST.get("Contrasenia", "").strip()
+            idRol = request.POST.get("idRol")
+            idEmpleado = request.POST.get("idEmpleado_Admin")
+            activo = request.POST.get("Activo")
+
+
+            # =====================================================
+            # VALIDACIONES
+            # =====================================================
+
+            if not correo:
+
+                messages.error(
+                    request,
+                    "Debe ingresar un correo."
+                )
+
+                return redirect(
+                    "modificar_usuario_sistema",
+                    id_Admin=id_Admin
+                )
+
+
+            elif not idRol:
+
+                messages.error(
+                    request,
+                    "Debe seleccionar un rol."
+                )
+
+                return redirect(
+                    "modificar_usuario_sistema",
+                    id_Admin=id_Admin
+                )
+
+
+            elif not idEmpleado:
+
+                messages.error(
+                    request,
+                    "Debe seleccionar un empleado."
+                )
+
+                return redirect(
+                    "modificar_usuario_sistema",
+                    id_Admin=id_Admin
+                )
+
+
+            elif not activo:
+
+                messages.error(
+                    request,
+                    "Debe seleccionar el estado del usuario."
+                )
+
+                return redirect(
+                    "modificar_usuario_sistema",
+                    id_Admin=id_Admin
+                )
+
+
+            # =====================================================
+            # VALIDAR CORREO
+            # EXCLUYENDO EL USUARIO ACTUAL
+            # =====================================================
+
+            elif UsuarioSistema.objects.filter(
+                Correo=correo
+            ).exclude(
+                id_Admin=id_Admin
+            ).exists():
+
+                messages.error(
+                    request,
+                    "Ya existe otro usuario con ese correo."
+                )
+
+                return redirect(
+                    "modificar_usuario_sistema",
+                    id_Admin=id_Admin
+                )
+
+
+            # =====================================================
+            # VALIDAR EMPLEADO
+            # EXCLUYENDO EL USUARIO ACTUAL
+            # =====================================================
+
+            elif UsuarioSistema.objects.filter(
+                idEmpleado_Admin=idEmpleado
+            ).exclude(
+                id_Admin=id_Admin
+            ).exists():
+
+                messages.error(
+                    request,
+                    "El empleado seleccionado ya tiene otro usuario asignado."
+                )
+
+                return redirect(
+                    "modificar_usuario_sistema",
+                    id_Admin=id_Admin
+                )
+
+
+            # =====================================================
+            # OBTENER RELACIONES
+            # =====================================================
+
+            rol = Roles.objects.get(
+                idRol=idRol
+            )
+
+
+            empleado = Empleado.objects.get(
+                idEmpleado=idEmpleado
+            )
+
+
+            # =====================================================
+            # ACTUALIZAR DATOS
+            # =====================================================
+
+            usuario.Correo = correo
+
+            usuario.idRol = rol
+
+            usuario.idEmpleado_Admin = empleado
+
+
+            # =====================================================
+            # ACTUALIZAR ESTADO
+            # =====================================================
+
+            usuario.Activo = True if activo == "1" else False
+
+
+            # =====================================================
+            # ACTUALIZAR CONTRASEÑA
+            # SOLO SI SE INGRESÓ UNA NUEVA
+            # =====================================================
+
+            if contrasenia:
+
+                usuario.Contrasenia = make_password(
+                    contrasenia
+                )
+
+
+            # =====================================================
+            # GUARDAR CAMBIOS
+            # =====================================================
+
+            usuario.save()
+
+
+            messages.success(
+                request,
+                "Usuario modificado correctamente."
+            )
+
+
+            return redirect(
+                "guardar_usuario_sistema"
+            )
+
+
+        # =========================================================
+        # ERRORES
+        # =========================================================
+
+        except Roles.DoesNotExist:
+
+            messages.error(
+                request,
+                "El rol seleccionado no existe."
+            )
+
+
+        except Empleado.DoesNotExist:
+
+            messages.error(
+                request,
+                "El empleado seleccionado no existe."
+            )
+
+
+        except IntegrityError as e:
+
+            messages.error(
+                request,
+                f"Error de integridad: {e}"
+            )
+
+
+        except Exception as e:
+
+            messages.error(
+                request,
+                f"Ocurrió un error al modificar el usuario: {e}"
+            )
+
+
+    # =========================================================
+    # CONTEXTO
+    # =========================================================
+
+    context = {
+
+        "usuario_editar": usuario,
+
+        "empleados": empleados,
+
+        "roles": roles,
+
+        "usuarios": UsuarioSistema.objects.select_related(
+            "idRol",
+            "idEmpleado_Admin"
+        ).order_by(
+            "Correo"
+        )
+
+    }
+
+
+    return render(
+        request,
+        "usuarios.html",
+        context
+    )
+
+
 def configuraciones_view(request):
     return render(request, 'configuraciones.html')
 

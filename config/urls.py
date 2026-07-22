@@ -239,6 +239,7 @@ urlpatterns = [
 
 
    path("usuarios/guardar/", views.guardar_usuario_sistema, name="guardar_usuario_sistema"),
+   path("usuarios/modificar/<int:id_Admin>/", views.modificar_usuario_sistema, name="modificar_usuario_sistema"),
 ]
 
 
