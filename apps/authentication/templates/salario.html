@@ -294,7 +294,7 @@
                       <!-- Recorrido dinámico de empleados -->
                       {% for empleado in empleados %}
                       <option value="{{ empleado.idEmpleado }}">
-                        {{ empleado.idPersona.Nombre_Completo }}
+                        {{ empleado.idPersona.Nombre_Completo }} — {{ empleado.idPuesto.Nombre }}
                       </option>
                       {% endfor %}
                     </select>
