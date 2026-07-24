@@ -11,7 +11,7 @@ body {
   font-family:
     "Segoe UI", sans-serif; /* Tipografía moderna y limpia para la interfaz */
   background: #f4f7fb; /* Color de fondo general gris-azulado muy claro */
-  color: #d35b1a; /* Color de texto principal corporativo (Naranja) */
+  color: #000000; /* Color de texto principal corporativo (Naranja) */
 }
 
 /* ==========================================================================
@@ -578,7 +578,6 @@ body {
   font-size: 13px;
 }
 
-
 /* ============================================================
    ESTILOS ADICIONALES — Tabla de consulta y modificación
    Agregar al final de personas.css
@@ -872,7 +871,6 @@ textarea:focus {
   font-size: 14px;
 }
 
-
 /* ==========================================================================
    RESPONSIVE DESIGN - MEDIA QUERIES (ADAPTABILIDAD MÓVIL)
    ========================================================================== */
@@ -881,97 +879,68 @@ textarea:focus {
 @media screen and (max-width: 1400px) {
   .main-content {
     padding: 22px;
-  } /* Reduce levemente el espaciado para ganar pantalla útil */
+  }
   .topbar {
     gap: 16px;
   }
 
+  /* Título alineado a la izquierda */
   .page-title {
     min-width: auto;
-    text-align: center;
+    text-align: left;
   }
 
   .search-box {
     max-width: 380px;
-  } /* Ajusta el ancho máximo del buscador */
+  }
   .results-table {
     min-width: 780px;
-  } /* Permite que la tabla reduzca su scroll base */
+  }
 }
-
-/* ==========================================================================  
-   RESPONSIVE MEJORADO - SIDEBAR SOLO CON ÍCONOS EN TABLETS Y MÓVILES
-   ========================================================================== */
 
 /* ==========================================================================  
    TABLETS Y PANTALLAS MEDIANAS (Hasta 992px)
    ========================================================================== */
 @media screen and (max-width: 992px) {
-  /* ==========================================================================
-     SIDEBAR COMPACTO
-     ==========================================================================
-     - Mantiene el menú SIEMPRE FIJO A LA IZQUIERDA
-     - Reduce el ancho
-     - Solo muestra íconos
-  ========================================================================== */
+  /* SIDEBAR COMPACTO */
   .sidebar {
     width: 90px;
     min-width: 90px;
     max-width: 90px;
-
     padding: 18px 10px;
-
     position: fixed;
     left: 0;
     top: 0;
     bottom: 0;
   }
 
-  /* ==========================================================================
-     CONTENIDO PRINCIPAL
-     ==========================================================================
-     - Se mueve automáticamente según el nuevo ancho del sidebar
-  ========================================================================== */
+  /* CONTENIDO PRINCIPAL */
   .main-content {
     margin-left: 90px;
     width: calc(100% - 90px);
     padding: 18px;
   }
 
-  /* ==========================================================================
-     LOGO
-     ==========================================================================
-     - Reduce tamaño del logo
-  ========================================================================== */
+  /* LOGO */
   .logo-img {
     max-width: 55px;
     padding: 6px;
   }
 
-  /* ==========================================================================
-     MENÚ
-     ==========================================================================
-     - Centra los íconos
-     - Oculta el texto
-  ========================================================================== */
+  /* MENÚ */
   .menu a {
     justify-content: center;
     padding: 14px 10px;
     gap: 0;
-    font-size: 0; /* Oculta el texto */
+    font-size: 0;
   }
 
-  /* ÍCONOS */
   .menu i {
     width: auto;
     font-size: 20px;
   }
 
-  /* ==========================================================================
-     LOGOUT
-     ==========================================================================
-     - Igual comportamiento que el menú
-  ========================================================================== */
+  /* LOGOUT */
   .logout a {
     justify-content: center;
     gap: 0;
@@ -983,34 +952,74 @@ textarea:focus {
     font-size: 20px;
   }
 
+  /* TÍTULO PRINCIPAL ARRIBA */
   .page-title {
     min-width: auto;
-    text-align: center;
+    text-align: left;
+    width: 100%;
   }
 
-  /* ==========================================================================
-     TOPBAR
-  ========================================================================== */
+  /* TOPBAR: Permite que el título ocupe toda la línea y las herramientas vayan abajo en 1 sola fila */
   .topbar {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-wrap: wrap; /* Permite que el título esté arriba y los elementos abajo */
+    align-items: center;
     gap: 12px;
-    align-items: stretch;
-  }
-
-  .search-box {
     width: 100%;
-    max-width: 100%;
   }
 
+  /* Si tu HTML agrupa las notificaciones y usuario en .topbar-actions */
   .topbar-actions {
-    width: 100%;
-    justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: auto; /* IMPORTANTE: Deja de ocupar el 100% para no forzar salto de línea */
+    flex-shrink: 0;
   }
 
-  /* ==========================================================================
-     FORMULARIOS
-  ========================================================================== */
+  /* 1. Notificación */
+  .notification {
+    order: 1;
+    flex-shrink: 0;
+  }
+
+  /* 2. Usuario */
+  .user-profile {
+    order: 2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  .user-info {
+    display: flex !important;
+    flex-direction: column;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .user-info strong {
+    font-size: 12px;
+    line-height: 1.2;
+  }
+
+  .user-info span {
+    font-size: 10px;
+    opacity: 0.8;
+  }
+
+  /* 3. Barra de búsqueda pegada a la derecha del usuario en la MISMA línea */
+  .search-box {
+    order: 3;
+    flex: 1; /* Absorbe el ancho disponible a la derecha */
+    min-width: 140px;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  /* FORMULARIOS */
   .form-grid,
   .summary-grid {
     grid-template-columns: 1fr;
@@ -1030,42 +1039,32 @@ textarea:focus {
    CELULARES Y PANTALLAS PEQUEÑAS (Hasta 768px)
    ========================================================================== */
 @media screen and (max-width: 768px) {
-  /* ==========================================================================
-     SIDEBAR MÁS COMPACTO
-  ========================================================================== */
+  /* SIDEBAR MÁS COMPACTO */
   .sidebar {
     width: 75px;
     min-width: 75px;
     max-width: 75px;
-
     padding: 14px 8px;
-
     position: fixed;
     left: 0;
     top: 0;
     bottom: 0;
   }
 
-  /* ==========================================================================
-     MAIN CONTENT
-  ========================================================================== */
+  /* MAIN CONTENT */
   .main-content {
     margin-left: 75px;
     width: calc(100% - 75px);
     padding: 15px;
   }
 
-  /* ==========================================================================
-     LOGO
-  ========================================================================== */
+  /* LOGO */
   .logo-img {
     max-width: 45px;
     padding: 4px;
   }
 
-  /* ==========================================================================
-     MENÚ
-  ========================================================================== */
+  /* MENÚ */
   .menu {
     gap: 6px;
   }
@@ -1073,12 +1072,9 @@ textarea:focus {
   .menu a {
     justify-content: center;
     align-items: center;
-
     padding: 12px 8px;
-
     font-size: 0;
     gap: 0;
-
     border-radius: 10px;
   }
 
@@ -1086,14 +1082,10 @@ textarea:focus {
     font-size: 18px;
   }
 
-  /* ==========================================================================
-     LOGOUT
-  ========================================================================== */
+  /* LOGOUT */
   .logout a {
     justify-content: center;
-
     padding: 12px 8px;
-
     font-size: 0;
     gap: 0;
   }
@@ -1102,39 +1094,46 @@ textarea:focus {
     font-size: 18px;
   }
 
-  /* ==========================================================================
-     TOPBAR
-  ========================================================================== */
+  /* TÍTULO Y BÚSQUEDA */
+  .page-title {
+    text-align: left;
+  }
+
   .page-title h1 {
     font-size: 22px;
+    text-align: left;
   }
 
   .page-title p {
     font-size: 12px;
+    text-align: left;
+  }
+
+  /* Mantener alineación horizontal fluida en móviles */
+  .topbar-actions {
+    gap: 8px;
   }
 
   .search-box input {
-    padding: 12px 14px 12px 40px;
-    font-size: 13px;
+    padding: 8px 10px 8px 32px;
+    font-size: 11px;
   }
 
   .user-info {
-    display: none;
+    display: flex !important;
   }
 
   .user-profile {
-    border-radius: 14px;
-    padding: 6px 8px;
+    border-radius: 12px;
+    padding: 4px 6px;
   }
 
   .user-profile img {
-    width: 36px;
-    height: 36px;
+    width: 30px;
+    height: 30px;
   }
 
-  /* ==========================================================================
-     BOTONES
-  ========================================================================== */
+  /* BOTONES */
   .btn {
     width: 100%;
     justify-content: center;
@@ -1153,7 +1152,6 @@ textarea:focus {
     width: 68px;
     min-width: 68px;
     max-width: 68px;
-
     padding: 12px 6px;
   }
 
@@ -1177,12 +1175,27 @@ textarea:focus {
     font-size: 17px;
   }
 
+  .page-title {
+    text-align: left;
+  }
+
   .page-title h1 {
     font-size: 20px;
+    text-align: left;
   }
 
   .page-title p {
     font-size: 11px;
+    text-align: left;
+  }
+
+  /* Ajustes en celulares pequeños para asegurar que todo quepa en una fila */
+  .user-info strong {
+    font-size: 10px;
+  }
+
+  .user-info span {
+    font-size: 8px;
   }
 
   .footer {
