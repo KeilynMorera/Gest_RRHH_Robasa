@@ -200,10 +200,10 @@
               <div
                 class="alert alert-{{ message.tags }}"
                 style="padding:12px;
-             border-radius:8px;
-             margin-bottom:10px;
-             background:{% if message.tags == 'success' %}#d4edda{% else %}#f8d7da{% endif %};
-             color:{% if message.tags == 'success' %}#155724{% else %}#721c24{% endif %};"
+              border-radius:8px;
+              margin-bottom:10px;
+              background:{% if message.tags == 'success' %}#d4edda{% else %}#f8d7da{% endif %};
+              color:{% if message.tags == 'success' %}#155724{% else %}#721c24{% endif %};"
               >
                 <i
                   class="fas {% if message.tags == 'success' %}fa-circle-check{% else %}fa-circle-exclamation{% endif %}"
@@ -252,20 +252,29 @@
 
                   <!-- Monto Liquidado -->
                   <div class="field">
-                    <label for="{{ form.Monto_Liquidado.id_for_label }}">
+                    <label for="Monto_Liquidado_Preview">
                       <i class="fas fa-money-bill-wave field-icon"></i>
                       Monto Liquidado
-                      <span class="req">*</span>
                     </label>
 
-                    {{ form.Monto_Liquidado }} {% if form.Monto_Liquidado.errors
-                    %}
-                    <small class="error">
-                      {{ form.Monto_Liquidado.errors }}
-                    </small>
-                    {% endif %}
-                  </div>
+                    <!-- Este input visible mostrará el cálculo en vivo -->
+                    <input
+                      type="text"
+                      id="Monto_Liquidado_Preview"
+                      class="form-control"
+                      value="₡ 0.00"
+                      readonly
+                      style="
+                        background-color: #f8f9fa;
+                        color: #2b8a3e;
+                        font-weight: bold;
+                        font-size: 1.05rem;
+                      "
+                    />
 
+                    <!-- Mantenemos el campo real de Django oculto -->
+                    <div style="display: none">{{ form.Monto_Liquidado }}</div>
+                  </div>
                   <!-- Fecha -->
                   <div class="field">
                     <label for="{{ form.Fecha_Registro.id_for_label }}">
@@ -318,7 +327,10 @@
 
                         <td>{{ registro.idPremio.Descripcion }}</td>
 
-                        <td>₡ {{ registro.Monto_Liquidado }}</td>
+                        <!-- Monto calculado recuperado directamente de la BD -->
+                        <td style="font-weight: bold; color: #2b8a3e">
+                          ₡ {{ registro.Monto_Liquidado|default:"0.00" }}
+                        </td>
 
                         <td>{{ registro.Fecha_Registro|date:"d/m/Y" }}</td>
                       </tr>
@@ -361,4 +373,37 @@
       </main>
     </div>
   </body>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Detectar el selector de Premio (Ajusta el ID si tu formulario Django genera otro)
+      const selectPremio =
+        document.querySelector("#id_idPremio") ||
+        document.querySelector("select[name='idPremio']");
+      const inputPreview = document.getElementById("Monto_Liquidado_Preview");
+
+      if (selectPremio && inputPreview) {
+        selectPremio.addEventListener("change", function () {
+          // Obtener el texto de la opción seleccionada
+          const textoSeleccionado =
+            selectPremio.options[selectPremio.selectedIndex].text;
+
+          // Buscar el monto en el texto (ej. $120000.00) usando Regex
+          const coincidencia = textoSeleccionado.match(/\$\s*([\d\.]+)/);
+
+          if (coincidencia && coincidencia[1]) {
+            const monto = parseFloat(coincidencia[1]);
+            // Formatear como moneda (₡)
+            inputPreview.value =
+              "₡ " +
+              monto.toLocaleString("es-CR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              });
+          } else {
+            inputPreview.value = "₡ 0.00";
+          }
+        });
+      }
+    });
+  </script>
 </html>

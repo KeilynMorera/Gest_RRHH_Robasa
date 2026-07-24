@@ -1573,6 +1573,9 @@ class Premio(models.Model):
         return f"{self.Descripcion} - ${self.Monto}"
     
 
+from decimal import Decimal
+from django.db import models
+
 # =========================================================
 # TABLA: Premio_Asignado
 # Relación entre un KPI evaluado y el premio obtenido
@@ -1587,7 +1590,9 @@ class PremioAsignado(models.Model):
     Monto_Liquidado = models.DecimalField(
         max_digits=12,
         decimal_places=2,
-        db_column='Monto_Liquidado'
+        db_column='Monto_Liquidado',
+        null=True,  # Permite guardado automático si viene vacío desde el form
+        blank=True
     )
 
     Fecha_Registro = models.DateField(
@@ -1602,7 +1607,7 @@ class PremioAsignado(models.Model):
     )
 
     id_KPI = models.ForeignKey(
-        KpiCabecera,          # Cambia el nombre si tu modelo se llama diferente
+        KpiCabecera,
         on_delete=models.DO_NOTHING,
         db_column='id_KPI',
         related_name='premios_asignados'
@@ -1616,8 +1621,31 @@ class PremioAsignado(models.Model):
 
     def __str__(self):
         return f'Premio #{self.id_PremioAsignado}'
-    
 
+    def save(self, *args, **kwargs):
+        """
+        Cálculo Automático del Monto Liquidado antes de guardar en la BD.
+        """
+        if self.idPremio:
+            # 1. Obtener el monto base o valor definido en el Premio
+            # (Ajusta 'Monto' o 'Monto_Base' según el atributo exacto de tu modelo Premio)
+            monto_premio = getattr(self.idPremio, 'Monto', None) or getattr(self.idPremio, 'Monto_Base', Decimal('0.00'))
+
+            # 2. Si el KPI asociado tiene detalles evaluados, sumamos el Total acumulado
+            # O si el premio es un valor fijo, asigna directamente el monto del premio:
+            if hasattr(self.id_KPI, 'detalles') and self.id_KPI.detalles.exists():
+                # Sumatoria total alcanzada en los detalles de KPI
+                suma_kpi = sum(detalle.Monto_Total for detalle in self.id_KPI.detalles.all())
+                
+                # Ejemplo de cálculo: Si el monto se escala según el KPI o si se usa el monto fijo del Premio
+                self.Monto_Liquidado = Decimal(monto_premio) if monto_premio > 0 else Decimal(suma_kpi)
+            else:
+                # Si el premio tiene un valor fijo predeterminado
+                self.Monto_Liquidado = Decimal(monto_premio)
+
+        super().save(*args, **kwargs)
+
+        
 # =========================================================
 # TABLA: Accion_Tipo
 # Detalle específico de una acción de personal

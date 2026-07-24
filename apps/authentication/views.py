@@ -3071,27 +3071,49 @@ def editar_premio(request, id):
 
 
 
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.utils import timezone
+from .models import PremioAsignado, Premio, KpiCabecera
+from .forms import PremioAsignadoForm
+
 def crear_premio_asignado(request):
-
     if request.method == "POST":
-
         form = PremioAsignadoForm(request.POST)
-
+        
         if form.is_valid():
-            form.save()
-            messages.success(
-                request,
-                "Premio asignado correctamente."
-            )
+            # commit=False genera el objeto en memoria sin guardarlo aún en la BD
+            premio_asignado = form.save(commit=False)
+            
+            # 1. Obtener las instancias seleccionadas en el formulario
+            # (El ModelForm ya convierte las IDs del select en objetos KpiCabecera y Premio)
+            id_kpi_seleccionado = form.cleaned_data.get('id_KPI')
+            id_premio_seleccionado = form.cleaned_data.get('idPremio')
+            
+            # Aseguramos la asignación explícita de las relaciones seleccionadas
+            premio_asignado.id_KPI = id_kpi_seleccionado
+            premio_asignado.idPremio = id_premio_seleccionado
+            
+            # 2. Asignar fecha de registro si no viene definida
+            if not premio_asignado.Fecha_Registro:
+                premio_asignado.Fecha_Registro = timezone.now().date()
+            
+            # 3. Guardar en la base de datos
+            # Al llamar a save(), se ejecuta automáticamente la lógica del modelo
+            # que calcula el Monto_Liquidado basándose en la selección del KPI y Premio.
+            premio_asignado.save()
+            
+            messages.success(request, "¡Premio asignado y liquidado con éxito!")
             return redirect("crear_premio_asignado")
-
+        else:
+            messages.error(request, "Hubo un error al procesar la selección. Por favor revisa los datos.")
     else:
+        # Petición GET: Inicializar el formulario con la fecha actual
         form = PremioAsignadoForm(
-            initial={
-                "Fecha_Registro": timezone.now().date()
-            }
+            initial={"Fecha_Registro": timezone.now().date()}
         )
 
+    # Consulta para alimentar la tabla del historial de premios asignados
     premios_asignados = (
         PremioAsignado.objects
         .select_related(
@@ -3107,11 +3129,8 @@ def crear_premio_asignado(request):
         "premios_asignados": premios_asignados,
     }
 
-    return render(
-        request,
-        "kpi_AsigPremio.html",
-        context
-    )
+    return render(request, "kpi_AsigPremio.html", context)
+
 
 
 # =========================================================================
