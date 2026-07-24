@@ -258,392 +258,337 @@
              TARJETA PRINCIPAL DEL FORMULARIO
              ========================================================= -->
         <section class="form-card">
-          <!-- Encabezado -->
+          <!-- Encabezado de la Tarjeta -->
           <div class="form-card-header">
-            <!-- Parte izquierda -->
             <div class="form-card-header-left">
-              <!-- Icono -->
               <div class="form-card-icon">
                 <i class="fas fa-chart-line"></i>
               </div>
-
-              <!-- Información -->
               <div>
-                <!-- Título -->
                 <h2 class="form-card-title">
                   Evaluación de Desempeño Operativo / Administrativo
                 </h2>
-
-                <!-- Subtítulo -->
                 <p class="form-card-subtitle">
                   Registro detallado de competencias, cumplimiento de metas
-                  anuales y métricas conductuales del colaborador.
+                  anuales y métricas conductuales.
                 </p>
               </div>
             </div>
-
-            <!-- Nota de campos obligatorios -->
             <p class="required-note">
               Los campos marcados con <span>*</span> son estrictamente
               obligatorios
             </p>
           </div>
 
-          <!-- =========================================================
-               CUERPO DEL FORMULARIO
-               ========================================================= -->
+          <!-- Cuerpo del Formulario -->
           <div class="form-body">
-            <!-- Formulario -->
-            <form method="POST" action="{% url 'crear_evaluacion' %}">
+            <form
+              id="evaluationForm"
+              method="POST"
+              action="{% url 'crear_evaluacion' %}"
+            >
               {% csrf_token %}
 
-              <!-- =====================================================
-                    INFORMACIÓN GENERAL
-              ===================================================== -->
-              <div class="form-section">
-                <h4 class="form-section-title">
-                  Información General del Periodo
-                </h4>
+              <!-- =========================================================
+           PASO 1: INFORMACIÓN GENERAL
+           ========================================================= -->
+              <div class="form-step active" id="step-1">
+                <div class="form-section">
+                  <h4 class="form-section-title">
+                    <i class="fas fa-info-circle"></i> Paso 1: Información
+                    General del Periodo
+                  </h4>
 
-                <div class="form-grid">
-                  <!-- EMPLEADO EVALUADO -->
-                  <div class="field">
-                    <label for="idEmpleado">
-                      <i class="fas fa-user field-icon"></i>
-                      Empleado Evaluado <span class="req">*</span>
-                    </label>
+                  <div class="form-grid">
+                    <!-- EMPLEADO EVALUADO -->
+                    <div class="field">
+                      <label for="idEmpleado">
+                        <i class="fas fa-user field-icon"></i>
+                        Empleado Evaluado <span class="req">*</span>
+                      </label>
+                      <select id="idEmpleado" name="idEmpleado" required>
+                        <option value="" selected disabled>
+                          Seleccione un empleado...
+                        </option>
+                        {% for empleado in empleados %}
+                        <option value="{{ empleado.idEmpleado }}">
+                          {{ empleado }}
+                        </option>
+                        {% endfor %}
+                      </select>
+                    </div>
 
-                    <select id="idEmpleado" name="idEmpleado" required>
-                      <option value="" selected disabled>
-                        Seleccione un empleado...
-                      </option>
+                    <!-- EVALUADOR -->
+                    <div class="field">
+                      <label for="idEvaluador">
+                        <i class="fas fa-user-tie field-icon"></i>
+                        Evaluador / Jefatura <span class="req">*</span>
+                      </label>
+                      <select id="idEvaluador" name="idEvaluador" required>
+                        <option value="" selected disabled>
+                          Seleccione un evaluador...
+                        </option>
+                        {% for empleado in empleados %}
+                        <option value="{{ empleado.idEmpleado }}">
+                          {{ empleado }}
+                        </option>
+                        {% endfor %}
+                      </select>
+                    </div>
 
-                      {% for empleado in empleados %}
-                      <option value="{{ empleado.idEmpleado }}">
-                        {{ empleado }}
-                      </option>
-                      {% endfor %}
-                    </select>
-                  </div>
+                    <!-- FECHA -->
+                    <div class="field">
+                      <label for="Fecha_Evaluacion">
+                        <i class="fas fa-calendar-day field-icon"></i>
+                        Fecha de Evaluación <span class="req">*</span>
+                      </label>
+                      <input
+                        type="date"
+                        id="Fecha_Evaluacion"
+                        name="Fecha_Evaluacion"
+                        required
+                      />
+                    </div>
 
-                  <!-- EVALUADOR -->
-                  <div class="field">
-                    <label for="idEvaluador">
-                      <i class="fas fa-user-tie field-icon"></i>
-                      Evaluador / Jefatura <span class="req">*</span>
-                    </label>
-
-                    <select id="idEvaluador" name="idEvaluador" required>
-                      <option value="" selected disabled>
-                        Seleccione un evaluador...
-                      </option>
-
-                      {% for empleado in empleados %}
-                      <option value="{{ empleado.idEmpleado }}">
-                        {{ empleado }}
-                      </option>
-                      {% endfor %}
-                    </select>
-                  </div>
-
-                  <!-- FECHA -->
-                  <div class="field">
-                    <label for="Fecha_Evaluacion">
-                      <i class="fas fa-calendar-day field-icon"></i>
-                      Fecha de Evaluación <span class="req">*</span>
-                    </label>
-
-                    <input
-                      type="date"
-                      id="Fecha_Evaluacion"
-                      name="Fecha_Evaluacion"
-                      required
-                    />
-                  </div>
-
-                  <!-- PERIODO -->
-                  <div class="field">
-                    <label for="periodo">
-                      <i class="fas fa-clock field-icon"></i>
-                      Tipo de Periodo <span class="req">*</span>
-                    </label>
-
-                    <select name="periodo" id="periodo" required>
-                      <option value="" selected disabled>
-                        Seleccione periodo...
-                      </option>
-
-                      {% for p in periodos %}
-                      <option value="{{ p.idPeriodo }}">
-                        {{ p.Tipo_Periodo }}
-                      </option>
-                      {% endfor %}
-                    </select>
+                    <!-- PERIODO -->
+                    <div class="field">
+                      <label for="periodo">
+                        <i class="fas fa-clock field-icon"></i>
+                        Tipo de Periodo <span class="req">*</span>
+                      </label>
+                      <select name="periodo" id="periodo" required>
+                        <option value="" selected disabled>
+                          Seleccione periodo...
+                        </option>
+                        {% for p in periodos %}
+                        <option value="{{ p.idPeriodo }}">
+                          {{ p.Tipo_Periodo }}
+                        </option>
+                        {% endfor %}
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
 
               <!-- =========================================================
-                    LISTA DE CRITERIOS DE EVALUACIÓN
-              ========================================================= -->
-              <div class="evaluation-list">
-                <!-- =====================================================
-                      CUMPLE METAS Y OBJETIVOS
-                ===================================================== -->
-                <div class="evaluation-item">
-                  <div class="evaluation-info">
-                    <h5>Cumplimiento de Metas y Objetivos</h5>
-                    <p>
-                      Evalúa si el colaborador cumple con los objetivos, metas y
-                      KPIs asignados por la organización.
-                    </p>
-                  </div>
+           PASO 2: CRITERIOS DE EVALUACIÓN
+           ========================================================= -->
+              <div class="form-step" id="step-2">
+                <div class="form-section">
+                  <h4 class="form-section-title">
+                    <i class="fas fa-tasks"></i> Paso 2: Criterios de Evaluación
+                  </h4>
 
-                  <div class="status-group">
-                    <!-- ACTIVO -->
-                    <div class="status-option">
-                      <input
-                        type="radio"
-                        id="metas_activo"
-                        name="Cumple_Metas_Objetivos"
-                        value="1"
-                        required
-                      />
-
-                      <label for="metas_activo">
-                        <span class="dot"></span>
-                        Activo
-                      </label>
+                  <div class="evaluation-list">
+                    <!-- CUMPLE METAS Y OBJETIVOS -->
+                    <div class="evaluation-item">
+                      <div class="evaluation-info">
+                        <h5>Cumplimiento de Metas y Objetivos</h5>
+                        <p>
+                          Evalúa si el colaborador cumple con los objetivos,
+                          metas y KPIs asignados por la organización.
+                        </p>
+                      </div>
+                      <div class="status-group">
+                        <div class="status-option">
+                          <input
+                            type="radio"
+                            id="metas_activo"
+                            name="Cumple_Metas_Objetivos"
+                            value="1"
+                            required
+                          />
+                          <label for="metas_activo"
+                            ><span class="dot"></span> Activo</label
+                          >
+                        </div>
+                        <div class="status-option">
+                          <input
+                            type="radio"
+                            id="metas_inactivo"
+                            name="Cumple_Metas_Objetivos"
+                            value="0"
+                          />
+                          <label for="metas_inactivo"
+                            ><span class="dot"></span> Inactivo</label
+                          >
+                        </div>
+                      </div>
                     </div>
 
-                    <!-- INACTIVO -->
-                    <div class="status-option">
-                      <input
-                        type="radio"
-                        id="metas_inactivo"
-                        name="Cumple_Metas_Objetivos"
-                        value="0"
-                      />
-
-                      <label for="metas_inactivo">
-                        <span class="dot"></span>
-                        Inactivo
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- =====================================================
-                      CUMPLE FUNCIONES ASIGNADAS
-                ===================================================== -->
-                <div class="evaluation-item">
-                  <div class="evaluation-info">
-                    <h5>Cumplimiento de Funciones Asignadas</h5>
-
-                    <p>
-                      Determina si el colaborador ejecuta correctamente las
-                      funciones y responsabilidades de su puesto.
-                    </p>
-                  </div>
-
-                  <div class="status-group">
-                    <!-- ACTIVO -->
-                    <div class="status-option">
-                      <input
-                        type="radio"
-                        id="funciones_activo"
-                        name="Cumple_FuncionesAsig"
-                        value="1"
-                        required
-                      />
-
-                      <label for="funciones_activo">
-                        <span class="dot"></span>
-                        Activo
-                      </label>
+                    <!-- CUMPLE FUNCIONES ASIGNADAS -->
+                    <div class="evaluation-item">
+                      <div class="evaluation-info">
+                        <h5>Cumplimiento de Funciones Asignadas</h5>
+                        <p>
+                          Determina si el colaborador ejecuta correctamente las
+                          funciones y responsabilidades de su puesto.
+                        </p>
+                      </div>
+                      <div class="status-group">
+                        <div class="status-option">
+                          <input
+                            type="radio"
+                            id="funciones_activo"
+                            name="Cumple_FuncionesAsig"
+                            value="1"
+                            required
+                          />
+                          <label for="funciones_activo"
+                            ><span class="dot"></span> Activo</label
+                          >
+                        </div>
+                        <div class="status-option">
+                          <input
+                            type="radio"
+                            id="funciones_inactivo"
+                            name="Cumple_FuncionesAsig"
+                            value="0"
+                          />
+                          <label for="funciones_inactivo"
+                            ><span class="dot"></span> Inactivo</label
+                          >
+                        </div>
+                      </div>
                     </div>
 
-                    <!-- INACTIVO -->
-                    <div class="status-option">
-                      <input
-                        type="radio"
-                        id="funciones_inactivo"
-                        name="Cumple_FuncionesAsig"
-                        value="0"
-                      />
-
-                      <label for="funciones_inactivo">
-                        <span class="dot"></span>
-                        Inactivo
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- =====================================================
-                      ENTREGABLES DE CALIDAD Y TIEMPO
-                ===================================================== -->
-                <div class="evaluation-item">
-                  <div class="evaluation-info">
-                    <h5>Entregables de Calidad y Tiempo</h5>
-
-                    <p>
-                      Evalúa si las entregas realizadas cumplen con los
-                      estándares de calidad y fechas establecidas.
-                    </p>
-                  </div>
-
-                  <div class="status-group">
-                    <!-- ACTIVO -->
-                    <div class="status-option">
-                      <input
-                        type="radio"
-                        id="entregables_activo"
-                        name="Entregables_Calidad_Tiempo"
-                        value="1"
-                        required
-                      />
-
-                      <label for="entregables_activo">
-                        <span class="dot"></span>
-                        Activo
-                      </label>
+                    <!-- ENTREGABLES DE CALIDAD Y TIEMPO -->
+                    <div class="evaluation-item">
+                      <div class="evaluation-info">
+                        <h5>Entregables de Calidad y Tiempo</h5>
+                        <p>
+                          Evalúa si las entregas realizadas cumplen con los
+                          estándares de calidad y fechas establecidas.
+                        </p>
+                      </div>
+                      <div class="status-group">
+                        <div class="status-option">
+                          <input
+                            type="radio"
+                            id="entregables_activo"
+                            name="Entregables_Calidad_Tiempo"
+                            value="1"
+                            required
+                          />
+                          <label for="entregables_activo"
+                            ><span class="dot"></span> Activo</label
+                          >
+                        </div>
+                        <div class="status-option">
+                          <input
+                            type="radio"
+                            id="entregables_inactivo"
+                            name="Entregables_Calidad_Tiempo"
+                            value="0"
+                          />
+                          <label for="entregables_inactivo"
+                            ><span class="dot"></span> Inactivo</label
+                          >
+                        </div>
+                      </div>
                     </div>
 
-                    <!-- INACTIVO -->
-                    <div class="status-option">
-                      <input
-                        type="radio"
-                        id="entregables_inactivo"
-                        name="Entregables_Calidad_Tiempo"
-                        value="0"
-                      />
-
-                      <label for="entregables_inactivo">
-                        <span class="dot"></span>
-                        Inactivo
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- =====================================================
-                      CUMPLIMIENTO DE ASISTENCIA
-                ===================================================== -->
-                <div class="evaluation-item">
-                  <div class="evaluation-info">
-                    <h5>Cumplimiento de Asistencia</h5>
-
-                    <p>
-                      Verifica puntualidad, asistencia y cumplimiento de
-                      horarios laborales establecidos.
-                    </p>
-                  </div>
-
-                  <div class="status-group">
-                    <!-- ACTIVO -->
-                    <div class="status-option">
-                      <input
-                        type="radio"
-                        id="asistencia_activo"
-                        name="Cumple_Asistencia"
-                        value="1"
-                        required
-                      />
-
-                      <label for="asistencia_activo">
-                        <span class="dot"></span>
-                        Activo
-                      </label>
+                    <!-- CUMPLIMIENTO DE ASISTENCIA -->
+                    <div class="evaluation-item">
+                      <div class="evaluation-info">
+                        <h5>Cumplimiento de Asistencia</h5>
+                        <p>
+                          Verifica puntualidad, asistencia y cumplimiento de
+                          horarios laborales establecidos.
+                        </p>
+                      </div>
+                      <div class="status-group">
+                        <div class="status-option">
+                          <input
+                            type="radio"
+                            id="asistencia_activo"
+                            name="Cumple_Asistencia"
+                            value="1"
+                            required
+                          />
+                          <label for="asistencia_activo"
+                            ><span class="dot"></span> Activo</label
+                          >
+                        </div>
+                        <div class="status-option">
+                          <input
+                            type="radio"
+                            id="asistencia_inactivo"
+                            name="Cumple_Asistencia"
+                            value="0"
+                          />
+                          <label for="asistencia_inactivo"
+                            ><span class="dot"></span> Inactivo</label
+                          >
+                        </div>
+                      </div>
                     </div>
 
-                    <!-- INACTIVO -->
-                    <div class="status-option">
-                      <input
-                        type="radio"
-                        id="asistencia_inactivo"
-                        name="Cumple_Asistencia"
-                        value="0"
-                      />
-
-                      <label for="asistencia_inactivo">
-                        <span class="dot"></span>
-                        Inactivo
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- =====================================================
-                      COMPROMISO Y COLABORACIÓN
-                ===================================================== -->
-                <div class="evaluation-item">
-                  <div class="evaluation-info">
-                    <h5>Compromiso y Colaboración</h5>
-
-                    <p>
-                      Mide el nivel de trabajo en equipo, compromiso
-                      organizacional y colaboración interna.
-                    </p>
-                  </div>
-
-                  <div class="status-group">
-                    <!-- ACTIVO -->
-                    <div class="status-option">
-                      <input
-                        type="radio"
-                        id="compromiso_activo"
-                        name="Muestra_Compromiso_Colaboracion"
-                        value="1"
-                        required
-                      />
-
-                      <label for="compromiso_activo">
-                        <span class="dot"></span>
-                        Activo
-                      </label>
-                    </div>
-
-                    <!-- INACTIVO -->
-                    <div class="status-option">
-                      <input
-                        type="radio"
-                        id="compromiso_inactivo"
-                        name="Muestra_Compromiso_Colaboracion"
-                        value="0"
-                      />
-
-                      <label for="compromiso_inactivo">
-                        <span class="dot"></span>
-                        Inactivo
-                      </label>
+                    <!-- COMPROMISO Y COLABORACIÓN -->
+                    <div class="evaluation-item">
+                      <div class="evaluation-info">
+                        <h5>Compromiso y Colaboración</h5>
+                        <p>
+                          Mide el nivel de trabajo en equipo, compromiso
+                          organizacional y colaboración interna.
+                        </p>
+                      </div>
+                      <div class="status-group">
+                        <div class="status-option">
+                          <input
+                            type="radio"
+                            id="compromiso_activo"
+                            name="Muestra_Compromiso_Colaboracion"
+                            value="1"
+                            required
+                          />
+                          <label for="compromiso_activo"
+                            ><span class="dot"></span> Activo</label
+                          >
+                        </div>
+                        <div class="status-option">
+                          <input
+                            type="radio"
+                            id="compromiso_inactivo"
+                            name="Muestra_Compromiso_Colaboracion"
+                            value="0"
+                          />
+                          <label for="compromiso_inactivo"
+                            ><span class="dot"></span> Inactivo</label
+                          >
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <!-- =====================================================
-                    OBSERVACIONES GENERALES
-              ===================================================== -->
-              <div class="form-section">
-                <h4 class="form-section-title">Observaciones Generales</h4>
+              <!-- =========================================================
+           PASO 3: OBSERVACIONES GENERALES
+           ========================================================= -->
+              <div class="form-step" id="step-3">
+                <div class="form-section">
+                  <h4 class="form-section-title">
+                    <i class="fas fa-comment-alt"></i> Paso 3: Observaciones
+                    Generales
+                  </h4>
 
-                <div class="field">
-                  <label for="Observaciones">
-                    <i class="fas fa-comment-dots field-icon"></i>
-                    Observaciones <span class="req">*</span>
-                  </label>
-
-                  <textarea
-                    id="Observaciones"
-                    name="Observaciones"
-                    rows="5"
-                    maxlength="500"
-                    placeholder="Escriba aquí las observaciones generales de la evaluación del colaborador..."
-                    required
-                  ></textarea>
-
-                  <small class="field-help"> Máximo 500 caracteres. </small>
+                  <div class="field">
+                    <label for="Observaciones">
+                      <i class="fas fa-comment-dots field-icon"></i>
+                      Observaciones del Evaluador <span class="req">*</span>
+                    </label>
+                    <textarea
+                      id="Observaciones"
+                      name="Observaciones"
+                      rows="6"
+                      maxlength="500"
+                      placeholder="Escriba aquí las observaciones generales de la evaluación del colaborador..."
+                      required
+                    ></textarea>
+                    <small class="field-help">Máximo 500 caracteres.</small>
+                  </div>
                 </div>
               </div>
 

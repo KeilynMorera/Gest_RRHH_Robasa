@@ -1,240 +1,4 @@
 /* ==========================================================================
-   CONFIGURACIÓN MATRIZ 9 BOX & LAYOUT DE VISTA PREVIA
-   ========================================================================== */
-
-/* ── Grid General de Vista Previa ───────────────────────────────────────── */
-.preview-layout {
-  display: grid; /* Activa CSS Grid para control bidimensional */
-  grid-template-columns: 340px 1fr; /* Columna fija para la tarjeta de datos; columna fluida para la matriz */
-  gap: 28px; /* Separación uniforme entre la tarjeta y la matriz */
-  align-items: stretch; /* Forza a ambos elementos a heredar la misma altura máxima */
-  margin-top: 10px;
-}
-
-/* ── Card Preview (Tarjeta informativa del cuadrante activo) ────────────── */
-.preview-card {
-  background: linear-gradient(
-    145deg,
-    #26317a,
-    #32419b
-  ); /* Degradado diagonal corporativo */
-  border-radius: 18px;
-  padding: 28px;
-  color: #ffffff;
-  position: relative; /* Contexto de posicionamiento para círculos abstractos */
-  overflow: hidden; /* Recorta los círculos decorativos que sobresalen de los bordes */
-  box-shadow: 0 10px 28px rgba(38, 49, 122, 0.22); /* Sombra suave basada en el color de marca */
-  display: flex;
-  flex-direction: column; /* Apila el contenido verticalmente */
-  justify-content: space-between; /* Empuja el título/badge arriba y los niveles abajo */
-  min-height: 340px; /* Sincronizado con la altura de la matriz para balance visual */
-}
-
-/* Círculo decorativo translúcido superior derecho */
-.preview-card::before {
-  content: "";
-  position: absolute;
-  width: 180px;
-  height: 180px;
-  background: rgba(255, 255, 255, 0.08); /* Blanco al 8% de opacidad */
-  border-radius: 50%;
-  top: -60px;
-  right: -60px;
-}
-
-/* Círculo decorativo translúcido inferior izquierdo */
-.preview-card::after {
-  content: "";
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  background: rgba(255, 255, 255, 0.05); /* Blanco al 5% de opacidad */
-  border-radius: 50%;
-  bottom: -40px;
-  left: -40px;
-}
-
-/* Badge Numérico/Identificador del Cuadrante (Efecto Cristal) */
-.preview-badge {
-  width: 82px;
-  height: 82px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.12); /* Base translúcida */
-  border: 1px solid rgba(255, 255, 255, 0.15); /* Borde que simula reflejo de vidrio */
-  display: flex;
-  align-items: center;
-  justify-content: center; /* Centrado perfecto del identificador */
-  font-size: 34px;
-  font-weight: 800;
-  margin-bottom: 24px;
-  backdrop-filter: blur(
-    4px
-  ); /* Efecto Glassmorphism: desenfoca lo que está detrás */
-  position: relative;
-  z-index: 2; /* Eleva el badge por encima de los círculos de fondo */
-}
-
-.preview-card h3 {
-  font-size: 28px;
-  font-weight: 800;
-  margin-bottom: 14px;
-  position: relative;
-  z-index: 2;
-}
-
-.preview-card p {
-  font-size: 14px;
-  line-height: 1.7; /* Interlineado amplio para lectura confortable */
-  color: rgba(
-    255,
-    255,
-    255,
-    0.85
-  ); /* Blanco suavizado para evitar fatiga visual */
-  position: relative;
-  z-index: 2;
-}
-
-/* ── Bloque de Niveles de Métrica (Potencial / Desempeño) ──────────────── */
-.preview-levels {
-  display: flex;
-  gap: 14px;
-  margin-top: 30px;
-  position: relative;
-  z-index: 2;
-}
-
-.mini-level {
-  flex: 1; /* Distribución equitativa del ancho entre los niveles */
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 14px;
-  padding: 14px;
-  text-align: center;
-  backdrop-filter: blur(6px);
-}
-
-.mini-level span {
-  display: block; /* Salto de línea automático para la etiqueta */
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.75);
-  margin-bottom: 6px;
-}
-
-.mini-level strong {
-  font-size: 24px;
-  font-weight: 800;
-}
-
-/* ── Contenedor de la Matriz Preview ────────────────────────────────────── */
-.preview-matrix {
-  background: #f8faff;
-  border: 1px solid #e6ebf5;
-  border-radius: 18px;
-  padding: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 340px;
-  position: relative; /* Obligatorio para anclar las etiquetas de los ejes */
-}
-
-/* Eje Y: Desempeño (Etiqueta lateral rotada) */
-.preview-matrix::before {
-  content: "Desempeño";
-  position: absolute;
-  left: -34px;
-  top: 50%;
-  transform: rotate(-90deg) translateY(-50%); /* Rota el texto verticalmente y lo centra */
-  transform-origin: left; /* Fija el pivote de rotación a la izquierda */
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1px; /* Espaciado de caracteres para look técnico */
-  color: #6b7499;
-}
-
-/* Eje X: Potencial (Etiqueta inferior central) */
-.preview-matrix::after {
-  content: "Potencial";
-  position: absolute;
-  bottom: -24px;
-  left: 50%;
-  transform: translateX(-50%); /* Centrado horizontal exacto */
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: #6b7499;
-}
-
-/* ── Grilla Interna de la Mini Matriz (9 Box Grid) ──────────────────────── */
-.mini-ninebox {
-  display: grid;
-  grid-template-columns: repeat(
-    3,
-    110px
-  ); /* Construye exactamente 3 columnas estables de 110px */
-  gap: 14px;
-}
-
-/* Cuadrantes individuales (Cajas nativas de la matriz) */
-.mini-box {
-  height: 110px; /* Caja perfectamente cuadrada (110x110px) */
-  border-radius: 16px;
-  background: #ffffff;
-  border: 2px solid #dbe3f2;
-  display: flex;
-  align-items: center;
-  justify-content: center; /* Centrado interno del número de cuadrante */
-  font-weight: 800;
-  font-size: 22px;
-  color: #42507d;
-  transition: 0.25s ease; /* Transición armónica para el hover */
-  position: relative;
-  overflow: hidden;
-}
-
-/* Estado dinámico Hover sobre un cuadrante */
-.mini-box:hover {
-  transform: translateY(-3px); /* Micro-elevación física */
-  border-color: #4567b7; /* Resalte de color de enfoque */
-  box-shadow: 0 10px 18px rgba(69, 103, 183, 0.15);
-}
-
-/* Estado Activo (Cuadrante seleccionado/actual del colaborador) */
-.mini-box.active {
-  background: linear-gradient(
-    145deg,
-    #e8600a,
-    #ff8c42
-  ); /* Color corporativo naranja de realce */
-  border-color: transparent;
-  color: #ffffff;
-  box-shadow: 0 12px 24px rgba(232, 96, 10, 0.28);
-}
-
-/* Capa de iluminación extra para el cuadrante activo */
-.mini-box.active::before {
-  content: "";
-  position: absolute;
-  inset: 0; /* Expande el pseudoelemento al 100% de la caja */
-  background: rgba(255, 255, 255, 0.08);
-}
-
-/* ── Inputs Extendidos y Formularios Adaptados ────────────────────────── */
-#perfil,
-#plan_accion {
-  min-height: 150px; /* Otorga un área de tipeo generosa a bloques de texto */
-}
-
-.field select {
-  font-weight: 600; /* Remarca las opciones de selección */
-}
-
-.form-footer {
-  margin-top: 34px;
-}
-
-/* ==========================================================================
    RESET, FUENTES Y LAYOUT BASE
    ========================================================================== */
 * {
@@ -246,7 +10,7 @@
 body {
   font-family: "Segoe UI", sans-serif;
   background: #f4f7fb;
-  color: #d35b1a;
+  color: #000000;
 }
 
 /* Contenedor Maestro de la Aplicación */
@@ -953,6 +717,284 @@ select {
   max-width: 100%; /* Asegura que ningún control nativo rompa el contenedor de su padre */
 }
 
+/* ==========================================================================
+   CONFIGURACIÓN MATRIZ 9 BOX & LAYOUT DE VISTA PREVIA
+   ========================================================================== */
+
+/* ── Grid General de Vista Previa ───────────────────────────────────────── */
+.preview-layout {
+  display: grid; /* Activa CSS Grid para control bidimensional */
+  grid-template-columns: 340px 1fr; /* Columna fija para la tarjeta de datos; columna fluida para la matriz */
+  gap: 28px; /* Separación uniforme entre la tarjeta y la matriz */
+  align-items: stretch; /* Forza a ambos elementos a heredar la misma altura máxima */
+  margin-top: 10px;
+}
+
+/* ── Card Preview (Tarjeta informativa del cuadrante activo) ────────────── */
+.preview-card {
+  background: linear-gradient(
+    145deg,
+    #26317a,
+    #32419b
+  ); /* Degradado diagonal corporativo */
+  border-radius: 18px;
+  padding: 28px;
+  color: #ffffff;
+  position: relative; /* Contexto de posicionamiento para círculos abstractos */
+  overflow: hidden; /* Recorta los círculos decorativos que sobresalen de los bordes */
+  box-shadow: 0 10px 28px rgba(38, 49, 122, 0.22); /* Sombra suave basada en el color de marca */
+  display: flex;
+  flex-direction: column; /* Apila el contenido verticalmente */
+  justify-content: space-between; /* Empuja el título/badge arriba y los niveles abajo */
+  min-height: 340px; /* Sincronizado con la altura de la matriz para balance visual */
+}
+
+/* Círculo decorativo translúcido superior derecho */
+.preview-card::before {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  background: rgba(255, 255, 255, 0.08); /* Blanco al 8% de opacidad */
+  border-radius: 50%;
+  top: -60px;
+  right: -60px;
+}
+
+/* Círculo decorativo translúcido inferior izquierdo */
+.preview-card::after {
+  content: "";
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background: rgba(255, 255, 255, 0.05); /* Blanco al 5% de opacidad */
+  border-radius: 50%;
+  bottom: -40px;
+  left: -40px;
+}
+
+/* Badge Numérico/Identificador del Cuadrante (Efecto Cristal) */
+.preview-badge {
+  width: 82px;
+  height: 82px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.12); /* Base translúcida */
+  border: 1px solid rgba(255, 255, 255, 0.15); /* Borde que simula reflejo de vidrio */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centrado perfecto del identificador */
+  font-size: 34px;
+  font-weight: 800;
+  margin-bottom: 24px;
+  backdrop-filter: blur(
+    4px
+  ); /* Efecto Glassmorphism: desenfoca lo que está detrás */
+  position: relative;
+  z-index: 2; /* Eleva el badge por encima de los círculos de fondo */
+}
+
+.preview-card h3 {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 14px;
+  position: relative;
+  z-index: 2;
+}
+
+.preview-card p {
+  font-size: 14px;
+  line-height: 1.7; /* Interlineado amplio para lectura confortable */
+  color: rgba(
+    255,
+    255,
+    255,
+    0.85
+  ); /* Blanco suavizado para evitar fatiga visual */
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Bloque de Niveles de Métrica (Potencial / Desempeño) ──────────────── */
+.preview-levels {
+  display: flex;
+  gap: 14px;
+  margin-top: 30px;
+  position: relative;
+  z-index: 2;
+}
+
+.mini-level {
+  flex: 1; /* Distribución equitativa del ancho entre los niveles */
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 14px;
+  text-align: center;
+  backdrop-filter: blur(6px);
+}
+
+.mini-level span {
+  display: block; /* Salto de línea automático para la etiqueta */
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 6px;
+}
+
+.mini-level strong {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+/* ── Contenedor de la Matriz Preview ────────────────────────────────────── */
+.preview-matrix {
+  background: #f8faff;
+  border: 1px solid #e6ebf5;
+  border-radius: 18px;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 340px;
+  position: relative; /* Obligatorio para anclar las etiquetas de los ejes */
+}
+
+/* Eje Y: Desempeño (Etiqueta lateral rotada) */
+.preview-matrix::before {
+  content: "Desempeño";
+  position: absolute;
+  left: -34px;
+  top: 50%;
+  transform: rotate(-90deg) translateY(-50%); /* Rota el texto verticalmente y lo centra */
+  transform-origin: left; /* Fija el pivote de rotación a la izquierda */
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px; /* Espaciado de caracteres para look técnico */
+  color: #6b7499;
+}
+
+/* Eje X: Potencial (Etiqueta inferior central) */
+.preview-matrix::after {
+  content: "Potencial";
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%); /* Centrado horizontal exacto */
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #6b7499;
+}
+
+/* ── Grilla Interna de la Mini Matriz (9 Box Grid) ──────────────────────── */
+.mini-ninebox {
+  display: grid;
+  grid-template-columns: repeat(
+    3,
+    110px
+  ); /* Construye exactamente 3 columnas estables de 110px */
+  gap: 14px;
+}
+
+/* Cuadrantes individuales (Cajas nativas de la matriz) */
+.mini-box {
+  height: 110px; /* Caja perfectamente cuadrada (110x110px) */
+  border-radius: 16px;
+  background: #ffffff;
+  border: 2px solid #dbe3f2;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centrado interno del número de cuadrante */
+  font-weight: 800;
+  font-size: 22px;
+  color: #42507d;
+  transition: 0.25s ease; /* Transición armónica para el hover */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Estado dinámico Hover sobre un cuadrante */
+.mini-box:hover {
+  transform: translateY(-3px); /* Micro-elevación física */
+  border-color: #4567b7; /* Resalte de color de enfoque */
+  box-shadow: 0 10px 18px rgba(69, 103, 183, 0.15);
+}
+
+/* Estado Activo (Cuadrante seleccionado/actual del colaborador) */
+.mini-box.active {
+  background: linear-gradient(
+    145deg,
+    #e8600a,
+    #ff8c42
+  ); /* Color corporativo naranja de realce */
+  border-color: transparent;
+  color: #ffffff;
+  box-shadow: 0 12px 24px rgba(232, 96, 10, 0.28);
+}
+
+/* Capa de iluminación extra para el cuadrante activo */
+.mini-box.active::before {
+  content: "";
+  position: absolute;
+  inset: 0; /* Expande el pseudoelemento al 100% de la caja */
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ── Inputs Extendidos y Formularios Adaptados ────────────────────────── */
+#perfil,
+#plan_accion {
+  min-height: 150px; /* Otorga un área de tipeo generosa a bloques de texto */
+}
+
+.field select {
+  font-weight: 600; /* Remarca las opciones de selección */
+}
+
+.form-footer {
+  margin-top: 34px;
+}
+
+/* ===========================
+   MATRIZ MINI 9 BOX
+=========================== */
+
+.mini-ninebox {
+  display: grid;
+  grid-template-columns: repeat(3, 80px);
+  grid-template-rows: repeat(3, 80px);
+  gap: 16px;
+  justify-content: center;
+  align-content: center;
+}
+
+.mini-box {
+  width: 80px;
+  height: 80px;
+  border: 2px solid #d8e2f3;
+  border-radius: 18px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+  font-weight: 700;
+  color: #5d6d93;
+  cursor: default;
+}
+
+.mini-box span {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* Cuadrante seleccionado */
+.mini-box.active {
+  background: #ff6a00;
+  border-color: #ff6a00;
+  color: #fff;
+  transform: scale(1.08);
+  box-shadow: 0 10px 25px rgba(255, 106, 0, 0.35);
+}
+
 /* ── PANTALLAS GRANDES (Hasta 1400px) ─────────────────────────────────── */
 @media screen and (max-width: 1400px) {
   .main-content {
@@ -960,19 +1002,16 @@ select {
   }
 
   .preview-layout {
-    grid-template-columns: 300px 1fr; /* Achica proporcionalmente la tarjeta informativa lateral */
+    grid-template-columns: 300px 1fr;
     gap: 22px;
   }
 
   .mini-ninebox {
-    grid-template-columns: repeat(
-      3,
-      minmax(85px, 1fr)
-    ); /* Permite encogimiento elástico de los cuadrantes */
+    grid-template-columns: repeat(3, minmax(85px, 1fr));
   }
 
   .mini-box {
-    height: 95px; /* Escala hacia abajo el alto de la caja */
+    height: 95px;
     font-size: 20px;
   }
 
@@ -991,34 +1030,75 @@ select {
 
   .main-content {
     margin-left: 250px;
-    width: calc(
-      100% - 250px
-    ); /* Deducción matemática exacta para calcular el espacio neto de la pantalla */
+    width: calc(100% - 250px);
     padding: 20px;
   }
 
   .topbar {
-    align-items: flex-start;
-    gap: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
   }
 
+  /* TÍTULO SIEMPRE A LA IZQUIERDA (Fila 1) */
   .page-title {
     width: 100%;
+    flex: 0 0 100%;
+    text-align: left !important;
+    order: 1;
   }
 
-  .search-box {
-    flex: 1 1 100%; /* Fuerza al buscador a expandirse al 100% ocupando una línea entera */
-    max-width: 100%;
+  .page-title h1,
+  .page-title p {
+    text-align: left !important;
   }
 
+  /* FILA 2: IZQUIERDA -> Notificaciones + Usuario */
   .topbar-actions {
-    width: 100%;
-    justify-content: flex-end;
+    order: 2;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: auto;
+    justify-content: flex-start;
   }
 
-  /* REESTRUCTURACIÓN DE LA MATRIZ: Se rompe el flujo de columnas paralelas */
+  .notification-btn,
+  .notifications-dropdown {
+    order: 1; /* 1° NOTIFICACIONES */
+  }
+
+  .user-profile {
+    order: 2; /* 2° USUARIO */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .user-info {
+    display: flex !important;
+    flex-direction: column;
+  }
+
+  .user-info h4,
+  .user-info p {
+    display: block !important;
+    white-space: nowrap;
+  }
+
+  /* FILA 2: DERECHA -> Buscador */
+  .search-box {
+    order: 3;
+    flex: 1;
+    max-width: 380px;
+    margin-left: auto;
+  }
+
+  /* REESTRUCTURACIÓN DE LA MATRIZ */
   .preview-layout {
-    grid-template-columns: 1fr; /* Apila la Tarjeta Informativa arriba y la Matriz abajo */
+    grid-template-columns: 1fr;
   }
 
   .preview-card,
@@ -1032,77 +1112,57 @@ select {
   }
 
   .preview-levels {
-    flex-wrap: wrap; /* Habilita la envoltura elástica si los textos de métricas colisionan */
+    flex-wrap: wrap;
   }
 }
-
 
 /* ===========================
    MATRIZ MINI 9 BOX
 =========================== */
 
-.mini-ninebox{
-    display:grid;
-    grid-template-columns:repeat(3,80px);
-    grid-template-rows:repeat(3,80px);
-    gap:16px;
-    justify-content:center;
-    align-content:center;
+.mini-ninebox {
+  display: grid;
+  grid-template-columns: repeat(3, 80px);
+  grid-template-rows: repeat(3, 80px);
+  gap: 16px;
+  justify-content: center;
+  align-content: center;
 }
 
-.mini-box{
-
-    width:80px;
-    height:80px;
-
-    border:2px solid #d8e2f3;
-
-    border-radius:18px;
-
-    background:#ffffff;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    transition:.3s;
-
-    font-weight:700;
-
-    color:#5d6d93;
-
-    cursor:default;
+.mini-box {
+  width: 80px;
+  height: 80px;
+  border: 2px solid #d8e2f3;
+  border-radius: 18px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+  font-weight: 700;
+  color: #5d6d93;
+  cursor: default;
 }
 
-.mini-box span{
-
-    font-size:18px;
-
-    font-weight:700;
+.mini-box span {
+  font-size: 18px;
+  font-weight: 700;
 }
 
 /* Cuadrante seleccionado */
-
-.mini-box.active{
-
-    background:#ff6a00;
-
-    border-color:#ff6a00;
-
-    color:#fff;
-
-    transform:scale(1.08);
-
-    box-shadow:0 10px 25px rgba(255,106,0,.35);
+.mini-box.active {
+  background: #ff6a00;
+  border-color: #ff6a00;
+  color: #fff;
+  transform: scale(1.08);
+  box-shadow: 0 10px 25px rgba(255, 106, 0, 0.35);
 }
 
 /* ==========================================================================
-   SIDEBAR RESPONSIVE SOLO ÍCONOS
+   SIDEBAR & TOPBAR RESPONSIVE COMPACTO
    ========================================================================== */
 
-/* ── TABLETS Y PANTALLAS MEDIANAS ─────────────────────────────────────── */
+/* ── TABLETS Y PANTALLAS MEDIANAS (Hasta 992px) ────────────────────────── */
 @media screen and (max-width: 992px) {
   .sidebar {
     width: 90px;
@@ -1117,13 +1177,66 @@ select {
     width: calc(100% - 90px);
   }
 
+  .topbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .page-title {
+    width: 100%;
+    flex: 0 0 100%;
+    text-align: left !important;
+    order: 1;
+  }
+
+  .page-title h1,
+  .page-title p {
+    text-align: left !important;
+  }
+
+  /* 1° Notificaciones + 2° Usuario (Nombre y Puesto) */
+  .topbar-actions {
+    order: 2;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: auto;
+  }
+
+  .user-info {
+    display: flex !important;
+    flex-direction: column;
+  }
+
+  .user-info h4 {
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .user-info p {
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  /* 3° Buscador al lado derecho */
+  .search-box {
+    order: 3;
+    flex: 1;
+    min-width: 180px;
+    max-width: 300px;
+    margin-left: auto;
+  }
+
   /* Logo más compacto */
   .logo-img {
     max-width: 55px;
     padding: 8px;
   }
 
-  /* Centrado del menú */
+  /* Centrado del menú del sidebar */
   .menu {
     width: 100%;
     align-items: center;
@@ -1137,23 +1250,13 @@ select {
     width: 60px;
     height: 60px;
     border-radius: 14px;
-  }
-
-  /* Oculta el texto */
-  .menu a {
     font-size: 0;
-  }
-
-  /* Oculta texto del usuario */
-  .user-info {
-    display: none;
   }
 
   .logout a {
     font-size: 0;
   }
 
-  /* Mantiene visibles los iconos */
   .menu a i,
   .logout a i {
     font-size: 20px;
@@ -1162,7 +1265,7 @@ select {
   }
 }
 
-/* ── SMARTPHONES ───────────────────────────────────────────────────────── */
+/* ── SMARTPHONES (Hasta 576px) ─────────────────────────────────────────── */
 @media screen and (max-width: 576px) {
   .sidebar {
     width: 75px;
@@ -1175,6 +1278,62 @@ select {
     margin-left: 75px;
     width: calc(100% - 75px);
     padding: 12px;
+  }
+
+  .page-title {
+    width: 100%;
+    flex: 0 0 100%;
+    text-align: left !important;
+    order: 1;
+  }
+
+  .page-title h1,
+  .page-title p {
+    text-align: left !important;
+  }
+
+  /* Ajustes responsivos estrechos manteniendo Nombre y Puesto visible */
+  .topbar-actions {
+    order: 2;
+    gap: 6px;
+  }
+
+  .user-info {
+    display: flex !important;
+    flex-direction: column;
+  }
+
+  .user-info h4 {
+    font-size: 11px;
+    max-width: 85px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .user-info p {
+    font-size: 9px;
+    max-width: 85px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .search-box {
+    order: 3;
+    flex: 1;
+    min-width: 110px;
+    margin-left: auto;
+  }
+
+  .search-box input {
+    font-size: 11px;
+    padding: 7px 8px 7px 28px;
+  }
+
+  .search-box i {
+    left: 8px;
+    font-size: 11px;
   }
 
   .logo-img {
@@ -1192,10 +1351,5 @@ select {
   .menu a i,
   .logout a i {
     font-size: 18px;
-  }
-
-  /* Oculta texto del usuario */
-  .user-info {
-    display: none;
   }
 }
