@@ -236,9 +236,7 @@
                   <div class="field field-full">
                     <label for="empleado">
                       <i class="fas fa-user field-icon"></i>
-
                       Empleado
-
                       <span class="req">*</span>
                     </label>
 
@@ -248,11 +246,9 @@
                       </option>
 
                       {% for empleado in empleados %}
-
                       <option value="{{ empleado.idEmpleado }}">
-                        {{ empleado.idPersona.Nombre_Completo }}
+                        {{ empleado.idPersona.Nombre_Completo }} — {{ empleado.idPuesto.Nombre }}
                       </option>
-
                       {% endfor %}
                     </select>
                   </div>
@@ -270,8 +266,7 @@
                       {% for a in asistencias_permiso %}
 
                       <option value="{{ a.idAsistencia }}">
-                        {{ a.idEmpleado.idPersona.Nombre_Completo }} - {{
-                        a.Fecha }}
+                        {{ a.idEmpleado.idPersona.Nombre_Completo }} - {{ a.Fecha }}
                       </option>
 
                       {% endfor %}
