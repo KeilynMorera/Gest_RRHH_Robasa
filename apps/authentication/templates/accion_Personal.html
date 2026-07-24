@@ -274,8 +274,7 @@
                       <i class="fas fa-calendar-check field-icon"></i> Fecha de
                       Aplicación <span class="req">*</span>
                     </label>
-                    {{ form_cabecera.Fecha }} {% if form_cabecera.Fecha.errors
-                    %}
+                    {{ form_cabecera.Fecha }} {% if form_cabecera.Fecha.errors %}
                     <div class="error-message">
                       {{ form_cabecera.Fecha.errors }}
                     </div>
@@ -543,8 +542,7 @@
                   <td>{{ a.Detalle|truncatechars:60 }}</td>
 
                   <td>
-                    {% if a.Monto_TA %} ₡{{ a.Monto_TA }} {% else %} — {% endif
-                    %}
+                    {% if a.Monto_TA %} ₡{{ a.Monto_TA }} {% else %} — {% endif %}
                   </td>
 
                   <td>{{ a.idAccion.Fecha }}</td>
