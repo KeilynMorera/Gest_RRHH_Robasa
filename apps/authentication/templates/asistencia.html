@@ -347,20 +347,12 @@
 
                     <!-- Lista de empleados -->
                     <select id="empleado" name="empleado" required>
-                      <!-- Opción inicial -->
-                      {% for empleado in empleados %}
+                      <!-- Opción por defecto para guiar al usuario -->
+                      <option value="">Seleccione un empleado...</option>
 
+                      {% for empleado in empleados %}
                       <option
                         value="{{ empleado.idEmpleado }}"
-                        {#
-                        ✅
-                        CORRECTO
-                        —
-                        en
-                        una
-                        sola
-                        línea
-                        #}
                         {%
                         if
                         asistencia_editar
@@ -371,9 +363,8 @@
                         endif
                         %}
                       >
-                        {{ empleado.idPersona.Nombre_Completo }}
+                        {{ empleado.idPersona.Nombre_Completo }} - {{ empleado.idPuesto.Nombre }}
                       </option>
-
                       {% endfor %}
                     </select>
                   </div>

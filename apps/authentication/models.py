@@ -899,22 +899,39 @@ class Asistencia(models.Model):
     # Jornada laboral = 8 horas
     # =====================================================
 
+    # =====================================================
+    # CALCULAR HORAS EXTRA
+    # Horario oficial: 07:00 a 17:00 (10 hrs reloj)
+    # Incluye 1 hora de almuerzo (9 hrs efectivas de trabajo)
+    # =====================================================
+
     def calcular_horas_extra(self):
+        entrada = datetime.combine(date.today(), self.Hora_Entrada)
+        salida  = datetime.combine(date.today(), self.Hora_Salida)
 
-        entrada  = datetime.combine(date.today(), self.Hora_Entrada)
-        salida   = datetime.combine(date.today(), self.Hora_Salida)
-        jornada  = timedelta(hours=8)
-        trabajado = salida - entrada
-        extra    = trabajado - jornada
+        # Si la salida es anterior a la entrada (ej. cambio de día/error)
+        if salida <= entrada:
+            return time(0, 0, 0)
 
-        if extra.total_seconds() <= 0:
-            return time(0, 0, 0)   # ← time en lugar de int 0
+        # Calculamos minutos totales en instalaciones
+        minutos_totales = int((salida - entrada).total_seconds() // 60)
+        
+        # Descuento de 1 hora de almuerzo (60 min) si permaneció más de 60 min
+        MINUTOS_ALMUERZO = 60
+        minutos_efectivos = minutos_totales - MINUTOS_ALMUERZO if minutos_totales > MINUTOS_ALMUERZO else minutos_totales
 
-        total_seg = int(extra.total_seconds())
-        horas     = total_seg // 3600
-        minutos   = (total_seg % 3600) // 60
-        return time(horas, minutos, 0)   # ← time en lugar de int
+        # Jornada laboral efectiva estándar: 9 horas = 540 minutos
+        MINUTOS_JORNADA_ORDINARIA = 9 * 60  # 540 minutos
 
+        min_extra = minutos_efectivos - MINUTOS_JORNADA_ORDINARIA
+
+        if min_extra <= 0:
+            return time(0, 0, 0)
+
+        horas = min_extra // 60
+        minutos = min_extra % 60
+        
+        return time(horas, minutos, 0)
 
     # =====================================================
     # GUARDAR
