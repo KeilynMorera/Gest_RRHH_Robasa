@@ -10,7 +10,7 @@
 body {
   font-family: "Segoe UI", sans-serif; /* Tipografía limpia y profesional */
   background: #f4f7fb; /* Fondo gris claro azulado, ideal para interfaces administrativas */
-  color: #d35b1a; /* Color de texto base en tono naranja óxido */
+  color: #000000; /* Color de texto base en tono naranja óxido */
 }
 
 /* =========================================================
@@ -968,6 +968,299 @@ select.form-control {
     0 10px 24px rgba(38, 49, 122, 0.35);
 }
 
+/* ============================================================
+   ESTILOS ADICIONALES — Tabla de consulta y modificación
+   Agregar al final de personas.css
+   ============================================================ */
+
+/* ── Textarea del formulario ─────────────────────────────────── */
+textarea {
+  width: 100%;
+  border: 1.5px solid #dde2f0;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 14px;
+  background: #f7f8fc;
+  outline: none;
+  font-family: inherit;
+  resize: vertical;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+textarea:focus {
+  border-color: #e8600a;
+  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
+  background: #fff;
+}
+
+/* ── Botón Guardar Cambios (naranja suave / warning) ─────────── */
+.btn-warning {
+  background: #f0a500;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(240, 165, 0, 0.3);
+}
+.btn-warning:hover {
+  background: #d4900a;
+  box-shadow: 0 6px 16px rgba(240, 165, 0, 0.38);
+  transform: translateY(-1px);
+}
+
+/* Clase para ocultar / mostrar elementos */
+.oculto {
+  display: none !important;
+}
+
+/* ── Tarjeta de la tabla ─────────────────────────────────────── */
+.table-card {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(30, 42, 94, 0.1);
+  width: 100%;
+  margin: 30px auto;
+  overflow: hidden;
+}
+
+/* ── Encabezado de la tarjeta tabla ─────────────────────────── */
+.table-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 26px;
+  border-bottom: 1.5px solid #e8ecf6;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.table-card-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.table-card-icon {
+  width: 42px;
+  height: 42px;
+  background: rgba(30, 42, 94, 0.1);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1e2a5e;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+.table-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a2042;
+  margin: 0 0 3px;
+}
+
+.table-card-subtitle {
+  font-size: 12px;
+  color: #6b7499;
+  margin: 0;
+}
+
+/* ── Buscador de la tabla ────────────────────────────────────── */
+.table-search input {
+  width: 100%;
+  min-width: 180px;
+}
+
+.table-search i {
+  position: absolute;
+  left: 12px;
+  color: #6b7499;
+  font-size: 13px;
+  pointer-events: none;
+}
+.table-search input {
+  border: 1.5px solid #dde2f0;
+  border-radius: 24px;
+  padding: 9px 16px 9px 36px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #1a2042;
+  background: #f7f8fc;
+  outline: none;
+  width: 260px;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.table-search input:focus {
+  border-color: #e8600a;
+  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.1);
+  background: #fff;
+}
+
+/* ── Contenedor con scroll horizontal ───────────────────────── */
+.table-wrapper {
+  overflow-x: auto;
+  padding: 0 0 8px;
+}
+
+/* ── Tabla ───────────────────────────────────────────────────── */
+.data-table {
+  width: 100%;
+  min-width: 0;
+}
+
+.data-table thead tr {
+  background: #f0f2f8;
+  border-bottom: 2px solid #dde2f0;
+}
+
+.data-table th {
+  padding: 13px 16px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1e2a5e;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+}
+
+.data-table tbody tr {
+  border-bottom: 1px solid #f0f2f8;
+  transition: background 0.15s;
+}
+
+.data-table tbody tr:hover {
+  background: #fdf4ee;
+}
+
+/* Fila activa (seleccionada para editar) */
+.data-table tbody tr.fila-activa {
+  background: rgba(232, 96, 10, 0.07);
+  outline: 2px solid rgba(232, 96, 10, 0.3);
+  outline-offset: -1px;
+}
+
+.data-table td {
+  padding: 11px 16px;
+  color: #3a4060;
+  vertical-align: middle;
+}
+
+/* Foto miniatura en la tabla */
+.tabla-foto {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #dde2f0;
+  display: block;
+}
+
+/* Columna dirección: recorta texto largo */
+.col-direccion {
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Columna acción: centrada */
+.col-accion {
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Celda vacía */
+.tabla-vacia {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6b7499;
+  font-size: 14px;
+}
+.tabla-vacia i {
+  display: block;
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #c5cbdf;
+}
+
+/* ── Botón editar en la tabla ────────────────────────────────── */
+.btn-editar {
+  background: rgba(30, 42, 94, 0.08);
+  border: none;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #1e2a5e;
+  font-size: 15px;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    transform 0.15s;
+}
+.btn-editar:hover {
+  background: #e8600a;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+/* ── Columna acción ───────────────────────────────────────── */
+.col-accion {
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* ── Botones de acción (Editar / Eliminar) ────────────────── */
+.col-accion .btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  margin: 0 3px;
+  transition: all 0.2s ease;
+}
+
+/* Botón editar */
+.col-accion .btn-warning {
+  background: rgba(240, 165, 0, 0.12);
+  color: #f0a500;
+  border: 1px solid rgba(240, 165, 0, 0.25);
+}
+
+.col-accion .btn-warning:hover {
+  background: #f0a500;
+  color: #ffffff;
+  transform: scale(1.08);
+  box-shadow: 0 4px 10px rgba(240, 165, 0, 0.35);
+}
+
+/* Botón eliminar */
+.col-accion .btn-danger {
+  background: rgba(220, 53, 69, 0.12);
+  color: #dc3545;
+  border: 1px solid rgba(220, 53, 69, 0.25);
+}
+
+.col-accion .btn-danger:hover {
+  background: #dc3545;
+  color: #ffffff;
+  transform: scale(1.08);
+  box-shadow: 0 4px 10px rgba(220, 53, 69, 0.35);
+}
+
+/* Tamaño de iconos */
+.col-accion .btn i {
+  font-size: 14px;
+}
+
 /* =========================================================
    RESPONSIVE DESIGN (Media Queries)
    El menú SIEMPRE queda fijo a la izquierda, reduciendo escalas.
@@ -1013,65 +1306,76 @@ select.form-control {
   }
 }
 
+/* =========================================================
+   BLOQUEO DE SCROLL HORIZONTAL (Pantalla Estática)
+========================================================= */
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden !important; /* Inhabilita el desplazamiento hacia los lados */
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN (Pantallas medianas y pequeñas)
+========================================================= */
+
 /* ── PANTALLAS MEDIANAS - TABLETS / LAPTOPS PEQUEÑAS (Hasta 1200px) ───── */
 @media screen and (max-width: 1200px) {
+  /* Configuración del Sidebar en modo solo íconos */
   .sidebar {
-    width: 90px;
-    min-width: 90px;
-    max-width: 90px;
-    padding: 22px 10px;
+    width: 80px;
+    min-width: 80px;
+    max-width: 80px;
+    padding: 20px 8px;
     align-items: center;
   }
 
-  .main-content {
-    margin-left: 90px;
-    width: calc(100% - 90px);
-    padding: 20px;
-  }
-
   .logo-img {
-    width: 55px;
-    padding: 8px;
+    width: 45px;
+    padding: 6px;
+    margin-bottom: 15px;
   }
 
-  /* OCULTAR TEXTO DEL LOGO */
   .logo span {
     display: none;
   }
 
-  /* MENÚ SOLO ICONOS */
-  .menu {
-    align-items: center;
-  }
-
+  /* Centra los íconos en el menú y oculta los textos */
   .menu a,
   .logout a {
-    width: 55px;
-    height: 55px;
-    padding: 0;
     justify-content: center;
-    align-items: center;
-    gap: 0;
-    font-size: 0; /* OCULTA EL TEXTO */
+    padding: 14px 0;
+    font-size: 0;
   }
 
-  /* OCULTAR TEXTO */
+  .menu a i,
+  .logout a i {
+    font-size: 18px;
+    width: auto;
+    margin: 0;
+  }
+
   .menu a span,
   .logout a span {
     display: none;
   }
 
-  /* CENTRAR ICONOS */
-  .menu i,
-  .logout i {
-    width: auto;
-    font-size: 18px;
-    margin: 0;
+  /* Contenedor principal estático */
+  .main-content {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+    max-width: calc(100% - 80px);
+    padding: 20px;
+    box-sizing: border-box;
   }
 
+  /* Topbar organizado en columna (Título arriba, usuario/notificación abajo) */
   .topbar {
+    display: flex;
+    flex-direction: column;
     align-items: flex-start;
-    gap: 14px;
+    gap: 12px;
+    width: 100%;
   }
 
   .page-title {
@@ -1079,399 +1383,90 @@ select.form-control {
   }
 
   .page-title h1 {
-    font-size: 28px;
+    font-size: 26px;
   }
 
-  .search-box {
-    flex: 1 1 100%;
-    max-width: 100%;
-  }
-
+  /* Acciones posicionadas debajo del título pero empujadas a la DERECHA */
   .topbar-actions {
+    margin-left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Alinea notificaciones y usuario a la derecha */
+    gap: 20px;
     width: 100%;
-    justify-content: flex-end;
+    padding-top: 4px;
   }
 
-  .form-grid {
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-
-  .form-body {
-    padding: 22px;
-  }
-
-  .form-card-header {
+  /* Información visible del usuario (Nombre y Puesto) */
+  .user-info {
+    display: flex !important;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
   }
 
-  .btn-container {
-    flex-wrap: wrap;
+  .user-info strong {
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .user-info span {
+    font-size: 12px;
+    white-space: nowrap;
   }
 }
 
-/* ── TABLETS Y MÓVILES GRANDES (Hasta 992px) ─────────────────────────── */
-@media screen and (max-width: 992px) {
+/* ── PANTALLAS PEQUEÑAS - MÓVILES (Hasta 768px) ────────────────────────── */
+@media screen and (max-width: 768px) {
   .sidebar {
-    width: 80px;
-    min-width: 80px;
-    max-width: 80px;
-    padding: 18px 8px;
-    align-items: center;
+    width: 65px;
+    min-width: 65px;
+    max-width: 65px;
+    padding: 15px 5px;
   }
 
   .main-content {
-    margin-left: 80px;
-    width: calc(100% - 80px);
-    padding: 18px;
-  }
-
-  .logo-img {
-    width: 50px;
-    padding: 6px;
-  }
-
-  .menu {
-    gap: 6px;
-    align-items: center;
-  }
-
-  .menu a,
-  .logout a {
-    width: 55px;
-    height: 55px;
-    padding: 0;
-    justify-content: center;
-    align-items: center;
-    gap: 0;
-    font-size: 0; /* OCULTA EL TEXTO */
-  }
-
-  /* SOLO ICONOS */
-  .menu a span,
-  .logout a span {
-    display: none;
-  }
-
-  .menu i,
-  .logout i {
-    width: auto;
-    font-size: 16px;
-    margin: 0;
+    margin-left: 65px;
+    width: calc(100% - 65px);
+    max-width: calc(100% - 65px);
+    padding: 12px;
   }
 
   .topbar {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
+    gap: 10px;
   }
 
   .page-title h1 {
-    font-size: 24px;
+    font-size: 20px;
   }
 
   .page-title p {
-    font-size: 13px;
+    display: none; /* Oculta el subtítulo largo para ganar espacio limpio */
   }
 
-  .search-box {
-    width: 100%;
-    max-width: 100%;
-  }
-
+  /* Notificaciones y Perfil abajo del título principal y alineados a la derecha */
   .topbar-actions {
-    width: 100%;
-    justify-content: space-between;
+    justify-content: flex-end;
+    gap: 15px;
   }
 
   .user-profile {
-    padding: 6px 10px;
+    padding: 5px 12px;
+    gap: 10px;
   }
 
   .user-profile img {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
   }
 
   .user-info strong {
     font-size: 12px;
+    line-height: 1.2;
+    white-space: nowrap;
   }
 
   .user-info span {
-    font-size: 11px;
-  }
-
-  .form-card {
-    margin: 16px 0;
-  }
-
-  .form-card-header,
-  .form-body {
-    padding: 18px;
-  }
-
-  .form-card-title {
-    font-size: 16px;
-  }
-
-  .form-card-subtitle {
-    font-size: 12px;
-  }
-
-  .field input,
-  .field select,
-  .field textarea,
-  .form-control {
-    font-size: 13px;
-    padding: 11px 12px;
-  }
-
-  .btn {
-    padding: 10px 16px;
-    font-size: 13px;
-  }
-
-  .btn-container,
-  .form-footer {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .btn-container .btn,
-  .form-footer .btn {
-    width: 100%;
-    justify-content: center;
-  }
-}
-
-/* ── MÓVILES PEQUEÑOS (Hasta 768px) ──────────────────────────────────── */
-@media screen and (max-width: 768px) {
-  .sidebar {
-    width: 70px;
-    min-width: 70px;
-    max-width: 70px;
-    padding: 14px 6px;
-    align-items: center;
-  }
-
-  .main-content {
-    margin-left: 70px;
-    width: calc(100% - 70px);
-    padding: 14px;
-  }
-
-  .logo {
-    margin-bottom: 22px;
-  }
-
-  .logo-img {
-    width: 42px;
-    padding: 5px;
-    border-radius: 12px;
-  }
-
-  .menu {
-    align-items: center;
-  }
-
-  .menu a,
-  .logout a {
-    width: 55px;
-    height: 55px;
-    padding: 0;
-    justify-content: center;
-    align-items: center;
-    gap: 0;
-    font-size: 0; /* OCULTA EL TEXTO */
-  }
-
-  /* SOLO ICONOS */
-  .menu a span,
-  .logout a span {
-    display: none;
-  }
-
-  .menu i,
-  .logout i {
-    width: auto;
-    font-size: 14px;
-    margin: 0;
-  }
-
-  .page-title h1 {
-    font-size: 21px;
-  }
-
-  .page-title p {
-    font-size: 12px;
-  }
-
-  .search-box input {
-    padding: 12px 14px 12px 40px;
-    font-size: 13px;
-  }
-
-  .search-box i {
-    left: 14px;
-  }
-
-  .user-info {
-    display: none;
-  }
-
-  .user-profile {
-    padding: 5px 8px;
-    border-radius: 14px;
-  }
-
-  .user-profile img {
-    width: 34px;
-    height: 34px;
-  }
-
-  .breadcrumb {
-    padding: 0;
-    font-size: 11px;
-    flex-wrap: wrap;
-  }
-
-  .form-card {
-    border-radius: 12px;
-  }
-
-  .form-card-header,
-  .form-body {
-    padding: 15px;
-  }
-
-  .form-card-icon {
-    width: 40px;
-    height: 40px;
-    font-size: 16px;
-  }
-
-  .form-card-title {
-    font-size: 15px;
-  }
-
-  .form-card-subtitle,
-  .required-note {
-    font-size: 11px;
-  }
-
-  .form-section-title {
-    font-size: 11px;
-  }
-
-  .field > label,
-  .form-group label {
-    font-size: 12px;
-  }
-
-  .field input,
-  .field select,
-  .field textarea,
-  .form-control {
-    font-size: 12px;
-    padding: 10px 11px;
-  }
-
-  .btn {
-    width: 100%;
-    justify-content: center;
-    font-size: 12px;
-  }
-
-  .footer {
-    font-size: 11px;
-  }
-}
-
-/* ── MÓVILES ULTRA PEQUEÑOS (Hasta 576px) ─────────────────────────────── */
-@media screen and (max-width: 576px) {
-  .sidebar {
-    width: 60px;
-    min-width: 60px;
-    max-width: 60px;
-    align-items: center;
-  }
-
-  .main-content {
-    margin-left: 60px;
-    width: calc(100% - 60px);
-    padding: 10px;
-  }
-
-  .logo-img {
-    width: 36px;
-    padding: 4px;
-  }
-
-  .menu {
-    align-items: center;
-  }
-
-  .menu a,
-  .logout a {
-    width: 55px;
-    height: 55px;
-    padding: 0;
-    justify-content: center;
-    align-items: center;
-    gap: 0;
-    font-size: 0; /* OCULTA EL TEXTO */
-  }
-
-  /* SOLO ICONOS */
-  .menu a span,
-  .logout a span {
-    display: none;
-  }
-
-  .menu i,
-  .logout i {
-    width: auto;
-    font-size: 13px;
-    margin: 0;
-  }
-
-  .page-title h1 {
-    font-size: 18px;
-  }
-
-  .page-title p {
-    font-size: 11px;
-  }
-
-  .search-box input {
-    font-size: 12px;
-  }
-
-  .form-card-header,
-  .form-body {
-    padding: 12px;
-  }
-
-  .form-card-title {
-    font-size: 14px;
-  }
-
-  .field input,
-  .field select,
-  .field textarea,
-  .form-control {
-    font-size: 11px;
-  }
-
-  .btn {
-    font-size: 11px;
-    padding: 10px;
-  }
-
-  .footer {
     font-size: 10px;
+    line-height: 1.1;
+    white-space: nowrap;
   }
 }

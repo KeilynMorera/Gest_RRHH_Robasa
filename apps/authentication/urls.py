@@ -126,7 +126,8 @@ urlpatterns = [
 
     # Ruta para el dashboard (pantalla de resgistro usuarios con permisos)
     path("usuarios/guardar/", views.guardar_usuario_sistema, name="guardar_usuario_sistema"),
-
+    path("login/", views.login_usuario, name="login_usuario"),
+    path('logout/', views.cerrar_sesion, name='cerrar_sesion'),
 
 
 

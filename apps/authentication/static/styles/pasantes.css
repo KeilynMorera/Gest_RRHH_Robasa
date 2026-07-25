@@ -15,7 +15,7 @@
 body {
   font-family: "Segoe UI", sans-serif;
   background: #f4f7fb;
-  color: #d35b1a; /* Color naranja de énfasis por defecto para textos generales */
+  color: #000000; /* Color naranja de énfasis por defecto para textos generales */
 }
 
 /* ==========================================================================
@@ -989,7 +989,6 @@ textarea:focus {
   font-size: 14px;
 }
 
-
 /* ==========================================================================
    RESPONSIVE.CSS — Diseño adaptativo ROBASA
    Incluir DESPUÉS de pasantes.css en el <head>
@@ -1039,11 +1038,31 @@ body {
 }
 
 /* ==========================================================================
+   PANTALLAS GRANDES (≥ 1024px) — Layout normal
+========================================================================== */
+@media (min-width: 1024px) {
+  .sidebar {
+    width: 280px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+  }
+
+  .main-content {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    padding: 30px;
+    overflow-x: hidden;
+  }
+}
+
+/* ==========================================================================
    PANTALLAS MEDIANAS Y PEQUEÑAS (< 1024px)
-   Sidebar colapsado a solo iconos (72px)
-   ========================================================================== */
+   Sidebar colapsado a solo iconos (68px)
+========================================================================== */
 @media (max-width: 1023px) {
-  /* ── Sidebar: fijo, solo iconos ── */
+  /* ── Sidebar reducido ── */
   .sidebar {
     width: 68px;
     min-width: 68px;
@@ -1053,11 +1072,11 @@ body {
     left: 0;
     height: 100vh;
     z-index: 100;
-    overflow: visible; /* Para que el tooltip no quede recortado */
+    overflow: visible;
     overflow-y: auto;
   }
 
-  /* ── Logo: solo imagen pequeña centrada ── */
+  /* ── Logo pequeño centrado ── */
   .logo-container {
     display: flex;
     justify-content: center;
@@ -1070,9 +1089,11 @@ body {
     object-fit: contain;
     padding: 4px;
     border-radius: 8px;
+    margin: 0;
+    filter: none;
   }
 
-  /* ── Menú: colapsar texto, centrar icono ── */
+  /* ── Menú: solo iconos ── */
   .menu {
     gap: 4px;
     padding-right: 0;
@@ -1083,11 +1104,10 @@ body {
     justify-content: center;
     position: relative;
     overflow: visible;
-
-    /* Colapsa el texto dejando solo el icono */
     font-size: 0;
     color: transparent;
     gap: 0;
+    border-radius: 10px;
   }
 
   .menu a i {
@@ -1102,7 +1122,7 @@ body {
     color: #ffffff;
   }
 
-  /* Tooltip que aparece al hacer hover */
+  /* Tooltip al hacer hover */
   .menu a[data-label]::after {
     content: attr(data-label);
     position: fixed;
@@ -1167,81 +1187,106 @@ body {
     opacity: 1;
   }
 
-  /* ── Contenido principal: margen igual al sidebar colapsado ── */
+  /* ── Contenido principal ── */
   .main-content {
     margin-left: 68px;
     width: calc(100% - 68px);
     padding: 16px;
     overflow-x: hidden;
+    align-items: stretch;
   }
 
-  /* ── Topbar: todo cabe en el ancho disponible ── */
+  /* ── Topbar Adaptada ── */
   .topbar {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Permitimos wrap controlado si la pantalla es ultra estrecha */
     align-items: center;
-    gap: 10px;
-    margin-bottom: 16px;
+    gap: 12px;
+    margin-bottom: 20px;
     width: 100%;
   }
 
+  /* El título vuelve a aparecer, se le reduce el tamaño y toma prioridad visual */
   .page-title {
-    flex: 1;
-    min-width: 0; /* Permite que el texto se comprima */
+    display: block;
+    width: 100%; /* Ocupa el ancho superior completo en tabletas/móviles */
+    min-width: unset;
+    margin-bottom: 4px;
   }
 
   .page-title h1 {
-    font-size: 20px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 22px; /* Reducido para móvil */
+    margin-bottom: 2px;
   }
 
   .page-title p {
     font-size: 13px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
-  /* Buscador debajo en pantallas medianas */
+  /* La barra de búsqueda pasa a la extrema derecha en la sub-fila */
   .search-box {
-    order: 4;
-    width: 100%;
-    max-width: 100%;
-    flex: none;
+    order: 3;
+    flex: 1;
+    min-width: 150px;
+    max-width: unset;
   }
 
   .search-box input {
     width: 100%;
+    padding: 10px 14px 10px 38px;
+    font-size: 14px;
   }
 
-  /* Acciones a la derecha del título */
+  .search-box i {
+    left: 14px;
+  }
+
+  /* Acciones a la izquierda */
   .topbar-actions {
-    margin-left: auto;
-    gap: 12px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-left: 0;
     flex-shrink: 0;
+    order: 1; /* Notificaciones y Perfil quedan al inicio izquierdo */
+    width: auto;
   }
 
-  /* ── Formulario: 1 columna ── */
-  .form-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
+  /* Orden estricto interno: Notificaciones -> Usuario */
+  .notification {
+    order: 1;
+    font-size: 20px;
   }
 
-  .field-full {
-    grid-column: 1;
+  .user-profile {
+    order: 2;
+    padding: 4px 10px;
   }
 
-  /* ── Tarjetas sin margen lateral ── */
+  .user-profile img {
+    width: 34px;
+    height: 34px;
+  }
+
+  /* ── Breadcrumb ── */
+  .breadcrumb {
+    font-size: 12px;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 12px;
+    width: 100%;
+  }
+
+  /* ── Tarjetas ── */
   .form-card,
   .table-card {
     margin-left: 0;
     margin-right: 0;
-    margin-top: 16px;
+    margin-top: 12px;
+    width: 100%;
   }
 
-  /* ── Encabezado tarjeta en columna ── */
+  /* ── Encabezados ── */
   .form-card-header {
     flex-direction: column;
     align-items: flex-start;
@@ -1256,7 +1301,33 @@ body {
     padding: 16px;
   }
 
-  /* Buscador de tabla ocupa todo el ancho */
+  /* ── Formulario: 1 columna ── */
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .field-full {
+    grid-column: 1;
+  }
+
+  /* ── Foto upload en columna ── */
+  .photo-upload {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .photo-preview {
+    width: 90px;
+    height: 90px;
+  }
+
+  .photo-upload-controls {
+    width: 100%;
+  }
+
+  /* ── Buscador de tabla ── */
   .table-search {
     width: 100%;
   }
@@ -1265,7 +1336,7 @@ body {
     width: 100%;
   }
 
-  /* ── Botones del footer se apilan ── */
+  /* ── Botones del footer ── */
   .form-footer {
     flex-wrap: wrap;
     gap: 8px;
@@ -1276,48 +1347,57 @@ body {
     min-width: 110px;
     justify-content: center;
   }
-
-  /* ── Breadcrumb compacto ── */
-  .breadcrumb {
-    padding: 10px 0 0;
-    font-size: 12px;
-    flex-wrap: wrap;
-    gap: 4px;
-  }
 }
 
 /* ==========================================================================
    PANTALLAS MUY PEQUEÑAS (< 480px)
-   Ajustes extra para móviles pequeños
-   ========================================================================== */
+========================================================================== */
 @media (max-width: 479px) {
   .main-content {
     padding: 10px;
   }
 
-  .page-title h1 {
-    font-size: 18px;
+  .topbar {
+    gap: 8px;
   }
 
-  /* Ocultar info del usuario, mostrar solo avatar */
+  /* Ocultar texto/info del usuario para garantizar espacio en smartphones */
   .user-info {
     display: none;
   }
 
   .user-profile {
-    padding: 6px;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
     border-radius: 50%;
   }
 
-  /* Status group en columna */
-  .status-group {
-    flex-direction: column;
+  .user-profile img {
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid #dde2f0;
   }
 
-  /* Foto upload en columna */
-  .photo-upload {
-    flex-direction: column;
-    align-items: flex-start;
+  .topbar-actions {
+    gap: 12px;
+  }
+
+  .notification {
+    font-size: 18px;
+  }
+
+  .badge {
+    width: 16px;
+    height: 16px;
+    font-size: 9px;
+    top: -6px;
+    right: -6px;
+  }
+
+  .photo-preview {
+    width: 70px;
+    height: 70px;
   }
 }
 

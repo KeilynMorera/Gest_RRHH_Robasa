@@ -13,7 +13,7 @@ body {
   font-family:
     "Segoe UI", sans-serif; /* Tipografía del sistema limpia y legible */
   background: #f4f7fb; /* Fondo gris azulado claro para el entorno de trabajo */
-  color: #d35b1a; /* Color principal del texto (Naranja quemado corporativo) */
+  color: #000000; /* Color principal del texto (Naranja quemado corporativo) */
 }
 
 /* ==========================================================================
@@ -941,146 +941,209 @@ textarea:focus {
 }
 
 /* ==========================================================================
-   DISEÑO RESPONSIVO COMPACTO (Media Queries Adaptados)
+   MEDIA QUERIES - ADAPTABILIDAD RESPONSIVA (SIDEBAR ÍCONOS MODO RAIL)
    ========================================================================== */
 
-/* ── Pantallas de Laptops y Notebooks Medianas (Hasta 1199px) ── */
-@media screen and (max-width: 1199px) {
+/* ── 1. PANTALLAS ULTRA GRANDES Y PANTALLAS 4K (Min 1400px / Min 1920px) ───── */
+@media screen and (min-width: 1400px) {
+  .main-content {
+    max-width: 1600px;
+  }
+}
+
+@media screen and (min-width: 1920px) {
   .sidebar {
-    width: 230px; /* Reduce el sidebar para optimizar el espacio de contenido */
-    padding: 25px 15px;
+    width: 320px;
   }
   .main-content {
-    margin-left: 230px; /* Sincroniza el margen con la reducción del sidebar */
-    padding: 25px;
+    margin-left: 320px;
+    max-width: 1800px;
+    padding: 40px;
+  }
+  .search-box {
+    max-width: 520px;
+  }
+  .form-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+}
+
+/* ── 2. LAPTOPS PEQUEÑAS / ESCRITORIO MEDIANO (Max 1200px) ───────────────── */
+@media screen and (max-width: 1200px) {
+  .sidebar {
+    width: 240px;
+    padding: 20px 12px;
+  }
+  .main-content {
+    margin-left: 240px;
+    padding: 24px;
   }
   .logo-img {
-    max-width: 170px;
-  }
-  .menu a {
-    font-size: 13px;
-    padding: 10px 12px;
+    max-width: 180px;
   }
   .page-title h1 {
     font-size: 28px;
   }
-}
-
-/* ── Pantallas de Tablets (Hasta 991px) ── */
-@media screen and (max-width: 991px) {
-  .sidebar {
-    width: 200px;
-    padding: 20px 12px;
-  }
-  .main-content {
-    margin-left: 200px;
-    padding: 20px;
-  }
-  .logo-img {
-    max-width: 140px;
-    padding: 10px;
-  }
-  .form-grid {
-    grid-template-columns: 1fr; /* Colapsa inputs a una sola columna vertical */
+  .search-box {
+    max-width: 300px;
   }
 }
 
-/* ── Dispositivos Móviles (Hasta 767px): Formato iconográfico e interactivo ── */
-@media screen and (max-width: 767px) {
+/* ── 3. TABLETS Y PANTALLAS MEDIANAS Y PEQUEÑAS (Max 992px) ──────────────── */
+@media screen and (max-width: 992px) {
+  /* 3.1 SIDEBAR REDUCIDO A MODO ÍCONOS (Ancho fijo 70px) */
   .sidebar {
-    width: 80px; /* Cambia drásticamente a una barra ultra compacta */
-    padding: 15px 8px;
-    align-items: center; /* Centra los íconos del menú */
+    width: 70px !important;
+    padding: 16px 8px !important;
+    left: 0 !important;
+    align-items: center !important;
   }
-  .main-content {
-    margin-left: 80px; /* Ajusta el contenido al sidebar de formato compacto */
-    padding: 15px;
-  }
+
+  /* Reducir tamaño y padding del Logo */
   .logo-container {
-    margin-bottom: 20px;
+    margin-bottom: 20px !important;
+    width: 100% !important;
   }
+
   .logo-img {
-    width: 50px;
-    padding: 6px;
-    border-radius: 10px;
+    max-width: 48px !important;
+    padding: 6px !important;
+    border-radius: 12px !important;
   }
 
-  /* Oculta los textos de navegación reduciendo su fuente a 0, dejando solo los íconos visibles */
-  .menu a {
-    font-size: 0;
-    padding: 14px;
-    justify-content: center;
-    width: 100%;
-  }
-  .menu a i {
-    font-size: 18px;
-    margin: 0;
-    width: auto;
-  }
-
-  /* Oculta el texto de Cierre de Sesión */
-  .logout a {
-    font-size: 0;
-    padding: 14px;
-    justify-content: center;
-  }
-  .logout a i {
-    font-size: 18px;
-  }
-
-  /* Reestructura la barra superior transformándola en vertical */
-  .topbar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-  }
+  /* Ocultar el botón hamburguesa */
   .menu-toggle {
     display: none !important;
-  } /* Oculta el botón hamburguesa */
-  .search-box {
-    max-width: 100%;
-  } /* El buscador ocupa el total del ancho */
-  .topbar-actions {
-    width: 100%;
-    justify-content: space-between;
-    margin-left: 0;
   }
-  .user-info {
-    display: none !important;
-  } /* Quita información textual de usuario */
 
-  /* Compactación del Header del Formulario */
-  .form-card-header {
-    padding: 16px 20px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+  /* Ocultar texto directo dentro de los enlaces */
+  .menu a,
+  .logout a {
+    justify-content: center !important;
+    padding: 12px 0 !important;
+    width: 100% !important;
+    font-size: 0 !important;
+    color: transparent !important;
   }
-  .form-body {
-    padding: 20px;
-  }
-  .btn {
-    width: 100%;
-  } /* Transforma los botones a bloques de ancho total (Fácil interacción táctil) */
-}
 
-/* ── Smartphones Muy Pequeños / Pantallas de Baja Resolución (Hasta 480px) ── */
-@media screen and (max-width: 480px) {
-  .sidebar {
-    width: 65px;
-  } /* Máxima miniaturización del Sidebar */
-  .main-content {
-    margin-left: 65px;
-    padding: 10px;
-  }
-  .logo-img {
-    width: 40px;
-  }
+  /* Mostrar ÚNICAMENTE el ícono */
   .menu a i,
   .logout a i {
-    font-size: 16px;
+    font-size: 20px !important;
+    color: #ffffff !important;
+    width: auto !important;
+    margin: 0 !important;
+    display: inline-block !important;
   }
-  .page-title h1 {
-    font-size: 20px;
+
+  /* Ocultar etiquetas span del menú */
+  .menu a span,
+  .logout a span {
+    display: none !important;
+  }
+
+  /* 3.2 CONTENIDO PRINCIPAL */
+  .main-content {
+    margin-left: 70px !important;
+    width: calc(100% - 70px) !important;
+    padding: 16px;
+  }
+
+  /* 3.3 REORGANIZACIÓN DE LA TOPBAR */
+  .topbar {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  /* Fila 1: Título de la página ocupando todo el ancho */
+  .page-title {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    order: 1 !important;
+    margin-bottom: 4px !important;
+  }
+
+  /* Fila 2 - LADO IZQUIERDO: Notificación + Perfil del Usuario */
+  .topbar-actions {
+    flex: 0 0 auto !important;
+    order: 2 !important;
+    margin-left: 0 !important;
+    gap: 8px !important;
+  }
+
+  .user-profile {
+    padding: 4px 8px !important;
+  }
+
+  .user-profile img {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .user-info h4,
+  .user-info p {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    margin: 0 !important;
+    line-height: 1.1 !important;
+    white-space: nowrap !important;
+  }
+
+  /* Mostrar Nombre + Puesto (Recursos Humanos) */
+  .user-info span {
+    display: block !important;
+    font-size: 10px !important;
+    line-height: 1.1 !important;
+    white-space: nowrap !important;
+    opacity: 0.8;
+  }
+
+  /* Fila 2 - LADO DERECHO: Buscador estilizado */
+  .search-box {
+    position: relative !important; /* Necesario para ubicar la lupa con precisión */
+    display: flex !important;
+    align-items: center !important;
+    flex: 1 1 150px !important;
+    max-width: 180px !important;
+    min-width: 120px !important;
+    order: 3 !important;
+    margin: 0 !important;
+  }
+
+  /* Ajuste preciso del ícono de la lupa */
+  .search-box i {
+    position: absolute !important;
+    left: 10px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    font-size: 13px !important;
+    color: #888888 !important;
+    pointer-events: none !important; /* Evita interferir al hacer clic */
+  }
+
+  /* Ajuste del campo de texto */
+  .search-box input {
+    height: 34px !important;
+    padding-left: 32px !important; /* Espacio suficiente para no encimarse con la lupa */
+    padding-right: 10px !important;
+    font-size: 11px !important;
+    width: 100% !important;
+  }
+
+  .form-card-header,
+  .table-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .table-search {
+    width: 100%;
+  }
+
+  .table-search input {
+    width: 100% !important;
   }
 }

@@ -1,112 +1,110 @@
-function calcularHorasExtra(){
+function calcularAsistencia() {
+    let entradaVal = document.getElementById("hora_entrada").value;
+    let salidaVal = document.getElementById("hora_salida").value;
+    
+    let inputExtras = document.getElementById("horas_extras");
+    let inputTrabajadas = document.getElementById("horas_trabajadas"); 
 
-    let entrada = document.getElementById("hora_entrada").value;
-
-    let salida = document.getElementById("hora_salida").value;
-
-    let extras = document.getElementById("horas_extras");
-
-
-    if(!entrada || !salida){
-
-        extras.value = "00:00:00";
-
+    if (!entradaVal || !salidaVal) {
+        if (inputExtras) inputExtras.value = "00:00:00";
+        if (inputTrabajadas) inputTrabajadas.value = "00:00:00";
         return;
     }
 
+    // Convertir horas "HH:MM" a minutos desde las 00:00
+    let [hE, mE] = entradaVal.split(':').map(Number);
+    let [hS, mS] = salidaVal.split(':').map(Number);
 
-    let e = new Date("1970-01-01T"+entrada);
+    let minEntrada = hE * 60 + mE;
+    let minSalida = hS * 60 + mS;
 
-    let s = new Date("1970-01-01T"+salida);
-
-
-    let horasTrabajadas = (s - e)/(1000*60*60);
-
-
-    let extra = horasTrabajadas - 8;
-
-
-    if(extra <= 0){
-
-        extras.value = "00:00:00";
-
+    // Si la hora de salida es menor a la de entrada
+    if (minSalida < minEntrada) {
+        if (inputExtras) inputExtras.value = "00:00:00";
+        if (inputTrabajadas) inputTrabajadas.value = "00:00:00";
         return;
     }
 
+    // ------------------------------------------------------------------
+    // 1. CÁLCULO DE HORAS TRABAJADAS NETAS (Resta 1 hora de almuerzo)
+    // ------------------------------------------------------------------
+    let minutosTotalesReloj = minSalida - minEntrada;
+    let MINUTOS_ALMUERZO = 60; // 1 hora de almuerzo
 
-    let horas = Math.floor(extra);
+    // Descuenta almuerzo solo si estuvo en las instalaciones más de 1 hora
+    let minutosEfectivos = minutosTotalesReloj > MINUTOS_ALMUERZO 
+        ? minutosTotalesReloj - MINUTOS_ALMUERZO 
+        : minutosTotalesReloj;
 
-    let minutos = Math.round((extra-horas)*60);
+    let hTrabajadas = Math.floor(minutosEfectivos / 60);
+    let mTrabajados = minutosEfectivos % 60;
 
+    if (inputTrabajadas) {
+        inputTrabajadas.value = 
+            String(hTrabajadas).padStart(2, '0') + ":" + 
+            String(mTrabajados).padStart(2, '0') + ":00";
+    }
 
-    extras.value =
+    // ------------------------------------------------------------------
+    // 2. CÁLCULO DE HORAS EXTRAS
+    // Jornada ordinaria: 07:00 a 17:00 (10 hrs reloj - 1 hr almuerzo = 9 hrs efectivas / 540 min)
+    // Hora oficial de salida: 17:00 (1020 min)
+    // ------------------------------------------------------------------
+    let HORA_SALIDA_OFICIAL_MIN = 17 * 60; // 1020 minutos (5:00 PM)
+    let minExtras = 0;
 
-        String(horas).padStart(2,'0')
+    // Calcula horas extras solo si se retira después de las 17:00 PM
+    if (minSalida > HORA_SALIDA_OFICIAL_MIN) {
+        minExtras = minSalida - HORA_SALIDA_OFICIAL_MIN;
+    }
 
-        + ":"
+    let hExtras = Math.floor(minExtras / 60);
+    let mExtras = minExtras % 60;
 
-        + String(minutos).padStart(2,'0')
-
-        + ":00";
-
+    if (inputExtras) {
+        inputExtras.value = 
+            String(hExtras).padStart(2, '0') + ":" + 
+            String(mExtras).padStart(2, '0') + ":00";
+    }
 }
 
-
-document.getElementById("hora_entrada")
-
-.addEventListener("change",calcularHorasExtra);
-
-
-document.getElementById("hora_salida")
-
-.addEventListener("change",calcularHorasExtra);
+// Asignar los eventos
+document.getElementById("hora_entrada").addEventListener("change", calcularAsistencia);
+document.getElementById("hora_salida").addEventListener("change", calcularAsistencia);
+document.getElementById("hora_entrada").addEventListener("input", calcularAsistencia);
+document.getElementById("hora_salida").addEventListener("input", calcularAsistencia);
 
 
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Obtener referencias al input de búsqueda y a las filas de la tabla
+    const inputFiltro = document.getElementById('filtro-asistencia');
+    const tabla = document.getElementById('tabla-asistencia');
+    
+    if (!inputFiltro || !tabla) return; // Validación de existencia
+    
+    const filas = tabla.querySelectorAll('tbody tr');
 
+    // 2. Escuchar el evento de escritura en el input
+    inputFiltro.addEventListener('keyup', () => {
+        const busqueda = inputFiltro.value.toLowerCase().trim();
 
-document.addEventListener("DOMContentLoaded", function () {
+        filas.forEach(fila => {
+            // Ignorar la fila que muestra el mensaje "No existen registros..." si está vacía
+            if (fila.querySelector('.tabla-vacia')) return;
 
-  const filtro = document.getElementById("filtro-asistencia");
-  const filas  = document.querySelectorAll("#tabla-asistencia tbody tr");
+            // Obtener la columna del empleado (segunda columna: índice 1)
+            const colEmpleado = fila.cells[1];
 
-  if (!filtro) return;
-
-  filtro.addEventListener("keyup", function () {
-    const texto = this.value.toLowerCase().trim();
-
-    filas.forEach(function (fila) {
-
-      // Ignora la fila vacía
-      if (fila.querySelector(".tabla-vacia")) return;
-
-      // [1] Nombre del empleado  [2] Fecha
-      const nombre = fila.children[1]?.textContent.toLowerCase() ?? "";
-      const fecha  = fila.children[2]?.textContent.toLowerCase() ?? "";
-
-      const coincide = nombre.includes(texto) || fecha.includes(texto);
-
-      fila.style.display = coincide ? "" : "none";
+            if (colEmpleado) {
+                const nombreEmpleado = colEmpleado.textContent.toLowerCase();
+                
+                // Mostrar u ocultar la fila según coincida la búsqueda
+                if (nombreEmpleado.includes(busqueda)) {
+                    fila.style.display = '';
+                } else {
+                    fila.style.display = 'none';
+                }
+            }
+        });
     });
-
-    // Mensaje dinámico si no hay resultados
-    const mensajeDinamico = document.getElementById("sin-resultados-asistencia");
-    if (mensajeDinamico) mensajeDinamico.remove();
-
-    const visibles = [...filas].filter(f =>
-      !f.querySelector(".tabla-vacia") && f.style.display !== "none"
-    );
-
-    if (visibles.length === 0 && texto !== "") {
-      const tbody = document.querySelector("#tabla-asistencia tbody");
-      const fila  = document.createElement("tr");
-      fila.id     = "sin-resultados-asistencia";
-      fila.innerHTML = `
-        <td colspan="8" class="tabla-vacia">
-          <i class="fas fa-magnifying-glass"></i>
-          No se encontraron registros para "<strong>${texto}</strong>"
-        </td>`;
-      tbody.appendChild(fila);
-    }
-  });
-
 });

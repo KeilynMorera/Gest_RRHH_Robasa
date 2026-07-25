@@ -229,20 +229,13 @@
                   </h4>
 
                   <div class="form-grid">
-                    <!-- ID -->
-                    <div class="field">
-                      <label for="idPremio">
-                        <i class="fas fa-hashtag field-icon"></i>
-                        ID Premio
-                      </label>
-
-                      <input
-                        type="text"
-                        id="idPremio"
-                        value="{% if form.instance.pk %}{{ form.instance.pk }}{% else %}Generado automáticamente{% endif %}"
-                        readonly
-                      />
-                    </div>
+                    <!-- ID (Oculto en el HTML) -->
+                    <input
+                      type="hidden"
+                      id="idPremio"
+                      name="idPremio"
+                      value="{% if form.instance.pk %}{{ form.instance.pk }}{% else %}{% endif %}"
+                    />
 
                     <!-- Descripción -->
                     <div class="field">
@@ -266,8 +259,7 @@
                         <span class="req">*</span>
                       </label>
 
-                      {{ form.id_KPI_Categoria }} {% if
-                      form.id_KPI_Categoria.errors %}
+                      {{ form.id_KPI_Categoria }} {% if form.id_KPI_Categoria.errors %}
                       <small class="error">
                         {{ form.id_KPI_Categoria.errors }}
                       </small>
@@ -284,8 +276,7 @@
                         <span class="req">*</span>
                       </label>
 
-                      {{ form.idCuadrante_9box_Perfil }} {% if
-                      form.idCuadrante_9box_Perfil.errors %}
+                      {{ form.idCuadrante_9box_Perfil }} {% if form.idCuadrante_9box_Perfil.errors %}
                       <small class="error">
                         {{ form.idCuadrante_9box_Perfil.errors }}
                       </small>
@@ -451,4 +442,6 @@
       </main>
     </div>
   </body>
+
+  <script src="{% static 'js/kpi_Premio.js' %}"></script>
 </html>

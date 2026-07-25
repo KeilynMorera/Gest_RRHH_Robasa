@@ -76,7 +76,8 @@ urlpatterns = [
     # Registro de personas
     path('personas/', views.registrar_persona, name='personas'),
     #Modificar personas
-    path('personas/editar/<int:id_persona>/', views.editar_persona, name='editar_persona'),
+    # Editar persona
+    path("personas/editar/<int:id_persona>/", views.editar_persona, name="editar_persona"),
     # Eliminar personas
     path('personas/eliminar/<int:id_persona>/', views.eliminar_persona, name='eliminar_persona'),
 
@@ -238,6 +239,10 @@ urlpatterns = [
 
 
    path("usuarios/guardar/", views.guardar_usuario_sistema, name="guardar_usuario_sistema"),
+   path("usuarios/modificar/<int:id_Admin>/", views.modificar_usuario_sistema, name="modificar_usuario_sistema"),
+   path("login/", views.login_usuario, name="login_usuario"),
+   path('logout/', views.cerrar_sesion, name='cerrar_sesion'),
+
 ]
 
 

@@ -367,7 +367,6 @@
                       <option value="">Seleccione un empleado...</option>
 
                       {% for empleado in empleados %}
-
                       <option
                         value="{{ empleado.idEmpleado }}"
                         {%
@@ -382,9 +381,8 @@
                         endif
                         %}
                       >
-                        {{ empleado.idPersona.Nombre_Completo }}
+                        {{ empleado.idPersona.Nombre_Completo }} — {{ empleado.idPuesto.Nombre }}
                       </option>
-
                       {% endfor %}
                     </select>
                   </div>

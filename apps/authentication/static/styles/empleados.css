@@ -11,7 +11,7 @@
 body {
   font-family: "Segoe UI", sans-serif; /* Tipografía limpia y moderna */
   background: #f4f7fb; /* Color de fondo gris claro azulado para el dashboard */
-  color: #d35b1a; /* Color principal de texto (tono naranja/óxido) */
+  color: #000000; /* Color principal de texto (tono naranja/óxido) */
 }
 
 /* ==========================================================================
@@ -1000,10 +1000,7 @@ textarea:focus {
 }
 
 /* ==========================================================
-   RESPONSIVE - PANTALLAS MEDIANAS
-   ========================================================== */
-/* ==========================================================
-   PANTALLAS MEDIANAS
+   RESPONSIVE - PANTALLAS MEDIANAS (max-width: 992px)
    ========================================================== */
 @media (max-width: 992px) {
   .sidebar {
@@ -1033,7 +1030,7 @@ textarea:focus {
     justify-content: center;
     padding: 14px 0;
     gap: 0;
-    font-size: 0; /* Oculta cualquier texto fuera de spans */
+    font-size: 0;
   }
 
   .menu a span,
@@ -1048,22 +1045,56 @@ textarea:focus {
     margin: 0;
   }
 
+  /* --- TOPBAR CON TÍTULO ARRIBA Y ELEMENTOS DEBAJO --- */
   .topbar {
-    flex-direction: column;
-    align-items: stretch;
+    display: flex;
+    flex-wrap: wrap; /* Permite dividir en dos niveles */
+    align-items: center;
+    justify-content: flex-start; /* Alinea los elementos de forma natural */
+    gap: 20px; /* Espaciado general entre elementos */
   }
 
+  /* 1. TÍTULO PRINCIPAL EN EL PRIMER NIVEL (ARRIBA) */
+  .page-title {
+    order: 1;
+    width: 100%; /* Forzar a tomar toda la fila superior */
+    min-width: auto;
+  }
+
+  /* 2. NOTIFICACIONES (IZQUIERDA) - SEGUNDO NIVEL */
   .topbar-actions {
+    order: 2;
     margin-left: 0;
-    justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-shrink: 0;
   }
 
+  /* 3. PERFIL DE USUARIO (CENTRO / IZQUIERDA) - SEGUNDO NIVEL */
+  .user-profile {
+    order: 3;
+    margin: 0; /* Eliminamos el '0 auto' para evitar que empuje agresivamente */
+    flex-shrink: 0;
+  }
+
+  .user-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 4. BARRA DE BÚSQUEDA (DERECHA Y MÁS ANCHA) - SEGUNDO NIVEL */
   .search-box {
-    max-width: 100%;
+    order: 4;
+    flex: 1; /* Ocupa todo el espacio sobrante de la fila */
+    min-width: 220px; /* Evita que se colapse demasiado */
+    max-width: 100%; /* Le permite crecer libremente */
+    margin-left: 15px; /* Separación limpia respecto al perfil de usuario */
   }
 
-  .page-title h1 {
-    font-size: 28px;
+  .search-box input {
+    width: 100%; /* Llena todo el contenedor */
+    padding: 11px 16px 11px 42px; /* Ajuste cómodo para el texto */
   }
 
   .form-grid {
@@ -1077,10 +1108,7 @@ textarea:focus {
 }
 
 /* ==========================================================
-   RESPONSIVE - CELULARES
-   ========================================================== */
-/* ==========================================================
-   CELULARES
+   RESPONSIVE - CELULARES (max-width: 768px)
    ========================================================== */
 @media (max-width: 768px) {
   .sidebar {
@@ -1091,6 +1119,7 @@ textarea:focus {
   .main-content {
     margin-left: 70px;
     width: calc(100% - 70px);
+    padding: 10px;
   }
 
   .logo span {
@@ -1107,7 +1136,7 @@ textarea:focus {
     justify-content: center;
     padding: 12px 0;
     gap: 0;
-    font-size: 0; /* Oculta texto residual */
+    font-size: 0;
   }
 
   .menu a span,
@@ -1122,17 +1151,50 @@ textarea:focus {
     margin: 0;
   }
 
-  .page-title h1 {
-    font-size: 24px;
+  /* En celulares pequeños se permite romper en 3er nivel si la pantalla es muy estrecha */
+  .topbar {
+    gap: 12px;
   }
 
-  .page-title p {
-    font-size: 13px;
+  .user-profile {
+    padding: 4px 10px;
+    gap: 8px;
+  }
+
+  .user-profile img {
+    width: 34px;
+    height: 34px;
+  }
+
+  .user-info strong {
+    font-size: 12px;
+  }
+
+  .user-info span {
+    font-size: 10px;
+  }
+
+  .search-box {
+    min-width: 180px;
+    margin-left: 0; /* Resetea margen en pantallas móviles */
   }
 
   .search-box input {
-    padding: 12px 15px 12px 42px;
-    font-size: 14px;
+    padding: 9px 12px 9px 36px;
+    font-size: 13px;
+  }
+
+  .search-box i {
+    left: 12px;
+    font-size: 13px;
+  }
+
+  .page-title h1 {
+    font-size: 22px;
+  }
+
+  .page-title p {
+    font-size: 12px;
   }
 
   .form-body {
@@ -1159,23 +1221,5 @@ textarea:focus {
 
   .data-table {
     min-width: 700px;
-  }
-}
-
-@media (max-width: 1200px) {
-  .main-content {
-    width: calc(100% - 230px);
-  }
-}
-
-@media (max-width: 992px) {
-  .main-content {
-    width: calc(100% - 90px);
-  }
-}
-
-@media (max-width: 768px) {
-  .main-content {
-    width: calc(100% - 70px);
   }
 }

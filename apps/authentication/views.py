@@ -577,38 +577,97 @@ def registrar_persona(request):
 
 def editar_persona(request, id_persona):
 
+    # =========================================
+    # OBTENER LA PERSONA A MODIFICAR
+    # =========================================
     persona = get_object_or_404(
         Persona,
         pk=id_persona
     )
 
-    if request.method == 'POST':
+    # =========================================
+    # SI PRESIONA GUARDAR CAMBIOS
+    # =========================================
+    if request.method == "POST":
 
-        persona.Nombre_Completo = request.POST.get('nombre_completo')
-        persona.Cedula = request.POST.get('cedula')
-        persona.Sexo = request.POST.get('sexo')
-        persona.FechaNacimiento = request.POST.get('fecha_nacimiento')
-        persona.Telefono = request.POST.get('telefono')
-        persona.Celular = request.POST.get('celular')
-        persona.Correo = request.POST.get('correo')
-        persona.Direccion = request.POST.get('direccion')
+        try:
 
-        if request.FILES.get('foto'):
-            persona.Foto = request.FILES['foto']
+            persona.Nombre_Completo = request.POST.get(
+                "nombre_completo"
+            )
 
-        persona.save()
+            persona.Cedula = request.POST.get(
+                "cedula"
+            )
 
-        return redirect('personas')
+            persona.idSexo = PersonaSexo.objects.get(
+                pk=request.POST.get("sexo")
+            )
 
-    personas = Persona.objects.all()
-    sexos = PersonaSexo.objects.all()
-    
-    return render(
-        request, 'personas.html', {
-            'persona_editar': persona,
-            'personas': personas,'sexos': sexos
+            persona.Fecha_Nacimiento = request.POST.get(
+                "fecha_nacimiento"
+            )
+
+            persona.Telefono = request.POST.get(
+                "telefono"
+            )
+
+            persona.Celular = request.POST.get(
+                "celular"
+            )
+
+            persona.Correo = request.POST.get(
+                "correo"
+            )
+
+            persona.Direccion = request.POST.get(
+                "direccion"
+            )
+
+            # Solo reemplaza la foto si se seleccionó otra
+            if request.FILES.get("foto"):
+
+                persona.Foto = request.FILES["foto"]
+
+            # Guarda los cambios
+            persona.save()
+
+            messages.success(
+                request,
+                "La información fue actualizada correctamente."
+            )
+
+            return redirect("personas")
+
+        except Exception as e:
+
+            messages.error(
+                request,
+                f"Ocurrió un error: {e}"
+            )
+
+    # =========================================
+    # CARGAR EL FORMULARIO CON LOS DATOS
+    # =========================================
+    context = {
+
+        "persona_editar": persona,
+
+        "personas": Persona.objects.select_related(
+            "idSexo"
+        ).order_by(
+            "Nombre_Completo"
+        ),
+
+        "sexos": PersonaSexo.objects.all()
+
     }
-)
+
+    return render(
+        request,
+        "personas.html",
+        context
+    )
 
 # =========================================================
 # Vista: Eliminar Persona
@@ -3012,27 +3071,49 @@ def editar_premio(request, id):
 
 
 
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.utils import timezone
+from .models import PremioAsignado, Premio, KpiCabecera
+from .forms import PremioAsignadoForm
+
 def crear_premio_asignado(request):
-
     if request.method == "POST":
-
         form = PremioAsignadoForm(request.POST)
-
+        
         if form.is_valid():
-            form.save()
-            messages.success(
-                request,
-                "Premio asignado correctamente."
-            )
+            # commit=False genera el objeto en memoria sin guardarlo aún en la BD
+            premio_asignado = form.save(commit=False)
+            
+            # 1. Obtener las instancias seleccionadas en el formulario
+            # (El ModelForm ya convierte las IDs del select en objetos KpiCabecera y Premio)
+            id_kpi_seleccionado = form.cleaned_data.get('id_KPI')
+            id_premio_seleccionado = form.cleaned_data.get('idPremio')
+            
+            # Aseguramos la asignación explícita de las relaciones seleccionadas
+            premio_asignado.id_KPI = id_kpi_seleccionado
+            premio_asignado.idPremio = id_premio_seleccionado
+            
+            # 2. Asignar fecha de registro si no viene definida
+            if not premio_asignado.Fecha_Registro:
+                premio_asignado.Fecha_Registro = timezone.now().date()
+            
+            # 3. Guardar en la base de datos
+            # Al llamar a save(), se ejecuta automáticamente la lógica del modelo
+            # que calcula el Monto_Liquidado basándose en la selección del KPI y Premio.
+            premio_asignado.save()
+            
+            messages.success(request, "¡Premio asignado y liquidado con éxito!")
             return redirect("crear_premio_asignado")
-
+        else:
+            messages.error(request, "Hubo un error al procesar la selección. Por favor revisa los datos.")
     else:
+        # Petición GET: Inicializar el formulario con la fecha actual
         form = PremioAsignadoForm(
-            initial={
-                "Fecha_Registro": timezone.now().date()
-            }
+            initial={"Fecha_Registro": timezone.now().date()}
         )
 
+    # Consulta para alimentar la tabla del historial de premios asignados
     premios_asignados = (
         PremioAsignado.objects
         .select_related(
@@ -3048,11 +3129,8 @@ def crear_premio_asignado(request):
         "premios_asignados": premios_asignados,
     }
 
-    return render(
-        request,
-        "kpi_AsigPremio.html",
-        context
-    )
+    return render(request, "kpi_AsigPremio.html", context)
+
 
 
 # =========================================================================
@@ -4012,8 +4090,451 @@ def guardar_usuario_sistema(request):
     )
 
 
+from django.contrib import messages
+from django.contrib.auth.hashers import make_password
+from django.db import IntegrityError
+from django.shortcuts import render, redirect, get_object_or_404
+
+from .models import UsuarioSistema, Roles, Empleado
+
+
+def modificar_usuario_sistema(request, id_Admin):
+
+    # =========================================================
+    # OBTENER USUARIO QUE SE VA A MODIFICAR
+    # =========================================================
+
+    usuario = get_object_or_404(
+        UsuarioSistema.objects.select_related(
+            "idRol",
+            "idEmpleado_Admin"
+        ),
+        id_Admin=id_Admin
+    )
+
+
+    # =========================================================
+    # EMPLEADOS DISPONIBLES
+    # =========================================================
+
+    empleados = Empleado.objects.select_related(
+        "idPersona",
+        "idPuesto"
+    ).filter(
+        Activo=True
+    ).order_by(
+        "idPersona__Nombre_Completo"
+    )
+
+
+    # =========================================================
+    # ROLES DISPONIBLES
+    # =========================================================
+
+    roles = Roles.objects.all().order_by(
+        "TipoRol"
+    )
+
+
+    # =========================================================
+    # PROCESAR FORMULARIO
+    # =========================================================
+
+    if request.method == "POST":
+
+        try:
+
+            correo = request.POST.get("Correo", "").strip()
+            contrasenia = request.POST.get("Contrasenia", "").strip()
+            idRol = request.POST.get("idRol")
+            idEmpleado = request.POST.get("idEmpleado_Admin")
+            activo = request.POST.get("Activo")
+
+
+            # =====================================================
+            # VALIDACIONES
+            # =====================================================
+
+            if not correo:
+
+                messages.error(
+                    request,
+                    "Debe ingresar un correo."
+                )
+
+                return redirect(
+                    "modificar_usuario_sistema",
+                    id_Admin=id_Admin
+                )
+
+
+            elif not idRol:
+
+                messages.error(
+                    request,
+                    "Debe seleccionar un rol."
+                )
+
+                return redirect(
+                    "modificar_usuario_sistema",
+                    id_Admin=id_Admin
+                )
+
+
+            elif not idEmpleado:
+
+                messages.error(
+                    request,
+                    "Debe seleccionar un empleado."
+                )
+
+                return redirect(
+                    "modificar_usuario_sistema",
+                    id_Admin=id_Admin
+                )
+
+
+            elif not activo:
+
+                messages.error(
+                    request,
+                    "Debe seleccionar el estado del usuario."
+                )
+
+                return redirect(
+                    "modificar_usuario_sistema",
+                    id_Admin=id_Admin
+                )
+
+
+            # =====================================================
+            # VALIDAR CORREO
+            # EXCLUYENDO EL USUARIO ACTUAL
+            # =====================================================
+
+            elif UsuarioSistema.objects.filter(
+                Correo=correo
+            ).exclude(
+                id_Admin=id_Admin
+            ).exists():
+
+                messages.error(
+                    request,
+                    "Ya existe otro usuario con ese correo."
+                )
+
+                return redirect(
+                    "modificar_usuario_sistema",
+                    id_Admin=id_Admin
+                )
+
+
+            # =====================================================
+            # VALIDAR EMPLEADO
+            # EXCLUYENDO EL USUARIO ACTUAL
+            # =====================================================
+
+            elif UsuarioSistema.objects.filter(
+                idEmpleado_Admin=idEmpleado
+            ).exclude(
+                id_Admin=id_Admin
+            ).exists():
+
+                messages.error(
+                    request,
+                    "El empleado seleccionado ya tiene otro usuario asignado."
+                )
+
+                return redirect(
+                    "modificar_usuario_sistema",
+                    id_Admin=id_Admin
+                )
+
+
+            # =====================================================
+            # OBTENER RELACIONES
+            # =====================================================
+
+            rol = Roles.objects.get(
+                idRol=idRol
+            )
+
+
+            empleado = Empleado.objects.get(
+                idEmpleado=idEmpleado
+            )
+
+
+            # =====================================================
+            # ACTUALIZAR DATOS
+            # =====================================================
+
+            usuario.Correo = correo
+
+            usuario.idRol = rol
+
+            usuario.idEmpleado_Admin = empleado
+
+
+            # =====================================================
+            # ACTUALIZAR ESTADO
+            # =====================================================
+
+            usuario.Activo = True if activo == "1" else False
+
+
+            # =====================================================
+            # ACTUALIZAR CONTRASEÑA
+            # SOLO SI SE INGRESÓ UNA NUEVA
+            # =====================================================
+
+            if contrasenia:
+
+                usuario.Contrasenia = make_password(
+                    contrasenia
+                )
+
+
+            # =====================================================
+            # GUARDAR CAMBIOS
+            # =====================================================
+
+            usuario.save()
+
+
+            messages.success(
+                request,
+                "Usuario modificado correctamente."
+            )
+
+
+            return redirect(
+                "guardar_usuario_sistema"
+            )
+
+
+        # =========================================================
+        # ERRORES
+        # =========================================================
+
+        except Roles.DoesNotExist:
+
+            messages.error(
+                request,
+                "El rol seleccionado no existe."
+            )
+
+
+        except Empleado.DoesNotExist:
+
+            messages.error(
+                request,
+                "El empleado seleccionado no existe."
+            )
+
+
+        except IntegrityError as e:
+
+            messages.error(
+                request,
+                f"Error de integridad: {e}"
+            )
+
+
+        except Exception as e:
+
+            messages.error(
+                request,
+                f"Ocurrió un error al modificar el usuario: {e}"
+            )
+
+
+    # =========================================================
+    # CONTEXTO
+    # =========================================================
+
+    context = {
+
+        "usuario_editar": usuario,
+
+        "empleados": empleados,
+
+        "roles": roles,
+
+        "usuarios": UsuarioSistema.objects.select_related(
+            "idRol",
+            "idEmpleado_Admin"
+        ).order_by(
+            "Correo"
+        )
+
+    }
+
+
+    return render(
+        request,
+        "usuarios.html",
+        context
+    )
+
+
+from django.contrib import messages
+from django.contrib.auth.hashers import check_password
+from django.shortcuts import render, redirect
+
+from .models import UsuarioSistema
+
+
+def login_usuario(request):
+
+    # =========================================================
+    # SI EL USUARIO ENVÍA EL FORMULARIO
+    # =========================================================
+
+    if request.method == "POST":
+
+        # =====================================================
+        # OBTENER DATOS DEL FORMULARIO
+        # =====================================================
+
+        correo = request.POST.get(
+            "Correo",
+            ""
+        ).strip()
+
+        contrasenia = request.POST.get(
+            "Contrasenia",
+            ""
+        ).strip()
+
+
+        # =====================================================
+        # VALIDAR CAMPOS VACÍOS
+        # =====================================================
+
+        if not correo or not contrasenia:
+
+            messages.error(
+                request,
+                "Debe ingresar el correo electrónico y la contraseña."
+            )
+
+            return render(
+                request,
+                "login.html"
+            )
+
+
+        # =====================================================
+        # BUSCAR USUARIO POR CORREO
+        # =====================================================
+
+        usuario = UsuarioSistema.objects.filter(
+            Correo=correo
+        ).select_related(
+            "idRol",
+            "idEmpleado_Admin",
+            "idEmpleado_Admin__idPersona"
+        ).first()
+
+
+        # =====================================================
+        # VALIDAR CORREO Y CONTRASEÑA
+        # =====================================================
+
+        if usuario is None or not check_password(
+            contrasenia,
+            usuario.Contrasenia
+        ):
+
+            messages.error(
+                request,
+                "El correo electrónico o la contraseña son incorrectos."
+            )
+
+            return render(
+                request,
+                "login.html"
+            )
+
+
+        # =====================================================
+        # VALIDAR SI EL USUARIO ESTÁ ACTIVO
+        # =====================================================
+
+        if not usuario.Activo:
+
+            messages.error(
+                request,
+                "Su cuenta se encuentra inactiva. Contacte al administrador del sistema."
+            )
+
+            return render(
+                request,
+                "login.html"
+            )
+
+
+        # =====================================================
+        # GUARDAR INFORMACIÓN EN LA SESIÓN
+        # =====================================================
+
+        request.session["usuario_id"] = usuario.id_Admin
+
+        request.session["usuario_correo"] = usuario.Correo
+
+        request.session["usuario_rol_id"] = usuario.idRol.idRol
+
+        request.session["usuario_rol"] = usuario.idRol.TipoRol
+
+        request.session["empleado_id"] = usuario.idEmpleado_Admin.idEmpleado
+
+        request.session["empleado_nombre"] = (
+            usuario.idEmpleado_Admin
+            .idPersona
+            .Nombre_Completo
+        )
+
+
+        # =====================================================
+        # MENSAJE DE BIENVENIDA
+        # =====================================================
+
+        messages.success(
+            request,
+            f"Bienvenido(a), {usuario.idEmpleado_Admin.idPersona.Nombre_Completo}."
+        )
+
+
+        # =====================================================
+        # REDIRIGIR AL INICIO DEL SISTEMA
+        # =====================================================
+
+        return redirect(
+            "inicio"
+        )
+
+
+    # =========================================================
+    # MOSTRAR LOGIN
+    # =========================================================
+
+    return render(
+        request,
+        "login.html"
+    )
+
+
 def configuraciones_view(request):
     return render(request, 'configuraciones.html')
 
 def reportes_view(request):
     return render(request, 'reportes.html')
+
+
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
+def cerrar_sesion(request):
+    logout(request)
+    return redirect('login_usuario')

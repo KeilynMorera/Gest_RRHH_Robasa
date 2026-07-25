@@ -628,25 +628,30 @@ body {
 .topbar {
   display: flex;
   align-items: center;
+  justify-content: space-between; /* Mantiene la distribución de espacio */
   gap: 20px;
   margin-bottom: 30px;
   flex-wrap: wrap;
 }
 
-/* Zona de títulos de la página actual */
+/* Zona de títulos de la página actual (SIEMPRE A LA IZQUIERDA) */
 .page-title {
   min-width: 260px;
+  text-align: left !important; /* Fuerza la alineación del contenedor a la izquierda */
+  margin-right: auto; /* Empuja los elementos siguientes (buscador, notificaciones) a la derecha */
 }
 
 .page-title h1 {
   font-size: 34px;
   margin-bottom: 5px;
   color: #d35b1a;
+  text-align: left !important; /* Asegura alineación del encabezado */
 }
 
 .page-title p {
   color: #7a8599;
   font-size: 15px;
+  text-align: left !important; /* Asegura alineación del texto descriptivo */
 }
 
 /* Barra o caja de búsqueda dinámica */
@@ -1165,10 +1170,10 @@ body {
 /* Colores de fondo por defecto cuando NO están activos (Bases sutiles semi-transparentes) */
 .box-item.low {
   background-color: rgba(255, 77, 79, 0.05) !important;
-} 
+}
 .box-item.medium {
   background-color: rgba(255, 184, 77, 0.06) !important;
-} 
+}
 .box-item.high {
   background-color: rgba(32, 178, 107, 0.05) !important;
 }
@@ -1218,7 +1223,7 @@ body {
 .ninebox-grid .box-item.active {
   opacity: 1 !important;
   background-color: #e8f5e9 !important; /* Fondo verde claro éxito */
-  border: 3px solid #2e7d32 !important;   /* Borde verde corporativo */
+  border: 3px solid #2e7d32 !important; /* Borde verde corporativo */
   box-shadow: 0 6px 20px rgba(46, 125, 50, 0.35) !important;
   transform: scale(1.04) !important;
   z-index: 5;
@@ -1255,9 +1260,15 @@ body {
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* Textos de los ejes (X / Y) de la matriz */
@@ -1364,7 +1375,12 @@ body {
 
   .page-title {
     min-width: auto;
-    text-align: center;
+    text-align: left !important;
+  }
+
+  .page-title h1,
+  .page-title p {
+    text-align: left !important;
   }
 
   .search-box {
@@ -1429,30 +1445,74 @@ body {
     width: auto;
   }
 
+  /* ESTRUCTURA TOPBAR MULTIFILA */
   .topbar {
     display: flex;
-    flex-direction: column;
-    align-items: stretch;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
     gap: 14px;
   }
 
+  /* TÍTULO EN LA FILA 1 (IZQUIERDA) */
   .page-title {
-    min-width: auto;
-    text-align: center;
+    flex: 0 0 100%;
+    width: 100%;
+    text-align: left !important;
+    order: 1;
   }
 
   .page-title h1 {
     font-size: 28px;
+    text-align: left !important;
   }
 
-  .search-box {
-    width: 100%;
-    max-width: 100%;
+  .page-title p {
+    text-align: left !important;
   }
 
+  /* FILA 2: ACCIONES A LA IZQUIERDA */
   .topbar-actions {
-    width: 100%;
-    justify-content: flex-end;
+    order: 2;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 16px;
+    margin-left: 0;
+  }
+
+  /* 1° Notificaciones */
+  .notification {
+    order: 1;
+  }
+
+  /* 2° Usuario (Nombre + Puesto visibles) */
+  .user-profile {
+    order: 2;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .user-info {
+    display: flex !important;
+    flex-direction: column;
+  }
+
+  .user-info strong,
+  .user-info span {
+    display: block !important;
+    white-space: nowrap;
+  }
+
+  /* 3° Buscador a la DERECHA del usuario */
+  .search-box {
+    order: 3;
+    flex: 1;
+    min-width: 180px;
+    max-width: 280px;
+    margin-left: auto;
   }
 
   .form-grid {
@@ -1529,35 +1589,68 @@ body {
     font-size: 17px;
   }
 
+  .page-title {
+    text-align: left !important;
+  }
+
   .page-title h1 {
     font-size: 22px;
+    text-align: left !important;
   }
 
   .page-title p {
     font-size: 12px;
+    text-align: left !important;
   }
 
-  .search-box input {
-    padding: 12px 14px 12px 40px;
-    font-size: 13px;
+  .topbar-actions {
+    gap: 10px;
   }
 
-  .search-box i {
-    left: 14px;
-  }
-
+  /* Garantizar visualización del usuario en móviles */
   .user-info {
-    display: none;
+    display: flex !important;
+    flex-direction: column;
+  }
+
+  .user-info strong {
+    font-size: 12px;
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .user-info span {
+    font-size: 10px;
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .user-profile {
-    padding: 6px 8px;
+    padding: 6px 10px;
     border-radius: 14px;
   }
 
   .user-profile img {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
+  }
+
+  .search-box {
+    min-width: 120px;
+  }
+
+  .search-box input {
+    padding: 10px 10px 10px 36px;
+    font-size: 12px;
+  }
+
+  .search-box i {
+    left: 12px;
+    font-size: 13px;
   }
 
   .filter-bar {
@@ -1677,13 +1770,24 @@ body {
     font-size: 16px;
   }
 
+  .page-title {
+    text-align: left !important;
+  }
+
   .page-title h1 {
     font-size: 18px;
+    text-align: left !important;
   }
 
   .page-title p,
   .breadcrumb {
     font-size: 11px;
+    text-align: left !important;
+  }
+
+  .user-info strong,
+  .user-info span {
+    max-width: 75px;
   }
 
   .form-card-title {

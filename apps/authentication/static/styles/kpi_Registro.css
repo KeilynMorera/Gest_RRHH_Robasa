@@ -18,7 +18,7 @@ body {
   font-family:
     "Segoe UI", sans-serif; /* Tipografía del sistema limpia y legible */
   background: #f4f7fb; /* Fondo gris azulado claro para el entorno de trabajo */
-  color: #d35b1a; /* Color principal del texto (Naranja quemado corporativo) */
+  color: #000000; /* Color principal del texto (Naranja quemado corporativo) */
 }
 
 /* ==========================================================================
@@ -795,147 +795,375 @@ body {
 }
 
 /* ==========================================================================
-   DISEÑO RESPONSIVO COMPACTO (Media Queries Adaptados)
+   FIX: ID CABECERA VINCULADO Y TÍTULO DE SECCIÓN
    ========================================================================== */
 
-/* ── Punto de quiebre Desktop Pequeño (1199px de ancho máximo) ── */
-@media screen and (max-width: 1199px) {
+/* 1. Contenedor padre inmediato del título y la caja ID */
+#section-detalle > div:first-child {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  flex-wrap: wrap !important; /* Permite que el ID baje de línea si no hay espacio */
+  gap: 12px !important;
+  margin-bottom: 20px !important;
+  padding-bottom: 12px !important;
+  border-bottom: 1.5px solid #e8ecf6 !important; /* Traslada la línea divisora al contenedor */
+}
+
+/* 2. Quita la línea inferior del <h4> que cortaba la caja del ID */
+#section-detalle .form-section-title {
+  border-bottom: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  white-space: nowrap !important;
+}
+
+/* 3. Estilos y comportamiento fluido para la caja del ID Cabecera */
+.field-id-verificacion {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  background: #f0f4f8 !important;
+  padding: 6px 12px !important;
+  border-radius: 6px !important;
+  border: 1px solid #dcdcdc !important;
+  flex-shrink: 0 !important; /* Evita que la caja se aplaste */
+}
+
+.field-id-verificacion label {
+  white-space: nowrap !important; /* Mantiene "ID Cabecera Vinculado:" en una sola línea */
+  margin: 0 !important;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN COMPLETO
+   Pantallas Grandes, Medianas y Pequeñas
+   ========================================================================== */
+
+/* ── PANTALLAS ULTRA GRANDES Y MONITOR 4K / 2K (Pantallas >= 1600px) ───── */
+@media screen and (min-width: 1600px) {
+  .dashboard-container {
+    max-width: 1920px;
+    margin: 0 auto; /* Centra el dashboard en monitores ultrapanorámicos */
+  }
+
   .sidebar {
-    width: 230px; /* Ajuste dimensional descendente */
-    padding: 25px 15px;
+    width: 320px;
   }
+
   .main-content {
-    margin-left: 230px; /* Sincronización imperativa con el ancho del sidebar */
-    padding: 25px;
+    margin-left: 320px;
+    padding: 40px;
   }
-  .logo-img {
-    max-width: 170px;
-  }
-  .menu a {
-    font-size: 13px;
-    padding: 10px 12px;
-  }
+
   .page-title h1 {
-    font-size: 28px;
+    font-size: 40px;
+  }
+
+  .form-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .kpi-details-grid,
+  .awards-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
-/* ── Punto de quiebre Tablets y Pantallas Medianas (991px de ancho máximo) ── */
-@media screen and (max-width: 991px) {
-  .sidebar {
-    width: 200px;
-    padding: 20px 12px;
-  }
+/* ── DESKTOP ESTÁNDAR Y MEDIANO (Pantallas < 1400px) ─────────────────────── */
+@media screen and (max-width: 1400px) {
   .main-content {
-    margin-left: 200px;
-    padding: 20px;
-  }
-  .logo-img {
-    max-width: 140px;
-    padding: 10px;
+    padding: 24px;
   }
 
-  /* Sobrescribe las mallas avanzadas rompiendo las celdas a una sola fila vertical continua */
-  .form-grid,
-  .kpi-details-grid {
-    grid-template-columns: 1fr;
+  .topbar {
+    gap: 16px;
+  }
+
+  .search-box {
+    max-width: 340px;
+  }
+
+  .kpi-details-grid,
+  .awards-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   }
 }
 
-/* ── Punto de quiebre Móviles / Menú de Íconos Compacto (767px de ancho máximo) ── */
-@media screen and (max-width: 767px) {
+/* ── LAPTOPS Y PANTALLAS COMPACTAS (Pantallas < 1200px) ──────────────────── */
+@media screen and (max-width: 1200px) {
+  /* Sidebar compacto solo con iconos */
   .sidebar {
-    width: 80px; /* Conversión de barra lateral estructural a dock de accesos rápidos */
-    padding: 15px 8px;
+    width: 90px;
+    padding: 20px 10px;
     align-items: center;
   }
+
   .main-content {
-    margin-left: 80px;
-    padding: 15px;
-  }
-  .logo-container {
-    margin-bottom: 20px;
-  }
-  .logo-img {
-    width: 50px;
-    padding: 6px;
-    border-radius: 10px;
+    margin-left: 90px;
+    padding: 20px;
   }
 
-  /* Hack Tipográfico: Al asignar tamaño 0px, los textos desaparecen por completo sin romper layouts */
-  .menu a {
-    font-size: 0;
-    padding: 14px;
-    justify-content: center;
-    width: 100%;
+  /* Reducción y ocultamiento de textos del Sidebar */
+  .logo-img {
+    max-width: 55px;
+    padding: 8px;
   }
-  .menu a i {
-    font-size: 18px;
-    margin: 0;
+
+  .menu {
+    width: 100%;
+    align-items: center;
+  }
+
+  .menu a,
+  .logout a {
+    justify-content: center;
+    padding: 14px;
+    font-size: 0; /* Oculta texto */
+    gap: 0;
+  }
+
+  .menu a i,
+  .logout a i {
+    font-size: 20px;
     width: auto;
   }
 
-  .logout a {
-    font-size: 0;
-    padding: 14px;
-    justify-content: center;
-  }
-  .logout a i {
-    font-size: 18px;
+  /* Adaptación de Topbar y Títulos */
+  .page-title {
+    min-width: auto;
+    text-align: left !important;
   }
 
-  /* Re-estructuración del Bloque de Encabezado */
-  .topbar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
+  .page-title h1,
+  .page-title p {
+    text-align: left !important;
   }
-  .menu-toggle {
-    display: none !important;
-  } /* Uso de !important para sobrepasar cualquier estado dinámico de JS inline */
-  .search-box {
-    max-width: 100%;
-  }
-  .topbar-actions {
-    width: 100%;
-    justify-content: space-between;
-    margin-left: 0;
-  }
-  .user-info {
-    display: none !important;
-  } /* Oculta los datos de sesión para priorizar la UI limpia en pantallas pequeñas */
 
-  .form-card-header {
-    padding: 16px 20px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+  .form-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
-  .form-body {
-    padding: 20px;
-  }
-  .btn {
-    width: 100%;
-  } /* Botones tipo bloque (fáciles de presionar con el pulgar) */
 }
 
-/* ── Punto de quiebre Dispositivos Ultra Estrechos (480px de ancho máximo) ── */
-@media screen and (max-width: 480px) {
-  .sidebar {
-    width: 65px;
+/* ── TABLETS Y PANTALLAS MEDIANAS (Pantallas < 992px) ────────────────────── */
+@media screen and (max-width: 992px) {
+  /* 1. La Topbar pasa a Flex Column para apilar Título y Fila de Acciones */
+  .topbar {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 14px !important;
   }
-  .main-content {
-    margin-left: 65px;
-    padding: 10px;
+
+  /* 2. Fila 1: Título de la página arriba */
+  .page-title {
+    order: 1 !important;
   }
-  .logo-img {
-    width: 40px;
+
+  /* 3. Fila 2: Contenedor completo para [ Notificación + Usuario + Búsqueda ] */
+  .topbar-actions {
+    order: 2 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 14px !important;
+    width: 100% !important;
+    margin: 0 !important;
   }
-  .menu a i,
-  .logout a i {
-    font-size: 16px;
+
+  /* 3.1 NOTIFICACIÓN (1º a la izquierda) */
+  .notification {
+    order: 1 !important;
+    flex-shrink: 0 !important;
+    position: relative !important;
+    font-size: 20px !important;
   }
-  .page-title h1 {
-    font-size: 20px;
+
+  /* 3.2 PERFIL DE USUARIO (2º al centro) - Idéntico a tu imagen */
+  .user-profile {
+    order: 2 !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    background: #ffffff !important;
+    padding: 6px 16px 6px 6px !important;
+    border-radius: 40px !important;
+    border: 1px solid #eef2f7 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+  }
+
+  .user-profile img {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+  }
+
+  .user-info strong {
+    display: block !important;
+    font-size: 13px !important;
+    color: #111827 !important;
+    line-height: 1.2 !important;
+  }
+
+  .user-info span {
+    display: block !important;
+    font-size: 11px !important;
+    color: #8c98a9 !important;
+  }
+
+  /* 3.3 BARRA DE BÚSQUEDA (3º a la derecha) */
+  /* Si en tu HTML .search-box estaba fuera de .topbar-actions, forzamos su inclusión o integración */
+  .search-box {
+    order: 3 !important;
+    flex: 1 !important; /* Crece para llenar el espacio sobrante hacia la derecha */
+    max-width: 280px !important; /* Limita el ancho máximo para no deformar el diseño */
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .search-box input {
+    height: 40px !important;
+    border-radius: 20px !important;
+    border: 1px solid #e2e8f0 !important;
+    padding: 0 16px 0 40px !important;
+    font-size: 13px !important;
+    background-color: #ffffff !important;
+  }
+
+  .search-box i {
+    left: 14px !important;
+    font-size: 15px !important;
+    color: #94a3b8 !important;
+  }
+
+  /* Reorganización del ID de cabecera y título de sección */
+  .detail-section-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+
+  .field-id-verificacion {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* ── TABLETS Y PANTALLAS MEDIANAS (Pantallas < 992px) ────────────────────── */
+@media screen and (max-width: 992px) {
+  /* Configuración del contenedor principal para forzar 2 filas */
+  .topbar {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
+  }
+
+  /* Fila 1: Título de la página (Ocupa el 100% arriba) */
+  .page-title {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    order: 1 !important;
+  }
+
+  /* Fila 2 - Izquierda: Notificación y Perfil de Usuario */
+  .topbar-actions {
+    flex: 0 0 auto !important; /* Toma solo el ancho de su contenido */
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px !important;
+    order: 2 !important;
+    margin: 0 !important;
+    width: auto !important;
+  }
+
+  /* Fila 2 - Derecha: BARRA DE BÚSQUEDA COMPACTA */
+  .search-box {
+    flex: 1 1 180px !important; /* Se encoge hasta 180px para no romperse */
+    max-width: 285px !important; /* Limita el ancho máximo */
+    min-width: 175px !important; /* Ancho mínimo compacto */
+    order: 3 !important;
+    margin: 0 !important;
+  }
+
+  /* Ajustes finos al input de búsqueda para achicarlo */
+  .search-box input {
+    height: 36px !important; /* Altura más esbelta */
+    padding: 0 10px 0 32px !important; /* Padding interno reducido */
+    font-size: 11px !important; /* Letra un poco más pequeña */
+    border-radius: 20px !important;
+    border: 1px solid #dde2f0 !important;
+    background-color: #ffffff !important;
+  }
+
+  .search-box i {
+    left: 10px !important;
+    font-size: 13px !important;
+  }
+
+  /* Ajustes al Perfil de usuario para ahorrar espacio */
+  .user-profile {
+    padding: 4px 10px 4px 4px !important;
+    gap: 6px !important;
+  }
+
+  .user-profile img {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .user-info strong {
+    font-size: 11px !important;
+  }
+
+  .user-info span {
+    font-size: 10px !important;
+  }
+
+  /* Reorganización del ID de cabecera y título de sección */
+  .detail-section-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+
+  .field-id-verificacion {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* ── SMARTPHONES GRANDES (Pantallas < 768px) ─────────────────────────────── */
+@media screen and (max-width: 768px) {
+  .field-id-verificacion {
+    font-size: 12px;
+    padding: 8px 10px !important;
+  }
+
+  .field-id-verificacion label {
+    font-size: 12px !important;
+  }
+}
+
+/* ── SMARTPHONES PEQUEÑOS (Pantallas < 576px) ────────────────────────────── */
+@media screen and (max-width: 576px) {
+  .search-box {
+    max-width: 150px !important; /* Ajuste para móviles ultra estrechos */
+  }
+
+  .field-id-verificacion {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 6px !important;
+  }
+
+  .field-id-verificacion input {
+    width: 100% !important;
   }
 }

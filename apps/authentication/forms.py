@@ -54,64 +54,23 @@ from .models import (
 
 
 class PremioAsignadoForm(forms.ModelForm):
-
-    # Campo auxiliar (no pertenece al modelo)
-    empleado = forms.ModelChoiceField(
-        queryset=Empleado.objects.filter(Activo=True).select_related("idPersona"),
-        required=False,
-        label="Empleado",
-        widget=forms.Select(attrs={
-            "class": "form-control",
-            "id": "idEmpleado"
-        })
-    )
-
     class Meta:
         model = PremioAsignado
-
         fields = [
-            "empleado",
             "id_KPI",
             "idPremio",
             "Monto_Liquidado",
             "Fecha_Registro",
         ]
 
-        widgets = {
-
-            "id_KPI": forms.Select(attrs={
-                "class": "form-control",
-                "id": "id_KPI",
-            }),
-
-            "idPremio": forms.Select(attrs={
-                "class": "form-control",
-                "id": "idPremio",
-            }),
-
-            "Monto_Liquidado": forms.NumberInput(attrs={
-                "class": "form-control",
-                "id": "Monto_Liquidado",
-                "readonly": True,
-            }),
-
-            "Fecha_Registro": forms.DateInput(attrs={
-                "class": "form-control",
-                "type": "date",
-            }),
-        }
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        # Fecha actual por defecto
-        if not self.instance.pk:
-            self.fields["Fecha_Registro"].initial = timezone.now().date()
-
-        # Inicialmente el combo de KPI queda vacío.
-        # Luego el JavaScript lo llena cuando se selecciona un empleado.
-        self.fields["id_KPI"].queryset = KpiCabecera.objects.none()
-
+        
+        # Al ser calculado en la BD, no exigimos que el usuario o el HTML envíen un valor
+        self.fields["Monto_Liquidado"].required = False
+        
+        # Poblar las opciones de los select
+        self.fields["id_KPI"].queryset = KpiCabecera.objects.select_related("idEmpleado").all()
         self.fields["idPremio"].queryset = Premio.objects.all().order_by("Descripcion")
 
 

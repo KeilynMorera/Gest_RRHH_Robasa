@@ -174,7 +174,7 @@
           </a>
 
           <!-- Opción Usuarios y Roles -->
-          <a href="{% url 'usuarios' %}">
+          <a href="{% url 'guardar_usuario_sistema' %}">
             <i class="fas fa-users-cog"></i>
             Usuarios y Roles
           </a>
@@ -342,7 +342,6 @@
                       <option value="">Seleccione un empleado...</option>
 
                       {% for empleado in empleados %}
-
                       <option
                         value="{{ empleado.idEmpleado }}"
                         {%
@@ -357,9 +356,8 @@
                         endif
                         %}
                       >
-                        {{ empleado.idPersona.Nombre_Completo }}
+                        {{ empleado.idPersona.Nombre_Completo }} — {{ empleado.idPuesto.Nombre }}
                       </option>
-
                       {% endfor %}
                     </select>
                   </div>

@@ -10,7 +10,7 @@
 body {
   font-family: "Segoe UI", sans-serif; /* Tipografía moderna y corporativa */
   background: #f4f7fb; /* Tono gris-azulado sutil de fondo */
-  color: #d35b1a; /* Naranja brillante por defecto (Nota: Considera cambiar a un tono oscuro para lectura larga) */
+  color: #000000; /* Naranja brillante por defecto (Nota: Considera cambiar a un tono oscuro para lectura larga) */
 }
 
 /* ==========================================================================
@@ -1208,6 +1208,75 @@ body {
 }
 
 /* ==========================================================================
+   ESTILOS GENERALES DE LA FORM-CARD (Agrandado interno sin mover el layout)
+   ========================================================================== */
+.form-card {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(30, 42, 94, 0.1);
+  margin: 20px 0 30px;
+  overflow: hidden;
+}
+
+/* Header del formulario más amplio */
+.form-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 36px; /* Más padding interno */
+  border-bottom: 1.5px solid #e8ecf6;
+  gap: 20px;
+}
+
+.form-card-title {
+  font-size: 20px; /* Un poco más grande */
+  font-weight: 700;
+  color: #1a2042;
+}
+
+/* Cuerpo del formulario con más espacio */
+.form-body {
+  padding: 36px; /* Relleno amplio para mayor visibilidad */
+}
+
+.form-section {
+  margin-bottom: 32px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px 32px; /* Mayor separación entre columnas y filas */
+}
+
+/* Entradas de texto, selects y textareas más altos y legibles */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field > label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a2042;
+}
+
+.field input[type="text"],
+.field input[type="number"],
+.field input[type="date"],
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 12px 16px; /* Tamaño del campo de texto ampliado */
+  font-size: 14.5px;
+  border-radius: 10px;
+  border: 1.5px solid #dde2f0;
+  outline: none;
+}
+
+/* ==========================================================================
    PANTALLAS GRANDES (≥ 1024px) — Layout normal sin cambios
    ========================================================================== */
 @media (min-width: 1024px) {
@@ -1233,6 +1302,25 @@ body {
     padding: 20px 8px;
     overflow: visible; /* Para que el tooltip no quede cortado */
     overflow-y: auto;
+  }
+
+  .main-content {
+    margin-left: 68px;
+    width: calc(100% - 68px);
+    padding: 16px;
+  }
+
+  /* ── Ajustes del Formulario en pantallas medianas ── */
+  .form-card-header {
+    padding: 20px 24px;
+  }
+
+  .form-body {
+    padding: 24px;
+  }
+
+  .form-grid {
+    gap: 18px 20px;
   }
 
   /* ── Logo: solo imagen pequeña centrada ── */
@@ -1339,154 +1427,107 @@ body {
     opacity: 1;
   }
 
-  /* ── Contenido principal: margen exacto al sidebar colapsado ── */
-  .main-content {
-    margin-left: 68px;
-    width: calc(100% - 68px);
-    padding: 16px;
-    overflow-x: hidden;
-  }
-
-  /* ── Topbar ── */
+  /* ==========================================================================
+      REORDENAMIENTO DE LA TOPBAR (Título arriba | Buscador -> Notificación -> Usuario abajo)
+      ========================================================================== */
   .topbar {
-    gap: 10px;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap; /* Permite saltar de línea */
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
     width: 100%;
   }
 
+  /* 1. Título principal arriba ocupando todo el ancho */
   .page-title {
-    flex: 1;
-    min-width: 0;
+    order: 1;
+    width: 100%;
+    margin-bottom: 4px;
   }
 
   .page-title h1 {
-    font-size: 22px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 24px;
   }
 
-  .page-title p {
-    font-size: 13px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  /* Desmantelamos topbar-actions para controlar sus hijos libremente */
+  .topbar-actions {
+    display: contents;
   }
 
-  /* Buscador ocupa toda la segunda fila */
+  /* 2. Buscador en la segunda fila (izquierda) */
   .search-box {
-    order: 4;
-    width: 100%;
-    max-width: 100%;
-    flex: none;
+    order: 2;
+    flex: 1;
+    max-width: 280px;
+    margin: 0;
   }
 
   .search-box input {
-    width: 100%;
+    padding: 10px 14px 10px 38px;
+    font-size: 13px;
   }
 
-  .topbar-actions {
-    margin-left: auto;
-    flex-shrink: 0;
-    gap: 14px;
+  .search-box i {
+    left: 14px;
   }
 
-  /* ── Formulario: 1 columna ── */
-  .form-grid {
-    grid-template-columns: 1fr;
-    gap: 14px;
-  }
-
-  .field-full {
-    grid-column: 1;
-  }
-
-  /* ── Tarjetas sin margen excesivo ── */
-  .form-card,
-  .table-card {
-    margin-left: 0;
-    margin-right: 0;
-  }
-
-  /* ── Encabezado del formulario en columna ── */
-  .form-card-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    padding: 16px;
-  }
-
-  /* ── Encabezado tabla en columna ── */
-  .table-card-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 16px;
-  }
-
-  /* Buscador de tabla ocupa todo el ancho */
-  .table-search {
-    width: 100%;
-  }
-
-  .table-search input {
-    width: 100%;
-  }
-
-  .table-search input:focus {
-    width: 100%;
-  }
-
-  /* ── Botones del footer ── */
-  .form-footer {
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .form-footer .btn {
-    flex: 1;
-    min-width: 110px;
-    justify-content: center;
-  }
-
-  /* ── Breadcrumb ── */
-  .breadcrumb {
-    padding: 10px 0 0;
-    font-size: 12px;
-    flex-wrap: wrap;
-    gap: 4px;
-  }
-
-  /* ── Tabla con scroll interno ── */
-  .table-wrapper {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .data-table {
-    min-width: 520px;
-  }
-}
-
-/* ==========================================================================
-   PANTALLAS MUY PEQUEÑAS (< 480px)
-   ========================================================================== */
-@media (max-width: 479px) {
-  .main-content {
-    padding: 10px;
-  }
-
-  .page-title h1 {
-    font-size: 18px;
-  }
-
-  /* Ocultar nombre del usuario */
-  .user-info {
-    display: none;
-  }
-
-  .user-profile {
+  /* 3. Notificación PRIMERO (antes del usuario) */
+  .notification {
+    order: 3;
+    margin-left: auto; /* Empuja las alertas y el perfil hacia la derecha */
     padding: 6px;
+  }
+
+  /* 4. Perfil de Usuario DESPUÉS de la notificación */
+  .user-profile {
+    order: 4;
+    margin: 0;
+    padding: 6px 12px;
+  }
+
+  .user-profile img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .user-info {
+    display: flex !important;
+    flex-direction: column;
+  }
+
+  .user-info strong {
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .user-info span {
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  /* Ajuste para pantallas móviles muy estrechas (< 576px) */
+  @media (max-width: 575px) {
+    .search-box {
+      order: 4; /* Pasa abajo si la pantalla es demasiado angosta para no apretar el header */
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .notification {
+      order: 2;
+    }
+
+    .user-profile {
+      order: 3;
+    }
+
+    .form-grid {
+      grid-template-columns: 1fr; /* Pasa a 1 columna en teléfonos pequeños */
+    }
+
+    .form-body {
+      padding: 16px;
+    }
   }
 }

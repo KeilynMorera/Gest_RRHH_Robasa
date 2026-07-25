@@ -287,14 +287,48 @@
                     </label>
 
                     <select id="empleado" name="empleado" required>
-                      <option value="" disabled selected>
+                      <option
+                        value=""
+                        disabled
+                        {%
+                        if
+                        not
+                        solicitud_editar
+                        and
+                        not
+                        saldo_editar
+                        %}selected{%
+                        endif
+                        %}
+                      >
                         Seleccione un empleado…
                       </option>
 
                       <!-- Recorrido dinámico de empleados -->
                       {% for empleado in empleados %}
-                      <option value="{{ empleado.idEmpleado }}">
-                        {{ empleado.idPersona.Nombre_Completo }}
+                      <option
+                        value="{{ empleado.idEmpleado }}"
+                        {%
+                        if
+                        saldo_editar
+                        and
+                        saldo_editar.idEmpleado_Sal_Vac.idEmpleado=""
+                        ="empleado.idEmpleado"
+                        %}
+                        selected
+                        {%
+                        elif
+                        solicitud_editar
+                        and
+                        solicitud_editar.idEmpleado.idEmpleado=""
+                        ="empleado.idEmpleado"
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        {{ empleado.idPersona.Nombre_Completo }} — {{ empleado.idPuesto.Nombre }}
                       </option>
                       {% endfor %}
                     </select>

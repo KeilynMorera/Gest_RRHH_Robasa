@@ -685,16 +685,34 @@
                     </label>
 
                     <select id="empleado_sus" name="empleado_sus">
-                      <option value="" disabled selected>
-                        Seleccione empleado...
+                      <!-- Opción para indicar que no se sustituye a ningún colaborador -->
+                      <option
+                        value=""
+                        {%
+                        if
+                        not
+                        vacante_editar
+                        or
+                        not
+                        vacante_editar.idEmpleado_Sus
+                        %}
+                        selected
+                        {%
+                        endif
+                        %}
+                      >
+                        No sustituye a ningún colaborador
                       </option>
 
+                      <!-- Lista de empleados -->
                       {% for emp in empleados %}
                       <option
                         value="{{ emp.idEmpleado }}"
                         {%
                         if
                         vacante_editar
+                        and
+                        vacante_editar.idEmpleado_Sus
                         and
                         vacante_editar.idEmpleado_Sus.idEmpleado=""
                         ="emp.idEmpleado"
