@@ -1784,6 +1784,8 @@ class PremioAsignado(models.Model):
             f"Monto Liquidado: {self.Monto_Liquidado}"
         )
 
+
+
         
 # =========================================================
 # TABLA: Accion_Tipo

@@ -3072,12 +3072,13 @@ def editar_premio(request, id):
 
 
 # =========================================================
-# VISTA: GUARDAR PREMIO ASIGNADO
+# VISTAS: PREMIO ASIGNADO
 # =========================================================
 
 from django.contrib import messages
 from django.db import transaction, IntegrityError
-from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
 
 from .models import (
     PremioAsignado,
@@ -3088,6 +3089,10 @@ from .models import (
 
 from .forms import PremioAsignadoForm
 
+
+# =========================================================
+# VISTA: GUARDAR PREMIO ASIGNADO
+# =========================================================
 
 def guardar_premio_asignado(request):
 
@@ -3105,7 +3110,6 @@ def guardar_premio_asignado(request):
             request.POST
         )
 
-
         # =================================================
         # VALIDAR FORMULARIO
         # =================================================
@@ -3120,7 +3124,6 @@ def guardar_premio_asignado(request):
 
                 with transaction.atomic():
 
-
                     # =========================================
                     # OBTENER PREMIO SELECCIONADO
                     # =========================================
@@ -3128,7 +3131,6 @@ def guardar_premio_asignado(request):
                     premio = (
                         form.cleaned_data['idPremio']
                     )
-
 
                     # =========================================
                     # OBTENER KPI SELECCIONADO
@@ -3138,7 +3140,6 @@ def guardar_premio_asignado(request):
                         form.cleaned_data['id_KPI']
                     )
 
-
                     # =========================================
                     # OBTENER FECHA DE REGISTRO
                     # =========================================
@@ -3146,7 +3147,6 @@ def guardar_premio_asignado(request):
                     fecha_registro = (
                         form.cleaned_data['Fecha_Registro']
                     )
-
 
                     # =========================================
                     # BUSCAR EL DETALLE DEL KPI
@@ -3171,7 +3171,6 @@ def guardar_premio_asignado(request):
                         ).first()
                     )
 
-
                     # =========================================
                     # VALIDAR QUE EXISTA EL DETALLE DEL KPI
                     # =========================================
@@ -3187,7 +3186,6 @@ def guardar_premio_asignado(request):
                             'asociada al premio.'
                         )
 
-
                         return render(
 
                             request,
@@ -3199,7 +3197,6 @@ def guardar_premio_asignado(request):
                             }
 
                         )
-
 
                     # =========================================
                     # CREAR PREMIO ASIGNADO
@@ -3223,7 +3220,6 @@ def guardar_premio_asignado(request):
 
                     )
 
-
                     # =========================================
                     # GUARDAR REGISTRO
                     #
@@ -3235,7 +3231,6 @@ def guardar_premio_asignado(request):
                     # =========================================
 
                     premio_asignado.save()
-
 
                     # =========================================
                     # MENSAJE DE ÉXITO
@@ -3253,15 +3248,18 @@ def guardar_premio_asignado(request):
 
                     )
 
-
                     # =========================================
                     # REDIRECCIONAR
+                    #
+                    # IMPORTANTE: debe coincidir EXACTAMENTE con
+                    # el name= registrado en urls.py para esta
+                    # misma vista (el que usa el template en
+                    # {% url 'guardar_premio_asignado' %})
                     # =========================================
 
                     return redirect(
-                        'premios_asignados'
+                        'guardar_premio_asignado'
                     )
-
 
             # =================================================
             # ERROR DE INTEGRIDAD DE BASE DE DATOS
@@ -3275,7 +3273,6 @@ def guardar_premio_asignado(request):
                     str(e)
                 )
 
-
                 messages.error(
 
                     request,
@@ -3287,7 +3284,6 @@ def guardar_premio_asignado(request):
                     )
 
                 )
-
 
             # =================================================
             # ERROR DE VALIDACIÓN DEL MODELO
@@ -3301,7 +3297,6 @@ def guardar_premio_asignado(request):
                     str(e)
                 )
 
-
                 messages.error(
 
                     request,
@@ -3309,7 +3304,6 @@ def guardar_premio_asignado(request):
                     str(e)
 
                 )
-
 
             # =================================================
             # CUALQUIER OTRO ERROR
@@ -3323,7 +3317,6 @@ def guardar_premio_asignado(request):
                     str(e)
                 )
 
-
                 messages.error(
 
                     request,
@@ -3334,7 +3327,6 @@ def guardar_premio_asignado(request):
                     )
 
                 )
-
 
         # =================================================
         # FORMULARIO NO VÁLIDO
@@ -3353,7 +3345,6 @@ def guardar_premio_asignado(request):
 
             )
 
-
     # =====================================================
     # MÉTODO GET
     # =====================================================
@@ -3361,7 +3352,6 @@ def guardar_premio_asignado(request):
     else:
 
         form = PremioAsignadoForm()
-
 
     # =====================================================
     # MOSTRAR FORMULARIO
@@ -3374,11 +3364,70 @@ def guardar_premio_asignado(request):
         'kpi_AsigPremio.html',
 
         {
-            'form': form
+            'form': form,
+            'premios_asignados': PremioAsignado.objects.select_related(
+                'idPremio',
+                'id_KPI',
+                'id_KPI__idEmpleado',
+                'id_KPI__idEmpleado__idPersona'
+            ).order_by('-Fecha_Registro')
         }
 
     )
 
+
+# =========================================================
+# VISTA: OBTENER MONTO LIQUIDADO (AJAX)
+# =========================================================
+
+def obtener_monto_liquidado(request, idPremio, id_KPI):
+
+    # =====================================================
+    # Calcula el monto liquidado en tiempo real:
+    #
+    # Premio.Monto + KPI_Detalle.Monto_Total
+    #
+    # Usado por el JavaScript de kpi_AsigPremio.html
+    # para mostrar la vista previa antes de guardar.
+    # =====================================================
+
+    try:
+
+        premio = get_object_or_404(Premio, idPremio=idPremio)
+
+        kpi = get_object_or_404(KpiCabecera, id_KPI=id_KPI)
+
+        detalle_kpi = KpiDetalle.objects.filter(
+
+            id_KPI=kpi,
+
+            id_KPI_Categoria=premio.id_KPI_Categoria
+
+        ).first()
+
+        if detalle_kpi is None:
+
+            return JsonResponse({
+                'success': False,
+                'error': (
+                    'No existe un detalle de KPI para la categoría '
+                    'asociada al premio seleccionado.'
+                )
+            })
+
+        monto_liquidado = premio.Monto + detalle_kpi.Monto_Total
+
+        return JsonResponse({
+            'success': True,
+            'monto_liquidado': float(monto_liquidado)
+        })
+
+    except Exception as e:
+
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        })
 
 
 from django.http import JsonResponse
