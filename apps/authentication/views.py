@@ -3071,65 +3071,372 @@ def editar_premio(request, id):
 
 
 
-from django.shortcuts import render, redirect, get_object_or_404
+# =========================================================
+# VISTA: GUARDAR PREMIO ASIGNADO
+# =========================================================
+
 from django.contrib import messages
-from django.utils import timezone
-from .models import PremioAsignado, Premio, KpiCabecera
+from django.db import transaction, IntegrityError
+from django.shortcuts import render, redirect
+
+from .models import (
+    PremioAsignado,
+    Premio,
+    KpiCabecera,
+    KpiDetalle
+)
+
 from .forms import PremioAsignadoForm
 
-def crear_premio_asignado(request):
-    if request.method == "POST":
-        form = PremioAsignadoForm(request.POST)
-        
-        if form.is_valid():
-            # commit=False genera el objeto en memoria sin guardarlo aún en la BD
-            premio_asignado = form.save(commit=False)
-            
-            # 1. Obtener las instancias seleccionadas en el formulario
-            # (El ModelForm ya convierte las IDs del select en objetos KpiCabecera y Premio)
-            id_kpi_seleccionado = form.cleaned_data.get('id_KPI')
-            id_premio_seleccionado = form.cleaned_data.get('idPremio')
-            
-            # Aseguramos la asignación explícita de las relaciones seleccionadas
-            premio_asignado.id_KPI = id_kpi_seleccionado
-            premio_asignado.idPremio = id_premio_seleccionado
-            
-            # 2. Asignar fecha de registro si no viene definida
-            if not premio_asignado.Fecha_Registro:
-                premio_asignado.Fecha_Registro = timezone.now().date()
-            
-            # 3. Guardar en la base de datos
-            # Al llamar a save(), se ejecuta automáticamente la lógica del modelo
-            # que calcula el Monto_Liquidado basándose en la selección del KPI y Premio.
-            premio_asignado.save()
-            
-            messages.success(request, "¡Premio asignado y liquidado con éxito!")
-            return redirect("crear_premio_asignado")
-        else:
-            messages.error(request, "Hubo un error al procesar la selección. Por favor revisa los datos.")
-    else:
-        # Petición GET: Inicializar el formulario con la fecha actual
+
+def guardar_premio_asignado(request):
+
+    # =====================================================
+    # MÉTODO POST
+    # =====================================================
+
+    if request.method == 'POST':
+
+        # =================================================
+        # CREAR FORMULARIO CON LOS DATOS RECIBIDOS
+        # =================================================
+
         form = PremioAsignadoForm(
-            initial={"Fecha_Registro": timezone.now().date()}
+            request.POST
         )
 
-    # Consulta para alimentar la tabla del historial de premios asignados
-    premios_asignados = (
-        PremioAsignado.objects
-        .select_related(
-            "idPremio",
-            "id_KPI",
-            "id_KPI__idEmpleado"
-        )
-        .order_by("-Fecha_Registro")
+
+        # =================================================
+        # VALIDAR FORMULARIO
+        # =================================================
+
+        if form.is_valid():
+
+            try:
+
+                # =============================================
+                # INICIAR TRANSACCIÓN
+                # =============================================
+
+                with transaction.atomic():
+
+
+                    # =========================================
+                    # OBTENER PREMIO SELECCIONADO
+                    # =========================================
+
+                    premio = (
+                        form.cleaned_data['idPremio']
+                    )
+
+
+                    # =========================================
+                    # OBTENER KPI SELECCIONADO
+                    # =========================================
+
+                    kpi = (
+                        form.cleaned_data['id_KPI']
+                    )
+
+
+                    # =========================================
+                    # OBTENER FECHA DE REGISTRO
+                    # =========================================
+
+                    fecha_registro = (
+                        form.cleaned_data['Fecha_Registro']
+                    )
+
+
+                    # =========================================
+                    # BUSCAR EL DETALLE DEL KPI
+                    #
+                    # Se busca utilizando:
+                    #
+                    # 1. El KPI seleccionado
+                    # 2. La categoría asociada al premio
+                    #
+                    # Esto permite obtener el Monto_Total
+                    # correspondiente.
+                    # =========================================
+
+                    detalle_kpi = (
+                        KpiDetalle.objects.filter(
+
+                            id_KPI=kpi,
+
+                            id_KPI_Categoria=
+                                premio.id_KPI_Categoria
+
+                        ).first()
+                    )
+
+
+                    # =========================================
+                    # VALIDAR QUE EXISTA EL DETALLE DEL KPI
+                    # =========================================
+
+                    if detalle_kpi is None:
+
+                        messages.error(
+                            request,
+
+                            'No se puede asignar este premio. '
+                            'El KPI seleccionado no tiene un '
+                            'detalle registrado para la categoría '
+                            'asociada al premio.'
+                        )
+
+
+                        return render(
+
+                            request,
+
+                            'kpi_AsigPremio.html',
+
+                            {
+                                'form': form
+                            }
+
+                        )
+
+
+                    # =========================================
+                    # CREAR PREMIO ASIGNADO
+                    #
+                    # NO SE ENVÍA Monto_Liquidado
+                    #
+                    # El modelo lo calcula automáticamente
+                    # dentro de su método save().
+                    # =========================================
+
+                    premio_asignado = PremioAsignado(
+
+                        Fecha_Registro=
+                            fecha_registro,
+
+                        idPremio=
+                            premio,
+
+                        id_KPI=
+                            kpi
+
+                    )
+
+
+                    # =========================================
+                    # GUARDAR REGISTRO
+                    #
+                    # El método save() del modelo ejecutará:
+                    #
+                    # Monto_Liquidado =
+                    # Premio.Monto +
+                    # KPI_Detalle.Monto_Total
+                    # =========================================
+
+                    premio_asignado.save()
+
+
+                    # =========================================
+                    # MENSAJE DE ÉXITO
+                    # =========================================
+
+                    messages.success(
+
+                        request,
+
+                        (
+                            'El premio fue asignado correctamente. '
+                            f'Monto liquidado: '
+                            f'{premio_asignado.Monto_Liquidado}'
+                        )
+
+                    )
+
+
+                    # =========================================
+                    # REDIRECCIONAR
+                    # =========================================
+
+                    return redirect(
+                        'premios_asignados'
+                    )
+
+
+            # =================================================
+            # ERROR DE INTEGRIDAD DE BASE DE DATOS
+            # =================================================
+
+            except IntegrityError as e:
+
+                print(
+                    'ERROR DE INTEGRIDAD AL GUARDAR '
+                    'PREMIO ASIGNADO:',
+                    str(e)
+                )
+
+
+                messages.error(
+
+                    request,
+
+                    (
+                        'No fue posible guardar el premio asignado. '
+                        'Verifique que los datos seleccionados '
+                        'sean válidos.'
+                    )
+
+                )
+
+
+            # =================================================
+            # ERROR DE VALIDACIÓN DEL MODELO
+            # =================================================
+
+            except ValueError as e:
+
+                print(
+                    'ERROR DE VALIDACIÓN AL GUARDAR '
+                    'PREMIO ASIGNADO:',
+                    str(e)
+                )
+
+
+                messages.error(
+
+                    request,
+
+                    str(e)
+
+                )
+
+
+            # =================================================
+            # CUALQUIER OTRO ERROR
+            # =================================================
+
+            except Exception as e:
+
+                print(
+                    'ERROR INESPERADO AL GUARDAR '
+                    'PREMIO ASIGNADO:',
+                    str(e)
+                )
+
+
+                messages.error(
+
+                    request,
+
+                    (
+                        'Ocurrió un error inesperado al guardar '
+                        'el premio asignado.'
+                    )
+
+                )
+
+
+        # =================================================
+        # FORMULARIO NO VÁLIDO
+        # =================================================
+
+        else:
+
+            messages.error(
+
+                request,
+
+                (
+                    'Por favor, revise los datos ingresados '
+                    'en el formulario.'
+                )
+
+            )
+
+
+    # =====================================================
+    # MÉTODO GET
+    # =====================================================
+
+    else:
+
+        form = PremioAsignadoForm()
+
+
+    # =====================================================
+    # MOSTRAR FORMULARIO
+    # =====================================================
+
+    return render(
+
+        request,
+
+        'kpi_AsigPremio.html',
+
+        {
+            'form': form
+        }
+
     )
 
-    context = {
-        "form": form,
-        "premios_asignados": premios_asignados,
-    }
 
-    return render(request, "kpi_AsigPremio.html", context)
+
+from django.http import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
+
+
+# =========================================================
+# VISTA: OBTENER MONTO LIQUIDADO (AJAX)
+# =========================================================
+
+def obtener_monto_liquidado(request, idPremio, id_KPI):
+
+    # =====================================================
+    # Calcula el monto liquidado en tiempo real:
+    #
+    # Premio.Monto + KPI_Detalle.Monto_Total
+    #
+    # Usado por el JavaScript de kpi_AsigPremio.html
+    # para mostrar la vista previa antes de guardar.
+    # =====================================================
+
+    try:
+
+        premio = get_object_or_404(Premio, idPremio=idPremio)
+
+        kpi = get_object_or_404(KpiCabecera, id_KPI=id_KPI)
+
+        detalle_kpi = KpiDetalle.objects.filter(
+
+            id_KPI=kpi,
+
+            id_KPI_Categoria=premio.id_KPI_Categoria
+
+        ).first()
+
+        if detalle_kpi is None:
+
+            return JsonResponse({
+                'success': False,
+                'error': (
+                    'No existe un detalle de KPI para la categoría '
+                    'asociada al premio seleccionado.'
+                )
+            })
+
+        monto_liquidado = premio.Monto + detalle_kpi.Monto_Total
+
+        return JsonResponse({
+            'success': True,
+            'monto_liquidado': float(monto_liquidado)
+        })
+
+    except Exception as e:
+
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        })
 
 
 

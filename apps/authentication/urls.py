@@ -106,7 +106,8 @@ urlpatterns = [
     path('premios/nuevo/', views.crear_premio, name='crear_premio'),
     
     # Ruta para el dashboard (pantalla de asignar premios a KPIs)
-    path("kpi/premios-asignados/", views.crear_premio_asignado, name="crear_premio_asignado"),
+    path('premios-asignados/', views.guardar_premio_asignado, name='guardar_premio_asignado'),
+    
   
     # Ruta para el dashboard (pantalla de configuraciones del sistema)
     path('dashboard-kpi/historial/', views.historial_kpi_view, name='historial_kpi'),

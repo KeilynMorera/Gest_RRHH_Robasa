@@ -1573,77 +1573,216 @@ class Premio(models.Model):
         return f"{self.Descripcion} - ${self.Monto}"
     
 
-from decimal import Decimal
-from django.db import models
+
 
 # =========================================================
 # TABLA: Premio_Asignado
-# Relación entre un KPI evaluado y el premio obtenido
+# Relación entre un KPI y los premios ganados
 # =========================================================
+
 class PremioAsignado(models.Model):
+
+    # =====================================================
+    # ID DEL PREMIO ASIGNADO
+    # =====================================================
 
     id_PremioAsignado = models.AutoField(
         primary_key=True,
         db_column='id_PremioAsignado'
     )
 
+
+    # =====================================================
+    # MONTO LIQUIDADO
+    # =====================================================
+    #
+    # Este campo NO se debe ingresar manualmente.
+    #
+    # Se calcula automáticamente al guardar:
+    #
+    # Monto_Liquidado =
+    #       Premio.Monto
+    #       +
+    #       KPI_Detalle.Monto_Total
+    #
+    # El Monto_Total se obtiene del detalle del KPI
+    # seleccionado y de la categoría asociada al premio.
+    #
+    # =====================================================
+
     Monto_Liquidado = models.DecimalField(
         max_digits=12,
         decimal_places=2,
         db_column='Monto_Liquidado',
-        null=True,  # Permite guardado automático si viene vacío desde el form
-        blank=True
+        editable=False
     )
+
+
+    # =====================================================
+    # FECHA DE REGISTRO
+    # =====================================================
 
     Fecha_Registro = models.DateField(
         db_column='Fecha_Registro'
     )
 
+
+    # =====================================================
+    # PREMIO SELECCIONADO
+    # =====================================================
+
     idPremio = models.ForeignKey(
         Premio,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.PROTECT,
         db_column='idPremio',
         related_name='premios_asignados'
     )
 
+
+    # =====================================================
+    # KPI SELECCIONADO
+    # =====================================================
+    #
+    # Este KPI permite llegar a:
+    #
+    # KPI_Cabecera
+    #       ↓
+    # KPI_Detalle
+    #       ↓
+    # Monto_Total
+    #
+    # =====================================================
+
     id_KPI = models.ForeignKey(
         KpiCabecera,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.PROTECT,
         db_column='id_KPI',
         related_name='premios_asignados'
     )
 
+
+    # =====================================================
+    # CONFIGURACIÓN
+    # =====================================================
+
     class Meta:
-        managed = False
+
         db_table = 'Premio_Asignado'
+
         verbose_name = 'Premio Asignado'
+
         verbose_name_plural = 'Premios Asignados'
 
+        managed = False
+
+
+    # =====================================================
+    # CÁLCULO AUTOMÁTICO DEL MONTO LIQUIDADO
+    # =====================================================
+
+    def save(
+        self,
+        *args,
+        **kwargs
+    ):
+
+        # =================================================
+        # VALIDAR QUE EXISTAN PREMIO Y KPI
+        # =================================================
+
+        if self.idPremio and self.id_KPI:
+
+
+            # =============================================
+            # OBTENER EL MONTO DEL PREMIO
+            # =============================================
+
+            monto_premio = (
+                self.idPremio.Monto
+            )
+
+
+            # =============================================
+            # BUSCAR EL DETALLE DEL KPI
+            #
+            # Se utiliza la categoría asociada al premio.
+            #
+            # Esto garantiza que se tome el detalle
+            # correspondiente a la categoría del premio.
+            # =============================================
+
+            detalle_kpi = KpiDetalle.objects.filter(
+
+                id_KPI=self.id_KPI,
+
+                id_KPI_Categoria=
+                    self.idPremio.id_KPI_Categoria
+
+            ).first()
+
+
+            # =============================================
+            # VALIDAR QUE EXISTA EL DETALLE
+            # =============================================
+
+            if detalle_kpi is None:
+
+                raise ValueError(
+                    'No existe un detalle de KPI para '
+                    'la categoría asociada al premio '
+                    'seleccionado.'
+                )
+
+
+            # =============================================
+            # OBTENER EL MONTO TOTAL DEL KPI
+            # =============================================
+
+            monto_total_kpi = (
+                detalle_kpi.Monto_Total
+            )
+
+
+            # =============================================
+            # CALCULAR MONTO LIQUIDADO
+            # =============================================
+            #
+            # Fórmula:
+            #
+            # Premio.Monto
+            # +
+            # KPI_Detalle.Monto_Total
+            #
+            # =============================================
+
+            self.Monto_Liquidado = (
+                monto_premio +
+                monto_total_kpi
+            )
+
+
+        # =================================================
+        # GUARDAR REGISTRO
+        # =================================================
+
+        super().save(
+            *args,
+            **kwargs
+        )
+
+
+    # =====================================================
+    # REPRESENTACIÓN DEL OBJETO
+    # =====================================================
+
     def __str__(self):
-        return f'Premio #{self.id_PremioAsignado}'
 
-    def save(self, *args, **kwargs):
-        """
-        Cálculo Automático del Monto Liquidado antes de guardar en la BD.
-        """
-        if self.idPremio:
-            # 1. Obtener el monto base o valor definido en el Premio
-            # (Ajusta 'Monto' o 'Monto_Base' según el atributo exacto de tu modelo Premio)
-            monto_premio = getattr(self.idPremio, 'Monto', None) or getattr(self.idPremio, 'Monto_Base', Decimal('0.00'))
-
-            # 2. Si el KPI asociado tiene detalles evaluados, sumamos el Total acumulado
-            # O si el premio es un valor fijo, asigna directamente el monto del premio:
-            if hasattr(self.id_KPI, 'detalles') and self.id_KPI.detalles.exists():
-                # Sumatoria total alcanzada en los detalles de KPI
-                suma_kpi = sum(detalle.Monto_Total for detalle in self.id_KPI.detalles.all())
-                
-                # Ejemplo de cálculo: Si el monto se escala según el KPI o si se usa el monto fijo del Premio
-                self.Monto_Liquidado = Decimal(monto_premio) if monto_premio > 0 else Decimal(suma_kpi)
-            else:
-                # Si el premio tiene un valor fijo predeterminado
-                self.Monto_Liquidado = Decimal(monto_premio)
-
-        super().save(*args, **kwargs)
+        return (
+            f"Premio #{self.id_PremioAsignado} - "
+            f"{self.idPremio.Descripcion} - "
+            f"{self.id_KPI.idEmpleado.idPersona.Nombre_Completo} - "
+            f"Monto Liquidado: {self.Monto_Liquidado}"
+        )
 
         
 # =========================================================

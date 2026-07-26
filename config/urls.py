@@ -201,7 +201,10 @@ urlpatterns = [
     # ===========================
     # PREMIOS ASIGNADOS
     # ===========================
-    path("kpi/premios-asignados/", views.crear_premio_asignado, name="crear_premio_asignado"),
+    path('premios-asignados/', views.guardar_premio_asignado, name='guardar_premio_asignado'),
+
+    path('premios-asignados/monto/<int:idPremio>/<int:id_KPI>/', views.obtener_monto_liquidado, name='obtener_monto_liquidado'),
+
 
     path('dashboard-kpi/historial/', views.historial_kpi_view, name='historial_kpi'),
 

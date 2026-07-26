@@ -423,9 +423,7 @@
                     <td>{{ actividad.Fecha_Programada|date:"d/m/Y" }}</td>
 
                     <td>
-                      {% if actividad.Fecha_Realizada %} {{
-                      actividad.Fecha_Realizada|date:"d/m/Y" }} {% else %} — {%
-                      endif %}
+                      {% if actividad.Fecha_Realizada %} {{ actividad.Fecha_Realizada|date:"d/m/Y" }} {% else %} — {% endif %}
                     </td>
 
                     <td>

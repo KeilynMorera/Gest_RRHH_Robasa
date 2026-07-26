@@ -42,37 +42,178 @@ class PremioForm(forms.ModelForm):
 
 
 
+# =========================================================
+# FORMULARIO: PREMIO ASIGNADO
+# =========================================================
+
 from django import forms
-from django.utils import timezone
 
 from .models import (
     PremioAsignado,
     Premio,
-    Empleado,
-    KpiCabecera,
+    KpiCabecera
 )
 
 
 class PremioAsignadoForm(forms.ModelForm):
+
     class Meta:
+
         model = PremioAsignado
+
+        # =================================================
+        # CAMPOS QUE EL USUARIO PUEDE INGRESAR/SELECCIONAR
+        # =================================================
+
         fields = [
-            "id_KPI",
-            "idPremio",
-            "Monto_Liquidado",
-            "Fecha_Registro",
+            'id_KPI',
+            'idPremio',
+            'Fecha_Registro',
         ]
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        
-        # Al ser calculado en la BD, no exigimos que el usuario o el HTML envíen un valor
-        self.fields["Monto_Liquidado"].required = False
-        
-        # Poblar las opciones de los select
-        self.fields["id_KPI"].queryset = KpiCabecera.objects.select_related("idEmpleado").all()
-        self.fields["idPremio"].queryset = Premio.objects.all().order_by("Descripcion")
 
+        # =================================================
+        # WIDGETS
+        # =================================================
+
+        widgets = {
+
+            # =============================================
+            # SELECCIÓN DEL KPI
+            # =============================================
+
+            'id_KPI': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'id': 'id_KPI'
+                }
+            ),
+
+
+            # =============================================
+            # SELECCIÓN DEL PREMIO
+            # =============================================
+
+            'idPremio': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'id': 'idPremio'
+                }
+            ),
+
+
+            # =============================================
+            # FECHA DE REGISTRO
+            # =============================================
+
+            'Fecha_Registro': forms.DateInput(
+                format='%Y-%m-%d',
+                attrs={
+                    'type': 'date',
+                    'class': 'form-control',
+                    'id': 'id_Fecha_Registro'
+                }
+            ),
+
+        }
+
+
+    # =====================================================
+    # INICIALIZACIÓN DEL FORMULARIO
+    # =====================================================
+
+    def __init__(self, *args, **kwargs):
+
+        super().__init__(
+            *args,
+            **kwargs
+        )
+
+
+        # =================================================
+        # LISTA DE KPI
+        # =================================================
+        #
+        # Se muestran los KPI registrados.
+        #
+        # Se utiliza select_related para poder acceder
+        # directamente a los datos del empleado y persona.
+        #
+        # =================================================
+
+        self.fields['id_KPI'].queryset = (
+
+            KpiCabecera.objects
+
+            .select_related(
+                'idEmpleado',
+                'idEmpleado__idPersona'
+            )
+
+            .all()
+
+            .order_by(
+                '-anio',
+                '-mes'
+            )
+
+        )
+
+
+        # =================================================
+        # LISTA DE PREMIOS
+        # =================================================
+        #
+        # Se muestran los premios disponibles.
+        #
+        # También se obtiene la categoría relacionada
+        # para facilitar la lógica posterior.
+        #
+        # =================================================
+
+        self.fields['idPremio'].queryset = (
+
+            Premio.objects
+
+            .select_related(
+                'id_KPI_Categoria'
+            )
+
+            .all()
+
+            .order_by(
+                'Descripcion'
+            )
+
+        )
+
+
+        # =================================================
+        # TEXTOS DE AYUDA / ETIQUETAS
+        # =================================================
+
+        self.fields['id_KPI'].label = (
+            'Registro KPI Evaluado'
+        )
+
+        self.fields['idPremio'].label = (
+            'Premio Asociado'
+        )
+
+        self.fields['Fecha_Registro'].label = (
+            'Fecha de Registro'
+        )
+
+
+        # =================================================
+        # CAMPOS OBLIGATORIOS
+        # =================================================
+
+        self.fields['id_KPI'].required = True
+
+        self.fields['idPremio'].required = True
+
+        self.fields['Fecha_Registro'].required = True
 
 
 # =========================================================
