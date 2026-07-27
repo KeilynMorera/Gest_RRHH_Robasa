@@ -406,7 +406,6 @@
                     <th>Fecha Programada</th>
                     <th>Fecha Realizada</th>
                     <th>Observaciones</th>
-                    <th class="col-accion">Acción</th>
                   </tr>
                 </thead>
 
@@ -418,7 +417,7 @@
                       <strong> {{ actividad.idActividad.Actividad }} </strong>
                     </td>
 
-                    <td>{{ actividad.id_Estatus_Vacante.Nombre }}</td>
+                    <td>{{ actividad.id_Estatus_Vacante.TipoEstatus }}</td>
 
                     <td>{{ actividad.Fecha_Programada|date:"d/m/Y" }}</td>
 
@@ -428,29 +427,6 @@
 
                     <td>
                       {{ actividad.Observaciones|default:"Sin observaciones" }}
-                    </td>
-
-                    <td class="col-accion">
-                      <!-- Editar -->
-                      <a
-                        href="#"
-                        class="btn btn-warning btn-sm"
-                        title="Editar actividad"
-                      >
-                        <i class="fas fa-pen-to-square"></i>
-                      </a>
-
-                      <!-- Eliminar -->
-                      <a
-                        href="#"
-                        class="btn btn-danger btn-sm"
-                        title="Eliminar actividad"
-                        onclick="
-                          return confirm('¿Desea eliminar esta actividad?');
-                        "
-                      >
-                        <i class="fas fa-trash"></i>
-                      </a>
                     </td>
                   </tr>
 
@@ -477,5 +453,11 @@
         </footer>
       </main>
     </div>
+
+    <!-- ======================================================
+         ARCHIVO JS LOCAL
+         Funcionalidades interactivas personalizadas
+    ====================================================== -->
+    <script src="{% static 'js/onboarding.js' %}"></script>
   </body>
 </html>

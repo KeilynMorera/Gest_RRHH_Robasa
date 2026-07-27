@@ -287,12 +287,100 @@ class OnboardingForm(forms.ModelForm):
 
 
 # =========================================================
+# FORMULARIO: Onboarding
+# =========================================================
+class OnboardingForm(forms.ModelForm):
+
+    idEmpleado = EmpleadoConDepartamentoField(
+        queryset=Empleado.objects.select_related(
+            "idPersona",
+            "idPuesto__idDepartamento"
+        ).order_by(
+            "idPuesto__idDepartamento",
+            "idPersona__Nombre_Completo"
+        ),
+        widget=forms.Select(
+            attrs={
+                "class": "form-select",
+                "id": "idEmpleado"
+            }
+        ),
+        label="Empleado"
+    )
+
+    class Meta:
+        model = Onboarding
+        fields = [
+            "idEmpleado",
+            "idDepartamento",
+            "Fecha_Inicio"
+        ]
+
+        widgets = {
+            "idDepartamento": forms.Select(
+                attrs={
+                    "class": "form-select",
+                    "id": "idDepartamento"
+                }
+            ),
+
+            "Fecha_Inicio": forms.DateInput(
+                attrs={
+                    "type": "date",
+                    "class": "form-control"
+                }
+            )
+        }
+
+        labels = {
+            "idDepartamento": "Departamento",
+            "Fecha_Inicio": "Fecha de Inicio"
+        }
+
+
+    # =====================================================
+    # AQUÍ VA EL NUEVO __init__
+    # =====================================================
+    def __init__(self, *args, **kwargs):
+
+        super().__init__(*args, **kwargs)
+
+        self.fields["idDepartamento"].queryset = Departamento.objects.all()
+
+
+        # Cuando se modifica una cabecera existente
+        if self.instance and self.instance.pk:
+
+            empleado = self.instance.idEmpleado
+
+            if empleado and empleado.idPuesto:
+
+                departamento = empleado.idPuesto.idDepartamento
+
+
+                self.fields["idEmpleado"].queryset = (
+                    Empleado.objects.select_related(
+                        "idPersona",
+                        "idPuesto__idDepartamento"
+                    )
+                    .filter(
+                        idPuesto__idDepartamento=departamento
+                    )
+                    .order_by(
+                        "idPersona__Nombre_Completo"
+                    )
+                )
+
+
+
+# =========================================================
 # FORMULARIO: Detalle de Actividad de Onboarding
 # =========================================================
 class OnboardingActividadForm(forms.ModelForm):
 
     class Meta:
         model = OnboardingActividad
+
         fields = [
             "idActividad",
             "id_Estatus_Vacante",

@@ -3607,12 +3607,17 @@ def registrar_onboarding(request, pk=None):
     onboarding = None
     paso_dos_habilitado = False
 
+
     if pk:
+
         onboarding = get_object_or_404(
             Onboarding,
             pk=pk
         )
+
         paso_dos_habilitado = True
+
+
 
     if request.method == "POST":
 
@@ -3621,24 +3626,23 @@ def registrar_onboarding(request, pk=None):
             instance=onboarding
         )
 
+
         if form.is_valid():
 
-            nuevo = form.save(commit=False)
+            nuevo = form.save()
 
-            # Los campos idEmpleado e idDepartamento ya vienen
-            # asignados directamente por el ModelForm gracias a
-            # los ModelChoiceField del formulario.
-            nuevo.save()
 
             messages.success(
                 request,
                 f"Proceso de Onboarding #{nuevo.id_Onboarding} creado correctamente."
             )
 
+
             return redirect(
                 "gestionar_onboarding",
                 pk=nuevo.id_Onboarding
             )
+
 
         else:
 
@@ -3647,21 +3651,44 @@ def registrar_onboarding(request, pk=None):
                 "Revise los datos del formulario."
             )
 
+
     else:
 
         form = OnboardingForm(
             instance=onboarding
         )
 
-    # Crear el formulario del detalle
-    form_detalle = OnboardingActividadForm()
+
+
+    # =====================================================
+    # CARGAR ACTIVIDADES REGISTRADAS
+    # SIEMPRE SE MOSTRARÁN EN LA TABLA
+    # =====================================================
+
+    actividades = OnboardingActividad.objects.select_related(
+        "idActividad",
+        "id_Estatus_Vacante",
+        "id_Onboarding"
+    ).all().order_by(
+        "-id_Onboarding__id_Onboarding"
+    )
+
+
 
     context = {
-       "form": form,
-        "form_detalle": form_detalle,
+
+        "form": form,
+
+        "form_detalle": OnboardingActividadForm(),
+
         "onboarding": onboarding,
+
         "paso_dos_habilitado": paso_dos_habilitado,
+
+        "actividades": actividades,
+
     }
+
 
     return render(
         request,

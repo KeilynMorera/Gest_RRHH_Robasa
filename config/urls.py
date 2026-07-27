@@ -217,9 +217,6 @@ urlpatterns = [
 
     path("onboarding/<int:pk>/detalle/", views.guardar_detalle_onboarding, name="guardar_detalle_onboarding"),
 
-
-
-
     # Ruta para el dashboard (pantalla de eleccion de offboarding)
     path('elec_Offboarding.html/', views.elec_Offboarding_view, name='elec_Offboarding'),
 
