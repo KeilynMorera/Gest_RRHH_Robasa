@@ -23,7 +23,7 @@ body {
    CONTENEDOR PRINCIPAL (LAYOUT MAESTRO)
    ========================================================================== */
 .dashboard-container {
-  display: flex; /* Activa Flexbox bidimensional para alinear el Sidebar y el Main Content en paralelo */
+  display: flex; /* Activa Flexbox para alinear el Sidebar y el Main Content en paralelo */
   width: 100%;
   min-height: 100vh; /* Asegura que el contenedor cubra al menos el 100% de la altura de la pantalla */
 }
@@ -183,132 +183,126 @@ body {
     100% - 250px
   ); /* Ocupa dinámicamente el resto de la pantalla neta */
 
-  padding: 20px;
+  padding: 25px 30px;
   overflow-x: hidden;
 }
 
 /* ==========================================================================
-   TOPBAR (BARRA DE HERRAMIENTAS Y CONTROL SUPERIOR)
+   TOPBAR (Barra Superior de Acciones)
    ========================================================================== */
 .topbar {
-  width: 100%;
-
   display: flex;
-  flex-wrap: wrap; /* Permite que los elementos se reacomoden verticalmente si el espacio colapsa */
-
-  align-items: center;
-  justify-content: space-between;
-
-  gap: 15px;
-  margin-bottom: 20px;
+  align-items: center; /* Alinea verticalmente buscador, título y perfil */
+  gap: 20px; /* Distancia entre componentes de la barra superior */
+  margin-bottom: 30px; /* Separación con el resto de la página */
+  flex-wrap: wrap; /* Permite que los elementos bajen de fila si no hay suficiente espacio */
 }
 
+/* Contenedor de Título de Página */
 .page-title {
-  flex: 1 1 100%; /* Obliga al título a abarcar toda la fila en la parte superior del Flexbox */
+  min-width: 260px; /* Evita que se colapse demasiado en pantallas medianas */
 }
 
 .page-title h1 {
-  font-size: 30px;
-  color: #d35b1a; /* Color corporativo de énfasis naranja */
-
+  font-size: 34px;
   margin-bottom: 5px;
+  color: #d35b1a; /* Color principal de la marca para el título */
 }
 
 .page-title p {
-  color: #7a8599;
-  font-size: 14px;
+  color: #7a8599; /* Gris neutro para texto secundario */
+  font-size: 15px;
 }
 
-/* ── Buscador Integrado ── */
+/* Buscador de la barra superior */
 .search-box {
-  flex: 1;
-  max-width: 420px;
-  position: relative; /* Contexto de posición para anclar el icono de lupa */
+  flex: 1; /* Intenta expandirse para ocupar el espacio central */
+  max-width: 420px; /* Pero limita su tamaño máximo para no verse gigante */
+  position: relative; /* Permite posicionar el icono de la lupa de forma absoluta en su interior */
 }
 
+/* Icono de Lupa dentro del Buscador */
 .search-box i {
   position: absolute;
-  top: 50%;
-  left: 18px;
-  transform: translateY(-50%); /* Centrado vertical matemático exacto */
+  top: 50%; /* Centra el icono verticalmente */
+  left: 18px; /* Lo empuja un poco hacia la derecha de la caja */
+  transform: translateY(-50%); /* Ajuste perfecto de centrado vertical */
   color: #8a94a6;
 }
 
+/* Input del Buscador */
 .search-box input {
   width: 100%;
-  padding: 14px 18px 14px 48px; /* Relleno extra a la izquierda para no tapar el texto con el icono */
+  padding: 14px 18px 14px 48px; /* Padding izquierdo de 48px para dejar espacio y que el texto no pise la lupa */
   border: 1px solid #dbe2ef;
   border-radius: 12px;
   font-size: 15px;
-  outline: none;
+  outline: none; /* Remueve el borde azul por defecto del navegador */
 }
 
+/* Efecto Focus del Buscador (Al hacer click dentro) */
 .search-box input:focus {
-  border-color: #0c45ca;
-  box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1); /* Efecto halo azul en enfoque */
+  border-color: #0c45ca; /* Cambia a azul brillante */
+  box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1); /* Crea un halo de luz sutil alrededor de la caja */
 }
 
-/* ── TOPBAR ACTIONS (NOTIFICACIONES & PERFIL) ─────────────────────────── */
+/* Bloque derecho del Topbar (Notificaciones y Perfil) */
 .topbar-actions {
+  margin-left: auto; /* Truco de Flexbox para empujar este grupo completamente a la derecha */
   display: flex;
   align-items: center;
-  gap: 20px;
-
-  flex-wrap: wrap;
+  gap: 25px;
 }
 
-/* Notificaciones */
+/* Icono de Campana de Notificación */
 .notification {
-  position: relative;
-
+  position: relative; /* Permite posicionar la burbuja (badge) roja encima */
   font-size: 22px;
+  cursor: pointer;
   color: #1b2b4b;
 }
 
-/* Globo indicador de alertas (Badge numérico) */
+/* Burbuja de Alertas (ej: "3 mensajes") */
 .badge {
   position: absolute;
-
-  top: -7px;
-  right: -7px;
-
-  width: 18px;
-  height: 18px;
-
-  border-radius: 50%;
-
-  background: red;
+  top: -8px;
+  right: -10px; /* La saca un poco del borde superior derecho del icono */
+  background: #ff4d4f; /* Rojo brillante de alerta */
   color: white;
-
-  font-size: 10px;
-
+  font-size: 11px;
+  font-weight: bold;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%; /* Círculo perfecto */
   display: flex;
   align-items: center;
-  justify-content: center; /* Centrado absoluto del número de alertas */
+  justify-content: center; /* Centra el número exactamente en medio de la burbuja */
 }
 
-/* Perfil de Usuario */
+/* Píldora de Perfil de Usuario */
 .user-profile {
   display: flex;
   align-items: center;
   gap: 12px;
   background: white;
   padding: 8px 14px;
-  border-radius: 50px; /* Estilo píldora */
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  border-radius: 50px; /* Extremos completamente redondeados (forma de píldora) */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Sombra muy suave para dar profundidad */
   cursor: pointer;
 }
 
+/* Foto de Avatar */
 .user-profile img {
   width: 44px;
   height: 44px;
-  border-radius: 50%;
-  object-fit: cover; /* Evita la distorsión de la foto si las proporciones no son 1:1 */
+  border-radius: 50%; /* Hace la foto redonda */
+  object-fit: cover; /* Evita que la foto se deforme si no es perfectamente cuadrada */
 }
 
+/* Textos informativos de usuario */
 .user-info {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Nombre arriba, Rol abajo */
 }
 
 .user-info strong {
@@ -328,9 +322,9 @@ body {
   flex-wrap: wrap;
   gap: 8px;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   font-size: 13px;
-  padding: 18px 28px 0;
+  padding: 0;
   color: #6b7499;
 }
 
@@ -612,7 +606,7 @@ body {
   }
 
   .search-box {
-    max-width: 380px;
+    width: 260px;
   }
 
   .results-table {
@@ -635,22 +629,8 @@ body {
   }
 
   .topbar {
-    align-items: flex-start;
+    align-items: center;
     gap: 18px;
-  }
-
-  .page-title {
-    width: 100%;
-  }
-
-  .search-box {
-    flex: 1 1 100%; /* El buscador se expande para ocupar toda la fila disponible */
-    max-width: 100%;
-  }
-
-  .topbar-actions {
-    width: 100%;
-    justify-content: flex-end; /* Mueve las acciones hacia la esquina opuesta */
   }
 
   .form-grid {
@@ -664,7 +644,6 @@ body {
 
 /* ============================================================
    ESTILOS ADICIONALES — Tabla de consulta y modificación
-   Agregar al final de personas.css
    ============================================================ */
 
 /* ── Textarea del formulario ─────────────────────────────────── */
@@ -903,10 +882,678 @@ textarea:focus {
   transform: scale(1.1);
 }
 
-/* ── Columna acción ───────────────────────────────────────── */
+/* ── Botones de acción (Editar / Eliminar) ────────────────── */
+.col-accion .btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  margin: 0 3px;
+  transition: all 0.2s ease;
+}
+
+/* Botón editar */
+.col-accion .btn-warning {
+  background: rgba(240, 165, 0, 0.12);
+  color: #f0a500;
+  border: 1px solid rgba(240, 165, 0, 0.25);
+}
+
+.col-accion .btn-warning:hover {
+  background: #f0a500;
+  color: #ffffff;
+  transform: scale(1.08);
+  box-shadow: 0 4px 10px rgba(240, 165, 0, 0.35);
+}
+
+/* Botón eliminar */
+.col-accion .btn-danger {
+  background: rgba(220, 53, 69, 0.12);
+  color: #dc3545;
+  border: 1px solid rgba(220, 53, 69, 0.25);
+}
+
+.col-accion .btn-danger:hover {
+  background: #dc3545;
+  color: #ffffff;
+  transform: scale(1.08);
+  box-shadow: 0 4px 10px rgba(220, 53, 69, 0.35);
+}
+
+/* Tamaño de iconos */
+.col-accion .btn i {
+  font-size: 14px;
+}
+
+/* ==========================================================================
+   ARQUITECTURA DE DISEÑO RESPONSIVO (MEDIA QUERIES)
+   ========================================================================== */
+
+/* ── PANTALLAS GRANDES (Hasta 1400px) ─────────────────────────────────── */
+@media screen and (max-width: 1400px) {
+  .main-content {
+    padding: 22px;
+  }
+
+  .topbar {
+    gap: 16px;
+  }
+
+  .search-box {
+    width: 260px;
+  }
+
+  .results-table {
+    min-width: 780px; /* Asegura un ancho legible mínimo antes de activar el scroll horizontal */
+  }
+}
+
+/* ── LAPTOPS / DESKTOPS MEDIANAS (Hasta 1200px) ────────────────────────── */
+@media screen and (max-width: 1200px) {
+  .sidebar {
+    width: 250px;
+    min-width: 250px;
+    max-width: 250px;
+  }
+
+  .main-content {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    padding: 20px;
+  }
+
+  .topbar {
+    align-items: center;
+    gap: 18px;
+  }
+
+  .form-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .summary-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+}
+
+/* ============================================================
+   ESTILOS ADICIONALES — Tabla de consulta y modificación
+   ============================================================ */
+
+/* ── Textarea del formulario ─────────────────────────────────── */
+textarea {
+  width: 100%;
+  border: 1.5px solid #dde2f0;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 14px;
+  background: #f7f8fc;
+  outline: none;
+  font-family: inherit;
+  resize: vertical;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+textarea:focus {
+  border-color: #e8600a;
+  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
+  background: #fff;
+}
+
+/* ── Botón Guardar Cambios (naranja suave / warning) ─────────── */
+.btn-warning {
+  background: #f0a500;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(240, 165, 0, 0.3);
+}
+.btn-warning:hover {
+  background: #d4900a;
+  box-shadow: 0 6px 16px rgba(240, 165, 0, 0.38);
+  transform: translateY(-1px);
+}
+
+/* Clase para ocultar / mostrar elementos */
+.oculto {
+  display: none !important;
+}
+
+/* ── Tarjeta de la tabla ─────────────────────────────────────── */
+.table-card {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(30, 42, 94, 0.1);
+  width: 100%;
+  margin: 30px auto;
+  overflow: hidden;
+}
+
+/* ── Encabezado de la tarjeta tabla ─────────────────────────── */
+.table-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 26px;
+  border-bottom: 1.5px solid #e8ecf6;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.table-card-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.table-card-icon {
+  width: 42px;
+  height: 42px;
+  background: rgba(30, 42, 94, 0.1);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1e2a5e;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+.table-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a2042;
+  margin: 0 0 3px;
+}
+
+.table-card-subtitle {
+  font-size: 12px;
+  color: #6b7499;
+  margin: 0;
+}
+
+/* ── Buscador de la tabla ────────────────────────────────────── */
+.table-search input {
+  width: 100%;
+  min-width: 180px;
+}
+
+.table-search i {
+  position: absolute;
+  left: 12px;
+  color: #6b7499;
+  font-size: 13px;
+  pointer-events: none;
+}
+.table-search input {
+  border: 1.5px solid #dde2f0;
+  border-radius: 24px;
+  padding: 9px 16px 9px 36px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #1a2042;
+  background: #f7f8fc;
+  outline: none;
+  width: 260px;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.table-search input:focus {
+  border-color: #e8600a;
+  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.1);
+  background: #fff;
+}
+
+/* ── Contenedor con scroll horizontal ───────────────────────── */
+.table-wrapper {
+  overflow-x: auto;
+  padding: 0 0 8px;
+}
+
+/* ── Tabla ───────────────────────────────────────────────────── */
+.data-table {
+  width: 100%;
+  min-width: 0;
+}
+
+.data-table thead tr {
+  background: #f0f2f8;
+  border-bottom: 2px solid #dde2f0;
+}
+
+.data-table th {
+  padding: 13px 16px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1e2a5e;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+}
+
+.data-table tbody tr {
+  border-bottom: 1px solid #f0f2f8;
+  transition: background 0.15s;
+}
+
+.data-table tbody tr:hover {
+  background: #fdf4ee;
+}
+
+/* Fila activa (seleccionada para editar) */
+.data-table tbody tr.fila-activa {
+  background: rgba(232, 96, 10, 0.07);
+  outline: 2px solid rgba(232, 96, 10, 0.3);
+  outline-offset: -1px;
+}
+
+.data-table td {
+  padding: 11px 16px;
+  color: #3a4060;
+  vertical-align: middle;
+}
+
+/* Foto miniatura en la tabla */
+.tabla-foto {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #dde2f0;
+  display: block;
+}
+
+/* Columna dirección: recorta texto largo */
+.col-direccion {
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Columna acción: centrada */
 .col-accion {
   text-align: center;
   white-space: nowrap;
+}
+
+/* Celda vacía */
+.tabla-vacia {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6b7499;
+  font-size: 14px;
+}
+.tabla-vacia i {
+  display: block;
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #c5cbdf;
+}
+
+/* ── Botón editar en la tabla ────────────────────────────────── */
+.btn-editar {
+  background: rgba(30, 42, 94, 0.08);
+  border: none;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #1e2a5e;
+  font-size: 15px;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    transform 0.15s;
+}
+.btn-editar:hover {
+  background: #e8600a;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+/* ── Botones de acción (Editar / Eliminar) ────────────────── */
+.col-accion .btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  margin: 0 3px;
+  transition: all 0.2s ease;
+}
+
+/* Botón editar */
+.col-accion .btn-warning {
+  background: rgba(240, 165, 0, 0.12);
+  color: #f0a500;
+  border: 1px solid rgba(240, 165, 0, 0.25);
+}
+
+.col-accion .btn-warning:hover {
+  background: #f0a500;
+  color: #ffffff;
+  transform: scale(1.08);
+  box-shadow: 0 4px 10px rgba(240, 165, 0, 0.35);
+}
+
+/* Botón eliminar */
+.col-accion .btn-danger {
+  background: rgba(220, 53, 69, 0.12);
+  color: #dc3545;
+  border: 1px solid rgba(220, 53, 69, 0.25);
+}
+
+.col-accion .btn-danger:hover {
+  background: #dc3545;
+  color: #ffffff;
+  transform: scale(1.08);
+  box-shadow: 0 4px 10px rgba(220, 53, 69, 0.35);
+}
+
+/* Tamaño de iconos */
+.col-accion .btn i {
+  font-size: 14px;
+}
+
+/* ==========================================================================
+   ARQUITECTURA DE DISEÑO RESPONSIVO (MEDIA QUERIES)
+   ========================================================================== */
+
+/* ── PANTALLAS GRANDES (Hasta 1400px) ─────────────────────────────────── */
+@media screen and (max-width: 1400px) {
+  .main-content {
+    padding: 22px;
+  }
+
+  .topbar {
+    gap: 16px;
+  }
+
+  .search-box {
+    width: 260px;
+  }
+
+  .results-table {
+    min-width: 780px; /* Asegura un ancho legible mínimo antes de activar el scroll horizontal */
+  }
+}
+
+/* ── LAPTOPS / DESKTOPS MEDIANAS (Hasta 1200px) ────────────────────────── */
+@media screen and (max-width: 1200px) {
+  .sidebar {
+    width: 250px;
+    min-width: 250px;
+    max-width: 250px;
+  }
+
+  .main-content {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    padding: 20px;
+  }
+
+  .topbar {
+    align-items: center;
+    gap: 18px;
+  }
+
+  .form-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .summary-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+}
+
+/* ============================================================
+   ESTILOS ADICIONALES — Tabla de consulta y modificación
+   ============================================================ */
+
+/* ── Textarea del formulario ─────────────────────────────────── */
+textarea {
+  width: 100%;
+  border: 1.5px solid #dde2f0;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 14px;
+  background: #f7f8fc;
+  outline: none;
+  font-family: inherit;
+  resize: vertical;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+textarea:focus {
+  border-color: #e8600a;
+  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
+  background: #fff;
+}
+
+/* ── Botón Guardar Cambios (naranja suave / warning) ─────────── */
+.btn-warning {
+  background: #f0a500;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(240, 165, 0, 0.3);
+}
+.btn-warning:hover {
+  background: #d4900a;
+  box-shadow: 0 6px 16px rgba(240, 165, 0, 0.38);
+  transform: translateY(-1px);
+}
+
+/* Clase para ocultar / mostrar elementos */
+.oculto {
+  display: none !important;
+}
+
+/* ── Tarjeta de la tabla ─────────────────────────────────────── */
+.table-card {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(30, 42, 94, 0.1);
+  width: 100%;
+  margin: 30px auto;
+  overflow: hidden;
+}
+
+/* ── Encabezado de la tarjeta tabla ─────────────────────────── */
+.table-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 26px;
+  border-bottom: 1.5px solid #e8ecf6;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.table-card-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.table-card-icon {
+  width: 42px;
+  height: 42px;
+  background: rgba(30, 42, 94, 0.1);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1e2a5e;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+.table-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a2042;
+  margin: 0 0 3px;
+}
+
+.table-card-subtitle {
+  font-size: 12px;
+  color: #6b7499;
+  margin: 0;
+}
+
+/* ── Buscador de la tabla ────────────────────────────────────── */
+.table-search input {
+  width: 100%;
+  min-width: 180px;
+}
+
+.table-search i {
+  position: absolute;
+  left: 12px;
+  color: #6b7499;
+  font-size: 13px;
+  pointer-events: none;
+}
+.table-search input {
+  border: 1.5px solid #dde2f0;
+  border-radius: 24px;
+  padding: 9px 16px 9px 36px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #1a2042;
+  background: #f7f8fc;
+  outline: none;
+  width: 260px;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.table-search input:focus {
+  border-color: #e8600a;
+  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.1);
+  background: #fff;
+}
+
+/* ── Contenedor con scroll horizontal ───────────────────────── */
+.table-wrapper {
+  overflow-x: auto;
+  padding: 0 0 8px;
+}
+
+/* ── Tabla ───────────────────────────────────────────────────── */
+.data-table {
+  width: 100%;
+  min-width: 0;
+}
+
+.data-table thead tr {
+  background: #f0f2f8;
+  border-bottom: 2px solid #dde2f0;
+}
+
+.data-table th {
+  padding: 13px 16px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1e2a5e;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+}
+
+.data-table tbody tr {
+  border-bottom: 1px solid #f0f2f8;
+  transition: background 0.15s;
+}
+
+.data-table tbody tr:hover {
+  background: #fdf4ee;
+}
+
+/* Fila activa (seleccionada para editar) */
+.data-table tbody tr.fila-activa {
+  background: rgba(232, 96, 10, 0.07);
+  outline: 2px solid rgba(232, 96, 10, 0.3);
+  outline-offset: -1px;
+}
+
+.data-table td {
+  padding: 11px 16px;
+  color: #3a4060;
+  vertical-align: middle;
+}
+
+/* Foto miniatura en la tabla */
+.tabla-foto {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #dde2f0;
+  display: block;
+}
+
+/* Columna dirección: recorta texto largo */
+.col-direccion {
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Columna acción: centrada */
+.col-accion {
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Celda vacía */
+.tabla-vacia {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6b7499;
+  font-size: 14px;
+}
+.tabla-vacia i {
+  display: block;
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #c5cbdf;
+}
+
+/* ── Botón editar en la tabla ────────────────────────────────── */
+.btn-editar {
+  background: rgba(30, 42, 94, 0.08);
+  border: none;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #1e2a5e;
+  font-size: 15px;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    transform 0.15s;
+}
+.btn-editar:hover {
+  background: #e8600a;
+  color: #ffffff;
+  transform: scale(1.1);
 }
 
 /* ── Botones de acción (Editar / Eliminar) ────────────────── */
@@ -963,16 +1610,13 @@ textarea:focus {
     width: 80px;
     min-width: 80px;
     max-width: 80px;
-
     padding: 18px 8px;
-
     align-items: center;
   }
 
   .main-content {
     margin-left: 80px;
     width: calc(100% - 80px);
-
     padding: 18px;
   }
 
@@ -996,14 +1640,10 @@ textarea:focus {
   .menu a {
     width: 55px;
     height: 55px;
-
     padding: 0;
-
     justify-content: center;
     align-items: center;
-
     border-radius: 12px;
-
     font-size: 0; /* Oculta el texto */
   }
 
@@ -1023,12 +1663,9 @@ textarea:focus {
   .logout a {
     width: 55px;
     height: 55px;
-
     padding: 0;
-
     justify-content: center;
     align-items: center;
-
     font-size: 0;
   }
 
@@ -1037,9 +1674,9 @@ textarea:focus {
     margin: 0;
   }
 
-   .page-title {
-    min-width: auto;
-    text-align: center;
+  .page-title {
+    width: 100%;
+    text-align: left;
   }
   .page-title h1 {
     font-size: 22px;
@@ -1048,25 +1685,56 @@ textarea:focus {
     font-size: 13px;
   }
 
-  .search-box {
-    max-width: 100%;
-  }
-
+  /* --- TOPBAR CON TÍTULO ARRIBA Y ELEMENTOS DEBAJO --- */
   .topbar {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-
-    align-items: stretch;
+    display: flex;
+    flex-wrap: wrap; /* Permite dividir en dos niveles */
+    align-items: center;
+    justify-content: flex-start; /* Alinea los elementos de forma natural */
+    gap: 20px; /* Espaciado general entre elementos */
   }
 
+  /* 1. TÍTULO PRINCIPAL EN EL PRIMER NIVEL (ARRIBA) */
+  .page-title {
+    order: 1;
+    width: 100%; /* Forzar a tomar toda la fila superior */
+    min-width: auto;
+  }
+
+  /* 2. NOTIFICACIONES (IZQUIERDA) - SEGUNDO NIVEL */
   .topbar-actions {
-    width: 100%;
-    justify-content: flex-end;
+    order: 2;
+    margin-left: 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-shrink: 0;
   }
 
+  /* 3. PERFIL DE USUARIO (CENTRO / IZQUIERDA) - SEGUNDO NIVEL */
   .user-profile {
-    padding: 7px 10px;
+    order: 3;
+    margin: 0; /* Eliminamos el '0 auto' para evitar que empuje agresivamente */
+    flex-shrink: 0;
+  }
+
+  .user-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 4. BARRA DE BÚSQUEDA (DERECHA Y MÁS ANCHA) - SEGUNDO NIVEL */
+  .search-box {
+    order: 4;
+    flex: 1; /* Ocupa todo el espacio sobrante de la fila */
+    min-width: 220px; /* Evita que se colapse demasiado */
+    max-width: 100%; /* Le permite crecer libremente */
+    margin-left: 15px; /* Separación limpia respecto al perfil de usuario */
+  }
+
+  .search-box input {
+    width: 100%; /* Llena todo el contenedor */
+    padding: 11px 16px 11px 42px; /* Ajuste cómodo para el texto */
   }
 
   .form-card-header {
@@ -1095,16 +1763,13 @@ textarea:focus {
     width: 70px;
     min-width: 70px;
     max-width: 70px;
-
     padding: 15px 6px;
-
     align-items: center;
   }
 
   .main-content {
     margin-left: 70px;
     width: calc(100% - 70px);
-
     padding: 15px;
   }
 
@@ -1116,11 +1781,8 @@ textarea:focus {
   .menu a {
     width: 50px;
     height: 50px;
-
     font-size: 0;
-
     padding: 0;
-
     justify-content: center;
   }
 
@@ -1131,11 +1793,8 @@ textarea:focus {
   .logout a {
     width: 50px;
     height: 50px;
-
     padding: 0;
-
     font-size: 0;
-
     justify-content: center;
   }
 
@@ -1143,41 +1802,57 @@ textarea:focus {
     font-size: 18px;
   }
 
-   .page-title {
-    min-width: auto;
-    text-align: center;
-  }
   .page-title h1 {
-    font-size: 22px;
+    font-size: 20px;
   }
   .page-title p {
-    font-size: 13px;
+    font-size: 12px;
   }
 
-  .search-box {
-    max-width: 100%;
-  }
-
+  /* En celulares pequeños se permite romper en 3er nivel si la pantalla es muy estrecha */
   .topbar {
-    gap: 10px;
-  }
-
-  .topbar-actions {
-    justify-content: space-between;
-  }
-
-  .user-info {
-    display: none;
+    gap: 12px;
   }
 
   .user-profile {
-    border-radius: 14px;
-    padding: 6px 8px;
+    padding: 4px 10px;
+    gap: 8px;
   }
 
   .user-profile img {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
+  }
+
+  .user-info strong {
+    font-size: 12px;
+  }
+
+  .user-info span {
+    font-size: 10px;
+  }
+
+  .search-box {
+    min-width: 180px;
+    margin-left: 0; /* Resetea margen en pantallas móviles */
+  }
+
+  .search-box input {
+    padding: 9px 12px 9px 36px;
+    font-size: 13px;
+  }
+
+  .search-box i {
+    left: 12px;
+    font-size: 13px;
+  }
+
+  .page-title h1 {
+    font-size: 22px;
+  }
+
+  .page-title p {
+    font-size: 12px;
   }
 
   .form-body {
@@ -1221,14 +1896,12 @@ textarea:focus {
     width: 65px;
     min-width: 65px;
     max-width: 65px;
-
     padding: 12px 5px;
   }
 
   .main-content {
     margin-left: 65px;
     width: calc(100% - 65px);
-
     padding: 12px;
   }
 
@@ -1243,7 +1916,6 @@ textarea:focus {
   .menu a {
     width: 45px;
     height: 45px;
-
     border-radius: 10px;
   }
 
@@ -1270,6 +1942,55 @@ textarea:focus {
 
   .breadcrumb {
     font-size: 11px;
+  }
+
+  /* Ajustes finos para garantizar 1 sola fila en móviles pequeños */
+  .topbar-actions {
+    gap: 6px;
+  }
+
+  .search-box {
+    min-width: 100px;
+  }
+
+  .search-box input {
+    padding: 8px 10px 8px 30px;
+    font-size: 11px;
+  }
+
+  .search-box i {
+    left: 10px;
+    font-size: 11px;
+  }
+
+  .notification {
+    font-size: 17px;
+  }
+
+  .badge {
+    width: 15px;
+    height: 15px;
+    font-size: 8px;
+    top: -5px;
+    right: -5px;
+  }
+
+  .user-profile {
+    padding: 3px 6px;
+    gap: 5px;
+  }
+
+  .user-profile img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .user-info strong {
+    font-size: 11px;
+  }
+
+  .user-info span {
+    font-size: 9px;
   }
 
   .form-card {

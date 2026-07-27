@@ -332,25 +332,13 @@
                 <td>{{ proceso.Fecha_Salida|date:"d/m/Y" }}</td>
 
                 <td>
-                  {% if proceso.id_Offboarding == offboarding.id_Offboarding %}
-
                   <a
                     href="{% url 'gestionar_offboarding' proceso.id_Offboarding %}"
                     class="btn btn-primary"
                     style="padding: 4px 10px; font-size: 11px"
                   >
-                    <i class="fas fa-list-check"></i>
-                    Continuar
+                    <i class="fas fa-pen-to-square"></i>
                   </a>
-
-                  {% else %}
-
-                  <a
-                    href="{% url 'gestionar_offboarding' proceso.id_Offboarding %}"
-                    class="btn btn-ghost"
-                    style="padding: 4px 10px; font-size: 11px"
-
-                  >{% endif %}
                 </td>
               </tr>
 
