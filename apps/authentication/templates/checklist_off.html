@@ -415,59 +415,109 @@
           <!-- ======================================================
                 TARJETA: ASISTENCIA DE EMPLEADOS
             ===================================================== -->
+          <!-- TARJETA: TABLA DE OFFBOARDING -->
           <section class="table-card">
-            <div class="data-table-container">
-              <table class="custom-table">
+            <div class="table-card-header">
+              <div class="table-card-header-left">
+                <div class="table-card-icon">
+                  <i class="fas fa-door-open"></i>
+                </div>
+                <div>
+                  <h2 class="table-card-title">Procesos de Offboarding</h2>
+                  <p class="table-card-subtitle">
+                    Busque un proceso de salida y seleccione el ícono de edición
+                    para gestionar su checklist.
+                  </p>
+                </div>
+              </div>
+              <div class="table-search">
+                <i class="fas fa-search"></i>
+                <input
+                  type="text"
+                  id="filtro-tabla"
+                  placeholder="Buscar colaborador o causa..."
+                />
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="data-table" id="tabla-offboarding">
                 <thead>
                   <tr>
-                    <th>ID</th>
-                    <th>Empleado</th>
-                    <th>Fecha salida</th>
-                    <th>Estado</th>
-                    <th>% Completo</th>
-                    <th>Fecha registro</th>
-                    <th>Acciones</th>
+                    <th>ID Offboarding</th>
+                    <th>Colaborador</th>
+                    <th>Categoría / Causa</th>
+                    <th>Fecha Salida</th>
+                    <th>Progreso</th>
+                    <th class="col-accion">Acción</th>
                   </tr>
                 </thead>
-
                 <tbody>
-                  {% for check in checklists %}
-
+                  {% for checklist in checklists %}
                   <tr>
-                    <td>{{ check.id_Check }}</td>
+                    <td>
+                      <strong
+                        >#OFF-{{ checklist.id_Offboarding.id_Offboarding }}</strong
+                      >
+                    </td>
 
-                    <td>{{ check.id_Offboarding.idEmpleado }}</td>
+                    <td>
+                      {{ checklist.id_Offboarding.idEmpleado.idPersona.Nombre_Completo }}
+                    </td>
 
-                    <td>{{ check.id_Offboarding.Fecha_Salida }}</td>
+                    <td>
+                      {% if checklist.id_Offboarding.idCausa.Categoria == "Voluntaria" %}
 
-                    <td>{{ check.id_Estatus_Vacante.TipoEstatus }}</td>
+                      <span class="badge-category bg-voluntaria">
+                        {{ checklist.id_Offboarding.idCausa.Categoria }}
+                      </span>
+
+                      {% elif checklist.id_Offboarding.idCausa.Categoria == "Involuntaria" %}
+
+                      <span class="badge-category bg-involuntaria">
+                        {{ checklist.id_Offboarding.idCausa.Categoria }}
+                      </span>
+
+                      {% else %}
+
+                      <span class="badge-category">
+                        {{ checklist.id_Offboarding.idCausa.Categoria }}
+                      </span>
+
+                      {% endif %} - {{ checklist.id_Offboarding.idCausa.Causa }}
+                    </td>
+
+                    <td>
+                      {{ checklist.id_Offboarding.Fecha_Salida|date:"d/m/Y" }}
+                    </td>
 
                     <td>
                       <div class="progress-container">
                         <div
-                          class="progress-bar"
-                          style="width: {{ check.pct_listo }}%;"
-                        ></div>
+                          style="
+                            flex: 1;
+                            background-color: #edf0f7;
+                            border-radius: 4px;
+                            overflow: hidden;
+                          "
+                        >
+                          <div
+                            class="progress-bar"
+                            style="width: {{ checklist.pct_listo|default:0 }}%;"
+                          ></div>
+                        </div>
 
-                        <span>{{ check.pct_listo }}%</span>
+                        <span> {{ checklist.pct_listo|default:0 }}% </span>
                       </div>
                     </td>
 
-                    <td>{{ check.Fecha_Asignacion }}</td>
-
-                    <td>
+                    <td class="col-accion">
                       <a
-                        href="{% url 'editar_checklist_offboarding' check.id_Check %}"
-                        class="btn-edit"
+                        href="{% url 'editar_checklist_offboarding' checklist.id_Check %}"
+                        class="btn btn-warning btn-sm"
+                        title="Editar Checklist"
                       >
-                        <i class="fas fa-pen"></i>
-                      </a>
-
-                      <a
-                        href="{% url 'ver_checklist_offboarding' check.id_Check %}"
-                        class="btn-view"
-                      >
-                        <i class="fas fa-eye"></i>
+                        <i class="fas fa-pen-to-square"></i>
                       </a>
                     </td>
                   </tr>
@@ -475,8 +525,9 @@
                   {% empty %}
 
                   <tr>
-                    <td colspan="7" style="text-align: center">
-                      No existen checklists registrados.
+                    <td colspan="6" class="tabla-vacia">
+                      <i class="fas fa-door-open"></i>
+                      No existen Checklists de Offboarding registrados.
                     </td>
                   </tr>
 

@@ -4078,7 +4078,9 @@ def guardar_checklist_offboarding(request):
     context = {
 
         "offboardings": Offboarding.objects.select_related(
-            "idEmpleado"
+            "idEmpleado",
+            "idEmpleado__idPersona",
+            "idCausa"
         ).order_by(
             "-Fecha_Salida"
         ),
@@ -4090,6 +4092,9 @@ def guardar_checklist_offboarding(request):
 
         "checklists": OffboardingChecklist.objects.select_related(
             "id_Offboarding",
+            "id_Offboarding__idEmpleado",
+            "id_Offboarding__idEmpleado__idPersona",
+            "id_Offboarding__idCausa",
             "id_Estatus_Vacante"
         ).order_by(
             "-Fecha_Asignacion"
@@ -4098,7 +4103,6 @@ def guardar_checklist_offboarding(request):
         "estados": Estatus.objects.order_by(
             "id_Estatus_Vacante"
         )
-
     }
 
     return render(

@@ -11,6 +11,7 @@ body {
   font-family: "Segoe UI", sans-serif; /* Tipografía limpia y moderna */
   background: #f4f7fb; /* Color de fondo gris claro azulado para el dashboard */
   color: #000000; /* Color principal de texto (tono naranja/óxido) */
+  overflow-x: hidden; /* Evita scrolls horizontales a nivel global */
 }
 
 /* Contenedor padre que divide la pantalla en dos columnas principales */
@@ -53,8 +54,6 @@ body {
 
 /* Imagen del Logo */
 .logo-img {
-  /* CORRECCIÓN: Cambiamos 320px por un porcentaje controlado. 
-     Esto asegura que el logo ocupe el espacio óptimo de la barra sin salirse jamás. */
   width: 85%;
   max-width: 220px; /* Limita el tamaño máximo para que no se vea gigante en monitores enormes */
   height: auto; /* Mantiene la proporción de aspecto de la imagen */
@@ -63,8 +62,8 @@ body {
   margin: 0 auto 25px; /* Centra horizontalmente y añade margen inferior */
 
   /* Diseño de tarjeta de cristal (Glassmorphism) */
-  padding: 12px; /* CORRECCIÓN: Reducido ligeramente para dar más espacio útil a la imagen */
-  border-radius: 18px; /* Ajustado proporcionalmente al nuevo tamaño */
+  padding: 12px;
+  border-radius: 18px;
   background: rgba(
     255,
     255,
@@ -76,11 +75,9 @@ body {
     6px
   ); /* Desenfoca lo que esté detrás de la imagen (efecto esmerilado) */
 
-  /* CORRECCIÓN INDUSTRIAL: Evita que el padding sume tamaño extra al ancho total */
   box-sizing: border-box;
 
   /* Efecto de Resplandor (Glow) */
-  /* Aplica sombras múltiples directamente a la silueta de la imagen, sube brillo y contraste */
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25))
     drop-shadow(0 0 25px rgba(255, 255, 255, 0.12)) brightness(1.18)
     contrast(1.15);
@@ -92,7 +89,6 @@ body {
 .logo-img:hover {
   transform: scale(1.03); /* Agranda el logo un 3% simulando cercanía */
 
-  /* Intensifica las sombras de luz, el brillo y el contraste al pasar el mouse */
   filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))
     drop-shadow(0 0 32px rgba(255, 255, 255, 0.18)) brightness(1.25)
     contrast(1.2);
@@ -100,10 +96,10 @@ body {
 
 /* Texto complementario debajo del logo */
 .logo span {
-  font-size: 14px; /* CORRECCIÓN: Reducido de 18px a 14px para mantener balance con la barra lateral */
-  letter-spacing: 4px; /* Ajustado sutilmente para evitar que rompa en dos líneas */
-  color: #9bc0ff; /* Color azul claro que contrasta con el fondo */
-  display: block; /* Asegura que se comporte correctamente abajo de la imagen */
+  font-size: 14px;
+  letter-spacing: 4px;
+  color: #9bc0ff;
+  display: block;
 }
 
 /* Menú de Navegación */
@@ -117,61 +113,51 @@ body {
 
 /* Enlaces individuales del menú */
 .menu a {
-  color: #fefefd; /* Color de texto casi blanco puro */
-  text-decoration: none; /* Elimina la línea subrayada típica de los enlaces */
-  padding: 14px 18px; /* Tamaño del área interactiva del botón */
-  border-radius: 12px; /* Bordes redondeados del botón */
+  color: #fefefd;
+  text-decoration: none;
+  padding: 14px 18px;
+  border-radius: 12px;
   display: flex;
-  align-items: center; /* Alinea verticalmente el icono y el texto al centro */
-  gap: 12px; /* Separación entre el icono y el texto */
-  transition: 0.3s; /* Transición suave para los cambios de color y fondo */
+  align-items: center;
+  gap: 12px;
+  transition: 0.3s;
 }
 
 /* Estado Hover y Activo del Menú */
 .menu a:hover,
 .menu a.active {
-  background: #4567b7; /* Cambia el fondo a un azul más claro */
-  color: white; /* Texto blanco puro */
+  background: #4567b7;
+  color: white;
 }
 
-/* Iconos del menú (ej. FontAwesome) */
+/* Iconos del menú */
 .menu i {
-  width: 20px; /* Ancho fijo para garantizar que todos los textos inicien en la misma columna */
+  width: 20px;
 }
 
-/* Personalización de la barra de scroll de la Sidebar (Solo navegadores WebKit como Chrome, Edge, Safari) */
+/* Personalización de la barra de scroll de la Sidebar */
 .sidebar::-webkit-scrollbar {
-  width: 6px; /* Grosor de la barra de scroll vertical */
+  width: 6px;
 }
 
 .sidebar::-webkit-scrollbar-track {
-  background: transparent; /* Fondo del carril del scroll invisible */
+  background: transparent;
 }
 
 .sidebar::-webkit-scrollbar-thumb {
-  background: rgba(
-    255,
-    255,
-    255,
-    0.25
-  ); /* Color de la barra de scroll (blanco translúcido) */
-  border-radius: 10px; /* Bordes completamente redondeados */
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
 }
 
 .sidebar::-webkit-scrollbar-thumb:hover {
-  background: rgba(
-    255,
-    255,
-    255,
-    0.4
-  ); /* Se oscurece ligeramente al pasar el mouse */
+  background: rgba(255, 255, 255, 0.4);
 }
 
 /* Sección de Cierre de Sesión (Logout) */
 .logout {
   margin-top: 20px;
   padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.15); /* Línea divisoria superior delgada y sutil */
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .logout a {
@@ -184,12 +170,7 @@ body {
 }
 
 .logout a:hover {
-  background: rgba(
-    255,
-    255,
-    255,
-    0.08
-  ); /* Fondo sutil al posarse sobre cerrar sesión */
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* ==========================================================================
@@ -197,9 +178,9 @@ body {
    El área derecha del dashboard donde se renderizan los formularios, tablas, etc.
    ========================================================================== */
 .main-content {
-  flex: 1; /* Ocupa todo el ancho restante del viewport */
-  margin-left: 280px; /* IMPORTANTE: Desplaza el contenido a la derecha para no quedar oculto bajo la sidebar fija */
-  padding: 30px; /* Espaciado general del contenido */
+  flex: 1;
+  margin-left: 280px;
+  padding: 30px;
 }
 
 /* ==========================================================================
@@ -207,63 +188,63 @@ body {
    ========================================================================== */
 .topbar {
   display: flex;
-  align-items: center; /* Alinea verticalmente buscador, título y perfil */
-  gap: 20px; /* Distancia entre componentes de la barra superior */
-  margin-bottom: 30px; /* Separación con el resto de la página */
-  flex-wrap: wrap; /* Permite que los elementos bajen de fila si no hay suficiente espacio */
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
 }
 
 /* Contenedor de Título de Página */
 .page-title {
-  min-width: 260px; /* Evita que se colapse demasiado en pantallas medianas */
+  min-width: 260px;
 }
 
 .page-title h1 {
   font-size: 34px;
   margin-bottom: 5px;
-  color: #d35b1a; /* Color principal de la marca para el título */
+  color: #d35b1a;
 }
 
 .page-title p {
-  color: #7a8599; /* Gris neutro para texto secundario */
+  color: #7a8599;
   font-size: 15px;
 }
 
 /* Buscador de la barra superior */
 .search-box {
-  flex: 1; /* Intenta expandirse para ocupar el espacio central */
-  max-width: 420px; /* Pero limita su tamaño máximo para no verse gigante */
-  position: relative; /* Permite posicionar el icono de la lupa de forma absoluta en su interior */
+  flex: 1;
+  max-width: 420px;
+  position: relative;
 }
 
 /* Icono de Lupa dentro del Buscador */
 .search-box i {
   position: absolute;
-  top: 50%; /* Centra el icono verticalmente */
-  left: 18px; /* Lo empuja un poco hacia la derecha de la caja */
-  transform: translateY(-50%); /* Ajuste perfecto de centrado vertical */
+  top: 50%;
+  left: 18px;
+  transform: translateY(-50%);
   color: #8a94a6;
 }
 
 /* Input del Buscador */
 .search-box input {
   width: 100%;
-  padding: 14px 18px 14px 48px; /* Padding izquierdo de 48px para dejar espacio y que el texto no pise la lupa */
+  padding: 14px 18px 14px 48px;
   border: 1px solid #dbe2ef;
   border-radius: 12px;
   font-size: 15px;
-  outline: none; /* Remueve el borde azul por defecto del navegador */
+  outline: none;
 }
 
-/* Efecto Focus del Buscador (Al hacer click dentro) */
+/* Efecto Focus del Buscador */
 .search-box input:focus {
-  border-color: #0c45ca; /* Cambia a azul brillante */
-  box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1); /* Crea un halo de luz sutil alrededor de la caja */
+  border-color: #0c45ca;
+  box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1);
 }
 
 /* Bloque derecho del Topbar (Notificaciones y Perfil) */
 .topbar-actions {
-  margin-left: auto; /* Truco de Flexbox para empujar este grupo completamente a la derecha */
+  margin-left: auto;
   display: flex;
   align-items: center;
   gap: 25px;
@@ -271,27 +252,27 @@ body {
 
 /* Icono de Campana de Notificación */
 .notification {
-  position: relative; /* Permite posicionar la burbuja (badge) roja encima */
+  position: relative;
   font-size: 22px;
   cursor: pointer;
   color: #1b2b4b;
 }
 
-/* Burbuja de Alertas (ej: "3 mensajes") */
+/* Burbuja de Alertas */
 .badge {
   position: absolute;
   top: -8px;
-  right: -10px; /* La saca un poco del borde superior derecho del icono */
-  background: #ff4d4f; /* Rojo brillante de alerta */
+  right: -10px;
+  background: #ff4d4f;
   color: white;
   font-size: 11px;
   font-weight: bold;
   width: 20px;
   height: 20px;
-  border-radius: 50%; /* Círculo perfecto */
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  justify-content: center; /* Centra el número exactamente en medio de la burbuja */
+  justify-content: center;
 }
 
 /* Píldora de Perfil de Usuario */
@@ -301,8 +282,8 @@ body {
   gap: 12px;
   background: white;
   padding: 8px 14px;
-  border-radius: 50px; /* Extremos completamente redondeados (forma de píldora) */
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Sombra muy suave para dar profundidad */
+  border-radius: 50px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   cursor: pointer;
 }
 
@@ -310,14 +291,14 @@ body {
 .user-profile img {
   width: 44px;
   height: 44px;
-  border-radius: 50%; /* Hace la foto redonda */
-  object-fit: cover; /* Evita que la foto se deforme si no es perfectamente cuadrada */
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 /* Textos informativos de usuario */
 .user-info {
   display: flex;
-  flex-direction: column; /* Nombre arriba, Rol abajo */
+  flex-direction: column;
 }
 
 .user-info strong {
@@ -331,13 +312,12 @@ body {
 
 /* ==========================================================================
    BREADCRUMB (Migas de Pan)
-   Ubicación actual del usuario en la plataforma.
    ========================================================================== */
 .breadcrumb {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 18px 28px 0; /* Margen interno para alinearse con los bordes de la tarjeta inferior */
+  padding: 18px 28px 0;
   font-size: 13px;
   color: #6b7499;
 }
@@ -348,25 +328,22 @@ body {
   transition: color 0.15s;
 }
 
-/* Al pasar por encima, cambia al color naranja principal de la marca */
 .breadcrumb a:hover {
   color: #e8600a;
 }
 
-/* Separadores (ej: "/" o ">") */
 .breadcrumb .sep {
   font-size: 10px;
   color: #c5cbdf;
 }
 
-/* Página actual (Último elemento no clickeable) */
 .breadcrumb .current {
   color: #e8600a;
-  font-weight: 700; /* Resaltado en negrita y color corporativo naranja */
+  font-weight: 700;
 }
 
 /* ==========================================================================
-   FOOTER - Pie de página de la interfaz
+   FOOTER
    ========================================================================== */
 .footer {
   margin-top: 30px;
@@ -376,321 +353,558 @@ body {
 }
 
 /* =========================================================
-   CHECKLIST OFFBOARDING
+   CHECKLIST OFFBOARDING & TABLAS MEJORADAS
 ========================================================= */
 
-/* Contenedor principal */
-.admin-layout{
-    margin-top:25px;
+.admin-layout {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
-/* Layout horizontal */
-.checklist-layout{
-    display:flex;
-    gap:30px;
-    align-items:flex-start;
+.checklist-layout {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
 }
 
-/* Paneles */
-.card-panel{
-    background:#fff;
-    border-radius:12px;
-    box-shadow:0 4px 20px rgba(30,42,94,.05);
-    border:1px solid #e8ecf6;
-    padding:24px;
+.card-panel,
+.table-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(30, 42, 94, 0.05);
+  border: 1px solid #e8ecf6;
+  padding: 24px;
 }
 
-/* Panel izquierdo */
-.form-panel{
-    width:34%;
-    min-width:320px;
+.table-card {
+  margin-top: 25px;
 }
 
-/* Panel derecho */
-.table-panel{
-    flex:1;
+.form-panel {
+  width: 34%;
+  min-width: 320px;
 }
 
-/* Encabezados */
-.panel-header{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-bottom:20px;
-    padding-bottom:12px;
-    border-bottom:2px solid #eef1fa;
+.table-panel {
+  flex: 1;
 }
 
-.panel-header h3{
-    margin:0;
-    color:#26317a;
-    font-size:16px;
-    font-weight:700;
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #eef1fa;
 }
 
-.panel-header i{
-    color:#e8600a;
-    font-size:18px;
+.panel-header h3 {
+  margin: 0;
+  color: #26317a;
+  font-size: 16px;
+  font-weight: 700;
 }
 
-/* Campos */
-.field-block{
-    display:flex;
-    flex-direction:column;
-    margin-bottom:18px;
+.panel-header i {
+  color: #e8600a;
+  font-size: 18px;
 }
 
-.field-block label{
-    margin-bottom:7px;
-    font-size:13px;
-    font-weight:600;
-    color:#26317a;
+.field-block {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
 }
 
-.req{
-    color:#d9534f;
+.field-block label {
+  margin-bottom: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #26317a;
 }
 
-/* Inputs */
+.req {
+  color: #d9534f;
+}
+
 .field-block select,
 .field-block input[type="date"],
-.field-block textarea{
-    width:100%;
-    border:1px solid #d8dceb;
-    border-radius:8px;
-    padding:11px 14px;
-    font-size:14px;
-    background:#fff;
-    transition:.25s;
-    font-family:inherit;
+.field-block textarea {
+  width: 100%;
+  border: 1px solid #d8dceb;
+  border-radius: 8px;
+  padding: 11px 14px;
+  font-size: 14px;
+  background: #fff;
+  transition: all 0.25s ease;
+  font-family: inherit;
 }
 
 .field-block select:focus,
 .field-block input:focus,
-.field-block textarea:focus{
-    border-color:#26317a;
-    outline:none;
-    box-shadow:0 0 0 3px rgba(38,49,122,.08);
+.field-block textarea:focus {
+  border-color: #26317a;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(38, 49, 122, 0.08);
 }
 
-.field-block textarea{
-    resize:vertical;
-    min-height:170px;
-}
-
-/* Tabla */
-.data-table-container{
-    overflow:auto;
-    max-height:650px;
-}
-
-.custom-table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-.custom-table thead{
-    background:#26317a;
-    color:#fff;
-}
-
-.custom-table th{
-    padding:14px;
-    font-size:14px;
-    text-align:left;
-}
-
-.custom-table td{
-    padding:13px;
-    border-bottom:1px solid #edf0f7;
-    vertical-align:middle;
-    font-size:14px;
-}
-
-.custom-table tbody tr:hover{
-    background:#f8f9fd;
-}
-
-/* Encabezados */
-.custom-table th:nth-child(2),
-.custom-table th:nth-child(3){
-    text-align:center;
-}
-
-/* Columna Etapa */
-.custom-table td:nth-child(2){
-    text-align:center;
-    vertical-align:middle;
-}
-
-/* Columna Actividad */
-.custom-table td:nth-child(3){
-    text-align:center;
-    vertical-align:middle;
-}
-
-/* Columna Etapa */
-.col-etapa{
-    display:flex;
-    align-items:center;
-    justify-content:flex-start;
-    gap:10px;
-    text-align:left;
-}
-
-/* Número de etapa */
-.badge-num{
-    width:28px;
-    height:28px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border-radius:50%;
-    background:#26317a;
-    color:#fff;
-    font-size:12px;
-    font-weight:bold;
-    flex-shrink:0;
-}
-
-/* Nombre de la etapa */
-.nombre-etapa{
-    color:#26317a;
-    font-weight:600;
-}
-
-/* Badge etapa */
-.badge-num{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    width:28px;
-    height:28px;
-    border-radius:50%;
-    background:#26317a;
-    color:#fff;
-    font-size:12px;
-    font-weight:bold;
-    margin-right:8px;
-}
-
-/* Checkbox */
-.custom-table input[type="checkbox"]{
-    transform:scale(1.2);
-    cursor:pointer;
-}
-
-/* Botón inferior */
-.btn-footer{
-    display:flex;
-    justify-content:center;
-    margin-top:30px;
-}
-
-.btn-block{
-    width:320px;
-    background:#e8600a;
-    color:#fff;
-    border:none;
-    border-radius:8px;
-    padding:14px;
-    font-size:15px;
-    font-weight:600;
-    cursor:pointer;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:10px;
-    transition:.3s;
-}
-
-.btn-block:hover{
-    background:#cf5204;
-    transform:translateY(-2px);
-}
-
-
-
-
-
-
-/* Responsive */
-@media(max-width:1100px){
-
-    .checklist-layout{
-        flex-direction:column;
-    }
-
-    .form-panel{
-        width:100%;
-        min-width:100%;
-    }
-
-    .table-panel{
-        width:100%;
-    }
-
-    .btn-block{
-        width:100%;
-    }
-
-}
-
-/* ==========================================================================
-   RESPONSIVE DESIGN - MEDIA QUERIES (ADAPTABILIDAD DE PANTALLAS)
-   ========================================================================== */
-
-/* =========================================================
-   PANTALLAS GRANDES O ULTRA-ANCHAR (1400px o más)
-   ========================================================= */
-@media screen and (min-width: 1400px) {
-  .main-content {
-    padding: 40px 50px; /* Incrementa los espacios para evitar que el diseño se vea vacío */
-  }
-  .page-title h1 {
-    font-size: 40px;
-  }
+.field-block textarea {
+  resize: vertical;
+  min-height: 140px;
 }
 
 /* =========================================================
-   LAPTOPS Y PANTALLAS MEDIANAS (Hasta 1200px)
-   ========================================================= */
-@media screen and (max-width: 1200px) {
-  .sidebar {
-    width: 240px; /* Reduce el ancho del menú para dar más espacio al contenido */
-    padding: 25px 16px;
-  }
-  .main-content {
-    margin-left: 240px; /* Sincronizado con el nuevo tamaño de la barra lateral */
-    padding: 24px;
-  }
-  .logo-img {
-    max-width: 190px;
-  }
-  .menu a {
-    padding: 12px 14px;
-    font-size: 13px;
-  }
-  .page-title h1 {
-    font-size: 30px;
-  }
+   ESTILOS DE TABLAS
+========================================================= */
+
+.data-table-container {
+  overflow-x: auto;
+  max-height: 550px;
+  border-radius: 8px;
+  border: 1px solid #eef1fa;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.custom-table thead {
+  background: #26317a;
+  color: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.custom-table th {
+  padding: 14px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.custom-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #edf0f7;
+  vertical-align: middle;
+  font-size: 14px;
+  color: #333333;
+}
+
+.custom-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.custom-table tbody tr:hover {
+  background-color: #f4f7fc;
+}
+
+.col-etapa {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.badge-num {
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #26317a;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.nombre-etapa {
+  color: #26317a;
+  font-weight: 600;
+}
+
+.custom-table input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #26317a;
+  cursor: pointer;
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 140px;
+}
+
+.progress-bar {
+  height: 8px;
+  background-color: #e8600a;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.progress-container span {
+  font-size: 12px;
+  font-weight: 600;
+  color: #555555;
+  min-width: 35px;
+}
+
+.btn-edit,
+.btn-view {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  text-decoration: none;
+  margin-right: 4px;
+  transition: all 0.2s ease;
+}
+
+.btn-edit {
+  background-color: #eef2fe;
+  color: #26317a;
+}
+
+.btn-edit:hover {
+  background-color: #26317a;
+  color: #ffffff;
+}
+
+.btn-view {
+  background-color: #fff4ec;
+  color: #e8600a;
+}
+
+.btn-view:hover {
+  background-color: #e8600a;
+  color: #ffffff;
+}
+
+.btn-footer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-block {
+  background: #e8600a;
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s ease;
+}
+
+.btn-block:hover {
+  background: #c74d02;
+}
+
+/* ============================================================
+   ESTILOS ADICIONALES — Tabla de consulta y modificación
+   ============================================================ */
+
+textarea {
+  width: 100%;
+  border: 1.5px solid #dde2f0;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 14px;
+  background: #f7f8fc;
+  outline: none;
+  font-family: inherit;
+  resize: vertical;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+textarea:focus {
+  border-color: #e8600a;
+  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
+  background: #fff;
+}
+
+.btn-warning {
+  background: #f0a500;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(240, 165, 0, 0.3);
+}
+
+.btn-warning:hover {
+  background: #d4900a;
+  box-shadow: 0 6px 16px rgba(240, 165, 0, 0.38);
+  transform: translateY(-1px);
+}
+
+.oculto {
+  display: none !important;
+}
+
+.table-card {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(30, 42, 94, 0.1);
+  width: 100%;
+  margin: 30px auto;
+  overflow: hidden;
+}
+
+.table-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 26px;
+  border-bottom: 1.5px solid #e8ecf6;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.table-card-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.table-card-icon {
+  width: 42px;
+  height: 42px;
+  background: rgba(30, 42, 94, 0.1);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1e2a5e;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+.table-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a2042;
+  margin: 0 0 3px;
+}
+
+.table-card-subtitle {
+  font-size: 12px;
+  color: #6b7499;
+  margin: 0;
+}
+
+.table-search input {
+  width: 100%;
+  min-width: 180px;
+}
+
+.table-search i {
+  position: absolute;
+  left: 12px;
+  color: #6b7499;
+  font-size: 13px;
+  pointer-events: none;
+}
+
+.table-search input {
+  border: 1.5px solid #dde2f0;
+  border-radius: 24px;
+  padding: 9px 16px 9px 36px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #1a2042;
+  background: #f7f8fc;
+  outline: none;
+  width: 260px;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.table-search input:focus {
+  border-color: #e8600a;
+  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.1);
+  background: #fff;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  padding: 0 0 8px;
+}
+
+.data-table {
+  width: 100%;
+  min-width: 0;
+}
+
+.data-table thead tr {
+  background: #f0f2f8;
+  border-bottom: 2px solid #dde2f0;
+}
+
+.data-table th {
+  padding: 13px 16px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1e2a5e;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+}
+
+.data-table tbody tr {
+  border-bottom: 1px solid #f0f2f8;
+  transition: background 0.15s;
+}
+
+.data-table tbody tr:hover {
+  background: #fdf4ee;
+}
+
+.data-table tbody tr.fila-activa {
+  background: rgba(232, 96, 10, 0.07);
+  outline: 2px solid rgba(232, 96, 10, 0.3);
+  outline-offset: -1px;
+}
+
+.data-table td {
+  padding: 11px 16px;
+  color: #3a4060;
+  vertical-align: middle;
+}
+
+.tabla-foto {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #dde2f0;
+  display: block;
+}
+
+.col-direccion {
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.col-accion {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.tabla-vacia {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6b7499;
+  font-size: 14px;
+}
+
+.tabla-vacia i {
+  display: block;
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #c5cbdf;
+}
+
+.btn-editar {
+  background: rgba(30, 42, 94, 0.08);
+  border: none;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #1e2a5e;
+  font-size: 15px;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    transform 0.15s;
+}
+
+.btn-editar:hover {
+  background: #e8600a;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.col-accion .btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  margin: 0 3px;
+  transition: all 0.2s ease;
+}
+
+.col-accion .btn-warning {
+  background: rgba(240, 165, 0, 0.12);
+  color: #f0a500;
+  border: 1px solid rgba(240, 165, 0, 0.25);
+}
+
+.col-accion .btn-warning:hover {
+  background: #f0a500;
+  color: #ffffff;
+  transform: scale(1.08);
+  box-shadow: 0 4px 10px rgba(240, 165, 0, 0.35);
+}
+
+.col-accion .btn-danger {
+  background: rgba(220, 53, 69, 0.12);
+  color: #dc3545;
+  border: 1px solid rgba(220, 53, 69, 0.25);
+}
+
+.col-accion .btn-danger:hover {
+  background: #dc3545;
+  color: #ffffff;
+  transform: scale(1.08);
+  box-shadow: 0 4px 10px rgba(220, 53, 69, 0.35);
+}
+
+.col-accion .btn i {
+  font-size: 14px;
 }
 
 /* =========================================================
-   TABLETS (Hasta 992px)
-   Estrategia: El Sidebar pasa a modo Ultra-Compacto (Solo iconos visibles)
+   TABLETS Y PANTALLAS PEQUEÑAS (Hasta 992px)
+   Layout centrado y adaptado sin desplazamientos horizontales
    ========================================================= */
 @media screen and (max-width: 992px) {
   .sidebar {
-    width: 90px; /* Barra lateral drásticamente delgada */
+    width: 90px;
     padding: 20px 10px;
-    align-items: center; /* Centra los iconos verticalmente */
+    align-items: center;
     overflow-y: auto;
     overflow-x: hidden;
   }
 
   .logo-img {
-    max-width: 58px; /* Transforma el logo grande en una miniatura compacta */
+    max-width: 58px;
     padding: 8px;
     border-radius: 12px;
   }
@@ -705,206 +919,127 @@ body {
     width: 100%;
     justify-content: center;
     padding: 14px 10px;
-    font-size: 0; /* TRUCO: Esconde completamente el texto eliminando su tamaño */
+    font-size: 0;
     gap: 0;
   }
 
   .menu a i {
-    font-size: 20px; /* Agranda el icono para que sea el protagonista táctil del botón */
+    font-size: 20px;
   }
 
-  /* Reajuste del contenedor principal debido al achicamiento del Sidebar */
+  /* Ajuste de contenedor principal para evitar movimiento/desborde horizontal */
   .main-content {
     margin-left: 90px;
     width: calc(100% - 90px);
-    padding: 20px;
+    max-width: calc(100% - 90px);
+    padding: 20px 15px;
+    box-sizing: border-box;
+    overflow-x: hidden;
   }
 
-  /* Cambios de alineación en cascada de los elementos a bloques verticales individuales */
   /* =========================================================
-   TOPBAR RESPONSIVE
-   ========================================================= */
+     TOPBAR RESPONSIVE TOTALMENTE CENTRADA
+     ========================================================= */
   .topbar {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-  }
-
-  /* El título ocupa toda la fila */
-  .page-title {
-    width: 100%;
-  }
-
-  /* Acciones pegadas a la derecha */
-  .topbar-actions {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    width: 100%;
+    justify-content: center;
     gap: 16px;
-  }
-
-  /* Oculta texto del usuario */
-  .user-info {
-    display: none;
-  }
-
-  /* Reduce padding del perfil */
-  .user-profile {
-    padding: 8px;
-    gap: 0;
-  }
-
-  /* Avatar más compacto */
-  .user-profile img {
-    width: 42px;
-    height: 42px;
-  }
-  .page-title {
+    margin-bottom: 25px;
     width: 100%;
+    box-sizing: border-box;
   }
+
+  /* Fila 1: Título Centrado */
+  .page-title {
+    order: 1;
+    width: 100%;
+    text-align: center;
+    min-width: 0;
+  }
+
   .page-title h1 {
-    font-size: 28px;
+    font-size: 26px;
     line-height: 1.2;
   }
 
-  .btn-save {
-    width: 100%;
-    text-align: center;
-    margin-top: 20px;
-  }
-}
-
-/* =========================================================
-   CELULARES (Hasta 576px)
-   ========================================================= */
-@media screen and (max-width: 576px) {
-  body,
-  .dashboard-container {
-    overflow-x: hidden; /* Medida de seguridad estricta contra desbordes horizontales accidentales */
-    width: 100%;
-  }
-
-  .sidebar {
-    width: 74px; /* Ajuste milimétrico final de la barra lateral de iconos */
-    padding: 14px 8px;
-  }
-
-  .logo-img {
-    max-width: 50px;
-    padding: 6px;
-    border-radius: 10px;
-  }
-  .menu {
-    margin-top: 18px;
-    gap: 8px;
-  }
-  .menu a {
-    padding: 12px 6px;
-    border-radius: 10px;
-  }
-  .menu a i {
-    font-size: 18px;
-  }
-
-  .main-content {
-    margin-left: 74px;
-    width: calc(100% - 74px);
-    padding: 14px; /* Minimiza el padding al límite para aprovechar pantallas delgadas */
-  }
-
+  /* Fila 2: Notificaciones y Perfil Centrados */
   .topbar-actions {
-    justify-content: flex-end;
+    order: 2;
     width: 100%;
-    gap: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin: 0 auto;
   }
 
+  /* 1. Notificaciones primero */
+  .notification {
+    order: 1;
+    flex-shrink: 0;
+  }
+
+  /* 2. Usuario segundo (Perfil con Foto + Texto) */
   .user-profile {
-    padding: 6px;
+    order: 2;
+    padding: 6px 16px;
+    gap: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .user-info {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+
+  .user-info strong {
+    font-size: 13px;
+    line-height: 1.2;
+  }
+
+  .user-info span {
+    font-size: 11px;
+    color: #7a8599;
   }
 
   .user-profile img {
     width: 38px;
     height: 38px;
-  }
-
-  .page-title h1 {
-    font-size: 22px;
-  }
-  .breadcrumb {
-    flex-wrap: wrap;
-    gap: 5px;
-    font-size: 12px;
-    margin-bottom: 14px;
-  }
-
-  .employee-box strong {
-    font-size: 14px;
-  }
-
-  .stage-section {
-    border-radius: 10px;
-    margin-bottom: 16px;
-  }
-  .stage-header {
-    padding: 12px 14px;
-    font-size: 13px;
-    line-height: 1.4;
-  }
-  .stage-number {
-    width: 22px;
-    height: 22px;
-    font-size: 11px;
     flex-shrink: 0;
   }
 
-  .btn-save {
+  /* Fila 3: Buscador adaptado al 100% */
+  .search-box {
+    order: 3;
     width: 100%;
-    padding: 12px;
-    font-size: 13px;
-    border-radius: 10px;
+    max-width: 100%;
+    margin: 0 auto;
   }
-}
 
-/* =========================================================
-   CELULARES ULTRA PEQUEÑOS (Hasta 400px)
-   Ajustes minuciosos de tipografía para evitar desbordes en dispositivos viejos/pequeños
-   ========================================================= */
-@media screen and (max-width: 400px) {
-  .sidebar {
-    width: 68px;
-    padding: 12px 6px;
+  .search-box input {
+    width: 100%;
+    box-sizing: border-box;
   }
-  .main-content {
-    margin-left: 68px;
-    width: calc(100% - 68px);
-    padding: 12px;
+
+  /* Adaptación de Paneles a vista vertical centrado */
+  .checklist-layout {
+    flex-direction: column;
   }
-  .logo-img {
-    max-width: 44px;
+
+  .form-panel {
+    width: 100%;
+    min-width: 100%;
   }
-  .menu a i {
-    font-size: 16px;
-  }
-  .page-title h1 {
-    font-size: 19px;
-  }
-  .employee-box {
-    padding: 12px;
-  }
-  .employee-box strong {
-    font-size: 13px;
-  }
-  .stage-header {
-    padding: 10px 12px;
-    font-size: 12px;
-  }
-  .btn-save {
-    font-size: 12px;
-    padding: 11px;
+
+  .btn-save,
+  .btn-block {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
   }
 }
