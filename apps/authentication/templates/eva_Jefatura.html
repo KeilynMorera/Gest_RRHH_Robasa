@@ -119,7 +119,6 @@
           </a>
 
           <!-- Opción Usuarios y Roles -->
-          <!-- Opción Usuarios y Roles -->
           <a href="{% url 'guardar_usuario_sistema' %}">
             <i class="fas fa-users-cog"></i>
             Usuarios y Roles
@@ -161,10 +160,19 @@
             </div>
 
             <div class="user-profile">
-              <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
+              {% if usuario_foto %}
+              <img src="{{ usuario_foto }}" alt="{{ usuario_nombre }}" />
+              {% else %}
+              <img
+                src="{% static 'media/fotos_personas/default_user.jpeg' %}"
+                alt="Usuario"
+              />
+              {% endif %}
+
               <div class="user-info">
-                <strong>María Gómez</strong>
-                <span>Recursos Humanos</span>
+                <strong> {{ usuario_nombre }} </strong>
+
+                <span> {{ usuario_puesto }} </span>
               </div>
             </div>
           </div>

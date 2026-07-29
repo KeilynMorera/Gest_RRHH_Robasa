@@ -207,9 +207,21 @@
               <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
 
               <!-- Información del usuario -->
-              <div class="user-info">
-                <strong>María Gómez</strong>
-                <span>Recursos Humanos</span>
+              <div class="user-profile">
+                {% if usuario_foto %}
+                <img src="{{ usuario_foto }}" alt="{{ usuario_nombre }}" />
+                {% else %}
+                <img
+                  src="{% static 'media/fotos_personas/default_user.jpeg' %}"
+                  alt="Usuario"
+                />
+                {% endif %}
+
+                <div class="user-info">
+                  <strong> {{ usuario_nombre }} </strong>
+
+                  <span> {{ usuario_puesto }} </span>
+                </div>
               </div>
             </div>
           </div>

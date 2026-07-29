@@ -157,10 +157,19 @@
             </div>
 
             <div class="user-profile">
-              <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
+              {% if usuario_foto %}
+              <img src="{{ usuario_foto }}" alt="{{ usuario_nombre }}" />
+              {% else %}
+              <img
+                src="{% static 'media/fotos_personas/default_user.jpeg' %}"
+                alt="Usuario"
+              />
+              {% endif %}
+
               <div class="user-info">
-                <strong>María Gómez</strong>
-                <span>Recursos Humanos</span>
+                <strong> {{ usuario_nombre }} </strong>
+
+                <span> {{ usuario_puesto }} </span>
               </div>
             </div>
           </div>
@@ -226,7 +235,9 @@
                   {{ matriz_seleccionada.idEmpleado.idPersona.Nombre_Completo }}
                 </strong>
                 <span>
-                  {{ matriz_seleccionada.idEmpleado.idPuesto.Nombre|default:"Colaborador" }}
+                  {{
+                  matriz_seleccionada.idEmpleado.idPuesto.Nombre|default:"Colaborador"
+                  }}
                 </span>
               </div>
             </div>
@@ -412,7 +423,13 @@
                       font-size: 0.82rem;
                     "
                   >
-                    {% if titulo_porcentaje == "Porcentaje Potencial (Jefatura)" %} Resultado ponderado según competencias de liderazgo, adaptación y madurez. {% elif titulo_porcentaje == "Porcentaje de Desempeño" %} Resultado obtenido según el cumplimiento de metas, funciones, asistencia y compromiso. {% else %} No existe una evaluación registrada para los criterios seleccionados. {% endif %}
+                    {% if titulo_porcentaje == "Porcentaje Potencial (Jefatura)"
+                    %} Resultado ponderado según competencias de liderazgo,
+                    adaptación y madurez. {% elif titulo_porcentaje ==
+                    "Porcentaje de Desempeño" %} Resultado obtenido según el
+                    cumplimiento de metas, funciones, asistencia y compromiso.
+                    {% else %} No existe una evaluación registrada para los
+                    criterios seleccionados. {% endif %}
                   </small>
                 </div>
               </div>
@@ -425,7 +442,9 @@
                   <i class="fas fa-chart-column"></i>
                 </div>
                 <h2>
-                  {{ matriz_seleccionada.idCuadrante_9box_Desempeno.Nivel_Desempeno }}
+                  {{
+                  matriz_seleccionada.idCuadrante_9box_Desempeno.Nivel_Desempeno
+                  }}
                 </h2>
                 <p>Nivel asignado en la evaluación</p>
               </div>
@@ -436,7 +455,9 @@
                   <i class="fas fa-rocket"></i>
                 </div>
                 <h2>
-                  Nivel {{ matriz_seleccionada.idCuadrante_9box_Potencial.Nivel_Potencial }}
+                  Nivel {{
+                  matriz_seleccionada.idCuadrante_9box_Potencial.Nivel_Potencial
+                  }}
                 </h2>
                 <p>Capacidad de crecimiento identificada</p>
               </div>
@@ -469,7 +490,9 @@
                       Box
                     </h3>
                     <span class="status-badge high">
-                      {{ matriz_seleccionada.idCuadrante_9box_Perfil.Tipo_Profecional }}
+                      {{
+                      matriz_seleccionada.idCuadrante_9box_Perfil.Tipo_Profecional
+                      }}
                     </span>
                   </div>
 
@@ -480,7 +503,9 @@
                     >
                       <div class="box-header-info">
                         <span class="quadrant-number">7</span>
-                        {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '7' %}
+                        {% if
+                        matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify
+                        == '7' %}
                         <span class="eval-badge"
                           ><i class="fas fa-user-check"></i> Colaborador</span
                         >
@@ -498,7 +523,9 @@
                     >
                       <div class="box-header-info">
                         <span class="quadrant-number">8</span>
-                        {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '8' %}
+                        {% if
+                        matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify
+                        == '8' %}
                         <span class="eval-badge"
                           ><i class="fas fa-user-check"></i> Colaborador</span
                         >
@@ -516,7 +543,9 @@
                     >
                       <div class="box-header-info">
                         <span class="quadrant-number">9</span>
-                        {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '9' %}
+                        {% if
+                        matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify
+                        == '9' %}
                         <span class="eval-badge"
                           ><i class="fas fa-user-check"></i> Colaborador</span
                         >
@@ -534,7 +563,9 @@
                     >
                       <div class="box-header-info">
                         <span class="quadrant-number">4</span>
-                        {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '4' %}
+                        {% if
+                        matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify
+                        == '4' %}
                         <span class="eval-badge"
                           ><i class="fas fa-user-check"></i> Colaborador</span
                         >
@@ -552,7 +583,9 @@
                     >
                       <div class="box-header-info">
                         <span class="quadrant-number">5</span>
-                        {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '5' %}
+                        {% if
+                        matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify
+                        == '5' %}
                         <span class="eval-badge"
                           ><i class="fas fa-user-check"></i> Colaborador</span
                         >
@@ -570,7 +603,9 @@
                     >
                       <div class="box-header-info">
                         <span class="quadrant-number">6</span>
-                        {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '6' %}
+                        {% if
+                        matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify
+                        == '6' %}
                         <span class="eval-badge"
                           ><i class="fas fa-user-check"></i> Colaborador</span
                         >
@@ -588,7 +623,9 @@
                     >
                       <div class="box-header-info">
                         <span class="quadrant-number">1</span>
-                        {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '1' %}
+                        {% if
+                        matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify
+                        == '1' %}
                         <span class="eval-badge"
                           ><i class="fas fa-user-check"></i> Colaborador</span
                         >
@@ -606,7 +643,9 @@
                     >
                       <div class="box-header-info">
                         <span class="quadrant-number">2</span>
-                        {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '2' %}
+                        {% if
+                        matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify
+                        == '2' %}
                         <span class="eval-badge"
                           ><i class="fas fa-user-check"></i> Colaborador</span
                         >
@@ -624,7 +663,9 @@
                     >
                       <div class="box-header-info">
                         <span class="quadrant-number">3</span>
-                        {% if matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify == '3' %}
+                        {% if
+                        matriz_seleccionada.idCuadrante_9box.Cuadrante|slugify
+                        == '3' %}
                         <span class="eval-badge"
                           ><i class="fas fa-user-check"></i> Colaborador</span
                         >
@@ -846,7 +887,8 @@
                           font-style: italic;
                         "
                       >
-                        {{ potencial_seleccionado.Observaciones|default:"Sin observaciones registradas." }}
+                        {{ potencial_seleccionado.Observaciones|default:"Sin
+                        observaciones registradas." }}
                       </p>
                     </div>
                   </div>

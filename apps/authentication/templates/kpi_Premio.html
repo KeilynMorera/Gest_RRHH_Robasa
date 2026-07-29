@@ -156,10 +156,19 @@
             </div>
 
             <div class="user-profile">
-              <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
+              {% if usuario_foto %}
+              <img src="{{ usuario_foto }}" alt="{{ usuario_nombre }}" />
+              {% else %}
+              <img
+                src="{% static 'media/fotos_personas/default_user.jpeg' %}"
+                alt="Usuario"
+              />
+              {% endif %}
+
               <div class="user-info">
-                <strong>María Gómez</strong>
-                <span>Recursos Humanos</span>
+                <strong> {{ usuario_nombre }} </strong>
+
+                <span> {{ usuario_puesto }} </span>
               </div>
             </div>
           </div>
@@ -259,7 +268,8 @@
                         <span class="req">*</span>
                       </label>
 
-                      {{ form.id_KPI_Categoria }} {% if form.id_KPI_Categoria.errors %}
+                      {{ form.id_KPI_Categoria }} {% if
+                      form.id_KPI_Categoria.errors %}
                       <small class="error">
                         {{ form.id_KPI_Categoria.errors }}
                       </small>
@@ -276,7 +286,8 @@
                         <span class="req">*</span>
                       </label>
 
-                      {{ form.idCuadrante_9box_Perfil }} {% if form.idCuadrante_9box_Perfil.errors %}
+                      {{ form.idCuadrante_9box_Perfil }} {% if
+                      form.idCuadrante_9box_Perfil.errors %}
                       <small class="error">
                         {{ form.idCuadrante_9box_Perfil.errors }}
                       </small>

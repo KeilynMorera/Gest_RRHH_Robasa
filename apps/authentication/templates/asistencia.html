@@ -247,13 +247,19 @@
 
             <!-- ===================== PERFIL DEL USUARIO ===================== -->
             <div class="user-profile">
-              <!-- Imagen del usuario -->
-              <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
+              {% if usuario_foto %}
+              <img src="{{ usuario_foto }}" alt="{{ usuario_nombre }}" />
+              {% else %}
+              <img
+                src="{% static 'media/fotos_personas/default_user.jpeg' %}"
+                alt="Usuario"
+              />
+              {% endif %}
 
-              <!-- Información textual -->
               <div class="user-info">
-                <strong>María Gómez</strong>
-                <span>Recursos Humanos</span>
+                <strong> {{ usuario_nombre }} </strong>
+
+                <span> {{ usuario_puesto }} </span>
               </div>
             </div>
           </div>
@@ -363,7 +369,8 @@
                         endif
                         %}
                       >
-                        {{ empleado.idPersona.Nombre_Completo }} - {{ empleado.idPuesto.Nombre }}
+                        {{ empleado.idPersona.Nombre_Completo }} - {{
+                        empleado.idPuesto.Nombre }}
                       </option>
                       {% endfor %}
                     </select>
@@ -587,7 +594,11 @@
                     </td>
 
                     <td>
-                      {% if asistencia.Horas_Extra %}{{asistencia.Horas_Extra|time:"G" }}h {% if asistencia.Horas_Extra|time:"i" != "00" %}{{asistencia.Horas_Extra|time:"i" }}m{% endif %}{% else%}—{% endif %}
+                      {% if asistencia.Horas_Extra
+                      %}{{asistencia.Horas_Extra|time:"G" }}h {% if
+                      asistencia.Horas_Extra|time:"i" != "00"
+                      %}{{asistencia.Horas_Extra|time:"i" }}m{% endif %}{%
+                      else%}—{% endif %}
                     </td>
 
                     <td>{{ asistencia.idAsis_Estado.TipoEstado }}</td>

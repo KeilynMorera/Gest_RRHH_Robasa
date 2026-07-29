@@ -154,11 +154,21 @@
               <i class="fas fa-bell"></i>
               <span class="badge">3</span>
             </div>
+
             <div class="user-profile">
-              <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
+              {% if usuario_foto %}
+              <img src="{{ usuario_foto }}" alt="{{ usuario_nombre }}" />
+              {% else %}
+              <img
+                src="{% static 'media/fotos_personas/default_user.jpeg' %}"
+                alt="Usuario"
+              />
+              {% endif %}
+
               <div class="user-info">
-                <strong>María Gómez</strong>
-                <span>Recursos Humanos</span>
+                <strong> {{ usuario_nombre }} </strong>
+
+                <span> {{ usuario_puesto }} </span>
               </div>
             </div>
           </div>
@@ -229,7 +239,8 @@
                       </option>
                       {% for emp in empleados %}
                       <option value="{{ emp.idEmpleado }}">
-                        {{ emp.idPersona.Nombre_Completo }} — {{ emp.idPuesto.Nombre }}
+                        {{ emp.idPersona.Nombre_Completo }} — {{
+                        emp.idPuesto.Nombre }}
                       </option>
                       {% endfor %}
                     </select>
