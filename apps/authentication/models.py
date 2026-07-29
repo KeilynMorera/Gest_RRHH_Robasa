@@ -2141,6 +2141,16 @@ class OffboardingCatalogo(models.Model):
 # Un proceso de Offboarding posee un único checklist.
 # =========================================================
 
+# =========================================================
+
+# TABLA: Offboarding_Checklist
+
+# Cabecera del checklist de un proceso de Offboarding
+
+# Cada proceso de Offboarding posee un único checklist
+
+# =========================================================
+
 class OffboardingChecklist(models.Model):
 
     id_Check = models.AutoField(
@@ -2175,15 +2185,22 @@ class OffboardingChecklist(models.Model):
         default=0
     )
 
-    # Proceso de Offboarding
-    id_Offboarding = models.ForeignKey(
+    # =====================================================
+    # PROCESO DE OFFBOARDING
+    # Un Offboarding solamente puede tener un Checklist
+    # =====================================================
+
+    id_Offboarding = models.OneToOneField(
         Offboarding,
         on_delete=models.CASCADE,
         db_column="id_Offboarding",
         related_name="checklist"
     )
 
-    # Estado del proceso
+    # =====================================================
+    # ESTADO DEL PROCESO
+    # =====================================================
+
     id_Estatus_Vacante = models.ForeignKey(
         Estatus,
         on_delete=models.PROTECT,
@@ -2201,17 +2218,6 @@ class OffboardingChecklist(models.Model):
 
         verbose_name_plural = "Checklists de Offboarding"
 
-        constraints = [
-
-            models.UniqueConstraint(
-                fields=[
-                    "id_Offboarding"
-                ],
-                name="UQ_Check_Offboarding"
-            )
-
-        ]
-
         ordering = [
             "-Fecha_Asignacion"
         ]
@@ -2220,7 +2226,7 @@ class OffboardingChecklist(models.Model):
 
         return (
             f"Checklist #{self.id_Check} - "
-            f"{self.id_Offboarding}"
+            f"Offboarding #{self.id_Offboarding_id}"
         )
 
 
