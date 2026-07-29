@@ -177,12 +177,16 @@
 
             <div class="user-profile">
               {% if usuario_foto %}
+
               <img src="{{ usuario_foto }}" alt="{{ usuario_nombre }}" />
+
               {% else %}
+
               <img
                 src="{% static 'media/fotos_personas/default_user.jpeg' %}"
                 alt="Usuario"
               />
+
               {% endif %}
 
               <div class="user-info">
@@ -549,7 +553,8 @@
                   </strong>
 
                   <span>
-                    {{ offboarding.idCausa.Categoria }} - {{ offboarding.idCausa.Causa }}
+                    {{ offboarding.idCausa.Categoria }} - {{
+                    offboarding.idCausa.Causa }}
                   </span>
 
                   <small>

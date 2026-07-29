@@ -242,6 +242,7 @@ urlpatterns = [
    path("usuarios/modificar/<int:id_Admin>/", views.modificar_usuario_sistema, name="modificar_usuario_sistema"),
    path("login/", views.login_usuario, name="login_usuario"),
    path('logout/', views.cerrar_sesion, name='cerrar_sesion'),
+   path("inicio/", views.inicio_view, name="inicio"),
 
 ]
 

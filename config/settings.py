@@ -63,6 +63,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                # Context processor del usuario logueado
+                'apps.authentication.context_processors.usuario_logueado',
             ],
         },
     },

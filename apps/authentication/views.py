@@ -33,98 +33,6 @@ def home(request):
 def inicio_view(request):
 
     # =========================================================
-    # 1. INFORMACIÓN DEL USUARIO LOGUEADO
-    # =========================================================
-
-    usuario_id = request.session.get(
-        "usuario_id"
-    )
-
-    usuario_nombre = "Usuario"
-
-    usuario_puesto = "Sin puesto asignado"
-
-    usuario_foto = ""
-
-
-    # =========================================================
-    # 2. OBTENER INFORMACIÓN DEL USUARIO LOGUEADO
-    # =========================================================
-
-    if usuario_id:
-
-        try:
-
-            usuario_logueado = (
-                UsuarioSistema.objects
-                .select_related(
-                    "idEmpleado_Admin",
-                    "idEmpleado_Admin__idPersona",
-                    "idEmpleado_Admin__idPuesto"
-                )
-                .get(
-                    id_Admin=usuario_id
-                )
-            )
-
-
-            # =================================================
-            # OBTENER EMPLEADO
-            # =================================================
-
-            empleado_logueado = (
-                usuario_logueado.idEmpleado_Admin
-            )
-
-
-            # =================================================
-            # OBTENER PERSONA
-            # =================================================
-
-            persona_logueada = (
-                empleado_logueado.idPersona
-            )
-
-
-            # =================================================
-            # OBTENER NOMBRE
-            # =================================================
-
-            usuario_nombre = (
-                persona_logueada.Nombre_Completo
-            )
-
-
-            # =================================================
-            # OBTENER PUESTO
-            # =================================================
-
-            if empleado_logueado.idPuesto:
-
-                usuario_puesto = (
-                    empleado_logueado
-                    .idPuesto
-                    .Nombre
-                )
-
-
-            # =================================================
-            # OBTENER FOTO
-            # =================================================
-
-            if persona_logueada.Foto:
-
-                usuario_foto = (
-                    persona_logueada.Foto.url
-                )
-
-
-        except UsuarioSistema.DoesNotExist:
-
-            pass
-
-
-    # =========================================================
     # 3. TOTAL DE EMPLEADOS ACTIVOS
     # =========================================================
 
@@ -384,21 +292,6 @@ def inicio_view(request):
     # =========================================================
 
     context = {
-
-        # =====================================================
-        # USUARIO LOGUEADO
-        # =====================================================
-
-        "usuario_nombre":
-            usuario_nombre,
-
-        "usuario_puesto":
-            usuario_puesto,
-
-        "usuario_foto":
-            usuario_foto,
-
-
         # =====================================================
         # RESUMEN GENERAL
         # =====================================================
@@ -5222,6 +5115,226 @@ def guardar_usuario_sistema(request):
     )
 
 
+from django.contrib import messages
+from django.contrib.auth.hashers import check_password
+from django.shortcuts import render, redirect
+
+from .models import UsuarioSistema
+
+
+def login_usuario(request):
+
+    # =========================================================
+    # SI EL USUARIO ENVÍA EL FORMULARIO
+    # =========================================================
+
+    if request.method == "POST":
+
+        # =====================================================
+        # OBTENER DATOS DEL FORMULARIO
+        # =====================================================
+
+        correo = request.POST.get(
+            "Correo",
+            ""
+        ).strip()
+
+        contrasenia = request.POST.get(
+            "Contrasenia",
+            ""
+        ).strip()
+
+
+        # =====================================================
+        # VALIDAR CAMPOS VACÍOS
+        # =====================================================
+
+        if not correo or not contrasenia:
+
+            messages.error(
+                request,
+                "Debe ingresar el correo electrónico y la contraseña."
+            )
+
+            return render(
+                request,
+                "login.html"
+            )
+
+
+        # =====================================================
+        # BUSCAR USUARIO POR CORREO
+        # =====================================================
+
+        usuario = (
+            UsuarioSistema.objects
+            .filter(
+                Correo=correo
+            )
+            .select_related(
+                "idRol",
+                "idEmpleado_Admin",
+                "idEmpleado_Admin__idPersona",
+                "idEmpleado_Admin__idPuesto"
+            )
+            .first()
+        )
+
+
+        # =====================================================
+        # VALIDAR CORREO Y CONTRASEÑA
+        # =====================================================
+
+        if (
+            usuario is None
+            or not check_password(
+                contrasenia,
+                usuario.Contrasenia
+            )
+        ):
+
+            messages.error(
+                request,
+                "El correo electrónico o la contraseña son incorrectos."
+            )
+
+            return render(
+                request,
+                "login.html"
+            )
+
+
+        # =====================================================
+        # VALIDAR SI EL USUARIO ESTÁ ACTIVO
+        # =====================================================
+
+        if not usuario.Activo:
+
+            messages.error(
+                request,
+                "Su cuenta se encuentra inactiva. Contacte al administrador del sistema."
+            )
+
+            return render(
+                request,
+                "login.html"
+            )
+
+
+        # =====================================================
+        # OBTENER EMPLEADO
+        # =====================================================
+
+        empleado = usuario.idEmpleado_Admin
+
+
+        # =====================================================
+        # OBTENER PERSONA
+        # =====================================================
+
+        persona = empleado.idPersona
+
+
+        # =====================================================
+        # GUARDAR INFORMACIÓN DEL USUARIO
+        # =====================================================
+
+        request.session["usuario_id"] = (
+            usuario.id_Admin
+        )
+
+
+        request.session["usuario_correo"] = (
+            usuario.Correo
+        )
+
+
+        # =====================================================
+        # GUARDAR INFORMACIÓN DEL ROL
+        # =====================================================
+
+        request.session["usuario_rol_id"] = (
+            usuario.idRol.idRol
+        )
+
+
+        request.session["usuario_rol"] = (
+            usuario.idRol.TipoRol
+        )
+
+
+        # =====================================================
+        # GUARDAR INFORMACIÓN DEL EMPLEADO
+        # =====================================================
+
+        request.session["empleado_id"] = (
+            empleado.idEmpleado
+        )
+
+
+        request.session["empleado_nombre"] = (
+            persona.Nombre_Completo
+        )
+
+
+        # =====================================================
+        # GUARDAR PUESTO
+        # =====================================================
+
+        if empleado.idPuesto:
+
+            request.session["empleado_puesto"] = (
+                empleado.idPuesto.Nombre
+            )
+
+        else:
+
+            request.session["empleado_puesto"] = (
+                "Sin puesto"
+            )
+
+
+        # =====================================================
+        # NO ES NECESARIO GUARDAR LA FOTO EN LA SESIÓN
+        #
+        # La foto se obtiene directamente desde Persona
+        # en la vista inicio_view.
+        # =====================================================
+
+        request.session.pop(
+            "empleado_foto",
+            None
+        )
+
+
+        # =====================================================
+        # MENSAJE DE BIENVENIDA
+        # =====================================================
+
+        messages.success(
+            request,
+            f"Bienvenido(a), {persona.Nombre_Completo}."
+        )
+
+
+        # =====================================================
+        # REDIRIGIR AL INICIO
+        # =====================================================
+
+        return redirect(
+            "inicio"
+        )
+
+
+    # =========================================================
+    # MOSTRAR LOGIN
+    # =========================================================
+
+    return render(
+        request,
+        "login.html"
+    )
+
 
 
 from django.contrib import messages
@@ -5511,226 +5624,6 @@ def modificar_usuario_sistema(request, id_Admin):
         context
     )
 
-
-from django.contrib import messages
-from django.contrib.auth.hashers import check_password
-from django.shortcuts import render, redirect
-
-from .models import UsuarioSistema
-
-
-def login_usuario(request):
-
-    # =========================================================
-    # SI EL USUARIO ENVÍA EL FORMULARIO
-    # =========================================================
-
-    if request.method == "POST":
-
-        # =====================================================
-        # OBTENER DATOS DEL FORMULARIO
-        # =====================================================
-
-        correo = request.POST.get(
-            "Correo",
-            ""
-        ).strip()
-
-        contrasenia = request.POST.get(
-            "Contrasenia",
-            ""
-        ).strip()
-
-
-        # =====================================================
-        # VALIDAR CAMPOS VACÍOS
-        # =====================================================
-
-        if not correo or not contrasenia:
-
-            messages.error(
-                request,
-                "Debe ingresar el correo electrónico y la contraseña."
-            )
-
-            return render(
-                request,
-                "login.html"
-            )
-
-
-        # =====================================================
-        # BUSCAR USUARIO POR CORREO
-        # =====================================================
-
-        usuario = (
-            UsuarioSistema.objects
-            .filter(
-                Correo=correo
-            )
-            .select_related(
-                "idRol",
-                "idEmpleado_Admin",
-                "idEmpleado_Admin__idPersona",
-                "idEmpleado_Admin__idPuesto"
-            )
-            .first()
-        )
-
-
-        # =====================================================
-        # VALIDAR CORREO Y CONTRASEÑA
-        # =====================================================
-
-        if (
-            usuario is None
-            or not check_password(
-                contrasenia,
-                usuario.Contrasenia
-            )
-        ):
-
-            messages.error(
-                request,
-                "El correo electrónico o la contraseña son incorrectos."
-            )
-
-            return render(
-                request,
-                "login.html"
-            )
-
-
-        # =====================================================
-        # VALIDAR SI EL USUARIO ESTÁ ACTIVO
-        # =====================================================
-
-        if not usuario.Activo:
-
-            messages.error(
-                request,
-                "Su cuenta se encuentra inactiva. Contacte al administrador del sistema."
-            )
-
-            return render(
-                request,
-                "login.html"
-            )
-
-
-        # =====================================================
-        # OBTENER EMPLEADO
-        # =====================================================
-
-        empleado = usuario.idEmpleado_Admin
-
-
-        # =====================================================
-        # OBTENER PERSONA
-        # =====================================================
-
-        persona = empleado.idPersona
-
-
-        # =====================================================
-        # GUARDAR INFORMACIÓN DEL USUARIO
-        # =====================================================
-
-        request.session["usuario_id"] = (
-            usuario.id_Admin
-        )
-
-
-        request.session["usuario_correo"] = (
-            usuario.Correo
-        )
-
-
-        # =====================================================
-        # GUARDAR INFORMACIÓN DEL ROL
-        # =====================================================
-
-        request.session["usuario_rol_id"] = (
-            usuario.idRol.idRol
-        )
-
-
-        request.session["usuario_rol"] = (
-            usuario.idRol.TipoRol
-        )
-
-
-        # =====================================================
-        # GUARDAR INFORMACIÓN DEL EMPLEADO
-        # =====================================================
-
-        request.session["empleado_id"] = (
-            empleado.idEmpleado
-        )
-
-
-        request.session["empleado_nombre"] = (
-            persona.Nombre_Completo
-        )
-
-
-        # =====================================================
-        # GUARDAR PUESTO
-        # =====================================================
-
-        if empleado.idPuesto:
-
-            request.session["empleado_puesto"] = (
-                empleado.idPuesto.Nombre
-            )
-
-        else:
-
-            request.session["empleado_puesto"] = (
-                "Sin puesto"
-            )
-
-
-        # =====================================================
-        # NO ES NECESARIO GUARDAR LA FOTO EN LA SESIÓN
-        #
-        # La foto se obtiene directamente desde Persona
-        # en la vista inicio_view.
-        # =====================================================
-
-        request.session.pop(
-            "empleado_foto",
-            None
-        )
-
-
-        # =====================================================
-        # MENSAJE DE BIENVENIDA
-        # =====================================================
-
-        messages.success(
-            request,
-            f"Bienvenido(a), {persona.Nombre_Completo}."
-        )
-
-
-        # =====================================================
-        # REDIRIGIR AL INICIO
-        # =====================================================
-
-        return redirect(
-            "inicio"
-        )
-
-
-    # =========================================================
-    # MOSTRAR LOGIN
-    # =========================================================
-
-    return render(
-        request,
-        "login.html"
-    )
 
 
 def configuraciones_view(request):

@@ -7,7 +7,7 @@ urlpatterns = [
     path('', home, name='home'),
 
     # Ruta para el dashboard (pantalla de inicio después del login)
-    path('inicio.html/', views.inicio_view, name='inicio'),
+    path("inicio/", views.inicio_view, name="inicio"),
 
     # Ruta para el dashboard (pantalla de eleccion (Personas o Empleado))
     path('per_emp.html/', views.per_emp_view, name='per_emp'),
