@@ -362,6 +362,75 @@ body {
   color: #8a94a6;
 }
 
+/* Estilos para listas dentro de paneles */
+.summary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f4f8;
+}
+
+.summary-item span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #556070;
+}
+
+.summary-item strong {
+  color: #0a1f44;
+}
+
+.recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.recent-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 8px 0;
+}
+
+.recent-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #f0f4f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #26317a;
+}
+
+.recent-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.recent-info strong {
+  font-size: 14px;
+}
+
+.recent-info span {
+  font-size: 13px;
+  color: #556070;
+}
+
+.recent-info small {
+  font-size: 11px;
+  color: #8a94a6;
+}
+
 /* ==========================================================================
    7. FOOTER INSTITUCIONAL
    ========================================================================== */

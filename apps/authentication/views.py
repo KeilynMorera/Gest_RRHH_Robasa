@@ -28,8 +28,358 @@ def home(request):
 # =========================================================
 # Vista: Inicio
 # =========================================================
+# =========================================================
+
+# VISTA: INICIO / DASHBOARD PRINCIPAL
+
+# Muestra los principales indicadores del sistema
+
+# =========================================================
+
 def inicio_view(request):
-    return render(request, 'inicio.html')
+
+    # =====================================================
+    # 1. TOTAL DE EMPLEADOS
+    # =====================================================
+
+    total_empleados = Empleado.objects.filter(
+        Activo=True
+    ).count()
+
+
+    # =====================================================
+    # 2. TOTAL DE PERSONAS
+    # =====================================================
+
+    total_personas = Persona.objects.count()
+
+
+    # =====================================================
+    # 3. TOTAL DE PASANTES ACTIVOS
+    # =====================================================
+
+    total_pasantes = Pasante.objects.filter(
+        Activo=True
+    ).count()
+
+
+    # =====================================================
+    # 4. PROCESOS DE ONBOARDING
+    # =====================================================
+
+    total_onboarding = Onboarding.objects.count()
+
+
+    # =====================================================
+    # 5. PROCESOS DE OFFBOARDING
+    # =====================================================
+
+    total_offboarding = Offboarding.objects.count()
+
+
+    # =====================================================
+    # 6. CHECKLISTS DE OFFBOARDING
+    # =====================================================
+
+    total_checklists_offboarding = (
+        OffboardingChecklist.objects.count()
+    )
+
+
+    # =====================================================
+    # 7. PORCENTAJE PROMEDIO DE CHECKLISTS
+    # =====================================================
+
+    promedio_checklist = (
+        OffboardingChecklist.objects.aggregate(
+            promedio=Avg('pct_listo')
+        )['promedio']
+        or 0
+    )
+
+
+    # =====================================================
+    # 8. TOTAL DE KPIs REGISTRADOS
+    # =====================================================
+
+    total_kpis = KpiCabecera.objects.count()
+
+
+    # =====================================================
+    # 9. TOTAL DE DETALLES KPI
+    # =====================================================
+
+    total_detalles_kpi = KpiDetalle.objects.count()
+
+
+    # =====================================================
+    # 10. PROMEDIO DE CUMPLIMIENTO DE KPIs
+    # =====================================================
+
+    promedio_kpi = (
+        KpiDetalle.objects.aggregate(
+            promedio=Avg('pct_Alcanzado')
+        )['promedio']
+        or 0
+    )
+
+
+    # =====================================================
+    # 11. TOTAL DE PREMIOS CONFIGURADOS
+    # =====================================================
+
+    total_premios = Premio.objects.count()
+
+
+    # =====================================================
+    # 12. TOTAL DE PREMIOS ASIGNADOS
+    # =====================================================
+
+    total_premios_asignados = (
+        PremioAsignado.objects.count()
+    )
+
+
+    # =====================================================
+    # 13. MONTO TOTAL DE PREMIOS LIQUIDADOS
+    # =====================================================
+
+    monto_total_premios = (
+        PremioAsignado.objects.aggregate(
+            total=Sum('Monto_Liquidado')
+        )['total']
+        or Decimal('0.00')
+    )
+
+
+    # =====================================================
+    # 14. TOTAL DE USUARIOS DEL SISTEMA
+    # =====================================================
+
+    total_usuarios = UsuarioSistema.objects.count()
+
+
+    # =====================================================
+    # 15. USUARIOS ACTIVOS
+    # =====================================================
+
+    usuarios_activos = (
+        UsuarioSistema.objects.filter(
+            Activo=True
+        ).count()
+    )
+
+
+    # =====================================================
+    # 16. TOTAL DE ROLES
+    # =====================================================
+
+    total_roles = Roles.objects.count()
+
+
+    # =====================================================
+    # 17. TOTAL DE ACCIONES / ROTACIONES
+    # =====================================================
+
+    total_acciones = AccionPersonal.objects.count()
+
+
+    # =====================================================
+    # 18. TOTAL DE EVALUACIONES
+    # =====================================================
+
+    total_evaluaciones = Evaluacion.objects.count()
+
+
+    # =====================================================
+    # 19. ÚLTIMOS PROCESOS DE ONBOARDING
+    # =====================================================
+
+    ultimos_onboarding = (
+        Onboarding.objects
+        .select_related(
+            'idEmpleado',
+            'idEmpleado__idPersona',
+            'idDepartamento'
+        )
+        .order_by(
+            '-Fecha_Inicio'
+        )[:5]
+    )
+
+
+    # =====================================================
+    # 20. ÚLTIMOS PROCESOS DE OFFBOARDING
+    # =====================================================
+
+    ultimos_offboarding = (
+        Offboarding.objects
+        .select_related(
+            'idEmpleado',
+            'idEmpleado__idPersona',
+            'idCausa'
+        )
+        .order_by(
+            '-Fecha_Salida'
+        )[:5]
+    )
+
+
+    # =====================================================
+    # 21. ÚLTIMOS KPIs
+    # =====================================================
+
+    ultimos_kpis = (
+        KpiCabecera.objects
+        .select_related(
+            'idEmpleado',
+            'idEmpleado__idPersona'
+        )
+        .order_by(
+            '-anio',
+            '-mes'
+        )[:5]
+    )
+
+
+    # =====================================================
+    # 22. ÚLTIMOS PREMIOS ASIGNADOS
+    # =====================================================
+
+    ultimos_premios = (
+        PremioAsignado.objects
+        .select_related(
+            'idPremio',
+            'id_KPI',
+            'id_KPI__idEmpleado',
+            'id_KPI__idEmpleado__idPersona'
+        )
+        .order_by(
+            '-Fecha_Registro'
+        )[:5]
+    )
+
+
+    # =====================================================
+    # 23. CONTEXTO DEL DASHBOARD
+    # =====================================================
+
+    context = {
+
+        # -----------------------------------------------
+        # RESUMEN GENERAL
+        # -----------------------------------------------
+
+        'total_empleados':
+            total_empleados,
+
+        'total_personas':
+            total_personas,
+
+        'total_pasantes':
+            total_pasantes,
+
+
+        # -----------------------------------------------
+        # ONBOARDING / OFFBOARDING
+        # -----------------------------------------------
+
+        'total_onboarding':
+            total_onboarding,
+
+        'total_offboarding':
+            total_offboarding,
+
+        'total_checklists_offboarding':
+            total_checklists_offboarding,
+
+        'promedio_checklist':
+            round(float(promedio_checklist), 2),
+
+
+        # -----------------------------------------------
+        # KPIs
+        # -----------------------------------------------
+
+        'total_kpis':
+            total_kpis,
+
+        'total_detalles_kpi':
+            total_detalles_kpi,
+
+        'promedio_kpi':
+            round(float(promedio_kpi), 2),
+
+
+        # -----------------------------------------------
+        # PREMIOS
+        # -----------------------------------------------
+
+        'total_premios':
+            total_premios,
+
+        'total_premios_asignados':
+            total_premios_asignados,
+
+        'monto_total_premios':
+            monto_total_premios,
+
+
+        # -----------------------------------------------
+        # USUARIOS Y ROLES
+        # -----------------------------------------------
+
+        'total_usuarios':
+            total_usuarios,
+
+        'usuarios_activos':
+            usuarios_activos,
+
+        'total_roles':
+            total_roles,
+
+
+        # -----------------------------------------------
+        # ACCIONES Y EVALUACIONES
+        # -----------------------------------------------
+
+        'total_acciones':
+            total_acciones,
+
+        'total_evaluaciones':
+            total_evaluaciones,
+
+
+        # -----------------------------------------------
+        # ÚLTIMOS REGISTROS
+        # -----------------------------------------------
+
+        'ultimos_onboarding':
+            ultimos_onboarding,
+
+        'ultimos_offboarding':
+            ultimos_offboarding,
+
+        'ultimos_kpis':
+            ultimos_kpis,
+
+        'ultimos_premios':
+            ultimos_premios,
+
+    }
+
+
+    # =====================================================
+    # MOSTRAR DASHBOARD
+    # =====================================================
+
+    return render(
+        request,
+        'inicio.html',
+        context
+    )
+
+
 
 # =========================================================
 # Vista: Elección Complementos de la Empresa: Gerencia, Departamento y Puesto

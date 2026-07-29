@@ -1,52 +1,37 @@
-<!-- ======================================================
-     CARGA DE LIBRERÍAS Y ARCHIVOS ESTÁTICOS DE DJANGO
-====================================================== -->
 {% load static %}
 
 <!doctype html>
 
-<!-- Idioma principal de la página -->
 <html lang="es">
   <head>
-    <!-- Configuración de caracteres -->
     <meta charset="UTF-8" />
 
-    <!-- Responsive Design para móviles -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Título que aparece en la pestaña del navegador -->
     <title>Inicio - Gestión de Talento Humano</title>
 
-    <!-- ======================================================
-         ARCHIVO CSS LOCAL
-         Se conecta el archivo inicio.css
-    ====================================================== -->
     <link rel="stylesheet" href="{% static 'styles/inicio.css' %}" />
 
-    <!-- ======================================================
-         FONT AWESOME
-         Librería para usar iconos
-    ====================================================== -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
+    ```
   </head>
 
   <body>
+    ```
     <!-- ======================================================
-         CONTENEDOR PRINCIPAL DEL DASHBOARD
-    ====================================================== -->
+     CONTENEDOR PRINCIPAL
+====================================================== -->
+
     <div class="dashboard-container">
       <!-- ======================================================
-           SIDEBAR / MENÚ LATERAL
-      ====================================================== -->
+       SIDEBAR / MENÚ LATERAL
+  ====================================================== -->
+
       <aside class="sidebar">
-        <!-- ======================================================
-             CONTENEDOR DEL LOGO
-        ====================================================== -->
         <div class="logo-container">
-          <!-- Imagen del logo cargada desde archivos estáticos -->
           <img
             src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
             alt="Logo Robasa"
@@ -55,100 +40,85 @@
         </div>
 
         <!-- ======================================================
-             MENÚ DE NAVEGACIÓN
-        ====================================================== -->
+         MENÚ DE NAVEGACIÓN
+    ====================================================== -->
+
         <nav class="menu">
-          <!-- Opción Inicio -->
           <a href="{% url 'inicio' %}">
             <i class="fas fa-house"></i>
             Inicio
           </a>
 
-          <!-- Opción Personas o Empleados -->
           <a href="{% url 'per_emp' %}">
             <i class="fas fa-user-group"></i>
             Personas o Empleados
           </a>
 
-          <!-- Opción Onboarding -->
           <a href="{% url 'crear_onboarding' %}">
             <i class="fas fa-rocket"></i>
             Onboarding / Entradas
           </a>
 
-          <!-- Opción Empresas -->
           <a href="{% url 'empresas' %}">
             <i class="fas fa-building"></i>
             Empresas
           </a>
 
-          <!-- Opción Gerencias, Departamentos y Puestos -->
           <a href="{% url 'comple_Empresa' %}">
             <i class="fas fa-briefcase"></i>
             Gerencias, Departamentos y Puestos
           </a>
 
-          <!-- Opción Salarios -->
           <a href="{% url 'salarios' %}">
             <i class="fas fa-money-bill-wave"></i>
             Salarios
           </a>
 
-          <!-- Opción Reclutamiento -->
           <a href="{% url 'reclutamiento' %}">
             <i class="fas fa-wallet"></i>
             Reclutamiento
           </a>
 
-          <!-- Opción Vacaciones -->
           <a href="{% url 'vacaciones' %}">
             <i class="fas fa-umbrella-beach"></i>
             Vacaciones
           </a>
 
-          <!-- Opción Asistencia y Permisos -->
           <a href="{% url 'elec_Asistencia' %}">
             <i class="fas fa-clock"></i>
             Asistencia y Permiso
           </a>
 
-          <!-- Acción o Rotación de Personal -->
           <a href="{% url 'accion_rotacion' %}">
             <i class="fas fa-clipboard-list"></i>
             Acciones o Rotaciones del Personal
           </a>
 
-          <!-- Opción Evaluaciones -->
           <a href="{% url 'evaluaciones' %}">
             <i class="fas fa-chart-line"></i>
             Evaluación de Desempeño
           </a>
 
-          <!-- Opción KPIs -->
           <a href="{% url 'elec_KPI' %}">
             <i class="fas fa-file-lines"></i>
             KPIs
           </a>
 
-          <!-- Opción Offboarding -->
           <a href="{% url 'elec_Offboarding' %}">
             <i class="fas fa-door-open"></i>
             Offboarding / Salidas
           </a>
 
-          <!-- Opción Reportes -->
           <a href="{% url 'reportes' %}">
             <i class="fas fa-file-lines"></i>
             Reportes
           </a>
 
-          <!-- Opción Usuarios y Roles -->
           <a href="{% url 'guardar_usuario_sistema' %}">
             <i class="fas fa-users-cog"></i>
             Usuarios y Roles
           </a>
 
-          <!-- Opción Configuración -->
           <a href="{% url 'configuraciones' %}">
             <i class="fas fa-gear"></i>
             Configuración
@@ -156,8 +126,9 @@
         </nav>
 
         <!-- ======================================================
-             BOTÓN CERRAR SESIÓN
-        ====================================================== -->
+         CERRAR SESIÓN
+    ====================================================== -->
+
         <div class="logout">
           <a href="{% url 'cerrar_sesion' %}">
             <i class="fas fa-sign-out-alt"></i>
@@ -167,16 +138,15 @@
       </aside>
 
       <!-- ======================================================
-           CONTENIDO PRINCIPAL
-      ====================================================== -->
+       CONTENIDO PRINCIPAL
+  ====================================================== -->
+
       <main class="main-content">
         <!-- ======================================================
-             HEADER / BARRA SUPERIOR
-        ====================================================== -->
+         HEADER
+    ====================================================== -->
+
         <header class="topbar">
-          <!-- ======================================================
-               TÍTULO DE LA PÁGINA
-          ====================================================== -->
           <div class="page-title">
             <h1>Inicio</h1>
 
@@ -184,13 +154,12 @@
           </div>
 
           <!-- ======================================================
-               BARRA DE BÚSQUEDA
-          ====================================================== -->
+           BARRA DE BÚSQUEDA
+      ====================================================== -->
+
           <div class="search-box">
-            <!-- Icono de búsqueda -->
             <i class="fas fa-search"></i>
 
-            <!-- Campo de búsqueda -->
             <input
               type="text"
               placeholder="Buscar empleado, módulo, reporte..."
@@ -198,105 +167,509 @@
           </div>
 
           <!-- ======================================================
-               ACCIONES DEL HEADER
-          ====================================================== -->
+           ACCIONES
+      ====================================================== -->
+
           <div class="topbar-actions">
-            <!-- ======================================================
-                 NOTIFICACIONES
-            ====================================================== -->
             <div class="notification">
-              <!-- Icono campana -->
               <i class="fas fa-bell"></i>
 
-              <!-- Número de notificaciones -->
-              <span class="badge">3</span>
+              <span class="badge"> 3 </span>
             </div>
 
-            <!-- ======================================================
-                 PERFIL DEL USUARIO
-            ====================================================== -->
             <div class="user-profile">
-              <!-- Imagen del usuario -->
               <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
 
-              <!-- Información del usuario -->
               <div class="user-info">
-                <strong>María Gómez</strong>
-                <span>Recursos Humanos</span>
+                <strong> María Gómez </strong>
+
+                <span> Recursos Humanos </span>
               </div>
             </div>
           </div>
         </header>
 
         <!-- ======================================================
-             CONTENIDO VISUAL DEL DASHBOARD
-        ====================================================== -->
+         TARJETAS RESUMEN
+    ====================================================== -->
 
-        <!-- ======================================================
-             TARJETAS RESUMEN
-        ====================================================== -->
         <section class="cards-grid">
-          <!-- Tarjeta 1 -->
+          <!-- ==================================================
+           TARJETA: EMPLEADOS
+      ================================================== -->
+
           <div class="card">
-            <h3>Total Empleados</h3>
-            <h2>128</h2>
-            <p>Activos actualmente</p>
+            <div class="card-icon">
+              <i class="fas fa-users"></i>
+            </div>
+
+            <h3>Empleados Activos</h3>
+
+            <h2>{{ total_empleados }}</h2>
+
+            <p>Colaboradores activos actualmente</p>
           </div>
 
-          <!-- Tarjeta 2 -->
+          <!-- ==================================================
+           TARJETA: PERSONAS
+      ================================================== -->
+
           <div class="card">
-            <h3>Empresas</h3>
-            <h2>5</h2>
-            <p>Empresas registradas</p>
+            <div class="card-icon">
+              <i class="fas fa-user-group"></i>
+            </div>
+
+            <h3>Total de Personas</h3>
+
+            <h2>{{ total_personas }}</h2>
+
+            <p>Personas registradas en el sistema</p>
           </div>
 
-          <!-- Tarjeta 3 -->
+          <!-- ==================================================
+           TARJETA: ONBOARDING
+      ================================================== -->
+
           <div class="card">
-            <h3>Planilla Total</h3>
-            <h2>₡18,450,000</h2>
-            <p>Salario neto mensual</p>
+            <div class="card-icon">
+              <i class="fas fa-rocket"></i>
+            </div>
+
+            <h3>Procesos de Onboarding</h3>
+
+            <h2>{{ total_onboarding }}</h2>
+
+            <p>Procesos de ingreso registrados</p>
           </div>
 
-          <!-- Tarjeta 4 -->
+          <!-- ==================================================
+           TARJETA: OFFBOARDING
+      ================================================== -->
+
           <div class="card">
-            <h3>Vacaciones Pendientes</h3>
-            <h2>23</h2>
-            <p>Solicitudes pendientes</p>
+            <div class="card-icon">
+              <i class="fas fa-door-open"></i>
+            </div>
+
+            <h3>Procesos de Offboarding</h3>
+
+            <h2>{{ total_offboarding }}</h2>
+
+            <p>Procesos de salida registrados</p>
+          </div>
+
+          <!-- ==================================================
+           TARJETA: PASANTES
+      ================================================== -->
+
+          <div class="card">
+            <div class="card-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+
+            <h3>Pasantes Activos</h3>
+
+            <h2>{{ total_pasantes }}</h2>
+
+            <p>Pasantes activos registrados</p>
+          </div>
+
+          <!-- ==================================================
+           TARJETA: KPIs
+      ================================================== -->
+
+          <div class="card">
+            <div class="card-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+
+            <h3>KPIs Registrados</h3>
+
+            <h2>{{ total_kpis }}</h2>
+
+            <p>Cabeceras KPI registradas</p>
+          </div>
+
+          <!-- ==================================================
+           TARJETA: PREMIOS
+      ================================================== -->
+
+          <div class="card">
+            <div class="card-icon">
+              <i class="fas fa-award"></i>
+            </div>
+
+            <h3>Premios Asignados</h3>
+
+            <h2>{{ total_premios_asignados }}</h2>
+
+            <p>Premios asignados a colaboradores</p>
+          </div>
+
+          <!-- ==================================================
+           TARJETA: USUARIOS
+      ================================================== -->
+
+          <div class="card">
+            <div class="card-icon">
+              <i class="fas fa-user-shield"></i>
+            </div>
+
+            <h3>Usuarios Activos</h3>
+
+            <h2>{{ usuarios_activos }}</h2>
+
+            <p>Usuarios habilitados en el sistema</p>
           </div>
         </section>
 
         <!-- ======================================================
-             SECCIÓN DE PANELES Y GRÁFICOS
-        ====================================================== -->
+         CONTENIDO PRINCIPAL DEL DASHBOARD
+    ====================================================== -->
+
         <section class="content-grid">
-          <!-- Panel Resumen Planilla -->
+          <!-- ==================================================
+           PANEL: RESUMEN DE PERSONAL
+      ================================================== -->
+
           <div class="panel large-panel">
-            <h3>Resumen de la Planilla</h3>
-            <div class="placeholder">Gráfico Circular</div>
+            <h3>Resumen del Personal</h3>
+
+            <div class="summary-list">
+              <div class="summary-item">
+                <span>
+                  <i class="fas fa-users"></i>
+                  Empleados activos
+                </span>
+
+                <strong> {{ total_empleados }} </strong>
+              </div>
+
+              <div class="summary-item">
+                <span>
+                  <i class="fas fa-user"></i>
+                  Personas registradas
+                </span>
+
+                <strong> {{ total_personas }} </strong>
+              </div>
+
+              <div class="summary-item">
+                <span>
+                  <i class="fas fa-graduation-cap"></i>
+                  Pasantes activos
+                </span>
+
+                <strong> {{ total_pasantes }} </strong>
+              </div>
+            </div>
           </div>
 
-          <!-- Panel Empleados por Empresa -->
+          <!-- ==================================================
+           PANEL: PROCESOS DE TALENTO HUMANO
+      ================================================== -->
+
           <div class="panel large-panel">
-            <h3>Empleados por Empresa</h3>
-            <div class="placeholder">Gráfico de Barras</div>
+            <h3>Procesos de Talento Humano</h3>
+
+            <div class="summary-list">
+              <div class="summary-item">
+                <span>
+                  <i class="fas fa-rocket"></i>
+                  Onboarding
+                </span>
+
+                <strong> {{ total_onboarding }} </strong>
+              </div>
+
+              <div class="summary-item">
+                <span>
+                  <i class="fas fa-door-open"></i>
+                  Offboarding
+                </span>
+
+                <strong> {{ total_offboarding }} </strong>
+              </div>
+
+              <div class="summary-item">
+                <span>
+                  <i class="fas fa-list-check"></i>
+                  Checklists de Offboarding
+                </span>
+
+                <strong> {{ total_checklists_offboarding }} </strong>
+              </div>
+
+              <div class="summary-item">
+                <span>
+                  <i class="fas fa-chart-pie"></i>
+                  Avance promedio de Checklists
+                </span>
+
+                <strong> {{ promedio_checklist }}% </strong>
+              </div>
+            </div>
           </div>
 
-          <!-- Panel Solicitudes -->
+          <!-- ==================================================
+           PANEL: RENDIMIENTO
+      ================================================== -->
+
           <div class="panel">
-            <h3>Solicitudes Recientes</h3>
-            <div class="placeholder">Vacaciones, permisos...</div>
+            <h3>Rendimiento y KPIs</h3>
+
+            <div class="summary-list">
+              <div class="summary-item">
+                <span>
+                  <i class="fas fa-chart-line"></i>
+                  KPIs registrados
+                </span>
+
+                <strong> {{ total_kpis }} </strong>
+              </div>
+
+              <div class="summary-item">
+                <span>
+                  <i class="fas fa-list-ol"></i>
+                  Detalles KPI
+                </span>
+
+                <strong> {{ total_detalles_kpi }} </strong>
+              </div>
+
+              <div class="summary-item">
+                <span>
+                  <i class="fas fa-percent"></i>
+                  Cumplimiento promedio
+                </span>
+
+                <strong> {{ promedio_kpi }}% </strong>
+              </div>
+            </div>
           </div>
 
-          <!-- Panel Asistencia -->
+          <!-- ==================================================
+           PANEL: PREMIOS
+      ================================================== -->
+
           <div class="panel">
-            <h3>Asistencia - Hoy</h3>
-            <div class="placeholder">Indicador 92%</div>
+            <h3>Resumen de Premios</h3>
+
+            <div class="summary-list">
+              <div class="summary-item">
+                <span>
+                  <i class="fas fa-award"></i>
+                  Premios configurados
+                </span>
+
+                <strong> {{ total_premios }} </strong>
+              </div>
+
+              <div class="summary-item">
+                <span>
+                  <i class="fas fa-gift"></i>
+                  Premios asignados
+                </span>
+
+                <strong> {{ total_premios_asignados }} </strong>
+              </div>
+
+              <div class="summary-item">
+                <span>
+                  <i class="fas fa-money-bill-wave"></i>
+                  Monto liquidado
+                </span>
+
+                <strong> ₡{{ monto_total_premios|floatformat:2 }} </strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- ==================================================
+           PANEL: ÚLTIMOS ONBOARDING
+      ================================================== -->
+
+          <div class="panel large-panel">
+            <h3>Últimos Procesos de Onboarding</h3>
+
+            <div class="recent-list">
+              {% for onboarding in ultimos_onboarding %}
+
+              <div class="recent-item">
+                <div class="recent-icon">
+                  <i class="fas fa-rocket"></i>
+                </div>
+
+                <div class="recent-info">
+                  <strong>
+                    {{ onboarding.idEmpleado.idPersona.Nombre_Completo }}
+                  </strong>
+
+                  <span> {{ onboarding.idDepartamento.Nombre }} </span>
+
+                  <small>
+                    Inicio: {{ onboarding.Fecha_Inicio|date:"d/m/Y" }}
+                  </small>
+                </div>
+              </div>
+
+              {% empty %}
+
+              <div class="placeholder">
+                No existen procesos de onboarding registrados.
+              </div>
+
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- ==================================================
+           PANEL: ÚLTIMOS OFFBOARDING
+      ================================================== -->
+
+          <div class="panel large-panel">
+            <h3>Últimos Procesos de Offboarding</h3>
+
+            <div class="recent-list">
+              {% for offboarding in ultimos_offboarding %}
+
+              <div class="recent-item">
+                <div class="recent-icon">
+                  <i class="fas fa-door-open"></i>
+                </div>
+
+                <div class="recent-info">
+                  <strong>
+                    {{ offboarding.idEmpleado.idPersona.Nombre_Completo }}
+                  </strong>
+
+                  <span>
+                    {{ offboarding.idCausa.Categoria }} - {{
+                    offboarding.idCausa.Causa }}
+                  </span>
+
+                  <small>
+                    Salida: {{ offboarding.Fecha_Salida|date:"d/m/Y" }}
+                  </small>
+                </div>
+              </div>
+
+              {% empty %}
+
+              <div class="placeholder">
+                No existen procesos de offboarding registrados.
+              </div>
+
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- ==================================================
+           PANEL: ÚLTIMOS PREMIOS
+      ================================================== -->
+
+          <div class="panel">
+            <h3>Últimos Premios Asignados</h3>
+
+            <div class="recent-list">
+              {% for premio in ultimos_premios %}
+
+              <div class="recent-item">
+                <div class="recent-icon">
+                  <i class="fas fa-award"></i>
+                </div>
+
+                <div class="recent-info">
+                  <strong>
+                    {{ premio.id_KPI.idEmpleado.idPersona.Nombre_Completo }}
+                  </strong>
+
+                  <span> {{ premio.idPremio }} </span>
+
+                  <small>
+                    Registro: {{ premio.Fecha_Registro|date:"d/m/Y" }}
+                  </small>
+                </div>
+              </div>
+
+              {% empty %}
+
+              <div class="placeholder">No existen premios asignados.</div>
+
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- ==================================================
+           PANEL: USUARIOS Y ROLES
+      ================================================== -->
+
+          <div class="panel">
+            <h3>Usuarios y Roles</h3>
+
+            <div class="summary-list">
+              <div class="summary-item">
+                <span>
+                  <i class="fas fa-users"></i>
+                  Usuarios registrados
+                </span>
+
+                <strong> {{ total_usuarios }} </strong>
+              </div>
+
+              <div class="summary-item">
+                <span>
+                  <i class="fas fa-user-check"></i>
+                  Usuarios activos
+                </span>
+
+                <strong> {{ usuarios_activos }} </strong>
+              </div>
+
+              <div class="summary-item">
+                <span>
+                  <i class="fas fa-user-shield"></i>
+                  Roles disponibles
+                </span>
+
+                <strong> {{ total_roles }} </strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- ==================================================
+           PANEL: ACCIONES Y EVALUACIONES
+      ================================================== -->
+
+          <div class="panel">
+            <h3>Gestión del Desempeño</h3>
+
+            <div class="summary-list">
+              <div class="summary-item">
+                <span>
+                  <i class="fas fa-clipboard-list"></i>
+                  Acciones / Rotaciones
+                </span>
+
+                <strong> {{ total_acciones }} </strong>
+              </div>
+
+              <div class="summary-item">
+                <span>
+                  <i class="fas fa-chart-line"></i>
+                  Evaluaciones
+                </span>
+
+                <strong> {{ total_evaluaciones }} </strong>
+              </div>
+            </div>
           </div>
         </section>
 
         <!-- ======================================================
-             FOOTER / PIE DE PÁGINA
-        ====================================================== -->
+         FOOTER
+    ====================================================== -->
+
         <footer class="footer">
           © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
         </footer>
