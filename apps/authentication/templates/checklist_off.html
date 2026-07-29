@@ -453,43 +453,58 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for checklist in checklists %}
+                  {% for proceso in offboardings %}
+
                   <tr>
-                    <td>
-                      <strong
-                        >#OFF-{{ checklist.id_Offboarding.id_Offboarding }}</strong
-                      >
-                    </td>
+                    <!-- ==========================================
+     ID OFFBOARDING
+=========================================== -->
 
                     <td>
-                      {{ checklist.id_Offboarding.idEmpleado.idPersona.Nombre_Completo }}
+                      <strong> #OFF-{{ proceso.id_Offboarding }} </strong>
                     </td>
 
+                    <!-- ==========================================
+     COLABORADOR
+=========================================== -->
+
+                    <td>{{ proceso.idEmpleado.idPersona.Nombre_Completo }}</td>
+
+                    <!-- ==========================================
+     CATEGORÍA / CAUSA
+=========================================== -->
+
                     <td>
-                      {% if checklist.id_Offboarding.idCausa.Categoria == "Voluntaria" %}
+                      {% if proceso.idCausa.Categoria == "Voluntaria" %}
 
                       <span class="badge-category bg-voluntaria">
-                        {{ checklist.id_Offboarding.idCausa.Categoria }}
+                        {{ proceso.idCausa.Categoria }}
                       </span>
 
-                      {% elif checklist.id_Offboarding.idCausa.Categoria == "Involuntaria" %}
+                      {% elif proceso.idCausa.Categoria == "Involuntaria" %}
 
                       <span class="badge-category bg-involuntaria">
-                        {{ checklist.id_Offboarding.idCausa.Categoria }}
+                        {{ proceso.idCausa.Categoria }}
                       </span>
 
                       {% else %}
 
                       <span class="badge-category">
-                        {{ checklist.id_Offboarding.idCausa.Categoria }}
+                        {{ proceso.idCausa.Categoria }}
                       </span>
 
-                      {% endif %} - {{ checklist.id_Offboarding.idCausa.Causa }}
+                      {% endif %} - {{ proceso.idCausa.Causa }}
                     </td>
 
-                    <td>
-                      {{ checklist.id_Offboarding.Fecha_Salida|date:"d/m/Y" }}
-                    </td>
+                    <!-- ==========================================
+     FECHA DE SALIDA
+=========================================== -->
+
+                    <td>{{ proceso.Fecha_Salida|date:"d/m/Y" }}</td>
+
+                    <!-- ==========================================
+     PROGRESO
+=========================================== -->
 
                     <td>
                       <div class="progress-container">
@@ -503,22 +518,58 @@
                         >
                           <div
                             class="progress-bar"
-                            style="width: {{ checklist.pct_listo|default:0 }}%;"
-                          ></div>
+                            style="
+                            width:
+                            {% if proceso.checklist_obj %}
+                            {{ proceso.checklist_obj.pct_listo|default:0 }}
+                             {% else %}
+                             0
+                             {% endif %}
+                             %;
+                             "></div>
                         </div>
 
-                        <span> {{ checklist.pct_listo|default:0 }}% </span>
+                        <span>
+                          {% if proceso.checklist_obj %} {{ proceso.checklist_obj.pct_listo|default:0 }}% {% else %} 0% {% endif %}
+                        </span>
                       </div>
                     </td>
 
+                    <!-- ==========================================
+                          ACCIÓN
+                      =========================================== -->
                     <td class="col-accion">
+                      {% if proceso.checklist_obj %}
+
+                      <!-- ======================================
+                            YA TIENE CHECKLIST
+                            EDITAR CHECKLIST EXISTENTE
+                      ======================================= -->
+
                       <a
-                        href="{% url 'editar_checklist_offboarding' checklist.id_Check %}"
+                        href="{% url 'editar_checklist_offboarding' proceso.checklist_obj.id_Check %}"
                         class="btn btn-warning btn-sm"
                         title="Editar Checklist"
                       >
                         <i class="fas fa-pen-to-square"></i>
                       </a>
+
+                      {% else %}
+
+                      <!-- ======================================
+         NO TIENE CHECKLIST
+         CREAR NUEVO CHECKLIST
+    ======================================= -->
+
+                      <a
+                        href="?id_Offboarding={{ proceso.id_Offboarding }}"
+                        class="btn btn-primary btn-sm"
+                        title="Crear Checklist"
+                      >
+                        <i class="fas fa-plus"></i>
+                      </a>
+
+                      {% endif %}
                     </td>
                   </tr>
 
@@ -527,7 +578,8 @@
                   <tr>
                     <td colspan="6" class="tabla-vacia">
                       <i class="fas fa-door-open"></i>
-                      No existen Checklists de Offboarding registrados.
+
+                      No existen procesos de Offboarding registrados.
                     </td>
                   </tr>
 

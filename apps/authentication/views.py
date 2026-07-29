@@ -3891,11 +3891,25 @@ from django.contrib import messages
 from django.db import transaction, IntegrityError
 from django.shortcuts import render, get_object_or_404
 
+# =========================================================
+
+# GUARDAR CHECKLIST DE OFFBOARDING
+
+# Crea o actualiza el checklist correspondiente
+
+# al proceso de Offboarding seleccionado
+
+# =========================================================
+
 def guardar_checklist_offboarding(request):
 
     if request.method == "POST":
 
         try:
+
+            # =====================================================
+            # DATOS RECIBIDOS DEL FORMULARIO
+            # =====================================================
 
             id_offboarding = request.POST.get(
                 "id_Offboarding"
@@ -3917,9 +3931,9 @@ def guardar_checklist_offboarding(request):
                 "actividades[]"
             )
 
-            # ===========================================
+            # =====================================================
             # VALIDACIONES
-            # ===========================================
+            # =====================================================
 
             if not id_offboarding:
 
@@ -3944,19 +3958,33 @@ def guardar_checklist_offboarding(request):
 
             else:
 
+                # =================================================
+                # OBTENER EL OFFBOARDING SELECCIONADO
+                # =================================================
+
                 offboarding = get_object_or_404(
                     Offboarding,
                     id_Offboarding=id_offboarding
                 )
+
+                # =================================================
+                # OBTENER EL ESTADO SELECCIONADO
+                # =================================================
 
                 estado = get_object_or_404(
                     Estatus,
                     id_Estatus_Vacante=id_estatus
                 )
 
+                # =================================================
+                # CALCULAR PORCENTAJE
+                # =================================================
+
                 total_catalogo = OffboardingCatalogo.objects.count()
 
-                total_seleccionadas = len(actividades)
+                total_seleccionadas = len(
+                    actividades
+                )
 
                 if total_catalogo > 0:
 
@@ -3970,146 +3998,268 @@ def guardar_checklist_offboarding(request):
 
                 else:
 
-                    pct_listo = Decimal("0.00")
+                    pct_listo = Decimal(
+                        "0.00"
+                    )
+
+                # =================================================
+                # TRANSACCIÓN
+                # =================================================
 
                 with transaction.atomic():
 
-                    # ======================================
-                    # CABECERA
-                    # ======================================
+                    # =============================================
+                    # BUSCAR EL CHECKLIST DEL OFFBOARDING
+                    # =============================================
 
-                    checklist, creado = OffboardingChecklist.objects.get_or_create(
+                    try:
 
-                        id_Offboarding=offboarding,
+                        checklist = OffboardingChecklist.objects.get(
+                            id_Offboarding=offboarding
+                        )
 
-                        defaults={
+                        creado = False
 
-                            "Fecha_Asignacion": date.today(),
+                    except OffboardingChecklist.DoesNotExist:
 
-                            "Fecha_Comp": (
+                        # =========================================
+                        # CREAR NUEVO CHECKLIST
+                        # =========================================
+
+                        checklist = OffboardingChecklist.objects.create(
+
+                            Fecha_Asignacion=date.today(),
+
+                            Fecha_Comp=(
                                 fecha_comp
-                                if fecha_comp else None
+                                if fecha_comp
+                                else None
                             ),
 
-                            "Observacion": observacion,
+                            Observacion=observacion,
 
-                            "pct_listo": pct_listo,
+                            pct_listo=pct_listo,
 
-                            "id_Estatus_Vacante": estado
+                            id_Offboarding=offboarding,
 
-                        }
+                            id_Estatus_Vacante=estado
 
-                    )
+                        )
 
-                    # Si ya existía, solamente actualiza
+                        creado = True
+
+                    # =============================================
+                    # SI YA EXISTE, ACTUALIZAR CABECERA
+                    # =============================================
+
                     if not creado:
 
                         checklist.Fecha_Comp = (
+
                             fecha_comp
-                            if fecha_comp else None
+
+                            if fecha_comp
+
+                            else None
+
                         )
 
-                        checklist.Observacion = observacion
+                        checklist.Observacion = (
+                            observacion
+                        )
 
-                        checklist.id_Estatus_Vacante = estado
+                        checklist.pct_listo = (
+                            pct_listo
+                        )
 
-                        checklist.pct_listo = pct_listo
+                        checklist.id_Estatus_Vacante = (
+                            estado
+                        )
 
                         checklist.save()
 
-                    # ======================================
-                    # DETALLE
-                    # ======================================
+                    # =============================================
+                    # ELIMINAR DETALLES ANTERIORES
+                    #
+                    # Esto permite que al editar un checklist
+                    # se eliminen las actividades que fueron
+                    # desmarcadas.
+                    # =============================================
+
+                    OffboardingChecklistDetalle.objects.filter(
+
+                        id_Check=checklist
+
+                    ).delete()
+
+                    # =============================================
+                    # CREAR LOS NUEVOS DETALLES
+                    # =============================================
 
                     registros_creados = 0
 
                     for id_catalogo in actividades:
 
                         actividad = get_object_or_404(
+
                             OffboardingCatalogo,
+
                             idCatalogo=id_catalogo
+
                         )
 
-                        _, creado_detalle = OffboardingChecklistDetalle.objects.get_or_create(
+                        OffboardingChecklistDetalle.objects.create(
 
                             id_Check=checklist,
 
                             idCatalogo=actividad,
 
-                            defaults={
-
-                                "Completado": True
-
-                            }
+                            Completado=True
 
                         )
 
-                        if creado_detalle:
+                        registros_creados += 1
 
-                            registros_creados += 1
+                # =================================================
+                # MENSAJE
+                # =================================================
+
+                if creado:
 
                     messages.success(
 
                         request,
 
-                        f"Checklist guardado correctamente. "
-                        f"Se agregaron {registros_creados} actividades."
+                        f"Checklist #{checklist.id_Check} "
+                        f"creado correctamente para el "
+                        f"Offboarding #{offboarding.id_Offboarding}."
+
+                    )
+
+                else:
+
+                    messages.success(
+
+                        request,
+
+                        f"Checklist #{checklist.id_Check} "
+                        f"actualizado correctamente."
 
                     )
 
         except IntegrityError as e:
 
-            print(e)
+            print(
+                "ERROR DE INTEGRIDAD:",
+                e
+            )
 
             messages.error(
+
                 request,
-                f"Error SQL: {e}"
+
+                f"Error de integridad en la base de datos: {e}"
             )
 
         except Exception as e:
 
-            print(e)
+            print(
+                "ERROR:",
+                e
+            )
 
             messages.error(
+
                 request,
-                f"Error: {e}"
+
+                f"Error al guardar el checklist: {e}"
+
             )
+
+    # =========================================================
+    # DATOS PARA MOSTRAR LA PÁGINA
+    # =========================================================
+
+    # Traemos todos los procesos de Offboarding
+    offboardings = Offboarding.objects.select_related(
+
+        "idEmpleado",
+
+        "idEmpleado__idPersona",
+
+        "idCausa"
+
+    ).order_by(
+
+        "-Fecha_Salida"
+
+    )
+
+    # =========================================================
+    # AGREGAR EL CHECKLIST A CADA OFFBOARDING
+    # =========================================================
+
+    for proceso in offboardings:
+
+        try:
+
+            proceso.checklist_obj = (
+                OffboardingChecklist.objects.get(
+                    id_Offboarding=proceso.id_Offboarding
+                )
+            )
+
+        except OffboardingChecklist.DoesNotExist:
+
+            proceso.checklist_obj = None
+
+    # =========================================================
+    # CONTEXTO
+    # =========================================================
 
     context = {
 
-        "offboardings": Offboarding.objects.select_related(
-            "idEmpleado",
-            "idEmpleado__idPersona",
-            "idCausa"
-        ).order_by(
-            "-Fecha_Salida"
-        ),
+        "offboardings": offboardings,
 
         "catalogo": OffboardingCatalogo.objects.order_by(
+
             "Num_Etapa",
+
             "idCatalogo"
+
         ),
 
         "checklists": OffboardingChecklist.objects.select_related(
+
             "id_Offboarding",
-            "id_Offboarding__idEmpleado",
-            "id_Offboarding__idEmpleado__idPersona",
-            "id_Offboarding__idCausa",
+
             "id_Estatus_Vacante"
+
         ).order_by(
+
             "-Fecha_Asignacion"
+
         ),
 
         "estados": Estatus.objects.order_by(
+
             "id_Estatus_Vacante"
+
         )
+
     }
 
     return render(
+
         request,
+
         "checklist_off.html",
+
         context
+
     )
+
+
 
 
 from decimal import Decimal
