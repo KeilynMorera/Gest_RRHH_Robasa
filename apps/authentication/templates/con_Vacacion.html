@@ -237,27 +237,21 @@
               <span class="badge">3</span>
             </div>
 
-            <!-- PERFIL DEL USUARIO -->
+            <!-- ===================== PERFIL DEL USUARIO ===================== -->
             <div class="user-profile">
-              <!-- Foto del usuario -->
-              <img src="https://i.pravatar.cc/100?img=32" alt="Usuario" />
+              {% if usuario_foto %}
+              <img src="{{ usuario_foto }}" alt="{{ usuario_nombre }}" />
+              {% else %}
+              <img
+                src="{% static 'media/fotos_personas/default_user.jpeg' %}"
+                alt="Usuario"
+              />
+              {% endif %}
 
-              <!-- Información del usuario -->
-              <div class="user-profile">
-                {% if usuario_foto %}
-                <img src="{{ usuario_foto }}" alt="{{ usuario_nombre }}" />
-                {% else %}
-                <img
-                  src="{% static 'media/fotos_personas/default_user.jpeg' %}"
-                  alt="Usuario"
-                />
-                {% endif %}
+              <div class="user-info">
+                <strong> {{ usuario_nombre }} </strong>
 
-                <div class="user-info">
-                  <strong> {{ usuario_nombre }} </strong>
-
-                  <span> {{ usuario_puesto }} </span>
-                </div>
+                <span> {{ usuario_puesto }} </span>
               </div>
             </div>
           </div>
@@ -368,8 +362,7 @@
                         endif
                         %}
                       >
-                        {{ empleado.idPersona.Nombre_Completo }} — {{
-                        empleado.idPuesto.Nombre }}
+                        {{ empleado.idPersona.Nombre_Completo }} — {{ empleado.idPuesto.Nombre }}
                       </option>
                       {% endfor %}
                     </select>

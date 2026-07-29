@@ -336,8 +336,7 @@
                         endif
                         %}
                       >
-                        {{ empleado.idPersona.Nombre_Completo }} — {{
-                        empleado.idPuesto.Nombre }}
+                        {{ empleado.idPersona.Nombre_Completo }} — {{ empleado.idPuesto.Nombre }}
                       </option>
                       {% endfor %}
                     </select>
@@ -662,8 +661,7 @@
                     <td>{{ salario.Fecha_Inicio|date:"d/m/Y" }}</td>
 
                     <td>
-                      {% if salario.Fecha_Fin %}{{salario.Fecha_Fin|date:"d/m/Y"
-                      }}{% else %}—{% endif %}
+                      {% if salario.Fecha_Fin %}{{salario.Fecha_Fin|date:"d/m/Y" }}{% else %}—{% endif %}
                     </td>
 
                     <td>₡{{ salario.Salario_Bruto }}</td>

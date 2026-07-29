@@ -256,8 +256,7 @@
 
                       {% for empleado in empleados %}
                       <option value="{{ empleado.idEmpleado }}">
-                        {{ empleado.idPersona.Nombre_Completo }} — {{
-                        empleado.idPuesto.Nombre }}
+                        {{ empleado.idPersona.Nombre_Completo }} — {{ empleado.idPuesto.Nombre }}
                       </option>
                       {% endfor %}
                     </select>
@@ -276,8 +275,7 @@
                       {% for a in asistencias_permiso %}
 
                       <option value="{{ a.idAsistencia }}">
-                        {{ a.idEmpleado.idPersona.Nombre_Completo }} - {{
-                        a.Fecha }}
+                        {{ a.idEmpleado.idPersona.Nombre_Completo }} - {{ a.Fecha }}
                       </option>
 
                       {% endfor %}

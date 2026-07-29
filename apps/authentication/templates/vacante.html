@@ -609,7 +609,7 @@
                         endif
                         %}
                       >
-                        {{ emp.idPersona.Nombre_Completo }}
+                        {{ emp.idPersona.Nombre_Completo }} — {% if emp.idPuesto %} {{ emp.idPuesto.Nombre }} {% else %} Sin puesto asignado {% endif %}
                       </option>
                       {% endfor %}
                     </select>
@@ -643,7 +643,7 @@
                         endif
                         %}
                       >
-                        {{ emp.idPersona.Nombre_Completo }}
+                        {{ emp.idPersona.Nombre_Completo }} — {% if emp.idPuesto %} {{ emp.idPuesto.Nombre }} {% else %} Sin puesto asignado {% endif %}
                       </option>
                       {% endfor %}
                     </select>
@@ -677,7 +677,7 @@
                         endif
                         %}
                       >
-                        {{ emp.idPersona.Nombre_Completo }}
+                        {{ emp.idPersona.Nombre_Completo }} — {% if emp.idPuesto %} {{ emp.idPuesto.Nombre }} {% else %} Sin puesto asignado {% endif %}
                       </option>
                       {% endfor %}
                     </select>
@@ -728,7 +728,7 @@
                         endif
                         %}
                       >
-                        {{ emp.idPersona.Nombre_Completo }}
+                        {{ emp.idPersona.Nombre_Completo }} — {% if emp.idPuesto %} {{ emp.idPuesto.Nombre }} {% else %} Sin puesto asignado {% endif %}
                       </option>
                       {% endfor %}
                     </select>

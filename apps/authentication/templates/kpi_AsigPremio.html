@@ -289,8 +289,8 @@
             {% endif %}
 
             <!-- ==================================================
-             FORMULARIO
-        ================================================== -->
+                  FORMULARIO
+              ================================================== -->
 
             <form
               method="POST"
@@ -300,8 +300,8 @@
               {% csrf_token %}
 
               <!-- ==================================================
-               SECCIÓN: ASIGNACIÓN DEL PREMIO
-          ================================================== -->
+                    SECCIÓN: ASIGNACIÓN DEL PREMIO
+                ================================================== -->
 
               <div class="form-section">
                 <h4 class="form-section-title">
@@ -312,8 +312,8 @@
 
                 <div class="form-grid">
                   <!-- ==================================================
-                   KPI
-              ================================================== -->
+                        KPI
+                    ================================================== -->
 
                   <div class="field">
                     <label for="{{ form.id_KPI.id_for_label }}">
@@ -352,8 +352,8 @@
                   </div>
 
                   <!-- ==================================================
-                   MONTO LIQUIDADO - SOLO VISUALIZACIÓN
-              ================================================== -->
+                        MONTO LIQUIDADO - SOLO VISUALIZACIÓN
+                    ================================================== -->
 
                   <div class="field">
                     <label for="Monto_Liquidado_Preview">
@@ -385,8 +385,8 @@
                   </div>
 
                   <!-- ==================================================
-                   FECHA DE REGISTRO
-              ================================================== -->
+                        FECHA DE REGISTRO
+                    ================================================== -->
 
                   <div class="field">
                     <label for="{{ form.Fecha_Registro.id_for_label }}">
@@ -397,8 +397,7 @@
                       <span class="req"> * </span>
                     </label>
 
-                    {{ form.Fecha_Registro }} {% if form.Fecha_Registro.errors
-                    %}
+                    {{ form.Fecha_Registro }} {% if form.Fecha_Registro.errors %}
 
                     <small class="error">
                       {{ form.Fecha_Registro.errors }}
@@ -410,8 +409,8 @@
               </div>
 
               <!-- ==================================================
-               HISTORIAL
-          ================================================== -->
+                    HISTORIAL
+                ================================================== -->
 
               <div class="form-section">
                 <h4 class="form-section-title">
@@ -445,9 +444,7 @@
                         <td>{{ registro.id_PremioAsignado }}</td>
 
                         <td>
-                          {{
-                          registro.id_KPI.idEmpleado.idPersona.Nombre_Completo
-                          }}
+                          {{ registro.id_KPI.idEmpleado.idPersona.Nombre_Completo }}
                         </td>
 
                         <td>
@@ -481,8 +478,8 @@
               </div>
 
               <!-- ==================================================
-               BOTONES
-          ================================================== -->
+                    BOTONES
+                ================================================== -->
 
               <div class="form-footer">
                 <button type="reset" class="btn btn-ghost" id="btn-limpiar">
@@ -502,8 +499,8 @@
         </section>
 
         <!-- ======================================================
-         FOOTER
-    ====================================================== -->
+              FOOTER
+          ====================================================== -->
 
         <footer class="footer">
           © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
@@ -512,168 +509,9 @@
     </div>
 
     <!-- ==========================================================
-     JAVASCRIPT
-     CALCULAR VISTA PREVIA DEL MONTO LIQUIDADO
-=========================================================== -->
-
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // =====================================================
-        // ELEMENTOS
-        // =====================================================
-
-        const premioSelect = document.getElementById("idPremio");
-
-        const kpiSelect = document.getElementById("id_KPI");
-
-        const montoLiquidadoPreview = document.getElementById(
-          "Monto_Liquidado_Preview",
-        );
-
-        const btnLimpiar = document.getElementById("btn-limpiar");
-
-        // =====================================================
-        // VALIDAR ELEMENTOS
-        // =====================================================
-
-        if (!premioSelect || !kpiSelect || !montoLiquidadoPreview) {
-          console.error(
-            "No se encontraron los elementos necesarios para calcular el monto liquidado.",
-          );
-
-          return;
-        }
-
-        // =====================================================
-        // FORMATEAR MONTO
-        // =====================================================
-
-        function formatearMonto(monto) {
-          return new Intl.NumberFormat("es-CR", {
-            style: "currency",
-            currency: "CRC",
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          }).format(monto);
-        }
-
-        // =====================================================
-        // LIMPIAR MONTO
-        // =====================================================
-
-        function limpiarMonto() {
-          montoLiquidadoPreview.value = "₡ 0,00";
-        }
-
-        // =====================================================
-        // OBTENER MONTO LIQUIDADO
-        //
-        // Se consulta:
-        //
-        // Premio seleccionado
-        // +
-        // KPI seleccionado
-        //
-        // El servidor busca:
-        //
-        // Premio.Monto
-        // +
-        // KPI_Detalle.Monto_Total
-        //
-        // =====================================================
-
-        function obtenerMontoLiquidado() {
-          const idPremio = premioSelect.value;
-
-          const idKPI = kpiSelect.value;
-
-          // ===================================================
-          // VALIDAR SELECCIONES
-          // ===================================================
-
-          if (!idPremio || !idKPI) {
-            limpiarMonto();
-
-            return;
-          }
-
-          // ===================================================
-          // MOSTRAR CARGANDO
-          // ===================================================
-
-          montoLiquidadoPreview.value = "Calculando...";
-
-          // ===================================================
-          // URL DINÁMICA
-          // ===================================================
-
-          const url = `/premios-asignados/monto/${idPremio}/${idKPI}/`;
-
-          // ===================================================
-          // CONSULTAR SERVIDOR
-          // ===================================================
-
-          fetch(url)
-            .then((response) => response.json())
-
-            .then((data) => {
-              // =============================================
-              // RESPUESTA EXITOSA
-              // =============================================
-
-              if (data.success) {
-                const monto = parseFloat(data.monto_liquidado);
-
-                if (!isNaN(monto)) {
-                  montoLiquidadoPreview.value = formatearMonto(monto);
-                } else {
-                  limpiarMonto();
-                }
-              }
-
-              // =============================================
-              // ERROR
-              // =============================================
-              else {
-                limpiarMonto();
-
-                console.error(
-                  data.error || "No se pudo calcular el monto liquidado.",
-                );
-              }
-            })
-
-            .catch((error) => {
-              console.error("Error al obtener el monto liquidado:", error);
-
-              limpiarMonto();
-            });
-        }
-
-        // =====================================================
-        // EVENTO: CAMBIO DE PREMIO
-        // =====================================================
-
-        premioSelect.addEventListener("change", obtenerMontoLiquidado);
-
-        // =====================================================
-        // EVENTO: CAMBIO DE KPI
-        // =====================================================
-
-        kpiSelect.addEventListener("change", obtenerMontoLiquidado);
-
-        // =====================================================
-        // LIMPIAR CAMPOS
-        // =====================================================
-
-        if (btnLimpiar) {
-          btnLimpiar.addEventListener("click", function () {
-            setTimeout(function () {
-              limpiarMonto();
-            }, 50);
-          });
-        }
-      });
-    </script>
+          JAVASCRIPT
+          CALCULAR VISTA PREVIA DEL MONTO LIQUIDADO
+      =========================================================== -->
+      <script src="{% static 'js/kpi_AsigPremio.js' %}"></script>
   </body>
 </html>
