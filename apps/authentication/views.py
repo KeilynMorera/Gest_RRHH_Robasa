@@ -27,358 +27,496 @@ def home(request):
 
 # =========================================================
 # Vista: Inicio
-# =========================================================
-# =========================================================
-
-# VISTA: INICIO / DASHBOARD PRINCIPAL
-
-# Muestra los principales indicadores del sistema
-
+# Dashboard principal del sistema
 # =========================================================
 
 def inicio_view(request):
 
-    # =====================================================
-    # 1. TOTAL DE EMPLEADOS
-    # =====================================================
+    # =========================================================
+    # 1. INFORMACIÓN DEL USUARIO LOGUEADO
+    # =========================================================
 
-    total_empleados = Empleado.objects.filter(
-        Activo=True
-    ).count()
+    usuario_id = request.session.get(
+        "usuario_id"
+    )
 
+    usuario_nombre = "Usuario"
 
-    # =====================================================
-    # 2. TOTAL DE PERSONAS
-    # =====================================================
+    usuario_puesto = "Sin puesto asignado"
 
-    total_personas = Persona.objects.count()
-
-
-    # =====================================================
-    # 3. TOTAL DE PASANTES ACTIVOS
-    # =====================================================
-
-    total_pasantes = Pasante.objects.filter(
-        Activo=True
-    ).count()
+    usuario_foto = ""
 
 
-    # =====================================================
-    # 4. PROCESOS DE ONBOARDING
-    # =====================================================
+    # =========================================================
+    # 2. OBTENER INFORMACIÓN DEL USUARIO LOGUEADO
+    # =========================================================
 
-    total_onboarding = Onboarding.objects.count()
+    if usuario_id:
+
+        try:
+
+            usuario_logueado = (
+                UsuarioSistema.objects
+                .select_related(
+                    "idEmpleado_Admin",
+                    "idEmpleado_Admin__idPersona",
+                    "idEmpleado_Admin__idPuesto"
+                )
+                .get(
+                    id_Admin=usuario_id
+                )
+            )
 
 
-    # =====================================================
-    # 5. PROCESOS DE OFFBOARDING
-    # =====================================================
+            # =================================================
+            # OBTENER EMPLEADO
+            # =================================================
 
-    total_offboarding = Offboarding.objects.count()
+            empleado_logueado = (
+                usuario_logueado.idEmpleado_Admin
+            )
 
 
-    # =====================================================
-    # 6. CHECKLISTS DE OFFBOARDING
-    # =====================================================
+            # =================================================
+            # OBTENER PERSONA
+            # =================================================
+
+            persona_logueada = (
+                empleado_logueado.idPersona
+            )
+
+
+            # =================================================
+            # OBTENER NOMBRE
+            # =================================================
+
+            usuario_nombre = (
+                persona_logueada.Nombre_Completo
+            )
+
+
+            # =================================================
+            # OBTENER PUESTO
+            # =================================================
+
+            if empleado_logueado.idPuesto:
+
+                usuario_puesto = (
+                    empleado_logueado
+                    .idPuesto
+                    .Nombre
+                )
+
+
+            # =================================================
+            # OBTENER FOTO
+            # =================================================
+
+            if persona_logueada.Foto:
+
+                usuario_foto = (
+                    persona_logueada.Foto.url
+                )
+
+
+        except UsuarioSistema.DoesNotExist:
+
+            pass
+
+
+    # =========================================================
+    # 3. TOTAL DE EMPLEADOS ACTIVOS
+    # =========================================================
+
+    total_empleados = (
+        Empleado.objects
+        .filter(
+            Activo=True
+        )
+        .count()
+    )
+
+
+    # =========================================================
+    # 4. TOTAL DE PERSONAS
+    # =========================================================
+
+    total_personas = (
+        Persona.objects.count()
+    )
+
+
+    # =========================================================
+    # 5. TOTAL DE PASANTES ACTIVOS
+    # =========================================================
+
+    total_pasantes = (
+        Pasante.objects
+        .filter(
+            Activo=True
+        )
+        .count()
+    )
+
+
+    # =========================================================
+    # 6. TOTAL DE PROCESOS DE ONBOARDING
+    # =========================================================
+
+    total_onboarding = (
+        Onboarding.objects.count()
+    )
+
+
+    # =========================================================
+    # 7. TOTAL DE PROCESOS DE OFFBOARDING
+    # =========================================================
+
+    total_offboarding = (
+        Offboarding.objects.count()
+    )
+
+
+    # =========================================================
+    # 8. TOTAL DE CHECKLISTS DE OFFBOARDING
+    # =========================================================
 
     total_checklists_offboarding = (
         OffboardingChecklist.objects.count()
     )
 
 
-    # =====================================================
-    # 7. PORCENTAJE PROMEDIO DE CHECKLISTS
-    # =====================================================
+    # =========================================================
+    # 9. PORCENTAJE PROMEDIO DE CHECKLISTS
+    # =========================================================
 
     promedio_checklist = (
-        OffboardingChecklist.objects.aggregate(
-            promedio=Avg('pct_listo')
-        )['promedio']
+        OffboardingChecklist.objects
+        .aggregate(
+            promedio=Avg("pct_listo")
+        )["promedio"]
         or 0
     )
 
 
-    # =====================================================
-    # 8. TOTAL DE KPIs REGISTRADOS
-    # =====================================================
+    # =========================================================
+    # 10. TOTAL DE KPIs REGISTRADOS
+    # =========================================================
 
-    total_kpis = KpiCabecera.objects.count()
-
-
-    # =====================================================
-    # 9. TOTAL DE DETALLES KPI
-    # =====================================================
-
-    total_detalles_kpi = KpiDetalle.objects.count()
+    total_kpis = (
+        KpiCabecera.objects.count()
+    )
 
 
-    # =====================================================
-    # 10. PROMEDIO DE CUMPLIMIENTO DE KPIs
-    # =====================================================
+    # =========================================================
+    # 11. TOTAL DE DETALLES KPI
+    # =========================================================
+
+    total_detalles_kpi = (
+        KpiDetalle.objects.count()
+    )
+
+
+    # =========================================================
+    # 12. PROMEDIO DE CUMPLIMIENTO DE KPIs
+    # =========================================================
 
     promedio_kpi = (
-        KpiDetalle.objects.aggregate(
-            promedio=Avg('pct_Alcanzado')
-        )['promedio']
+        KpiDetalle.objects
+        .aggregate(
+            promedio=Avg("pct_Alcanzado")
+        )["promedio"]
         or 0
     )
 
 
-    # =====================================================
-    # 11. TOTAL DE PREMIOS CONFIGURADOS
-    # =====================================================
+    # =========================================================
+    # 13. TOTAL DE PREMIOS CONFIGURADOS
+    # =========================================================
 
-    total_premios = Premio.objects.count()
+    total_premios = (
+        Premio.objects.count()
+    )
 
 
-    # =====================================================
-    # 12. TOTAL DE PREMIOS ASIGNADOS
-    # =====================================================
+    # =========================================================
+    # 14. TOTAL DE PREMIOS ASIGNADOS
+    # =========================================================
 
     total_premios_asignados = (
         PremioAsignado.objects.count()
     )
 
 
-    # =====================================================
-    # 13. MONTO TOTAL DE PREMIOS LIQUIDADOS
-    # =====================================================
+    # =========================================================
+    # 15. MONTO TOTAL DE PREMIOS LIQUIDADOS
+    # =========================================================
 
     monto_total_premios = (
-        PremioAsignado.objects.aggregate(
-            total=Sum('Monto_Liquidado')
-        )['total']
-        or Decimal('0.00')
+        PremioAsignado.objects
+        .aggregate(
+            total=Sum("Monto_Liquidado")
+        )["total"]
+        or Decimal("0.00")
     )
 
 
-    # =====================================================
-    # 14. TOTAL DE USUARIOS DEL SISTEMA
-    # =====================================================
+    # =========================================================
+    # 16. TOTAL DE USUARIOS DEL SISTEMA
+    # =========================================================
 
-    total_usuarios = UsuarioSistema.objects.count()
+    total_usuarios = (
+        UsuarioSistema.objects.count()
+    )
 
 
-    # =====================================================
-    # 15. USUARIOS ACTIVOS
-    # =====================================================
+    # =========================================================
+    # 17. USUARIOS ACTIVOS
+    # =========================================================
 
     usuarios_activos = (
-        UsuarioSistema.objects.filter(
+        UsuarioSistema.objects
+        .filter(
             Activo=True
-        ).count()
+        )
+        .count()
     )
 
 
-    # =====================================================
-    # 16. TOTAL DE ROLES
-    # =====================================================
+    # =========================================================
+    # 18. TOTAL DE ROLES
+    # =========================================================
 
-    total_roles = Roles.objects.count()
-
-
-    # =====================================================
-    # 17. TOTAL DE ACCIONES / ROTACIONES
-    # =====================================================
-
-    total_acciones = AccionPersonal.objects.count()
+    total_roles = (
+        Roles.objects.count()
+    )
 
 
-    # =====================================================
-    # 18. TOTAL DE EVALUACIONES
-    # =====================================================
+    # =========================================================
+    # 19. TOTAL DE ACCIONES / ROTACIONES
+    # =========================================================
 
-    total_evaluaciones = Evaluacion.objects.count()
+    total_acciones = (
+        AccionPersonal.objects.count()
+    )
 
 
-    # =====================================================
-    # 19. ÚLTIMOS PROCESOS DE ONBOARDING
-    # =====================================================
+    # =========================================================
+    # 20. TOTAL DE EVALUACIONES
+    # =========================================================
+
+    total_evaluaciones = (
+        Evaluacion.objects.count()
+    )
+
+
+    # =========================================================
+    # 21. ÚLTIMOS PROCESOS DE ONBOARDING
+    # =========================================================
 
     ultimos_onboarding = (
         Onboarding.objects
         .select_related(
-            'idEmpleado',
-            'idEmpleado__idPersona',
-            'idDepartamento'
+            "idEmpleado",
+            "idEmpleado__idPersona",
+            "idDepartamento"
         )
         .order_by(
-            '-Fecha_Inicio'
+            "-Fecha_Inicio"
         )[:5]
     )
 
 
-    # =====================================================
-    # 20. ÚLTIMOS PROCESOS DE OFFBOARDING
-    # =====================================================
+    # =========================================================
+    # 22. ÚLTIMOS PROCESOS DE OFFBOARDING
+    # =========================================================
 
     ultimos_offboarding = (
         Offboarding.objects
         .select_related(
-            'idEmpleado',
-            'idEmpleado__idPersona',
-            'idCausa'
+            "idEmpleado",
+            "idEmpleado__idPersona",
+            "idCausa"
         )
         .order_by(
-            '-Fecha_Salida'
+            "-Fecha_Salida"
         )[:5]
     )
 
 
-    # =====================================================
-    # 21. ÚLTIMOS KPIs
-    # =====================================================
+    # =========================================================
+    # 23. ÚLTIMOS KPIs
+    # =========================================================
 
     ultimos_kpis = (
         KpiCabecera.objects
         .select_related(
-            'idEmpleado',
-            'idEmpleado__idPersona'
+            "idEmpleado",
+            "idEmpleado__idPersona"
         )
         .order_by(
-            '-anio',
-            '-mes'
+            "-anio",
+            "-mes"
         )[:5]
     )
 
 
-    # =====================================================
-    # 22. ÚLTIMOS PREMIOS ASIGNADOS
-    # =====================================================
+    # =========================================================
+    # 24. ÚLTIMOS PREMIOS ASIGNADOS
+    # =========================================================
 
     ultimos_premios = (
         PremioAsignado.objects
         .select_related(
-            'idPremio',
-            'id_KPI',
-            'id_KPI__idEmpleado',
-            'id_KPI__idEmpleado__idPersona'
+            "idPremio",
+            "id_KPI",
+            "id_KPI__idEmpleado",
+            "id_KPI__idEmpleado__idPersona"
         )
         .order_by(
-            '-Fecha_Registro'
+            "-Fecha_Registro"
         )[:5]
     )
 
 
-    # =====================================================
-    # 23. CONTEXTO DEL DASHBOARD
-    # =====================================================
+    # =========================================================
+    # 25. CONTEXTO
+    # =========================================================
 
     context = {
 
-        # -----------------------------------------------
-        # RESUMEN GENERAL
-        # -----------------------------------------------
+        # =====================================================
+        # USUARIO LOGUEADO
+        # =====================================================
 
-        'total_empleados':
+        "usuario_nombre":
+            usuario_nombre,
+
+        "usuario_puesto":
+            usuario_puesto,
+
+        "usuario_foto":
+            usuario_foto,
+
+
+        # =====================================================
+        # RESUMEN GENERAL
+        # =====================================================
+
+        "total_empleados":
             total_empleados,
 
-        'total_personas':
+        "total_personas":
             total_personas,
 
-        'total_pasantes':
+        "total_pasantes":
             total_pasantes,
 
 
-        # -----------------------------------------------
+        # =====================================================
         # ONBOARDING / OFFBOARDING
-        # -----------------------------------------------
+        # =====================================================
 
-        'total_onboarding':
+        "total_onboarding":
             total_onboarding,
 
-        'total_offboarding':
+        "total_offboarding":
             total_offboarding,
 
-        'total_checklists_offboarding':
+        "total_checklists_offboarding":
             total_checklists_offboarding,
 
-        'promedio_checklist':
-            round(float(promedio_checklist), 2),
+        "promedio_checklist":
+            round(
+                float(promedio_checklist),
+                2
+            ),
 
 
-        # -----------------------------------------------
+        # =====================================================
         # KPIs
-        # -----------------------------------------------
+        # =====================================================
 
-        'total_kpis':
+        "total_kpis":
             total_kpis,
 
-        'total_detalles_kpi':
+        "total_detalles_kpi":
             total_detalles_kpi,
 
-        'promedio_kpi':
-            round(float(promedio_kpi), 2),
+        "promedio_kpi":
+            round(
+                float(promedio_kpi),
+                2
+            ),
 
 
-        # -----------------------------------------------
+        # =====================================================
         # PREMIOS
-        # -----------------------------------------------
+        # =====================================================
 
-        'total_premios':
+        "total_premios":
             total_premios,
 
-        'total_premios_asignados':
+        "total_premios_asignados":
             total_premios_asignados,
 
-        'monto_total_premios':
+        "monto_total_premios":
             monto_total_premios,
 
 
-        # -----------------------------------------------
+        # =====================================================
         # USUARIOS Y ROLES
-        # -----------------------------------------------
+        # =====================================================
 
-        'total_usuarios':
+        "total_usuarios":
             total_usuarios,
 
-        'usuarios_activos':
+        "usuarios_activos":
             usuarios_activos,
 
-        'total_roles':
+        "total_roles":
             total_roles,
 
 
-        # -----------------------------------------------
+        # =====================================================
         # ACCIONES Y EVALUACIONES
-        # -----------------------------------------------
+        # =====================================================
 
-        'total_acciones':
+        "total_acciones":
             total_acciones,
 
-        'total_evaluaciones':
+        "total_evaluaciones":
             total_evaluaciones,
 
 
-        # -----------------------------------------------
+        # =====================================================
         # ÚLTIMOS REGISTROS
-        # -----------------------------------------------
+        # =====================================================
 
-        'ultimos_onboarding':
+        "ultimos_onboarding":
             ultimos_onboarding,
 
-        'ultimos_offboarding':
+        "ultimos_offboarding":
             ultimos_offboarding,
 
-        'ultimos_kpis':
+        "ultimos_kpis":
             ultimos_kpis,
 
-        'ultimos_premios':
+        "ultimos_premios":
             ultimos_premios,
 
     }
 
 
-    # =====================================================
+    # =========================================================
     # MOSTRAR DASHBOARD
-    # =====================================================
+    # =========================================================
 
     return render(
         request,
-        'inicio.html',
+        "inicio.html",
         context
     )
-
 
 
 # =========================================================
@@ -4771,10 +4909,16 @@ from django.contrib.auth.hashers import make_password
 from django.db import IntegrityError
 from django.shortcuts import render, redirect
 
-
 def guardar_usuario_sistema(request):
 
-    # Empleados disponibles
+
+    # =========================================================
+    # EMPLEADOS DISPONIBLES
+    # Se cargan los datos necesarios para mostrar:
+    # - Nombre del empleado
+    # - Puesto del empleado
+    # =========================================================
+
     empleados = Empleado.objects.select_related(
         "idPersona",
         "idPuesto"
@@ -4785,26 +4929,51 @@ def guardar_usuario_sistema(request):
     )
 
 
-    # Roles disponibles
+    # =========================================================
+    # ROLES DISPONIBLES
+    # =========================================================
+
     roles = Roles.objects.all().order_by(
         "TipoRol"
     )
 
 
+    # =========================================================
+    # PROCESAR FORMULARIO
+    # =========================================================
+
     if request.method == "POST":
 
         try:
 
-            correo = request.POST.get("Correo")
-            contrasenia = request.POST.get("Contrasenia")
-            idRol = request.POST.get("idRol")
-            idEmpleado = request.POST.get("idEmpleado_Admin")
-            activo = request.POST.get("Activo")
+            # =====================================================
+            # OBTENER DATOS DEL FORMULARIO
+            # =====================================================
+
+            correo = request.POST.get(
+                "Correo"
+            )
+
+            contrasenia = request.POST.get(
+                "Contrasenia"
+            )
+
+            idRol = request.POST.get(
+                "idRol"
+            )
+
+            idEmpleado = request.POST.get(
+                "idEmpleado_Admin"
+            )
+
+            activo = request.POST.get(
+                "Activo"
+            )
 
 
-            # =========================================
+            # =====================================================
             # VALIDACIONES
-            # =========================================
+            # =====================================================
 
             if not correo:
 
@@ -4813,12 +4982,14 @@ def guardar_usuario_sistema(request):
                     "Debe ingresar un correo."
                 )
 
+
             elif not contrasenia:
 
                 messages.error(
                     request,
                     "Debe ingresar una contraseña."
                 )
+
 
             elif not idRol:
 
@@ -4827,6 +4998,7 @@ def guardar_usuario_sistema(request):
                     "Debe seleccionar un rol."
                 )
 
+
             elif not idEmpleado:
 
                 messages.error(
@@ -4834,12 +5006,14 @@ def guardar_usuario_sistema(request):
                     "Debe seleccionar un empleado."
                 )
 
+
             elif not activo:
 
                 messages.error(
                     request,
                     "Debe seleccionar el estado del usuario."
                 )
+
 
             elif UsuarioSistema.objects.filter(
                 Correo=correo
@@ -4850,6 +5024,7 @@ def guardar_usuario_sistema(request):
                     "Ya existe un usuario con ese correo."
                 )
 
+
             elif UsuarioSistema.objects.filter(
                 idEmpleado_Admin=idEmpleado
             ).exists():
@@ -4859,42 +5034,62 @@ def guardar_usuario_sistema(request):
                     "El empleado ya tiene un usuario asignado."
                 )
 
+
             else:
 
-
-                # =========================================
-                # OBTENER RELACIONES
-                # =========================================
+                # =================================================
+                # OBTENER ROL
+                # =================================================
 
                 rol = Roles.objects.get(
                     idRol=idRol
                 )
 
 
-                empleado = Empleado.objects.get(
+                # =================================================
+                # OBTENER EMPLEADO
+                # =================================================
+
+                empleado = Empleado.objects.select_related(
+                    "idPersona",
+                    "idPuesto"
+                ).get(
                     idEmpleado=idEmpleado
                 )
 
 
-                # =========================================
+                # =================================================
                 # CIFRAR CONTRASEÑA
-                # =========================================
+                # =================================================
 
                 password_cifrada = make_password(
                     contrasenia
                 )
 
 
-                # =========================================
-                # CONVERTIR RADIO BUTTON
-                # =========================================
+                # =================================================
+                # CONVERTIR ESTADO
+                # =================================================
 
-                estado_usuario = True if activo == "1" else False
+                estado_usuario = (
+                    True
+                    if activo == "1"
+                    else False
+                )
 
 
-                # =========================================
-                # GUARDAR USUARIO
-                # =========================================
+                # =================================================
+                # CREAR USUARIO
+                #
+                # El usuario queda relacionado con:
+                #
+                # UsuarioSistema
+                #      ↓
+                # Empleado
+                #      ↓
+                # ├── Persona → Nombre + Foto
+                # └── Puesto  → Nombre del puesto
+                # =================================================
 
                 UsuarioSistema.objects.create(
 
@@ -4911,16 +5106,28 @@ def guardar_usuario_sistema(request):
                 )
 
 
+                # =================================================
+                # MENSAJE DE ÉXITO
+                # =================================================
+
                 messages.success(
                     request,
                     "Usuario registrado correctamente."
                 )
 
 
+                # =================================================
+                # REDIRECCIÓN
+                # =================================================
+
                 return redirect(
                     "guardar_usuario_sistema"
                 )
 
+
+        # =========================================================
+        # ERRORES
+        # =========================================================
 
         except Roles.DoesNotExist:
 
@@ -4943,7 +5150,7 @@ def guardar_usuario_sistema(request):
             messages.error(
                 request,
                 f"Error de integridad: {e}"
-            )
+        )
 
 
         except Exception as e:
@@ -4954,15 +5161,49 @@ def guardar_usuario_sistema(request):
             )
 
 
+    # =========================================================
+    # CONTEXTO
+    # =========================================================
+
     context = {
+
+        # =====================================================
+        # EMPLEADOS DISPONIBLES PARA CREAR USUARIOS
+        # =====================================================
 
         "empleados": empleados,
 
+
+        # =====================================================
+        # ROLES DISPONIBLES
+        # =====================================================
+
         "roles": roles,
+
+
+        # =====================================================
+        # USUARIOS REGISTRADOS
+        #
+        # Se cargan las relaciones:
+        # - Rol
+        # - Empleado
+        # - Persona
+        # - Puesto
+        #
+        # Esto permite acceder en el HTML a:
+        #
+        # usuario.idEmpleado_Admin.idPersona.Nombre_Completo
+        #
+        # usuario.idEmpleado_Admin.idPersona.Foto
+        #
+        # usuario.idEmpleado_Admin.idPuesto.Nombre
+        # =====================================================
 
         "usuarios": UsuarioSistema.objects.select_related(
             "idRol",
-            "idEmpleado_Admin"
+            "idEmpleado_Admin",
+            "idEmpleado_Admin__idPersona",
+            "idEmpleado_Admin__idPuesto"
         ).order_by(
             "Correo"
         )
@@ -4970,11 +5211,17 @@ def guardar_usuario_sistema(request):
     }
 
 
+    # =========================================================
+    # MOSTRAR PÁGINA
+    # =========================================================
+
     return render(
         request,
         "usuarios.html",
         context
     )
+
+
 
 
 from django.contrib import messages
@@ -5316,22 +5563,31 @@ def login_usuario(request):
         # BUSCAR USUARIO POR CORREO
         # =====================================================
 
-        usuario = UsuarioSistema.objects.filter(
-            Correo=correo
-        ).select_related(
-            "idRol",
-            "idEmpleado_Admin",
-            "idEmpleado_Admin__idPersona"
-        ).first()
+        usuario = (
+            UsuarioSistema.objects
+            .filter(
+                Correo=correo
+            )
+            .select_related(
+                "idRol",
+                "idEmpleado_Admin",
+                "idEmpleado_Admin__idPersona",
+                "idEmpleado_Admin__idPuesto"
+            )
+            .first()
+        )
 
 
         # =====================================================
         # VALIDAR CORREO Y CONTRASEÑA
         # =====================================================
 
-        if usuario is None or not check_password(
-            contrasenia,
-            usuario.Contrasenia
+        if (
+            usuario is None
+            or not check_password(
+                contrasenia,
+                usuario.Contrasenia
+            )
         ):
 
             messages.error(
@@ -5363,23 +5619,88 @@ def login_usuario(request):
 
 
         # =====================================================
-        # GUARDAR INFORMACIÓN EN LA SESIÓN
+        # OBTENER EMPLEADO
         # =====================================================
 
-        request.session["usuario_id"] = usuario.id_Admin
+        empleado = usuario.idEmpleado_Admin
 
-        request.session["usuario_correo"] = usuario.Correo
 
-        request.session["usuario_rol_id"] = usuario.idRol.idRol
+        # =====================================================
+        # OBTENER PERSONA
+        # =====================================================
 
-        request.session["usuario_rol"] = usuario.idRol.TipoRol
+        persona = empleado.idPersona
 
-        request.session["empleado_id"] = usuario.idEmpleado_Admin.idEmpleado
+
+        # =====================================================
+        # GUARDAR INFORMACIÓN DEL USUARIO
+        # =====================================================
+
+        request.session["usuario_id"] = (
+            usuario.id_Admin
+        )
+
+
+        request.session["usuario_correo"] = (
+            usuario.Correo
+        )
+
+
+        # =====================================================
+        # GUARDAR INFORMACIÓN DEL ROL
+        # =====================================================
+
+        request.session["usuario_rol_id"] = (
+            usuario.idRol.idRol
+        )
+
+
+        request.session["usuario_rol"] = (
+            usuario.idRol.TipoRol
+        )
+
+
+        # =====================================================
+        # GUARDAR INFORMACIÓN DEL EMPLEADO
+        # =====================================================
+
+        request.session["empleado_id"] = (
+            empleado.idEmpleado
+        )
+
 
         request.session["empleado_nombre"] = (
-            usuario.idEmpleado_Admin
-            .idPersona
-            .Nombre_Completo
+            persona.Nombre_Completo
+        )
+
+
+        # =====================================================
+        # GUARDAR PUESTO
+        # =====================================================
+
+        if empleado.idPuesto:
+
+            request.session["empleado_puesto"] = (
+                empleado.idPuesto.Nombre
+            )
+
+        else:
+
+            request.session["empleado_puesto"] = (
+                "Sin puesto"
+            )
+
+
+        # =====================================================
+        # NO ES NECESARIO GUARDAR LA FOTO EN LA SESIÓN
+        #
+        # La foto se obtiene directamente desde Persona
+        # en la vista inicio_view.
+        # =====================================================
+
+        request.session.pop(
+            "empleado_foto",
+            None
         )
 
 
@@ -5389,12 +5710,12 @@ def login_usuario(request):
 
         messages.success(
             request,
-            f"Bienvenido(a), {usuario.idEmpleado_Admin.idPersona.Nombre_Completo}."
+            f"Bienvenido(a), {persona.Nombre_Completo}."
         )
 
 
         # =====================================================
-        # REDIRIGIR AL INICIO DEL SISTEMA
+        # REDIRIGIR AL INICIO
         # =====================================================
 
         return redirect(
