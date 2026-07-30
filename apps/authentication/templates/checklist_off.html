@@ -463,23 +463,20 @@
 
                   <tr>
                     <!-- ==========================================
-     ID OFFBOARDING
-=========================================== -->
-
+                          ID OFFBOARDING
+                      =========================================== -->
                     <td>
                       <strong> #OFF-{{ proceso.id_Offboarding }} </strong>
                     </td>
 
                     <!-- ==========================================
-     COLABORADOR
-=========================================== -->
-
+                          COLABORADOR
+                      =========================================== -->
                     <td>{{ proceso.idEmpleado.idPersona.Nombre_Completo }}</td>
 
                     <!-- ==========================================
-     CATEGORÍA / CAUSA
-=========================================== -->
-
+                          CATEGORÍA / CAUSA
+                      =========================================== -->
                     <td>
                       {% if proceso.idCausa.Categoria == "Voluntaria" %}
 
@@ -503,15 +500,13 @@
                     </td>
 
                     <!-- ==========================================
-     FECHA DE SALIDA
-=========================================== -->
-
+                          FECHA DE SALIDA
+                      =========================================== -->
                     <td>{{ proceso.Fecha_Salida|date:"d/m/Y" }}</td>
 
                     <!-- ==========================================
-     PROGRESO
-=========================================== -->
-
+                          PROGRESO
+                      =========================================== -->
                     <td>
                       <div class="progress-container">
                         <div
@@ -537,9 +532,7 @@
                         </div>
 
                         <span>
-                          {% if proceso.checklist_obj %} {{
-                          proceso.checklist_obj.pct_listo|default:0 }}% {% else
-                          %} 0% {% endif %}
+                          {% if proceso.checklist_obj %} {{ proceso.checklist_obj.pct_listo|default:0 }}% {% else %} 0% {% endif %}
                         </span>
                       </div>
                     </td>
