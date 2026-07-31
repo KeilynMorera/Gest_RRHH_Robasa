@@ -1,5 +1,6 @@
 
 from .models import UsuarioSistema
+from .permisos import PERMISOS_POR_ROL   # ← LÍNEA NUEVA
 
 
 def usuario_logueado(request):
@@ -96,6 +97,38 @@ def usuario_logueado(request):
 
 
     # =========================================================
+    # PERMISOS DEL ROL ACTUAL — BLOQUE NUEVO
+    # =========================================================
+
+    rol_nombre = request.session.get(
+        "usuario_rol"
+    )
+
+    permisos_rol = PERMISOS_POR_ROL.get(
+        rol_nombre,
+        {}
+    )
+
+    permisos = {
+
+        modulo: {
+
+            "ver": "ver" in acciones,
+
+            "crear": "crear" in acciones,
+
+            "editar": "editar" in acciones,
+
+            "eliminar": "eliminar" in acciones,
+
+        }
+
+        for modulo, acciones in permisos_rol.items()
+
+    }
+
+
+    # =========================================================
     # DEVOLVER INFORMACIÓN AL TEMPLATE
     # =========================================================
 
@@ -109,5 +142,9 @@ def usuario_logueado(request):
 
         "usuario_foto":
             usuario_foto,
+
+        # AGREGADO
+        "permisos":
+            permisos,
 
     }
