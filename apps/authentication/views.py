@@ -12,6 +12,11 @@ from django.shortcuts import render
 # ── AQUÍ SE AGREGA LA IMPORTACIÓN PARA CORREGIR EL ERROR ─────────────────
 from django.db.models import Avg, Sum 
 from django.db.models import Q # Asegúrate de tener esta importación al inicio de tu archivo views.py
+from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
+from .forms import PremioAsignadoForm
 
 #Importa todo lo que se encuentra en el archivo models.py
 #Donde se encuentran los modelos de las tablas de la base de datos
@@ -2498,15 +2503,24 @@ def obtener_compensacion_empleado(
 def reclutamiento_view(request):
     return render(request, 'reclutamiento.html')
 
-# =========================================================
-# Registrar y Modificar Vacantes
-# =========================================================
+@requiere_permiso("reclutamiento", "ver")
 def registrar_vacante(request):
 
     if request.method == 'POST':
 
         accion = request.POST.get('accion')
         vacante_asig_id = request.POST.get('vacante_asig_id')
+
+        # ─────────────────────────────────────────────
+        # BLOQUEAR SEGÚN LA ACCIÓN
+        # ─────────────────────────────────────────────
+        if accion == 'modificar':
+            bloqueo = bloquear_si_no_puede(request, "reclutamiento", "editar")
+        else:
+            bloqueo = bloquear_si_no_puede(request, "reclutamiento", "crear")
+
+        if bloqueo:
+            return bloqueo
 
         # =====================================================
         # DATOS DE VACANTE
@@ -2645,6 +2659,7 @@ def registrar_vacante(request):
     )
 
 
+@requiere_permiso("reclutamiento", "editar")
 def editar_vacante(request, id_vacante_asig):
 
     vacante = get_object_or_404(
@@ -2738,12 +2753,24 @@ def obtener_compensacion_puesto(request, id_puesto):
 # =========================================================
 # Registrar y Modificar Reclutamiento de personal par ala vacante abierta
 # =========================================================
+@requiere_permiso("reclutamiento", "ver")
 def registrar_candidato(request):
 
     if request.method == 'POST':
 
         accion = request.POST.get('accion')
         candidato_id = request.POST.get('candidato_id')
+
+        # ─────────────────────────────────────────────
+        # BLOQUEAR SEGÚN LA ACCIÓN
+        # ─────────────────────────────────────────────
+        if accion == 'modificar':
+            bloqueo = bloquear_si_no_puede(request, "reclutamiento", "editar")
+        else:
+            bloqueo = bloquear_si_no_puede(request, "reclutamiento", "crear")
+
+        if bloqueo:
+            return bloqueo
 
         if accion == 'crear':
 
@@ -2802,6 +2829,7 @@ def registrar_candidato(request):
     )
 
 
+@requiere_permiso("reclutamiento", "editar")
 def editar_candidato(request,id):
 
     candidato = get_object_or_404(
@@ -2844,6 +2872,7 @@ def vacaciones_view(request):
 # =========================================================
 # REGISTRAR Y MODIFICAR SOLICITUD DE VACACIONES
 # =========================================================
+@requiere_permiso("vacaciones", "ver")
 def registrar_solicitud_vacacion(request):
 
     if request.method == 'POST':
@@ -2851,6 +2880,17 @@ def registrar_solicitud_vacacion(request):
         accion = request.POST.get('accion')
 
         solicitud_id = request.POST.get('solicitud_id')
+
+        # ─────────────────────────────────────────────
+        # BLOQUEAR SEGÚN LA ACCIÓN
+        # ─────────────────────────────────────────────
+        if accion == 'modificar':
+            bloqueo = bloquear_si_no_puede(request, "vacaciones", "editar")
+        else:
+            bloqueo = bloquear_si_no_puede(request, "vacaciones", "crear")
+
+        if bloqueo:
+            return bloqueo
 
 
         # ============================================
@@ -2964,6 +3004,7 @@ def registrar_solicitud_vacacion(request):
 # EDITAR SOLICITUD DE VACACIONES
 # =========================================================
 
+@requiere_permiso("vacaciones", "editar")
 def editar_solicitud_vacacion(request, id):
 
     solicitud = get_object_or_404(
@@ -3012,6 +3053,7 @@ def editar_solicitud_vacacion(request, id):
 # =========================================================
 # GUARDAR CONSULTA DE VACACIONES
 # =========================================================
+@requiere_permiso("vacaciones", "ver")
 def guardar_saldo_vacaciones(request):
 
     empleados = Empleado.objects.select_related(
@@ -3019,6 +3061,18 @@ def guardar_saldo_vacaciones(request):
     )
 
     if request.method == "POST":
+
+        # ==========================================
+        # VALIDAR PERMISO PARA CREAR
+        # ==========================================
+        bloqueo = bloquear_si_no_puede(
+            request,
+            "vacaciones",
+            "crear"
+        )
+
+        if bloqueo:
+            return bloqueo
 
         empleado_id = request.POST.get("empleado")
 
@@ -3036,7 +3090,8 @@ def guardar_saldo_vacaciones(request):
         )
 
         for s in VacacionSolicitud.objects.filter(
-            idEmpleado_Sol_Vac=empleado):
+            idEmpleado_Sol_Vac=empleado
+        ):
             print(
                 s.idSolicitud,
                 s.Dias_Solicitud,
@@ -3063,6 +3118,7 @@ def guardar_saldo_vacaciones(request):
 # =========================================================
 # MODIFICAR CONSULTA DE VACACIONES
 # =========================================================
+@requiere_permiso("vacaciones", "editar")
 def editar_saldo_vacaciones(request, id):
 
     saldo = get_object_or_404(
@@ -3072,7 +3128,21 @@ def editar_saldo_vacaciones(request, id):
 
     if request.method == "POST":
 
-        saldo.Anio = request.POST.get("anio")
+        # ==========================================
+        # VALIDAR PERMISO PARA EDITAR
+        # ==========================================
+        bloqueo = bloquear_si_no_puede(
+            request,
+            "vacaciones",
+            "editar"
+        )
+
+        if bloqueo:
+            return bloqueo
+
+        saldo.Anio = request.POST.get(
+            "anio"
+        )
 
         saldo.save()
 
@@ -3101,16 +3171,21 @@ def editar_saldo_vacaciones(request, id):
 # =========================================================
 # OBTENER EL SALDO DE VACACIONES
 # =========================================================
+@requiere_permiso("vacaciones", "ver")
 def obtener_saldo_vacaciones(request):
 
-    empleado_id = request.GET.get("empleado")
+    empleado_id = request.GET.get(
+        "empleado"
+    )
 
     empleado = Empleado.objects.get(
         idEmpleado=empleado_id
     )
 
     saldo = VacacionSaldo(
+
         idEmpleado_Sal_Vac=empleado,
+
         Anio=date.today().year
     )
 
@@ -3139,6 +3214,7 @@ def elec_Asistencia_view(request):
 # =========================================================
 # GUARDAR ASISTENCIA
 # =========================================================
+@requiere_permiso("asistencia", "ver")
 def guardar_asistencia(request):
 
     empleados = Empleado.objects.select_related(
@@ -3148,6 +3224,18 @@ def guardar_asistencia(request):
     estados = AsistenciaEstado.objects.all()
 
     if request.method == "POST":
+
+        # ==========================================
+        # VALIDAR PERMISO PARA CREAR
+        # ==========================================
+        bloqueo = bloquear_si_no_puede(
+            request,
+            "asistencia",
+            "crear"
+        )
+
+        if bloqueo:
+            return bloqueo
 
         empleado = Empleado.objects.get(
             idEmpleado=request.POST.get("empleado")
@@ -3185,7 +3273,6 @@ def guardar_asistencia(request):
         # El modelo calculará automáticamente Horas_Extra
         asistencia.save()
 
-
     asistencias = Asistencia.objects.select_related(
 
         'idEmpleado',
@@ -3218,6 +3305,7 @@ def guardar_asistencia(request):
 # =========================================================
 # MODIFICAR ASISTENCIA
 # =========================================================
+@requiere_permiso("asistencia", "editar")
 def editar_asistencia(request, id):
 
     asistencia = get_object_or_404(
@@ -3228,41 +3316,64 @@ def editar_asistencia(request, id):
 
     )
 
-
     if request.method == "POST":
 
-        asistencia.Fecha = request.POST.get("fecha")
+        # ==========================================
+        # VALIDAR PERMISO PARA EDITAR
+        # ==========================================
+        bloqueo = bloquear_si_no_puede(
+            request,
+            "asistencia",
+            "editar"
+        )
+
+        if bloqueo:
+            return bloqueo
+
+        asistencia.Fecha = request.POST.get(
+            "fecha"
+        )
 
         asistencia.Hora_Entrada = datetime.strptime(
-            request.POST.get("hora_entrada"), "%H:%M"
+            request.POST.get(
+                "hora_entrada"
+            ),
+            "%H:%M"
         ).time()
 
         asistencia.Hora_Salida = datetime.strptime(
-            request.POST.get("hora_salida"), "%H:%M"
+            request.POST.get(
+                "hora_salida"
+            ),
+            "%H:%M"
         ).time()
-
 
         empleado = Empleado.objects.get(
 
-            idEmpleado=request.POST.get("empleado")
+            idEmpleado=request.POST.get(
+                "empleado"
+            )
 
         )
 
         asistencia.idEmpleado = empleado
 
-
         estado = AsistenciaEstado.objects.get(
 
-            idAsis_Estado=request.POST.get("estado")
+            idAsis_Estado=request.POST.get(
+                "estado"
+            )
 
         )
 
         asistencia.idAsis_Estado = estado
 
-
-        # Se recalculan las horas extra automáticamente
+        # El modelo recalcula automáticamente las horas extra
         asistencia.save()
 
+        return redirect(
+            "asistencia"
+        )
 
     empleados = Empleado.objects.select_related(
 
@@ -3271,7 +3382,6 @@ def editar_asistencia(request, id):
     )
 
     estados = AsistenciaEstado.objects.all()
-
 
     asistencias = Asistencia.objects.select_related(
 
@@ -3282,7 +3392,6 @@ def editar_asistencia(request, id):
         'idAsis_Estado'
 
     )
-
 
     return render(
 
@@ -3308,6 +3417,7 @@ def editar_asistencia(request, id):
 # =========================================================
 # GUARDAR PERMISO
 # =========================================================
+@requiere_permiso("permisos", "ver")
 def guardar_permiso(request):
 
     # ==========================
@@ -3338,6 +3448,18 @@ def guardar_permiso(request):
     # ==========================
     if request.method == "POST":
 
+        # ==========================================
+        # VALIDAR PERMISO PARA CREAR
+        # ==========================================
+        bloqueo = bloquear_si_no_puede(
+            request,
+            "permisos",
+            "crear"
+        )
+
+        if bloqueo:
+            return bloqueo
+
         empleado = Empleado.objects.get(
             idEmpleado=request.POST.get("empleado")
         )
@@ -3356,19 +3478,23 @@ def guardar_permiso(request):
 
             Activo=True if activo == "1" else False,
 
-            Justificacion=request.POST.get("justificacion"),
+            Justificacion=request.POST.get(
+                "justificacion"
+            ),
 
             id_TipoPermiso=tipo_permiso,
 
             idAsistencia=asistencia,
 
             idEmpleado=empleado
+
         )
 
         permiso.save()
 
-        return redirect('guardar_permiso')
-
+        return redirect(
+            'guardar_permiso'
+        )
 
     permisos = Permiso.objects.select_related(
 
@@ -3381,7 +3507,6 @@ def guardar_permiso(request):
         'id_TipoPermiso'
 
     )
-
 
     return render(
 
@@ -3403,17 +3528,27 @@ def guardar_permiso(request):
 
     )
 
-    from decimal import Decimal
 
 
-
+def accion_rotacion_view(request):
+    return render(request, 'accion_rotacion.html')
 
 
 # =========================================================
 # GUARDAR DETALLE DE LA ACCIÓN DE PERSONAL
 # =========================================================
+@requiere_permiso("acciones_personal", "crear")
 @transaction.atomic
 def guardar_accion_tipo(request, id_accion):
+
+    bloqueo = bloquear_si_no_puede(
+        request,
+        "acciones_personal",
+        "crear"
+    )
+
+    if bloqueo:
+        return bloqueo
 
     if request.method != "POST":
         return redirect("gestionar_accion")
@@ -3479,112 +3614,193 @@ def guardar_accion_tipo(request, id_accion):
     return redirect("accion_rotacion")
 
 
-
-def accion_rotacion_view(request):
-    return render(request, 'accion_rotacion.html')
-
-
 # =========================================================
 # GUARDAR CABECERA DE LA ACCIÓN DEL PERSONAL
 # =========================================================
+@requiere_permiso("acciones_personal", "ver")
 def registrar_cabecera_accion(request, pk=None):
+
     accion_cabecera = None
     paso_dos_habilitado = False
 
-    # -------------------------------------------------------------------------
-    # FLUJO GET: Si viene un PK en la URL, cargamos la cabecera existente (Paso 2)
-    # -------------------------------------------------------------------------
+    # -----------------------------------------------------
+    # GET CON PK (Editar)
+    # -----------------------------------------------------
     if pk:
-        accion_cabecera = get_object_or_404(AccionPersonal, pk=pk)
+
+        bloqueo = bloquear_si_no_puede(
+            request,
+            "acciones_personal",
+            "editar"
+        )
+
+        if bloqueo:
+            return bloqueo
+
+        accion_cabecera = get_object_or_404(
+            AccionPersonal,
+            pk=pk
+        )
+
         paso_dos_habilitado = True
 
-    # -------------------------------------------------------------------------
-    # FLUJO POST: Procesamiento de los dos formularios independientes
-    # -------------------------------------------------------------------------
+    # -----------------------------------------------------
+    # POST
+    # -----------------------------------------------------
     if request.method == 'POST':
+
         action = request.POST.get('action')
 
-        # === FORMULARIO 1: Iniciar Registro (Guardar Cabecera) ===
+        # ================================================
+        # GUARDAR CABECERA
+        # ================================================
         if action == 'guardar_cabecera':
+
+            bloqueo = bloquear_si_no_puede(
+                request,
+                "acciones_personal",
+                "crear"
+            )
+
+            if bloqueo:
+                return bloqueo
+
             form_cabecera = AccionPersonalForm(request.POST)
+
             if form_cabecera.is_valid():
-                # Guarda en SQL Server y recupera la instancia con su ID autoincremental
+
                 nueva_cabecera = form_cabecera.save()
-                messages.success(request, f"Cabecera guardada con éxito. Folio: {nueva_cabecera.idAccion}")
-                # Redirige a la ruta con el ID para desbloquear la segunda sección
-                return redirect('gestionar_accion', pk=nueva_cabecera.idAccion)
+
+                messages.success(
+                    request,
+                    f"Cabecera guardada con éxito. Folio: {nueva_cabecera.idAccion}"
+                )
+
+                return redirect(
+                    'gestionar_accion',
+                    pk=nueva_cabecera.idAccion
+                )
+
             else:
-                messages.error(request, "Error al validar los datos de la cabecera.")
 
-        # === FORMULARIO 2: Aplicar y Sellar Acción (Guardar Detalle) ===
+                messages.error(
+                    request,
+                    "Error al validar los datos de la cabecera."
+                )
+
+        # ================================================
+        # FINALIZAR ACCIÓN
+        # ================================================
         elif action == 'finalizar_accion':
-            # 1. Recuperamos el ID de la cabecera desde el input hidden del HTML
-            id_cabecera_padre = request.POST.get('idAccion_padre')
-            
+
+            bloqueo = bloquear_si_no_puede(
+                request,
+                "acciones_personal",
+                "crear"
+            )
+
+            if bloqueo:
+                return bloqueo
+
+            id_cabecera_padre = request.POST.get(
+                'idAccion_padre'
+            )
+
             if not id_cabecera_padre:
-                messages.error(request, "Error crítico: No se encontró la cabecera asociada al movimiento.")
-                return redirect('crear_accion')
 
-            # 2. Obtenemos el objeto de la cabecera real
-            cabecera_obj = get_object_or_404(AccionPersonal, pk=id_cabecera_padre)
+                messages.error(
+                    request,
+                    "Error crítico: No se encontró la cabecera asociada al movimiento."
+                )
 
-            # 3. Capturamos los datos enviados por el Formulario Detalle
-            id_detalle_accion = request.POST.get('Tipo_Accion')  # ID del catálogo DetalleAccion
-            id_salario_empleado = request.POST.get('idSalario')  # ID de SalarioEmpleado
-            detalle_texto = request.POST.get('Detalle')
+                return redirect(
+                    'crear_accion'
+                )
 
-            # 4. Validamos que los campos obligatorios del HTML no vengan vacíos en el backend
+            cabecera_obj = get_object_or_404(
+                AccionPersonal,
+                pk=id_cabecera_padre
+            )
+
+            id_detalle_accion = request.POST.get(
+                'Tipo_Accion'
+            )
+
+            id_salario_empleado = request.POST.get(
+                'idSalario'
+            )
+
+            detalle_texto = request.POST.get(
+                'Detalle'
+            )
+
             if not id_detalle_accion or not detalle_texto:
-                messages.error(request, "Por favor complete todos los campos requeridos de la especificación.")
-                return redirect('gestionar_accion', pk=cabecera_obj.idAccion)
+
+                messages.error(
+                    request,
+                    "Por favor complete todos los campos requeridos de la especificación."
+                )
+
+                return redirect(
+                    'gestionar_accion',
+                    pk=cabecera_obj.idAccion
+                )
 
             try:
-                # 5. Instanciamos los objetos foráneos correspondientes
-                catalogo_accion = get_object_or_404(DetalleAccion, pk=id_detalle_accion)
-                
-                # 'idSalarioEmpleado' puede ser opcional o nulo en algunos tipos de acciones
-                salario_obj = None
-                if id_salario_empleado:
-                    salario_obj = get_object_or_404(SalarioEmpleado, pk=id_salario_empleado)
 
-                id_premio_asignado = request.POST.get("idPremioAsignado")
+                catalogo_accion = get_object_or_404(
+                    DetalleAccion,
+                    pk=id_detalle_accion
+                )
+
+                salario_obj = None
+
+                if id_salario_empleado:
+
+                    salario_obj = get_object_or_404(
+                        SalarioEmpleado,
+                        pk=id_salario_empleado
+                    )
+
                 premio_asignado = None
 
+                id_premio_asignado = request.POST.get(
+                    "idPremioAsignado"
+                )
+
                 if id_premio_asignado:
+
                     premio_asignado = get_object_or_404(
                         PremioAsignado,
                         pk=id_premio_asignado
                     )
-                
-                #-----------------------------------------
-                # Determinar el monto que se guardará
-                #-----------------------------------------
 
                 monto = None
 
                 if catalogo_accion.Accion == "Premio":
 
-                    # El monto viene oculto desde el HTML
                     monto = Decimal(
                         request.POST.get("monto_premio")
                     )
 
-                elif catalogo_accion.Accion in ["Ascenso", "Ajuste Salarial"]:
+                elif catalogo_accion.Accion in [
+
+                    "Ascenso",
+
+                    "Ajuste Salarial"
+
+                ]:
 
                     monto = Decimal(
                         request.POST.get("nuevo_salario")
                     )
 
                     if salario_obj:
+
                         salario_obj.Salario_Sem_Neto = monto
                         salario_obj.save()
 
-
-                #-----------------------------------------
-                # Crear UNA sola Acción Tipo
-                #-----------------------------------------
-
-                nuevo_movimiento = AccionTipo.objects.create(
+                AccionTipo.objects.create(
 
                     idAccion=cabecera_obj,
 
@@ -3597,22 +3813,39 @@ def registrar_cabecera_accion(request, pk=None):
                     Monto_TA=monto,
 
                     Detalle=detalle_texto
+
                 )
 
-                messages.success(request, f"El movimiento administrativo del Folio {cabecera_obj.idAccion} se ha sellado y guardado correctamente.")
-                
-                # Redirigimos al historial o pantalla principal de rotación
-                return redirect('accion_rotacion')
+                messages.success(
+
+                    request,
+
+                    f"El movimiento administrativo del Folio {cabecera_obj.idAccion} se ha sellado y guardado correctamente."
+
+                )
+
+                return redirect(
+                    'accion_rotacion'
+                )
 
             except Exception as e:
-                messages.error(request, f"Error al guardar en la base de datos: {str(e)}")
-                return redirect('gestionar_accion', pk=cabecera_obj.idAccion)
+
+                messages.error(
+                    request,
+                    f"Error al guardar en la base de datos: {str(e)}"
+                )
+
+                return redirect(
+                    'gestionar_accion',
+                    pk=cabecera_obj.idAccion
+                )
 
     else:
-        # Si es un GET (Limpio o con PK), inicializamos el formulario de la cabecera
-        form_cabecera = AccionPersonalForm(instance=accion_cabecera)
 
-    
+        form_cabecera = AccionPersonalForm(
+            instance=accion_cabecera
+        )
+
     empleados = Empleado.objects.select_related(
         'idPersona'
     ).all()
@@ -3630,31 +3863,47 @@ def registrar_cabecera_accion(request, pk=None):
             if salario else 0
         )
 
-    # -------------------------------------------------------------------------
-    # CONTEXTO: Pasamos los catálogos necesarios para los select del HTML
-    # -------------------------------------------------------------------------
     context = {
+
         'form_cabecera': form_cabecera,
+
         'accion_cabecera': accion_cabecera,
+
         'paso_dos_habilitado': paso_dos_habilitado,
+
         'empleados': empleados,
+
         'tipos_accion': DetalleAccion.objects.all(),
+
         'salarios': SalarioEmpleado.objects.all(),
 
-        # ✅ NUEVO: historial de acciones ya registradas (con detalle)
         'acciones': AccionTipo.objects.select_related(
             'idAccion',
             'id_Detalle_Accion',
             'idAccion__idEmpleado'
         ).order_by('-idAccion_Tipo'),
-}
-    
-    return render(request, 'accion_Personal.html', context)
+    }
+
+    return render(
+        request,
+        'accion_Personal.html',
+        context
+    )
 
 # =========================================================
 # OBTENER SALARIO ACTUAL DEL EMPLEADO
 # =========================================================
+@requiere_permiso("acciones_personal", "ver")
 def obtener_salario_empleado(request):
+
+    bloqueo = bloquear_si_no_puede(
+        request,
+        "acciones_personal",
+        "ver"
+    )
+
+    if bloqueo:
+        return bloqueo
 
     id_empleado = request.GET.get("idEmpleado")
 
@@ -3686,10 +3935,21 @@ def obtener_salario_empleado(request):
 
     })
 
+
 # =========================================================
 # OBTENER PREMIO DEL EMPLEADO
 # =========================================================
+@requiere_permiso("acciones_personal", "ver")
 def obtener_premio_empleado(request):
+
+    bloqueo = bloquear_si_no_puede(
+        request,
+        "acciones_personal",
+        "ver"
+    )
+
+    if bloqueo:
+        return bloqueo
 
     id_empleado = request.GET.get("idEmpleado")
 
@@ -3727,12 +3987,10 @@ def obtener_premio_empleado(request):
     })
 
 
-from decimal import Decimal
-from django.contrib import messages
-from django.db import IntegrityError
-from django.shortcuts import render
-
-
+# =========================================================
+# ROTACIÓN DE PERSONAL
+# =========================================================
+@requiere_permiso("rotacion_personal", "ver")
 def rotacion_personal(request):
 
     data_calculada = {}
@@ -3741,6 +3999,28 @@ def rotacion_personal(request):
     if request.method == "POST":
 
         action = request.POST.get("action")
+
+        # ==========================================
+        # VALIDAR PERMISOS SEGÚN LA ACCIÓN
+        # ==========================================
+        if action == "guardar":
+
+            bloqueo = bloquear_si_no_puede(
+                request,
+                "rotacion_personal",
+                "crear"
+            )
+
+        else:
+
+            bloqueo = bloquear_si_no_puede(
+                request,
+                "rotacion_personal",
+                "ver"
+            )
+
+        if bloqueo:
+            return bloqueo
 
         anio = int(request.POST.get("Anio"))
         mes = request.POST.get("Mes")
@@ -3759,6 +4039,7 @@ def rotacion_personal(request):
         )
 
         if mes:
+
             contratados = contratados.filter(
                 Fecha_Inicio__month=mes
             )
@@ -3774,6 +4055,7 @@ def rotacion_personal(request):
         )
 
         if mes:
+
             desvinculados = desvinculados.filter(
                 Fecha_Salida__month=mes
             )
@@ -3946,15 +4228,32 @@ def evaluaciones_view(request):
 # =========================================================
 # CREAR EVALUACIÓN + DESEMPEÑO (CABECERA + DETALLE)
 # =========================================================
+@requiere_permiso("evaluacion_desempeno", "ver")
 def crear_evaluacion(request):
 
-    empleados = Empleado.objects.select_related("idPersona").all()
-    evaluadores = Empleado.objects.select_related("idPersona").all()
+    empleados = Empleado.objects.select_related(
+        "idPersona"
+    ).all()
+
+    evaluadores = Empleado.objects.select_related(
+        "idPersona"
+    ).all()
+
     periodos = Periodo.objects.all()
 
     if request.method == "POST":
 
+        bloqueo = bloquear_si_no_puede(
+            request,
+            "evaluacion_desempeno",
+            "crear"
+        )
+
+        if bloqueo:
+            return bloqueo
+
         try:
+
             with transaction.atomic():
 
                 # ============================
@@ -3966,10 +4265,15 @@ def crear_evaluacion(request):
                 periodo_id = request.POST.get("periodo")
 
                 evaluacion = Evaluacion.objects.create(
+
                     Fecha_Evaluacion=fecha,
+
                     idPeriodo_id=periodo_id,
+
                     idEmpleado_Ev_id=idEmpleado,
+
                     idEmpleado_Jef_id=idEvaluador
+
                 )
 
                 # ============================
@@ -3981,48 +4285,103 @@ def crear_evaluacion(request):
                 c4 = request.POST.get("Cumple_Asistencia") == "1"
                 c5 = request.POST.get("Muestra_Compromiso_Colaboracion") == "1"
 
-                total = sum([c1, c2, c3, c4, c5])
+                total = sum([
+                    c1,
+                    c2,
+                    c3,
+                    c4,
+                    c5
+                ])
+
                 pct_total = (total / 5) * 100
 
-                observaciones = request.POST.get("Observaciones", "")
-
-                EvaluacionDesempeno.objects.create(
-                    cumple_metas_objetivos=c1,
-                    cumple_funciones_asig=c2,
-                    entregables_calidad_tiempo=c3,
-                    cumple_asistencia=c4,
-                    muestra_compromiso_colaboracion=c5,
-                    pct_total_ev=pct_total,
-                    observaciones=observaciones,
-                    evaluacion=evaluacion
+                observaciones = request.POST.get(
+                    "Observaciones",
+                    ""
                 )
 
-                messages.success(request, "Evaluación registrada correctamente.")
-                return redirect("crear_evaluacion")
+                EvaluacionDesempeno.objects.create(
+
+                    cumple_metas_objetivos=c1,
+
+                    cumple_funciones_asig=c2,
+
+                    entregables_calidad_tiempo=c3,
+
+                    cumple_asistencia=c4,
+
+                    muestra_compromiso_colaboracion=c5,
+
+                    pct_total_ev=pct_total,
+
+                    observaciones=observaciones,
+
+                    evaluacion=evaluacion
+
+                )
+
+                messages.success(
+                    request,
+                    "Evaluación registrada correctamente."
+                )
+
+                return redirect(
+                    "crear_evaluacion"
+                )
 
         except Exception as e:
-            messages.error(request, f"Error al guardar: {str(e)}")
+
+            messages.error(
+                request,
+                f"Error al guardar: {str(e)}"
+            )
 
     context = {
+
         "empleados": empleados,
+
         "evaluadores": evaluadores,
+
         "periodos": periodos,
+
     }
 
-    return render(request, "eva_Empleado.html", context)
+    return render(
+        request,
+        "eva_Empleado.html",
+        context
+    )
+
 
 # =========================================================
 # CREAR EVALUACIÓN DE POTENCIAL (JEFATURA)
 # =========================================================
+@requiere_permiso("evaluacion_jefatura", "ver")
 def crear_evaluacion_jefatura(request):
 
-    empleados = Empleado.objects.select_related("idPersona").all()
-    evaluadores = Empleado.objects.select_related("idPersona").all()
+    empleados = Empleado.objects.select_related(
+        "idPersona"
+    ).all()
+
+    evaluadores = Empleado.objects.select_related(
+        "idPersona"
+    ).all()
+
     periodos = Periodo.objects.all()
 
     if request.method == "POST":
 
+        bloqueo = bloquear_si_no_puede(
+            request,
+            "evaluacion_jefatura",
+            "crear"
+        )
+
+        if bloqueo:
+            return bloqueo
+
         try:
+
             with transaction.atomic():
 
                 # ====================================
@@ -4034,54 +4393,186 @@ def crear_evaluacion_jefatura(request):
                 periodo_id = request.POST.get("periodo")
 
                 evaluacion = Evaluacion.objects.create(
+
                     Fecha_Evaluacion=fecha,
+
                     idPeriodo_id=periodo_id,
+
                     idEmpleado_Ev_id=idEmpleado,
+
                     idEmpleado_Jef_id=idEvaluador
+
                 )
 
                 # ====================================
                 # DETALLE DE JEFATURA
                 # ====================================
-                liderazgo = request.POST.get("Capacidad_Liderazgo") == "1"
-                aprendizaje = request.POST.get("Aprendizaje_Rapido") == "1"
-                adaptacion = request.POST.get("Adaptacion_Cambio") == "1"
-                iniciativa = request.POST.get("Iniciativa_Mejora") == "1"
-                madurez = request.POST.get("Madurez_Emocional") == "1"
+                liderazgo = request.POST.get(
+                    "Capacidad_Liderazgo"
+                ) == "1"
 
-                observaciones = request.POST.get("Observaciones")
+                aprendizaje = request.POST.get(
+                    "Aprendizaje_Rapido"
+                ) == "1"
 
-                # Calcular porcentaje
+                adaptacion = request.POST.get(
+                    "Adaptacion_Cambio"
+                ) == "1"
+
+                iniciativa = request.POST.get(
+                    "Iniciativa_Mejora"
+                ) == "1"
+
+                madurez = request.POST.get(
+                    "Madurez_Emocional"
+                ) == "1"
+
+                observaciones = request.POST.get(
+                    "Observaciones"
+                )
+
                 total = sum([
+
                     liderazgo,
+
                     aprendizaje,
+
                     adaptacion,
+
                     iniciativa,
+
                     madurez
+
                 ])
 
                 pct_total = (total / 5) * 100
 
-                # ====================================
-                # GUARDAR DETALLE
-                # ====================================
                 EvaluacionJefePotencial.objects.create(
+
                     Capacidad_Liderazgo=liderazgo,
+
                     Aprendizaje_Rapido=aprendizaje,
+
                     Adaptacion_Cambio=adaptacion,
+
                     Iniciativa_Mejora=iniciativa,
+
                     Madurez_Emocional=madurez,
+
                     pct_totalEv=pct_total,
+
                     Observaciones=observaciones,
+
                     idEvaluacion=evaluacion
+
+                )
+
+                messages.success(
+
+                    request,
+
+                    "Evaluación de jefatura registrada correctamente."
+
+                )
+
+                return redirect(
+                    "crear_evaluacion_jefatura"
+                )
+
+        except Exception as e:
+
+            messages.error(
+
+                request,
+
+                f"Error al guardar: {str(e)}"
+
+            )
+
+    context = {
+
+        "empleados": empleados,
+
+        "evaluadores": evaluadores,
+
+        "periodos": periodos,
+
+    }
+
+    return render(
+
+        request,
+
+        "eva_Jefatura.html",
+
+        context
+
+    )
+
+
+# =========================================================
+# CREAR MATRIZ 9 BOX
+# =========================================================
+@requiere_permiso("evaluaciones", "crear")
+def crear_matriz_9box(request):
+
+    empleados = Empleado.objects.select_related("idPersona").all()
+    periodos = Periodo.objects.all()
+    perfiles = Cuadrante9BoxPerfil.objects.all()
+    cuadrantes = Cuadrante9Box.objects.all()
+    desempenos = Cuadrante9BoxDesempeno.objects.all()
+    potenciales = Cuadrante9BoxPotencial.objects.all()
+
+    if request.method == "POST":
+
+        bloqueo = bloquear_si_no_puede(
+            request,
+            "evaluaciones",
+            "crear"
+        )
+
+        if bloqueo:
+            return bloqueo
+
+        try:
+
+            with transaction.atomic():
+
+                UnionMatrizEmp.objects.create(
+
+                    Anio=request.POST.get("Anio"),
+
+                    Plan_Accion=request.POST.get("Plan_Accion"),
+
+                    idPeriodo_id=request.POST.get("periodo"),
+
+                    idCuadrante_9box_id=request.POST.get(
+                        "idCuadrante_9box"
+                    ),
+
+                    idCuadrante_9box_Perfil_id=request.POST.get(
+                        "idCuadrante_9box_Perfil"
+                    ),
+
+                    idCuadrante_9box_Desempeno_id=request.POST.get(
+                        "idCuadrante_9box_Desempeno"
+                    ),
+
+                    idCuadrante_9box_Potencial_id=request.POST.get(
+                        "idCuadrante_9box_Potencial"
+                    ),
+
+                    idEmpleado_id=request.POST.get(
+                        "idEmpleado"
+                    )
                 )
 
                 messages.success(
                     request,
-                    "Evaluación de jefatura registrada correctamente."
+                    "Matriz 9 Box registrada correctamente."
                 )
 
-                return redirect("crear_evaluacion_jefatura")
+                return redirect("crear_matriz_9box")
 
         except Exception as e:
 
@@ -4091,70 +4582,32 @@ def crear_evaluacion_jefatura(request):
             )
 
     context = {
+
         "empleados": empleados,
-        "evaluadores": evaluadores,
+
         "periodos": periodos,
+
+        "perfiles": perfiles,
+
+        "cuadrantes": cuadrantes,
+
+        "desempenos": desempenos,
+
+        "potenciales": potenciales,
+
     }
 
     return render(
         request,
-        "eva_Jefatura.html",
+        "matriz.html",
         context
     )
 
 
 # =========================================================
-# CREAR MATRIZ 9 BOX
-# =========================================================
-def crear_matriz_9box(request):
-    empleados = Empleado.objects.select_related("idPersona").all()
-    periodos = Periodo.objects.all()
-    perfiles = Cuadrante9BoxPerfil.objects.all()
-    cuadrantes = Cuadrante9Box.objects.all()
-    desempenos = Cuadrante9BoxDesempeno.objects.all()
-    potenciales = Cuadrante9BoxPotencial.objects.all()
-
-    if request.method == "POST":
-        try:
-            with transaction.atomic():
-                # Asegúrate de mapear las llaves del POST exactas de tu formulario HTML
-                UnionMatrizEmp.objects.create(
-                    Anio=request.POST.get("Anio"),
-                    Plan_Accion=request.POST.get("Plan_Accion"),
-                    
-                    # ⚠️ ¡CRUCIAL!: En tu HTML pusiste name="periodo"
-                    idPeriodo_id=request.POST.get("periodo"),  
-                    
-                    # ⚠️ ¡CRUCIAL!: En tu HTML pusiste name="idCuadrante_9box"
-                    idCuadrante_9box_id=request.POST.get("idCuadrante_9box"),  
-                    
-                    # Verificados con tus etiquetas <select name="..."> del formulario de configuración:
-                    idCuadrante_9box_Perfil_id=request.POST.get("idCuadrante_9box_Perfil"),
-                    idCuadrante_9box_Desempeno_id=request.POST.get("idCuadrante_9box_Desempeno"),
-                    idCuadrante_9box_Potencial_id=request.POST.get("idCuadrante_9box_Potencial"),
-                    idEmpleado_id=request.POST.get("idEmpleado")
-                )
-
-                messages.success(request, "Matriz 9 Box registrada correctamente.")
-                return redirect("crear_matriz_9box")
-
-        except Exception as e:
-            messages.error(request, f"Error al guardar: {str(e)}")
-
-    context = {
-        "empleados": empleados,
-        "periodos": periodos,
-        "perfiles": perfiles,
-        "cuadrantes": cuadrantes,
-        "desempenos": desempenos,
-        "potenciales": potenciales,
-    }
-    return render(request, "matriz.html", context)
-
-
-# =========================================================
 # DASHBOARD RESULTADOS
 # =========================================================
+@requiere_permiso("evaluaciones", "ver")
 def dashboard_resultados(request):
 
     empleados = Empleado.objects.select_related(
@@ -4163,9 +4616,17 @@ def dashboard_resultados(request):
 
     periodos = Periodo.objects.all()
 
-    empleado_filtro = request.GET.get("empleado_filtro")
-    periodo_filtro = request.GET.get("periodo_filtro")
-    anio_filtro = request.GET.get("anio_filtro")
+    empleado_filtro = request.GET.get(
+        "empleado_filtro"
+    )
+
+    periodo_filtro = request.GET.get(
+        "periodo_filtro"
+    )
+
+    anio_filtro = request.GET.get(
+        "anio_filtro"
+    )
 
     matriz_seleccionada = None
     potencial_seleccionado = None
@@ -4178,120 +4639,164 @@ def dashboard_resultados(request):
 
         try:
 
-            # =====================================================
-            # MATRIZ 9 BOX
-            # =====================================================
             matriz_seleccionada = UnionMatrizEmp.objects.select_related(
+
                 "idEmpleado__idPersona",
+
                 "idEmpleado__idPuesto",
+
                 "idPeriodo",
+
                 "idCuadrante_9box",
+
                 "idCuadrante_9box_Desempeno",
+
                 "idCuadrante_9box_Potencial",
+
                 "idCuadrante_9box_Perfil"
+
             ).filter(
+
                 idEmpleado_id=empleado_filtro,
+
                 idPeriodo_id=periodo_filtro,
+
                 Anio=anio_filtro
+
             ).first()
 
             if not matriz_seleccionada:
 
                 messages.warning(
+
                     request,
+
                     "No se encontraron resultados para los criterios seleccionados."
+
                 )
 
             else:
 
-                # =====================================================
-                # BUSCAR EVALUACIÓN MÁS RECIENTE
-                # =====================================================
                 evaluacion = Evaluacion.objects.filter(
+
                     idEmpleado_Ev_id=empleado_filtro,
+
                     idPeriodo_id=periodo_filtro
-                ).order_by("-Fecha_Evaluacion").first()
+
+                ).order_by(
+
+                    "-Fecha_Evaluacion"
+
+                ).first()
 
                 if evaluacion:
 
-                    # ==========================================
-                    # EVALUACIÓN DE DESEMPEÑO
-                    # ==========================================
                     desempeno_seleccionado = (
+
                         EvaluacionDesempeno.objects.filter(
+
                             evaluacion=evaluacion
+
                         ).first()
+
                     )
 
                     if desempeno_seleccionado:
 
                         porcentaje_total = (
+
                             desempeno_seleccionado.pct_total_ev or 0
+
                         )
 
                         titulo_porcentaje = (
+
                             "Porcentaje de Desempeño"
+
                         )
 
                     else:
 
-                        # ==========================================
-                        # EVALUACIÓN DE POTENCIAL
-                        # ==========================================
                         potencial_seleccionado = (
+
                             EvaluacionJefePotencial.objects.filter(
+
                                 idEvaluacion=evaluacion
+
                             ).first()
+
                         )
 
                         if potencial_seleccionado:
 
                             porcentaje_total = (
+
                                 potencial_seleccionado.pct_totalEv or 0
+
                             )
 
                             titulo_porcentaje = (
+
                                 "Porcentaje Potencial (Jefatura)"
+
                             )
 
         except Exception as e:
 
             messages.error(
+
                 request,
+
                 f"Error al consultar los datos: {str(e)}"
+
             )
 
     context = {
 
         "empleados": empleados,
+
         "periodos": periodos,
 
         "matriz_seleccionada": matriz_seleccionada,
 
         "potencial_seleccionado": potencial_seleccionado,
+
         "desempeno_seleccionado": desempeno_seleccionado,
 
         "porcentaje_total": porcentaje_total,
+
         "titulo_porcentaje": titulo_porcentaje,
 
         "empleado_filtro_id": (
+
             int(empleado_filtro)
+
             if empleado_filtro else None
+
         ),
 
         "periodo_filtro_id": (
+
             int(periodo_filtro)
+
             if periodo_filtro else None
+
         ),
 
         "anio_filtro_val": anio_filtro or "",
+
     }
 
     return render(
+
         request,
+
         "result_Evaluacion.html",
+
         context
+
     )
+
 
 
 def elec_KPI_view(request):
@@ -4301,176 +4806,391 @@ def elec_KPI_view(request):
 # =========================================================================
 # 1. VISTA SÓLO PARA LA CABECERA (Carga inicial y Guardado de Cabecera)
 # =========================================================================
+@requiere_permiso("kpis", "crear")
 def registrar_kpi_view(request):
+
     kpi_cabecera_id = None
     el_empleado_seleccionado = ""
     el_mes_seleccionado = ""
     el_anio_seleccionado = "2026"
 
     if request.method == 'POST':
+
+        bloqueo = bloquear_si_no_puede(
+            request,
+            "kpis",
+            "crear"
+        )
+
+        if bloqueo:
+            return bloqueo
+
         id_empleado = request.POST.get('idEmpleado')
         mes = request.POST.get('Mes')
         anio = request.POST.get('Anio')
 
-        # Mantener el estado en los inputs si ocurre un error (conversión segura)
-        el_empleado_seleccionado = int(id_empleado) if id_empleado else ""
-        el_mes_seleccionado = int(mes) if mes else ""
-        el_anio_seleccionado = int(anio) if anio else 2026
+        el_empleado_seleccionado = (
+            int(id_empleado)
+            if id_empleado else ""
+        )
+
+        el_mes_seleccionado = (
+            int(mes)
+            if mes else ""
+        )
+
+        el_anio_seleccionado = (
+            int(anio)
+            if anio else 2026
+        )
 
         try:
-            empleado = Empleado.objects.get(pk=id_empleado)
-            
-            # Crear y guardar la cabecera adaptada a enteros de models.py
-            cabecera = KpiCabecera(
-                idEmpleado=empleado,
-                mes=int(mes),    # Adaptado a models.IntegerField
-                anio=int(anio)   # Adaptado a models.IntegerField
+
+            empleado = Empleado.objects.get(
+                pk=id_empleado
             )
+
+            cabecera = KpiCabecera(
+
+                idEmpleado=empleado,
+
+                mes=int(mes),
+
+                anio=int(anio)
+
+            )
+
             cabecera.save()
 
             kpi_cabecera_id = cabecera.id_KPI
-            messages.success(request, f"¡Cabecera registrada con éxito! ID Asignado: {kpi_cabecera_id}")
+
+            messages.success(
+
+                request,
+
+                f"¡Cabecera registrada con éxito! ID Asignado: {kpi_cabecera_id}"
+
+            )
 
         except IntegrityError:
-            messages.error(request, "Error: Ya existe un registro de KPI para este colaborador en el mes y año seleccionados.")
-        except Empleado.DoesNotExist:
-            messages.error(request, "El colaborador seleccionado no es válido.")
-        except (ValueError, TypeError):
-            messages.error(request, "Error: Los datos de mes o año enviados no son válidos.")
 
-    # Catálogos necesarios para renderizar el formulario
-    empleados = Empleado.objects.filter(Activo=True)
+            messages.error(
+
+                request,
+
+                "Error: Ya existe un registro de KPI para este colaborador en el mes y año seleccionados."
+
+            )
+
+        except Empleado.DoesNotExist:
+
+            messages.error(
+
+                request,
+
+                "El colaborador seleccionado no es válido."
+
+            )
+
+        except (ValueError, TypeError):
+
+            messages.error(
+
+                request,
+
+                "Error: Los datos de mes o año enviados no son válidos."
+
+            )
+
+    empleados = Empleado.objects.filter(
+        Activo=True
+    )
+
     categorias = KpiCategoria.objects.all()
 
     context = {
+
         'empleados': empleados,
+
         'categorias': categorias,
+
         'kpi_cabecera_id': kpi_cabecera_id,
+
         'el_empleado_seleccionado': el_empleado_seleccionado,
+
         'el_mes_seleccionado': el_mes_seleccionado,
+
         'el_anio_seleccionado': el_anio_seleccionado,
+
     }
-    return render(request, 'kpi_Registro.html', context)
+
+    return render(
+        request,
+        'kpi_Registro.html',
+        context
+    )
 
 
 # =========================================================================
 # 2. VISTA SÓLO PARA AGREGAR EL DETALLE (Procesamiento independiente)
 # =========================================================================
+@requiere_permiso("kpis", "crear")
 def registrar_kpi_detalle_view(request):
+
     if request.method == 'POST':
-        id_kpi_cabecera = request.POST.get('id_KPI')
-        id_categoria = request.POST.get('id_KPI_Categoria')
-        pct_alcanzado = request.POST.get('pct_Alcanzado')
-        monto_base = request.POST.get('Monto_Base')
+
+        bloqueo = bloquear_si_no_puede(
+            request,
+            "kpis",
+            "crear"
+        )
+
+        if bloqueo:
+            return bloqueo
+
+        id_kpi_cabecera = request.POST.get(
+            'id_KPI'
+        )
+
+        id_categoria = request.POST.get(
+            'id_KPI_Categoria'
+        )
+
+        pct_alcanzado = request.POST.get(
+            'pct_Alcanzado'
+        )
+
+        monto_base = request.POST.get(
+            'Monto_Base'
+        )
 
         try:
-            cabecera = get_object_or_404(KpiCabecera, pk=id_kpi_cabecera)
-            categoria = get_object_or_404(KpiCategoria, pk=id_categoria)
 
-            # Cálculo manual de respaldo antes de insertar
-            monto_total = float(monto_base) * (float(pct_alcanzado) / 100.0)
-
-            # Crear y registrar el detalle vinculado a las FKs correctas
-            detalle = KpiDetalle(
-                id_KPI=cabecera,                       # Instancia de KpiCabecera
-                id_KPI_Categoria=categoria,             # Instancia de KpiCategoria
-                pct_Alcanzado=float(pct_alcanzado),     # Adaptado a DecimalField
-                Monto_Base=float(monto_base),           # Adaptado a DecimalField
-                Monto_Total=round(monto_total, 2)       # Redondeado a 2 decimales para DecimalField
+            cabecera = get_object_or_404(
+                KpiCabecera,
+                pk=id_kpi_cabecera
             )
+
+            categoria = get_object_or_404(
+                KpiCategoria,
+                pk=id_categoria
+            )
+
+            monto_total = (
+
+                float(monto_base)
+
+                *
+
+                (
+                    float(pct_alcanzado) / 100.0
+                )
+
+            )
+
+            detalle = KpiDetalle(
+
+                id_KPI=cabecera,
+
+                id_KPI_Categoria=categoria,
+
+                pct_Alcanzado=float(
+                    pct_alcanzado
+                ),
+
+                Monto_Base=float(
+                    monto_base
+                ),
+
+                Monto_Total=round(
+                    monto_total,
+                    2
+                )
+
+            )
+
             detalle.save()
-            
-            messages.success(request, f"Indicador '{categoria.tipo_categoria}' añadido exitosamente.")
+
+            messages.success(
+
+                request,
+
+                f"Indicador '{categoria.tipo_categoria}' añadido exitosamente."
+
+            )
 
         except IntegrityError:
-            # Captura la restricción UQ_KPI_Categoria_Por_Mes de tu Meta class
-            messages.error(request, "Error: Esta categoría ya fue evaluada en este mes para el colaborador.")
+
+            messages.error(
+
+                request,
+
+                "Error: Esta categoría ya fue evaluada en este mes para el colaborador."
+
+            )
+
         except Exception as e:
-            messages.error(request, f"Error al guardar el detalle: {str(e)}")
 
-    # Después de procesar el detalle, volvemos al flujo principal
-    return redirect('registrar_kpi')
+            messages.error(
+
+                request,
+
+                f"Error al guardar el detalle: {str(e)}"
+
+            )
+
+    return redirect(
+        'registrar_kpi'
+    )
 
 
 
+# =========================================================
+# CREAR PREMIO
+# =========================================================
+@requiere_permiso("kpis", "crear")
 def crear_premio(request):
+
     if request.method == 'POST':
-        form = PremioForm(request.POST)
+
+        bloqueo = bloquear_si_no_puede(
+            request,
+            "kpis",
+            "crear"
+        )
+
+        if bloqueo:
+            return bloqueo
+
+        form = PremioForm(
+            request.POST
+        )
+
         if form.is_valid():
+
             form.save()
-            messages.success(request, '¡Premio guardado exitosamente!')
-            return redirect('crear_premio')
+
+            messages.success(
+                request,
+                '¡Premio guardado exitosamente!'
+            )
+
+            return redirect(
+                'crear_premio'
+            )
+
     else:
+
         form = PremioForm()
 
     premios = Premio.objects.select_related(
+
         'id_KPI_Categoria',
+
         'idCuadrante_9box_Perfil'
-    ).all().order_by('idPremio')
+
+    ).all().order_by(
+
+        'idPremio'
+
+    )
 
     return render(
+
         request,
+
         'kpi_Premio.html',
+
         {
+
             'form': form,
+
             'premios': premios,
+
         }
+
     )
 
 
+# =========================================================
+# EDITAR PREMIO
+# =========================================================
+@requiere_permiso("kpis", "editar")
 def editar_premio(request, id):
-    premio = Premio.objects.get(pk=id)
+
+    premio = get_object_or_404(
+        Premio,
+        pk=id
+    )
 
     if request.method == 'POST':
-        form = PremioForm(request.POST, instance=premio)
+
+        bloqueo = bloquear_si_no_puede(
+            request,
+            "kpis",
+            "editar"
+        )
+
+        if bloqueo:
+            return bloqueo
+
+        form = PremioForm(
+            request.POST,
+            instance=premio
+        )
 
         if form.is_valid():
+
             form.save()
-            messages.success(request, "Premio actualizado correctamente.")
-            return redirect('crear_premio')
+
+            messages.success(
+                request,
+                "Premio actualizado correctamente."
+            )
+
+            return redirect(
+                'crear_premio'
+            )
 
     else:
-        form = PremioForm(instance=premio)
+
+        form = PremioForm(
+            instance=premio
+        )
 
     premios = Premio.objects.select_related(
-        'id_KPI_Categoria',
-        'idCuadrante_9box_Perfil'
-    ).order_by('idPremio')
 
-    return render(
-        request,
-        'kpi_Premio.html',
-        {
-            'form': form,
-            'premios': premios,
-        }
+        'id_KPI_Categoria',
+
+        'idCuadrante_9box_Perfil'
+
+    ).order_by(
+
+        'idPremio'
+
     )
 
+    return render(
 
+        request,
 
-# =========================================================
-# VISTAS: PREMIO ASIGNADO
-# =========================================================
+        'kpi_Premio.html',
 
-from django.contrib import messages
-from django.db import transaction, IntegrityError
-from django.http import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
+        {
 
-from .models import (
-    PremioAsignado,
-    Premio,
-    KpiCabecera,
-    KpiDetalle
-)
+            'form': form,
 
-from .forms import PremioAsignadoForm
+            'premios': premios,
+
+        }
+
+    )
 
 
 # =========================================================
 # VISTA: GUARDAR PREMIO ASIGNADO
 # =========================================================
-
+@requiere_permiso("kpis", "crear")
 def guardar_premio_asignado(request):
 
     # =====================================================
@@ -4478,6 +5198,15 @@ def guardar_premio_asignado(request):
     # =====================================================
 
     if request.method == 'POST':
+
+        bloqueo = bloquear_si_no_puede(
+            request,
+            "kpis",
+            "crear"
+        )
+
+        if bloqueo:
+            return bloqueo
 
         # =================================================
         # CREAR FORMULARIO CON LOS DATOS RECIBIDOS
@@ -4495,47 +5224,19 @@ def guardar_premio_asignado(request):
 
             try:
 
-                # =============================================
-                # INICIAR TRANSACCIÓN
-                # =============================================
-
                 with transaction.atomic():
-
-                    # =========================================
-                    # OBTENER PREMIO SELECCIONADO
-                    # =========================================
 
                     premio = (
                         form.cleaned_data['idPremio']
                     )
 
-                    # =========================================
-                    # OBTENER KPI SELECCIONADO
-                    # =========================================
-
                     kpi = (
                         form.cleaned_data['id_KPI']
                     )
 
-                    # =========================================
-                    # OBTENER FECHA DE REGISTRO
-                    # =========================================
-
                     fecha_registro = (
                         form.cleaned_data['Fecha_Registro']
                     )
-
-                    # =========================================
-                    # BUSCAR EL DETALLE DEL KPI
-                    #
-                    # Se busca utilizando:
-                    #
-                    # 1. El KPI seleccionado
-                    # 2. La categoría asociada al premio
-                    #
-                    # Esto permite obtener el Monto_Total
-                    # correspondiente.
-                    # =========================================
 
                     detalle_kpi = (
                         KpiDetalle.objects.filter(
@@ -4548,19 +5249,17 @@ def guardar_premio_asignado(request):
                         ).first()
                     )
 
-                    # =========================================
-                    # VALIDAR QUE EXISTA EL DETALLE DEL KPI
-                    # =========================================
-
                     if detalle_kpi is None:
 
                         messages.error(
+
                             request,
 
                             'No se puede asignar este premio. '
                             'El KPI seleccionado no tiene un '
                             'detalle registrado para la categoría '
                             'asociada al premio.'
+
                         )
 
                         return render(
@@ -4570,19 +5269,20 @@ def guardar_premio_asignado(request):
                             'kpi_AsigPremio.html',
 
                             {
-                                'form': form
+                                'form': form,
+
+                                'premios_asignados':
+                                    PremioAsignado.objects.select_related(
+                                        'idPremio',
+                                        'id_KPI',
+                                        'id_KPI__idEmpleado',
+                                        'id_KPI__idEmpleado__idPersona'
+                                    ).order_by(
+                                        '-Fecha_Registro'
+                                    )
                             }
 
                         )
-
-                    # =========================================
-                    # CREAR PREMIO ASIGNADO
-                    #
-                    # NO SE ENVÍA Monto_Liquidado
-                    #
-                    # El modelo lo calcula automáticamente
-                    # dentro de su método save().
-                    # =========================================
 
                     premio_asignado = PremioAsignado(
 
@@ -4597,21 +5297,7 @@ def guardar_premio_asignado(request):
 
                     )
 
-                    # =========================================
-                    # GUARDAR REGISTRO
-                    #
-                    # El método save() del modelo ejecutará:
-                    #
-                    # Monto_Liquidado =
-                    # Premio.Monto +
-                    # KPI_Detalle.Monto_Total
-                    # =========================================
-
                     premio_asignado.save()
-
-                    # =========================================
-                    # MENSAJE DE ÉXITO
-                    # =========================================
 
                     messages.success(
 
@@ -4625,22 +5311,9 @@ def guardar_premio_asignado(request):
 
                     )
 
-                    # =========================================
-                    # REDIRECCIONAR
-                    #
-                    # IMPORTANTE: debe coincidir EXACTAMENTE con
-                    # el name= registrado en urls.py para esta
-                    # misma vista (el que usa el template en
-                    # {% url 'guardar_premio_asignado' %})
-                    # =========================================
-
                     return redirect(
                         'guardar_premio_asignado'
                     )
-
-            # =================================================
-            # ERROR DE INTEGRIDAD DE BASE DE DATOS
-            # =================================================
 
             except IntegrityError as e:
 
@@ -4662,10 +5335,6 @@ def guardar_premio_asignado(request):
 
                 )
 
-            # =================================================
-            # ERROR DE VALIDACIÓN DEL MODELO
-            # =================================================
-
             except ValueError as e:
 
                 print(
@@ -4675,16 +5344,9 @@ def guardar_premio_asignado(request):
                 )
 
                 messages.error(
-
                     request,
-
                     str(e)
-
                 )
-
-            # =================================================
-            # CUALQUIER OTRO ERROR
-            # =================================================
 
             except Exception as e:
 
@@ -4705,10 +5367,6 @@ def guardar_premio_asignado(request):
 
                 )
 
-        # =================================================
-        # FORMULARIO NO VÁLIDO
-        # =================================================
-
         else:
 
             messages.error(
@@ -4722,17 +5380,9 @@ def guardar_premio_asignado(request):
 
             )
 
-    # =====================================================
-    # MÉTODO GET
-    # =====================================================
-
     else:
 
         form = PremioAsignadoForm()
-
-    # =====================================================
-    # MOSTRAR FORMULARIO
-    # =====================================================
 
     return render(
 
@@ -4741,13 +5391,26 @@ def guardar_premio_asignado(request):
         'kpi_AsigPremio.html',
 
         {
+
             'form': form,
-            'premios_asignados': PremioAsignado.objects.select_related(
-                'idPremio',
-                'id_KPI',
-                'id_KPI__idEmpleado',
-                'id_KPI__idEmpleado__idPersona'
-            ).order_by('-Fecha_Registro')
+
+            'premios_asignados':
+                PremioAsignado.objects.select_related(
+
+                    'idPremio',
+
+                    'id_KPI',
+
+                    'id_KPI__idEmpleado',
+
+                    'id_KPI__idEmpleado__idPersona'
+
+                ).order_by(
+
+                    '-Fecha_Registro'
+
+                )
+
         }
 
     )
@@ -4756,7 +5419,6 @@ def guardar_premio_asignado(request):
 # =========================================================
 # VISTA: OBTENER MONTO LIQUIDADO (AJAX)
 # =========================================================
-
 def obtener_monto_liquidado(request, idPremio, id_KPI):
 
     # =====================================================
@@ -4805,70 +5467,12 @@ def obtener_monto_liquidado(request, idPremio, id_KPI):
             'success': False,
             'error': str(e)
         })
-
-
-from django.http import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
-
-
-# =========================================================
-# VISTA: OBTENER MONTO LIQUIDADO (AJAX)
-# =========================================================
-
-def obtener_monto_liquidado(request, idPremio, id_KPI):
-
-    # =====================================================
-    # Calcula el monto liquidado en tiempo real:
-    #
-    # Premio.Monto + KPI_Detalle.Monto_Total
-    #
-    # Usado por el JavaScript de kpi_AsigPremio.html
-    # para mostrar la vista previa antes de guardar.
-    # =====================================================
-
-    try:
-
-        premio = get_object_or_404(Premio, idPremio=idPremio)
-
-        kpi = get_object_or_404(KpiCabecera, id_KPI=id_KPI)
-
-        detalle_kpi = KpiDetalle.objects.filter(
-
-            id_KPI=kpi,
-
-            id_KPI_Categoria=premio.id_KPI_Categoria
-
-        ).first()
-
-        if detalle_kpi is None:
-
-            return JsonResponse({
-                'success': False,
-                'error': (
-                    'No existe un detalle de KPI para la categoría '
-                    'asociada al premio seleccionado.'
-                )
-            })
-
-        monto_liquidado = premio.Monto + detalle_kpi.Monto_Total
-
-        return JsonResponse({
-            'success': True,
-            'monto_liquidado': float(monto_liquidado)
-        })
-
-    except Exception as e:
-
-        return JsonResponse({
-            'success': False,
-            'error': str(e)
-        })
-
 
 
 # =========================================================================
 # VISTA: Dashboard / Historial de KPIs
 # =========================================================================
+@requiere_permiso("kpi", "ver")
 def historial_kpi_view(request):
 
     # ── Filtros desde GET ─────────────────────────────────────────────────
@@ -4902,9 +5506,9 @@ def historial_kpi_view(request):
     detalles = detalles.order_by('-id_KPI__anio', '-id_KPI__mes')
 
     # ── Estadísticas resumen ──────────────────────────────────────────────
-    total_kpis      = detalles.count()
-    total_bonos     = detalles.aggregate(t=Sum('Monto_Total'))['t'] or 0
-    pct_promedio    = detalles.aggregate(p=Avg('pct_Alcanzado'))['p'] or 0 # <-- Ya no fallará
+    total_kpis = detalles.count()
+    total_bonos = detalles.aggregate(t=Sum('Monto_Total'))['t'] or 0
+    pct_promedio = detalles.aggregate(p=Avg('pct_Alcanzado'))['p'] or 0
 
     # Premios asignados en el período filtrado
     premios_qs = PremioAsignado.objects.select_related(
@@ -4932,7 +5536,7 @@ def historial_kpi_view(request):
             'id_KPI__idEmpleado__idPuesto__Nombre',
             'id_KPI__idEmpleado__idPersona__Foto',
         )
-        .annotate(pct_prom=Avg('pct_Alcanzado')) # <-- Ya no fallará
+        .annotate(pct_prom=Avg('pct_Alcanzado'))
         .order_by('-pct_prom')[:5]
     )
 
@@ -4940,34 +5544,33 @@ def historial_kpi_view(request):
     resumen_financiero = (
         KpiDetalle.objects
         .values('id_KPI_Categoria__tipo_categoria')
-        .annotate(total=Sum('Monto_Total')) # <-- Ya no fallará
+        .annotate(total=Sum('Monto_Total'))
         .order_by('-total')
     )
 
     context = {
-        # Catálogos
-        'empleados'           : empleados,
-        'categorias'          : categorias,
-        # Filtros activos
-        'empleado_filtro_id'  : empleado_filtro_id,
-        'mes_filtro'          : mes_filtro,
-        'anio_filtro'         : anio_filtro,
-        # Historial
-        'detalles'            : detalles,
-        'premios_qs'          : premios_qs,
-        # Estadísticas
-        'total_kpis'          : total_kpis,
-        'total_bonos'         : total_bonos,
-        'pct_promedio'        : round(pct_promedio, 2),
-        'total_premios'       : total_premios,
-        # Rankings
-        'top_colaboradores'   : top_colaboradores,
-        'resumen_financiero'  : resumen_financiero,
-        # Meses para el select
+        'empleados': empleados,
+        'categorias': categorias,
+
+        'empleado_filtro_id': empleado_filtro_id,
+        'mes_filtro': mes_filtro,
+        'anio_filtro': anio_filtro,
+
+        'detalles': detalles,
+        'premios_qs': premios_qs,
+
+        'total_kpis': total_kpis,
+        'total_bonos': total_bonos,
+        'pct_promedio': round(pct_promedio, 2),
+        'total_premios': total_premios,
+
+        'top_colaboradores': top_colaboradores,
+        'resumen_financiero': resumen_financiero,
+
         'meses': [
-            (1,'Enero'),(2,'Febrero'),(3,'Marzo'),(4,'Abril'),
-            (5,'Mayo'),(6,'Junio'),(7,'Julio'),(8,'Agosto'),
-            (9,'Septiembre'),(10,'Octubre'),(11,'Noviembre'),(12,'Diciembre'),
+            (1,'Enero'), (2,'Febrero'), (3,'Marzo'), (4,'Abril'),
+            (5,'Mayo'), (6,'Junio'), (7,'Julio'), (8,'Agosto'),
+            (9,'Septiembre'), (10,'Octubre'), (11,'Noviembre'), (12,'Diciembre'),
         ],
     }
 
@@ -4979,11 +5582,11 @@ def historial_kpi_view(request):
 # GUARDAR CABECERA DEL ONBOARDING
 # Selección de Departamento y Empleado, y guardado en BD
 # =========================================================
+@requiere_permiso("onboarding", "ver")
 def registrar_onboarding(request, pk=None):
 
     onboarding = None
     paso_dos_habilitado = False
-
 
     if pk:
 
@@ -4994,32 +5597,37 @@ def registrar_onboarding(request, pk=None):
 
         paso_dos_habilitado = True
 
-
-
     if request.method == "POST":
+
+        accion = "editar" if onboarding else "crear"
+
+        bloqueo = bloquear_si_no_puede(
+            request,
+            "onboarding",
+            accion
+        )
+
+        if bloqueo:
+            return bloqueo
 
         form = OnboardingForm(
             request.POST,
             instance=onboarding
         )
 
-
         if form.is_valid():
 
             nuevo = form.save()
-
 
             messages.success(
                 request,
                 f"Proceso de Onboarding #{nuevo.id_Onboarding} creado correctamente."
             )
 
-
             return redirect(
                 "gestionar_onboarding",
                 pk=nuevo.id_Onboarding
             )
-
 
         else:
 
@@ -5028,18 +5636,14 @@ def registrar_onboarding(request, pk=None):
                 "Revise los datos del formulario."
             )
 
-
     else:
 
         form = OnboardingForm(
             instance=onboarding
         )
 
-
-
     # =====================================================
     # CARGAR ACTIVIDADES REGISTRADAS
-    # SIEMPRE SE MOSTRARÁN EN LA TABLA
     # =====================================================
 
     actividades = OnboardingActividad.objects.select_related(
@@ -5050,22 +5654,15 @@ def registrar_onboarding(request, pk=None):
         "-id_Onboarding__id_Onboarding"
     )
 
-
-
     context = {
 
         "form": form,
-
         "form_detalle": OnboardingActividadForm(),
-
         "onboarding": onboarding,
-
         "paso_dos_habilitado": paso_dos_habilitado,
-
         "actividades": actividades,
 
     }
-
 
     return render(
         request,
@@ -5077,42 +5674,42 @@ def registrar_onboarding(request, pk=None):
 # =========================================================
 # GUARDAR DETALLE DE ACTIVIDAD DEL ONBOARDING
 # =========================================================
+@requiere_permiso("onboarding", "editar")  # O la clave de permiso que utilices
 def guardar_detalle_onboarding(request, pk):
 
-    onboarding = get_object_or_404(
-        Onboarding,
-        pk=pk
-    )
+    # 1. Obtener el registro principal de Onboarding o lanzar 404
+    onboarding = get_object_or_404(Onboarding, pk=pk)
 
+    # 2. Solo procesar si la petición es mediante POST
     if request.method == "POST":
-
-        form = OnboardingActividadForm(
-            request.POST
-        )
+        form = OnboardingActividadForm(request.POST)
 
         if form.is_valid():
+            try:
+                detalle = form.save(commit=False)
+                detalle.id_Onboarding = onboarding
+                detalle.save()
 
-            detalle = form.save(commit=False)
-            detalle.id_Onboarding = onboarding
-            detalle.save()
+                messages.success(request, "Actividad registrada correctamente.")
 
-            messages.success(
-                request,
-                "Actividad registrada correctamente."
-            )
-
+            except IntegrityError as e:
+                messages.error(
+                    request, 
+                    f"Error de base de datos al registrar la actividad: {e}"
+                )
+            except Exception as e:
+                messages.error(
+                    request, 
+                    f"Ocurrió un error inesperado al guardar la actividad: {e}"
+                )
         else:
+            # Notificar errores específicos de validación del formulario
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"Error en {field}: {error}")
 
-            messages.error(
-                request,
-                "Revise los datos de la actividad."
-            )
-
-    return redirect(
-        "gestionar_onboarding",
-        pk=onboarding.id_Onboarding
-    )
-
+    # 3. Redirigir siempre a la gestión del onboarding
+    return redirect("gestionar_onboarding", pk=onboarding.pk)
 
 
 def elec_Offboarding_view(request):
@@ -5123,6 +5720,7 @@ def elec_Offboarding_view(request):
 # GUARDAR CABECERA DEL OFFBOARDING
 # Proceso de salida de un empleado
 # =========================================================
+@requiere_permiso("offboarding", "ver")
 def registrar_offboarding(request, pk=None):
 
     offboarding = None
@@ -5138,6 +5736,17 @@ def registrar_offboarding(request, pk=None):
         paso_dos_habilitado = True
 
     if request.method == "POST":
+
+        accion = "editar" if offboarding else "crear"
+
+        bloqueo = bloquear_si_no_puede(
+            request,
+            "offboarding",
+            accion
+        )
+
+        if bloqueo:
+            return bloqueo
 
         form = OffboardingForm(
             request.POST,
@@ -5188,96 +5797,12 @@ def registrar_offboarding(request, pk=None):
     )
 
 
-from django.shortcuts import render, get_object_or_404
-
-
-def ver_checklist_offboarding(request, id_check):
-
-    checklist = get_object_or_404(
-        OffboardingChecklist.objects.select_related(
-            "id_Offboarding",
-            "id_Offboarding__idEmpleado",
-            "id_Estatus_Vacante"
-        ),
-        pk=id_check
-    )
-
-    # ===============================
-    # CHECKS SELECCIONADOS
-    # ===============================
-
-    checks_seleccionados = list(
-
-        OffboardingChecklistDetalle.objects.filter(
-
-            id_Check=checklist
-
-        ).values_list(
-
-            "idCatalogo_id",
-
-            flat=True
-
-        )
-
-    )
-
-    context = {
-
-        "modo_ver": True,
-
-        "checklist": checklist,
-
-        "offboardings": Offboarding.objects.select_related(
-            "idEmpleado"
-        ).order_by(
-            "-Fecha_Salida"
-        ),
-
-        "catalogo": OffboardingCatalogo.objects.order_by(
-            "Num_Etapa",
-            "idCatalogo"
-        ),
-
-        "checks_seleccionados": checks_seleccionados,
-
-        "estados": Estatus.objects.order_by(
-            "id_Estatus_Vacante"
-        ),
-
-        "checklists": OffboardingChecklist.objects.select_related(
-            "id_Offboarding",
-            "id_Estatus_Vacante"
-        ).order_by(
-            "-Fecha_Asignacion"
-        )
-
-    }
-
-    return render(
-        request,
-        "checklist_off.html",
-        context
-    )
-
-
-from decimal import Decimal
-from datetime import date
-
-from django.contrib import messages
-from django.db import transaction, IntegrityError
-from django.shortcuts import render, get_object_or_404
-
 # =========================================================
-
 # GUARDAR CHECKLIST DE OFFBOARDING
-
 # Crea o actualiza el checklist correspondiente
-
 # al proceso de Offboarding seleccionado
-
 # =========================================================
-
+@requiere_permiso("offboarding", "ver")
 def guardar_checklist_offboarding(request):
 
     if request.method == "POST":
@@ -5354,6 +5879,31 @@ def guardar_checklist_offboarding(request):
                 )
 
                 # =================================================
+                # ¿ES CREAR O EDITAR?
+                # =================================================
+
+                try:
+
+                    OffboardingChecklist.objects.get(
+                        id_Offboarding=offboarding
+                    )
+
+                    accion = "editar"
+
+                except OffboardingChecklist.DoesNotExist:
+
+                    accion = "crear"
+
+                bloqueo = bloquear_si_no_puede(
+                    request,
+                    "offboarding",
+                    accion
+                )
+
+                if bloqueo:
+                    return bloqueo
+
+                # =================================================
                 # CALCULAR PORCENTAJE
                 # =================================================
 
@@ -5385,10 +5935,6 @@ def guardar_checklist_offboarding(request):
 
                 with transaction.atomic():
 
-                    # =============================================
-                    # BUSCAR EL CHECKLIST DEL OFFBOARDING
-                    # =============================================
-
                     try:
 
                         checklist = OffboardingChecklist.objects.get(
@@ -5398,10 +5944,6 @@ def guardar_checklist_offboarding(request):
                         creado = False
 
                     except OffboardingChecklist.DoesNotExist:
-
-                        # =========================================
-                        # CREAR NUEVO CHECKLIST
-                        # =========================================
 
                         checklist = OffboardingChecklist.objects.create(
 
@@ -5425,103 +5967,53 @@ def guardar_checklist_offboarding(request):
 
                         creado = True
 
-                    # =============================================
-                    # SI YA EXISTE, ACTUALIZAR CABECERA
-                    # =============================================
-
                     if not creado:
 
                         checklist.Fecha_Comp = (
-
                             fecha_comp
-
                             if fecha_comp
-
                             else None
-
                         )
 
-                        checklist.Observacion = (
-                            observacion
-                        )
-
-                        checklist.pct_listo = (
-                            pct_listo
-                        )
-
-                        checklist.id_Estatus_Vacante = (
-                            estado
-                        )
+                        checklist.Observacion = observacion
+                        checklist.pct_listo = pct_listo
+                        checklist.id_Estatus_Vacante = estado
 
                         checklist.save()
 
-                    # =============================================
-                    # ELIMINAR DETALLES ANTERIORES
-                    #
-                    # Esto permite que al editar un checklist
-                    # se eliminen las actividades que fueron
-                    # desmarcadas.
-                    # =============================================
-
                     OffboardingChecklistDetalle.objects.filter(
-
                         id_Check=checklist
-
                     ).delete()
-
-                    # =============================================
-                    # CREAR LOS NUEVOS DETALLES
-                    # =============================================
 
                     registros_creados = 0
 
                     for id_catalogo in actividades:
 
                         actividad = get_object_or_404(
-
                             OffboardingCatalogo,
-
                             idCatalogo=id_catalogo
-
                         )
 
                         OffboardingChecklistDetalle.objects.create(
-
                             id_Check=checklist,
-
                             idCatalogo=actividad,
-
                             Completado=True
-
                         )
 
                         registros_creados += 1
 
-                # =================================================
-                # MENSAJE
-                # =================================================
-
                 if creado:
 
                     messages.success(
-
                         request,
-
-                        f"Checklist #{checklist.id_Check} "
-                        f"creado correctamente para el "
-                        f"Offboarding #{offboarding.id_Offboarding}."
-
+                        f"Checklist #{checklist.id_Check} creado correctamente para el Offboarding #{offboarding.id_Offboarding}."
                     )
 
                 else:
 
                     messages.success(
-
                         request,
-
-                        f"Checklist #{checklist.id_Check} "
-                        f"actualizado correctamente."
-
+                        f"Checklist #{checklist.id_Check} actualizado correctamente."
                     )
 
         except IntegrityError as e:
@@ -5532,9 +6024,7 @@ def guardar_checklist_offboarding(request):
             )
 
             messages.error(
-
                 request,
-
                 f"Error de integridad en la base de datos: {e}"
             )
 
@@ -5546,38 +6036,25 @@ def guardar_checklist_offboarding(request):
             )
 
             messages.error(
-
                 request,
-
                 f"Error al guardar el checklist: {e}"
-
             )
 
     # =========================================================
     # DATOS PARA MOSTRAR LA PÁGINA
     # =========================================================
 
-    # Traemos todos los procesos de Offboarding
     offboardings = Offboarding.objects.select_related(
-
         "idEmpleado",
-
         "idEmpleado__idPersona",
-
         "idCausa"
 
     ).order_by(
-
         "-Fecha_Salida"
 
     )
 
-    # =========================================================
-    # AGREGAR EL CHECKLIST A CADA OFFBOARDING
-    # =========================================================
-
     for proceso in offboardings:
-
         try:
 
             proceso.checklist_obj = (
@@ -5587,66 +6064,38 @@ def guardar_checklist_offboarding(request):
             )
 
         except OffboardingChecklist.DoesNotExist:
-
             proceso.checklist_obj = None
 
-    # =========================================================
-    # CONTEXTO
-    # =========================================================
-
     context = {
-
         "offboardings": offboardings,
-
         "catalogo": OffboardingCatalogo.objects.order_by(
-
             "Num_Etapa",
-
             "idCatalogo"
-
         ),
 
         "checklists": OffboardingChecklist.objects.select_related(
-
             "id_Offboarding",
-
             "id_Estatus_Vacante"
-
         ).order_by(
-
             "-Fecha_Asignacion"
-
         ),
 
         "estados": Estatus.objects.order_by(
-
             "id_Estatus_Vacante"
-
         )
-
     }
 
     return render(
-
         request,
-
         "checklist_off.html",
-
         context
-
     )
 
 
-
-
-from decimal import Decimal
-from datetime import date
-
-from django.contrib import messages
-from django.db import transaction
-from django.shortcuts import get_object_or_404, render, redirect
-
-
+# =========================================================
+# EDITAR CHECKLIST DE OFFBOARDING
+# =========================================================
+@requiere_permiso("offboarding", "editar")
 def editar_checklist_offboarding(request, id_check):
 
     checklist = get_object_or_404(
@@ -5655,6 +6104,15 @@ def editar_checklist_offboarding(request, id_check):
     )
 
     if request.method == "POST":
+
+        bloqueo = bloquear_si_no_puede(
+            request,
+            "offboarding",
+            "editar"
+        )
+
+        if bloqueo:
+            return bloqueo
 
         try:
 
@@ -5792,619 +6250,233 @@ def editar_checklist_offboarding(request, id_check):
     )
 
 
+from django.shortcuts import render, get_object_or_404
 
-from django.contrib import messages
-from django.contrib.auth.hashers import make_password
-from django.db import IntegrityError
-from django.shortcuts import render, redirect
+# =========================================================
+# VER CHECKLIST DE OFFBOARDING
+# =========================================================
+@requiere_permiso("offboarding", "ver")  # O la clave de permiso que utilices
+def ver_checklist_offboarding(request, id_check):
 
+    # 1. Obtener la checklist objetivo con todas sus relaciones cargadas
+    checklist = get_object_or_404(
+        OffboardingChecklist.objects.select_related(
+            "id_Offboarding",
+            "id_Offboarding__idEmpleado",
+            "id_Offboarding__idEmpleado__idPersona",
+            "id_Estatus_Vacante"
+        ),
+        pk=id_check
+    )
+
+    # 2. Obtener IDs seleccionados en un conjunto (Set) para búsquedas ultrarrápidas O(1)
+    checks_seleccionados = set(
+        OffboardingChecklistDetalle.objects.filter(
+            id_Check=checklist
+        ).values_list(
+            "idCatalogo_id",
+            flat=True
+        )
+    )
+
+    # 3. Construir contexto previniendo consultas N+1
+    context = {
+        "modo_ver": True,
+        "checklist": checklist,
+        "checks_seleccionados": checks_seleccionados,
+
+        "offboardings": Offboarding.objects.select_related(
+            "idEmpleado",
+            "idEmpleado__idPersona"
+        ).order_by("-Fecha_Salida"),
+
+        "catalogo": OffboardingCatalogo.objects.order_by(
+            "Num_Etapa",
+            "idCatalogo"
+        ),
+
+        "estados": Estatus.objects.order_by("id_Estatus_Vacante"),
+
+        "checklists": OffboardingChecklist.objects.select_related(
+            "id_Offboarding",
+            "id_Offboarding__idEmpleado",
+            "id_Offboarding__idEmpleado__idPersona",
+            "id_Estatus_Vacante"
+        ).order_by("-Fecha_Asignacion"),
+    }
+
+    return render(request, "checklist_off.html", context)
+
+
+
+# =========================================================
+# GUARDAR USUARIO DEL SISTEMA
+# =========================================================
+@requiere_permiso("usuarios", "crear")  # O el decorador de seguridad/permisos que utilices
 def guardar_usuario_sistema(request):
 
-
-    # =========================================================
-    # EMPLEADOS DISPONIBLES
-    # Se cargan los datos necesarios para mostrar:
-    # - Nombre del empleado
-    # - Puesto del empleado
-    # =========================================================
-
-    empleados = Empleado.objects.select_related(
-        "idPersona",
-        "idPuesto"
-    ).filter(
-        Activo=True
-    ).order_by(
-        "idPersona__Nombre_Completo"
-    )
-
-
-    # =========================================================
-    # ROLES DISPONIBLES
-    # =========================================================
-
-    roles = Roles.objects.all().order_by(
-        "TipoRol"
-    )
-
-
-    # =========================================================
-    # PROCESAR FORMULARIO
-    # =========================================================
-
     if request.method == "POST":
+        # Limpieza inicial de inputs
+        correo = request.POST.get("Correo", "").strip()
+        contrasenia = request.POST.get("Contrasenia", "").strip()
+        id_rol = request.POST.get("idRol")
+        id_empleado = request.POST.get("idEmpleado_Admin")
+        activo_raw = request.POST.get("Activo")
 
-        try:
+        # ----------------------------------------------------
+        # VALIDACIONES BÁSICAS
+        # ----------------------------------------------------
+        if not correo:
+            messages.error(request, "Debe ingresar un correo electrónico.")
+        elif not contrasenia:
+            messages.error(request, "Debe ingresar una contraseña.")
+        elif not id_rol:
+            messages.error(request, "Debe seleccionar un rol.")
+        elif not id_empleado:
+            messages.error(request, "Debe seleccionar un empleado.")
+        elif activo_raw is None or activo_raw == "":
+            messages.error(request, "Debe seleccionar el estado del usuario.")
+        elif UsuarioSistema.objects.filter(Correo=correo).exists():
+            messages.error(request, "Ya existe un usuario registrado con ese correo.")
+        elif UsuarioSistema.objects.filter(idEmpleado_Admin=id_empleado).exists():
+            messages.error(request, "El empleado seleccionado ya tiene un usuario asignado.")
+        else:
+            try:
+                # Búsquedas directas por PK (sin select_related innecesarios para el INSERT)
+                rol = get_object_or_404(Roles, pk=id_rol)
+                empleado = get_object_or_404(Empleado, pk=id_empleado)
 
-            # =====================================================
-            # OBTENER DATOS DEL FORMULARIO
-            # =====================================================
-
-            correo = request.POST.get(
-                "Correo"
-            )
-
-            contrasenia = request.POST.get(
-                "Contrasenia"
-            )
-
-            idRol = request.POST.get(
-                "idRol"
-            )
-
-            idEmpleado = request.POST.get(
-                "idEmpleado_Admin"
-            )
-
-            activo = request.POST.get(
-                "Activo"
-            )
-
-
-            # =====================================================
-            # VALIDACIONES
-            # =====================================================
-
-            if not correo:
-
-                messages.error(
-                    request,
-                    "Debe ingresar un correo."
-                )
-
-
-            elif not contrasenia:
-
-                messages.error(
-                    request,
-                    "Debe ingresar una contraseña."
-                )
-
-
-            elif not idRol:
-
-                messages.error(
-                    request,
-                    "Debe seleccionar un rol."
-                )
-
-
-            elif not idEmpleado:
-
-                messages.error(
-                    request,
-                    "Debe seleccionar un empleado."
-                )
-
-
-            elif not activo:
-
-                messages.error(
-                    request,
-                    "Debe seleccionar el estado del usuario."
-                )
-
-
-            elif UsuarioSistema.objects.filter(
-                Correo=correo
-            ).exists():
-
-                messages.error(
-                    request,
-                    "Ya existe un usuario con ese correo."
-                )
-
-
-            elif UsuarioSistema.objects.filter(
-                idEmpleado_Admin=idEmpleado
-            ).exists():
-
-                messages.error(
-                    request,
-                    "El empleado ya tiene un usuario asignado."
-                )
-
-
-            else:
-
-                # =================================================
-                # OBTENER ROL
-                # =================================================
-
-                rol = Roles.objects.get(
-                    idRol=idRol
-                )
-
-
-                # =================================================
-                # OBTENER EMPLEADO
-                # =================================================
-
-                empleado = Empleado.objects.select_related(
-                    "idPersona",
-                    "idPuesto"
-                ).get(
-                    idEmpleado=idEmpleado
-                )
-
-
-                # =================================================
-                # CIFRAR CONTRASEÑA
-                # =================================================
-
-                password_cifrada = make_password(
-                    contrasenia
-                )
-
-
-                # =================================================
-                # CONVERTIR ESTADO
-                # =================================================
-
-                estado_usuario = (
-                    True
-                    if activo == "1"
-                    else False
-                )
-
-
-                # =================================================
-                # CREAR USUARIO
-                #
-                # El usuario queda relacionado con:
-                #
-                # UsuarioSistema
-                #      ↓
-                # Empleado
-                #      ↓
-                # ├── Persona → Nombre + Foto
-                # └── Puesto  → Nombre del puesto
-                # =================================================
-
+                # Creación del objeto
                 UsuarioSistema.objects.create(
-
                     Correo=correo,
-
-                    Contrasenia=password_cifrada,
-
+                    Contrasenia=make_password(contrasenia),
                     idRol=rol,
-
-                    Activo=estado_usuario,
-
+                    Activo=(activo_raw == "1"),
                     idEmpleado_Admin=empleado
-
                 )
 
+                messages.success(request, "Usuario registrado correctamente.")
+                return redirect("guardar_usuario_sistema")
 
-                # =================================================
-                # MENSAJE DE ÉXITO
-                # =================================================
-
-                messages.success(
-                    request,
-                    "Usuario registrado correctamente."
+            except IntegrityError as e:
+                messages.error(
+                    request, 
+                    "Error de integridad: El correo o el empleado ya se encuentran vinculados a otro usuario."
                 )
+            except Exception as e:
+                messages.error(request, f"Ocurrió un error al guardar el usuario: {e}")
 
-
-                # =================================================
-                # REDIRECCIÓN
-                # =================================================
-
-                return redirect(
-                    "guardar_usuario_sistema"
-                )
-
-
-        # =========================================================
-        # ERRORES
-        # =========================================================
-
-        except Roles.DoesNotExist:
-
-            messages.error(
-                request,
-                "El rol seleccionado no existe."
-            )
-
-
-        except Empleado.DoesNotExist:
-
-            messages.error(
-                request,
-                "El empleado seleccionado no existe."
-            )
-
-
-        except IntegrityError as e:
-
-            messages.error(
-                request,
-                f"Error de integridad: {e}"
-        )
-
-
-        except Exception as e:
-
-            messages.error(
-                request,
-                f"Ocurrió un error al guardar: {e}"
-            )
-
-
-    # =========================================================
-    # CONTEXTO
-    # =========================================================
-
+    # ---------------------------------------------------------
+    # DATOS PARA EL TEMPLATE (Solo se ejecutan si no hubo un POST exitoso)
+    # ---------------------------------------------------------
     context = {
+        "empleados": Empleado.objects.select_related(
+            "idPersona", 
+            "idPuesto"
+        ).filter(
+            Activo=True
+        ).order_by(
+            "idPersona__Nombre_Completo"
+        ),
 
-        # =====================================================
-        # EMPLEADOS DISPONIBLES PARA CREAR USUARIOS
-        # =====================================================
-
-        "empleados": empleados,
-
-
-        # =====================================================
-        # ROLES DISPONIBLES
-        # =====================================================
-
-        "roles": roles,
-
-
-        # =====================================================
-        # USUARIOS REGISTRADOS
-        #
-        # Se cargan las relaciones:
-        # - Rol
-        # - Empleado
-        # - Persona
-        # - Puesto
-        #
-        # Esto permite acceder en el HTML a:
-        #
-        # usuario.idEmpleado_Admin.idPersona.Nombre_Completo
-        #
-        # usuario.idEmpleado_Admin.idPersona.Foto
-        #
-        # usuario.idEmpleado_Admin.idPuesto.Nombre
-        # =====================================================
+        "roles": Roles.objects.order_by("TipoRol"),
 
         "usuarios": UsuarioSistema.objects.select_related(
             "idRol",
             "idEmpleado_Admin",
             "idEmpleado_Admin__idPersona",
             "idEmpleado_Admin__idPuesto"
-        ).order_by(
-            "Correo"
-        )
-
+        ).order_by("Correo")
     }
 
-
-    # =========================================================
-    # MOSTRAR PÁGINA
-    # =========================================================
-
-    return render(
-        request,
-        "usuarios.html",
-        context
-    )
+    return render(request, "usuarios.html", context)
 
 
-from django.contrib import messages
-from django.contrib.auth.hashers import make_password
-from django.db import IntegrityError
-from django.shortcuts import render, redirect, get_object_or_404
-
-from .models import UsuarioSistema, Roles, Empleado
-
-
+# =========================================================
+# MODIFICAR USUARIO DEL SISTEMA
+# =========================================================
+@requiere_permiso("usuarios", "editar")  # O el decorador de seguridad que utilices
 def modificar_usuario_sistema(request, id_Admin):
 
-    # =========================================================
-    # OBTENER USUARIO QUE SE VA A MODIFICAR
-    # =========================================================
-
+    # Cargar el usuario objetivo o lanzar 404
     usuario = get_object_or_404(
-        UsuarioSistema.objects.select_related(
-            "idRol",
-            "idEmpleado_Admin"
-        ),
-        id_Admin=id_Admin
+        UsuarioSistema.objects.select_related("idRol", "idEmpleado_Admin"),
+        pk=id_Admin
     )
-
-
-    # =========================================================
-    # EMPLEADOS DISPONIBLES
-    # =========================================================
-
-    empleados = Empleado.objects.select_related(
-        "idPersona",
-        "idPuesto"
-    ).filter(
-        Activo=True
-    ).order_by(
-        "idPersona__Nombre_Completo"
-    )
-
-
-    # =========================================================
-    # ROLES DISPONIBLES
-    # =========================================================
-
-    roles = Roles.objects.all().order_by(
-        "TipoRol"
-    )
-
-
-    # =========================================================
-    # PROCESAR FORMULARIO
-    # =========================================================
 
     if request.method == "POST":
+        correo = request.POST.get("Correo", "").strip()
+        contrasenia = request.POST.get("Contrasenia", "").strip()
+        id_rol = request.POST.get("idRol")
+        id_empleado = request.POST.get("idEmpleado_Admin")
+        activo_raw = request.POST.get("Activo")
 
-        try:
+        # ----------------------------------------------------
+        # VALIDACIONES (Sin redirects para no perder la entrada)
+        # ----------------------------------------------------
+        if not correo:
+            messages.error(request, "Debe ingresar un correo electrónico.")
+        elif not id_rol:
+            messages.error(request, "Debe seleccionar un rol.")
+        elif not id_empleado:
+            messages.error(request, "Debe seleccionar un empleado.")
+        elif activo_raw is None or activo_raw == "":
+            messages.error(request, "Debe seleccionar el estado del usuario.")
+        elif UsuarioSistema.objects.filter(Correo=correo).exclude(pk=id_Admin).exists():
+            messages.error(request, "Ya existe otro usuario registrado con ese correo.")
+        elif UsuarioSistema.objects.filter(idEmpleado_Admin=id_empleado).exclude(pk=id_Admin).exists():
+            messages.error(request, "El empleado seleccionado ya tiene otro usuario asignado.")
+        else:
+            try:
+                rol = get_object_or_404(Roles, pk=id_rol)
+                empleado = get_object_or_404(Empleado, pk=id_empleado)
 
-            correo = request.POST.get("Correo", "").strip()
-            contrasenia = request.POST.get("Contrasenia", "").strip()
-            idRol = request.POST.get("idRol")
-            idEmpleado = request.POST.get("idEmpleado_Admin")
-            activo = request.POST.get("Activo")
+                # Actualización de atributos
+                usuario.Correo = correo
+                usuario.idRol = rol
+                usuario.idEmpleado_Admin = empleado
+                usuario.Activo = (activo_raw == "1")
 
+                # Actualizar contraseña solo si se ingresó una nueva
+                if contrasenia:
+                    usuario.Contrasenia = make_password(contrasenia)
 
-            # =====================================================
-            # VALIDACIONES
-            # =====================================================
+                usuario.save()
 
-            if not correo:
+                messages.success(request, "Usuario modificado correctamente.")
+                return redirect("guardar_usuario_sistema")
 
+            except IntegrityError as e:
                 messages.error(
-                    request,
-                    "Debe ingresar un correo."
+                    request, 
+                    "Error de integridad: El correo o el empleado ya pertenecen a otro usuario registrado."
                 )
+            except Exception as e:
+                messages.error(request, f"Ocurrió un error al modificar el usuario: {e}")
 
-                return redirect(
-                    "modificar_usuario_sistema",
-                    id_Admin=id_Admin
-                )
-
-
-            elif not idRol:
-
-                messages.error(
-                    request,
-                    "Debe seleccionar un rol."
-                )
-
-                return redirect(
-                    "modificar_usuario_sistema",
-                    id_Admin=id_Admin
-                )
-
-
-            elif not idEmpleado:
-
-                messages.error(
-                    request,
-                    "Debe seleccionar un empleado."
-                )
-
-                return redirect(
-                    "modificar_usuario_sistema",
-                    id_Admin=id_Admin
-                )
-
-
-            elif not activo:
-
-                messages.error(
-                    request,
-                    "Debe seleccionar el estado del usuario."
-                )
-
-                return redirect(
-                    "modificar_usuario_sistema",
-                    id_Admin=id_Admin
-                )
-
-
-            # =====================================================
-            # VALIDAR CORREO
-            # EXCLUYENDO EL USUARIO ACTUAL
-            # =====================================================
-
-            elif UsuarioSistema.objects.filter(
-                Correo=correo
-            ).exclude(
-                id_Admin=id_Admin
-            ).exists():
-
-                messages.error(
-                    request,
-                    "Ya existe otro usuario con ese correo."
-                )
-
-                return redirect(
-                    "modificar_usuario_sistema",
-                    id_Admin=id_Admin
-                )
-
-
-            # =====================================================
-            # VALIDAR EMPLEADO
-            # EXCLUYENDO EL USUARIO ACTUAL
-            # =====================================================
-
-            elif UsuarioSistema.objects.filter(
-                idEmpleado_Admin=idEmpleado
-            ).exclude(
-                id_Admin=id_Admin
-            ).exists():
-
-                messages.error(
-                    request,
-                    "El empleado seleccionado ya tiene otro usuario asignado."
-                )
-
-                return redirect(
-                    "modificar_usuario_sistema",
-                    id_Admin=id_Admin
-                )
-
-
-            # =====================================================
-            # OBTENER RELACIONES
-            # =====================================================
-
-            rol = Roles.objects.get(
-                idRol=idRol
-            )
-
-
-            empleado = Empleado.objects.get(
-                idEmpleado=idEmpleado
-            )
-
-
-            # =====================================================
-            # ACTUALIZAR DATOS
-            # =====================================================
-
-            usuario.Correo = correo
-
-            usuario.idRol = rol
-
-            usuario.idEmpleado_Admin = empleado
-
-
-            # =====================================================
-            # ACTUALIZAR ESTADO
-            # =====================================================
-
-            usuario.Activo = True if activo == "1" else False
-
-
-            # =====================================================
-            # ACTUALIZAR CONTRASEÑA
-            # SOLO SI SE INGRESÓ UNA NUEVA
-            # =====================================================
-
-            if contrasenia:
-
-                usuario.Contrasenia = make_password(
-                    contrasenia
-                )
-
-
-            # =====================================================
-            # GUARDAR CAMBIOS
-            # =====================================================
-
-            usuario.save()
-
-
-            messages.success(
-                request,
-                "Usuario modificado correctamente."
-            )
-
-
-            return redirect(
-                "guardar_usuario_sistema"
-            )
-
-
-        # =========================================================
-        # ERRORES
-        # =========================================================
-
-        except Roles.DoesNotExist:
-
-            messages.error(
-                request,
-                "El rol seleccionado no existe."
-            )
-
-
-        except Empleado.DoesNotExist:
-
-            messages.error(
-                request,
-                "El empleado seleccionado no existe."
-            )
-
-
-        except IntegrityError as e:
-
-            messages.error(
-                request,
-                f"Error de integridad: {e}"
-            )
-
-
-        except Exception as e:
-
-            messages.error(
-                request,
-                f"Ocurrió un error al modificar el usuario: {e}"
-            )
-
-
-    # =========================================================
-    # CONTEXTO
-    # =========================================================
-
+    # ---------------------------------------------------------
+    # CONTEXTO Y DATOS PARA LA PLANTILLA (Solo si es GET o si falló el POST)
+    # ---------------------------------------------------------
     context = {
-
         "usuario_editar": usuario,
+        "empleados": Empleado.objects.select_related(
+            "idPersona", 
+            "idPuesto"
+        ).filter(
+            Activo=True
+        ).order_by("idPersona__Nombre_Completo"),
 
-        "empleados": empleados,
-
-        "roles": roles,
+        "roles": Roles.objects.order_by("TipoRol"),
 
         "usuarios": UsuarioSistema.objects.select_related(
             "idRol",
-            "idEmpleado_Admin"
-        ).order_by(
-            "Correo"
-        )
-
+            "idEmpleado_Admin",
+            "idEmpleado_Admin__idPersona",
+            "idEmpleado_Admin__idPuesto"
+        ).order_by("Correo")
     }
 
-
-    return render(
-        request,
-        "usuarios.html",
-        context
-    )
-
-
-
-from django.contrib import messages
-from django.contrib.auth.hashers import check_password
-from django.shortcuts import render, redirect
-
-from .models import UsuarioSistema
+    return render(request, "usuarios.html", context)
 
 
 def login_usuario(request):
@@ -6412,13 +6484,11 @@ def login_usuario(request):
     # =========================================================
     # SI EL USUARIO ENVÍA EL FORMULARIO
     # =========================================================
-
     if request.method == "POST":
 
         # =====================================================
         # OBTENER DATOS DEL FORMULARIO
         # =====================================================
-
         correo = request.POST.get(
             "Correo",
             ""
@@ -6433,7 +6503,6 @@ def login_usuario(request):
         # =====================================================
         # VALIDAR CAMPOS VACÍOS
         # =====================================================
-
         if not correo or not contrasenia:
 
             messages.error(
@@ -6450,7 +6519,6 @@ def login_usuario(request):
         # =====================================================
         # BUSCAR USUARIO POR CORREO
         # =====================================================
-
         usuario = (
             UsuarioSistema.objects
             .filter(
@@ -6469,7 +6537,6 @@ def login_usuario(request):
         # =====================================================
         # VALIDAR CORREO Y CONTRASEÑA
         # =====================================================
-
         if (
             usuario is None
             or not check_password(
@@ -6492,7 +6559,6 @@ def login_usuario(request):
         # =====================================================
         # VALIDAR SI EL USUARIO ESTÁ ACTIVO
         # =====================================================
-
         if not usuario.Activo:
 
             messages.error(
@@ -6509,21 +6575,16 @@ def login_usuario(request):
         # =====================================================
         # OBTENER EMPLEADO
         # =====================================================
-
         empleado = usuario.idEmpleado_Admin
-
 
         # =====================================================
         # OBTENER PERSONA
         # =====================================================
-
         persona = empleado.idPersona
-
 
         # =====================================================
         # GUARDAR INFORMACIÓN DEL USUARIO
         # =====================================================
-
         request.session["usuario_id"] = (
             usuario.id_Admin
         )
@@ -6537,7 +6598,6 @@ def login_usuario(request):
         # =====================================================
         # GUARDAR INFORMACIÓN DEL ROL
         # =====================================================
-
         request.session["usuario_rol_id"] = (
             usuario.idRol.idRol
         )
@@ -6551,7 +6611,6 @@ def login_usuario(request):
         # =====================================================
         # GUARDAR INFORMACIÓN DEL EMPLEADO
         # =====================================================
-
         request.session["empleado_id"] = (
             empleado.idEmpleado
         )
@@ -6565,7 +6624,6 @@ def login_usuario(request):
         # =====================================================
         # GUARDAR PUESTO
         # =====================================================
-
         if empleado.idPuesto:
 
             request.session["empleado_puesto"] = (
@@ -6595,7 +6653,6 @@ def login_usuario(request):
         # =====================================================
         # MENSAJE DE BIENVENIDA
         # =====================================================
-
         messages.success(
             request,
             f"Bienvenido(a), {persona.Nombre_Completo}."
@@ -6605,7 +6662,6 @@ def login_usuario(request):
         # =====================================================
         # REDIRIGIR AL INICIO
         # =====================================================
-
         return redirect(
             "inicio"
         )
@@ -6614,27 +6670,20 @@ def login_usuario(request):
     # =========================================================
     # MOSTRAR LOGIN
     # =========================================================
-
     return render(
         request,
         "login.html"
     )
 
 
-
-
-def configuraciones_view(request):
-    return render(request, 'configuraciones.html')
-
-def reportes_view(request):
-    return render(request, 'reportes.html')
-
-
-from django.contrib.auth import logout
-from django.shortcuts import redirect
-
 def cerrar_sesion(request):
     logout(request)
     return redirect('login_usuario')
 
 
+
+def reportes_view(request):
+    return render(request, 'reportes.html')
+
+def configuraciones_view(request):
+    return render(request, 'configuraciones.html')
