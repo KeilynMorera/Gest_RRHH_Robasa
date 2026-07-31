@@ -1,374 +1,695 @@
-<!-- Cargar la librería al inicio del template, para usar archivos estaticos -->
 {% load static %}
-
 <!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Generador de Reportes - Gestión de Talento Humano</title>
+    <title>Acción de Personal - Plantilla Oficial</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #e2e8f0;
+        color: #1e293b;
+        margin: 0;
+        padding: 20px;
+      }
 
-    <link rel="stylesheet" href="{% static 'styles/reportes.css' %}" />
+      /* Panel de Control (Oculto al Imprimir) */
+      .control-panel {
+        background: #ffffff;
+        padding: 20px;
+        margin: 0 auto 25px auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        max-width: 900px;
+      }
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    />
+      .control-panel h2 {
+        margin-top: 0;
+        font-size: 1.25rem;
+        color: #0f172a;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 10px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-group label {
+        font-size: 0.85rem;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #475569;
+      }
+
+      .form-group select,
+      .form-group input {
+        padding: 8px 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 4px;
+        font-size: 0.9rem;
+      }
+
+      .btn-print {
+        background-color: #2563eb;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 0.95rem;
+        font-weight: bold;
+        border-radius: 4px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn-print:hover {
+        background-color: #1d4ed8;
+      }
+
+      /* Documento Oficial (Hoja A4) */
+      .document-page {
+        background: #ffffff;
+        width: 210mm;
+        min-height: 297mm;
+        padding: 15mm 20mm;
+        margin: 0 auto;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+        font-size: 11pt;
+        line-height: 1.3;
+      }
+
+      .doc-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #000;
+        padding-bottom: 8px;
+        margin-bottom: 15px;
+      }
+
+      .doc-header h1 {
+        margin: 0;
+        font-size: 1.4rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .doc-header .doc-date {
+        font-weight: bold;
+        font-size: 0.95rem;
+      }
+
+      .section-title {
+        font-size: 10pt;
+        font-weight: bold;
+        background-color: #f1f5f9;
+        padding: 4px 8px;
+        border-left: 4px solid #000;
+        margin-top: 12px;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px 15px;
+        margin-bottom: 12px;
+        font-size: 9.5pt;
+      }
+
+      .info-item {
+        border-bottom: 1px dotted #94a3b8;
+        padding-bottom: 2px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 8.5pt;
+        margin-bottom: 12px;
+      }
+
+      table,
+      th,
+      td {
+        border: 1px solid #000;
+      }
+
+      th,
+      td {
+        padding: 4px 6px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f8fafc;
+        font-weight: bold;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .detail-box {
+        border: 1px solid #000;
+        min-height: 100px;
+        padding: 8px;
+        font-size: 9pt;
+        margin-bottom: 12px;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .signature-container {
+        margin-top: 15px;
+        font-size: 9pt;
+      }
+
+      .signature-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-top: 40px;
+        text-align: center;
+        font-size: 8.5pt;
+      }
+
+      .signature-line {
+        border-top: 1px solid #000;
+        padding-top: 4px;
+      }
+
+      .editable-input {
+        border: none;
+        border-bottom: 1px solid #000;
+        outline: none;
+        font-family: inherit;
+        font-size: inherit;
+        padding: 0 4px;
+      }
+
+      /* Reglas de Impresión Directa */
+      @media print {
+        body {
+          background-color: #fff;
+          padding: 0;
+        }
+
+        .control-panel {
+          display: none !important;
+        }
+
+        .document-page {
+          box-shadow: none;
+          width: 100%;
+          padding: 0;
+          margin: 0;
+        }
+
+        .editable-input {
+          border-bottom: none;
+        }
+
+        input[type="checkbox"] {
+          accent-color: #000;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div class="dashboard-container">
-      <aside class="sidebar">
-        <!-- ======================================================
-             LOGO DE LA EMPRESA
-        ====================================================== -->
-        <div class="logo-container">
-          <img
-            src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
-            alt="Logo Robasa"
-            class="logo-img"
+    <!-- PANEL DE CONFIGURACIÓN Y FILTRADO (NO SALE EN IMPRESIÓN) -->
+    <div class="control-panel">
+      <h2>Configuración de Acción de Personal</h2>
+
+      <div class="form-grid">
+        <!-- Selección de Empleado -->
+        <div class="form-group">
+          <label for="select-empleado">Seleccionar Colaborador:</label>
+          <select id="select-empleado" onchange="actualizarReporte()">
+            <option value="">-- Seleccione un Empleado --</option>
+            {% for emp in empleados_lista %}
+            <option value="{{ emp.id }}">
+              {{ emp.nombre }} (Cédula: {{ emp.cedula }})
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Filtro por Año -->
+        <div class="form-group">
+          <label for="select-anio">Año de Registros:</label>
+          <select id="select-anio" onchange="actualizarReporte()">
+            <option value="todos">Todos los años</option>
+            <option value="2026" selected>2026</option>
+            <option value="2025">2025</option>
+            <option value="2024">2024</option>
+          </select>
+        </div>
+
+        <!-- Filtro por Mes -->
+        <div class="form-group">
+          <label for="select-mes">Mes de Registros:</label>
+          <select id="select-mes" onchange="actualizarReporte()">
+            <option value="todos" selected>Todos los meses</option>
+            <option value="1">Enero</option>
+            <option value="2">Febrero</option>
+            <option value="3">Marzo</option>
+            <option value="4">Abril</option>
+            <option value="5">Mayo</option>
+            <option value="6">Junio</option>
+            <option value="7">Julio</option>
+            <option value="8">Agosto</option>
+            <option value="9">Septiembre</option>
+            <option value="10">Octubre</option>
+            <option value="11">Noviembre</option>
+            <option value="12">Diciembre</option>
+          </select>
+        </div>
+
+        <!-- Responsable de Crear el Reporte -->
+        <div class="form-group">
+          <label for="select-responsable">Responsable que Genera:</label>
+          <select id="select-responsable" onchange="actualizarResponsable()">
+            <option value="{{ usuario_nombre }}">{{ usuario_nombre }}</option>
+            {% for emp in empleados_lista %}
+            <option value="{{ emp.nombre }}">{{ emp.nombre }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <!-- Sección de Seguimiento -->
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="select-seguimiento-resp">Responsable Seguimiento:</label>
+          <select
+            id="select-seguimiento-resp"
+            onchange="actualizarSeguimiento()"
+          >
+            <option value="">-- Ninguno / No Aplica --</option>
+            {% for emp in empleados_lista %}
+            <option value="{{ emp.nombre }}">{{ emp.nombre }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="input-dias">Días de revisión (si aplica):</label>
+          <input
+            type="number"
+            id="input-dias"
+            placeholder="Ej. 30"
+            oninput="actualizarSeguimiento()"
           />
         </div>
 
-        <!-- ======================================================
-             MENÚ DE NAVEGACIÓN
-        ====================================================== -->
-        <nav class="menu">
-          <a href="{% url 'inicio' %}">
-            <i class="fas fa-house"></i>
-            Inicio
-          </a>
-
-          <a href="{% url 'per_emp' %}">
-            <i class="fas fa-user-group"></i>
-            Personas o Empleados
-          </a>
-
-          <a href="{% url 'crear_onboarding' %}">
-            <i class="fas fa-rocket"></i>
-            Onboarding / Entradas
-          </a>
-
-          <a href="{% url 'empresas' %}">
-            <i class="fas fa-building"></i>
-            Empresas
-          </a>
-
-          <a href="{% url 'comple_Empresa' %}">
-            <i class="fas fa-briefcase"></i>
-            Gerencias, Departamentos y Puestos
-          </a>
-
-          <a href="{% url 'salarios' %}">
-            <i class="fas fa-money-bill-wave"></i>
-            Salarios
-          </a>
-
-          <a href="{% url 'reclutamiento' %}">
-            <i class="fas fa-wallet"></i>
-            Reclutamiento
-          </a>
-
-          <a href="{% url 'vacaciones' %}">
-            <i class="fas fa-umbrella-beach"></i>
-            Vacaciones
-          </a>
-
-          <a href="{% url 'elec_Asistencia' %}">
-            <i class="fas fa-clock"></i>
-            Asistencia y Permiso
-          </a>
-
-          <a href="{% url 'accion_rotacion' %}">
-            <i class="fas fa-clipboard-list"></i>
-            Acciones o Rotaciones del Personal
-          </a>
-
-          <a href="{% url 'evaluaciones' %}">
-            <i class="fas fa-chart-line"></i>
-            Evaluación de Desempeño
-          </a>
-
-          <a href="{% url 'elec_KPI' %}">
-            <i class="fas fa-file-lines"></i>
-            KPIs
-          </a>
-
-          <a href="{% url 'elec_Offboarding' %}">
-            <i class="fas fa-door-open"></i>
-            Offboarding / Salidas
-          </a>
-
-          <a href="{% url 'reportes' %}" class="active">
-            <i class="fas fa-file-lines"></i>
-            Reportes
-          </a>
-
-          <a href="{% url 'guardar_usuario_sistema' %}">
-            <i class="fas fa-users-cog"></i>
-            Usuarios y Roles
-          </a>
-
-          <a href="{% url 'configuraciones' %}">
-            <i class="fas fa-gear"></i>
-            Configuración
-          </a>
-        </nav>
-
-        
-      </aside>
-
-      <main class="main-content">
-        <header class="topbar">
-          <div class="page-title">
-            <h1>Módulo de Reportes</h1>
-            <p>Extractor dinámico y personalizado de información corporativa</p>
-          </div>
-
-          <div class="search-box">
-            <i class="fas fa-search"></i>
-            <input
-              type="text"
-              placeholder="Buscar empleado, módulo, reporte..."
-            />
-          </div>
-
-          <div class="topbar-actions">
-            <div class="notification">
-              <i class="fas fa-bell"></i>
-              <span class="badge">3</span>
-            </div>
-
-            <div class="user-profile">
-              {% if usuario_foto %}
-              <img src="{{ usuario_foto }}" alt="{{ usuario_nombre }}" />
-              {% else %}
-              <img
-                src="{% static 'media/fotos_personas/default_user.jpeg' %}"
-                alt="Usuario"
-              />
-              {% endif %}
-
-              <div class="user-info">
-                <strong>{{ usuario_nombre }}</strong>
-                <span>{{ usuario_puesto }}</span>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <div class="breadcrumb">
-          <a href="{% url 'inicio' %}"> <i class="fas fa-house"></i> Inicio </a>
-          <i class="fas fa-chevron-right sep"></i>
-          <a href="{% url 'reportes' %}"> Reportes </a>
-          <i class="fas fa-chevron-right sep"></i>
-          <span class="current"> Generador Personalizado </span>
+        <div class="form-group">
+          <label for="input-fecha-seg">Fecha Programada:</label>
+          <input
+            type="date"
+            id="input-fecha-seg"
+            onchange="actualizarSeguimiento()"
+          />
         </div>
+      </div>
 
-        <section class="form-card">
-          <div class="form-card-header">
-            <div class="form-card-header-left">
-              <div class="form-card-icon">
-                <i class="fas fa-sliders"></i>
-              </div>
-              <div>
-                <h2 class="form-card-title">
-                  Generador Personalizado de Reportes
-                </h2>
-                <p class="form-card-subtitle">
-                  Seleccione el tipo de reporte y los datos que desea visualizar
-                  o exportar en tiempo real.
-                </p>
-              </div>
-            </div>
-            <p class="required-note"><span>*</span> Configuración flexible</p>
-          </div>
-
-          <div class="form-body">
-            <form action="#" method="POST">
-              {% csrf_token %}
-
-              <div class="form-section">
-                <h4 class="form-section-title">Configuración del Reporte</h4>
-
-                <div class="form-grid">
-                  <div class="field">
-                    <label for="tipo_reporte">
-                      <i class="fas fa-chart-line field-icon"></i>
-                      Tipo de Reporte <span class="req">*</span>
-                    </label>
-                    <select id="tipo_reporte" name="reporte_tipo" required>
-                      <option disabled selected value="">
-                        Seleccione un tipo...
-                      </option>
-                      <option value="acciones">Acciones de Personal</option>
-                      <option value="rotacion">
-                        Rotación de Personal (IRP)
-                      </option>
-                      <option value="empleados">Empleados</option>
-                      <option value="evaluaciones">Evaluaciones</option>
-                      <option value="vacaciones">Vacaciones</option>
-                      <option value="asistencia">Asistencia</option>
-                    </select>
-                  </div>
-
-                  <div class="field">
-                    <label for="formato">
-                      <i class="fas fa-file-export field-icon"></i> Formato de
-                      Exportación
-                    </label>
-                    <select id="formato" name="export_formato">
-                      <option value="pdf" selected>PDF (.pdf)</option>
-                      <option value="excel">Excel (.xlsx)</option>
-                      <option value="ambos">PDF + Excel</option>
-                    </select>
-                  </div>
-
-                  <div class="field">
-                    <label for="fecha_inicio">
-                      <i class="fas fa-calendar field-icon"></i> Fecha Inicio
-                    </label>
-                    <input type="date" id="fecha_inicio" name="fecha_inicio" />
-                  </div>
-
-                  <div class="field">
-                    <label for="fecha_fin">
-                      <i class="fas fa-calendar-check field-icon"></i> Fecha Fin
-                    </label>
-                    <input type="date" id="fecha_fin" name="fecha_fin" />
-                  </div>
-                </div>
-              </div>
-
-              <!-- ======================================================
-                   VISTA PREVIA: ACCIONES DE PERSONAL (DESDE BD)
-              ====================================================== -->
-              <div class="form-section">
-                <h4 class="form-section-title">
-                  Historial Registrado de Acciones de Personal
-                </h4>
-
-                <div class="report-preview">
-                  <div class="table-container">
-                    <table class="results-table">
-                      <thead>
-                        <tr>
-                          <th>Folio</th>
-                          <th>Colaborador</th>
-                          <th>Tipo de Acción</th>
-                          <th>Monto / Salario</th>
-                          <th>Fecha Registro</th>
-                          <th>Detalle</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {% if acciones %} {% for item in acciones %}
-                        <tr>
-                          <td>
-                            <strong>#{{ item.idAccion.idAccion }}</strong>
-                          </td>
-                          <td>
-                            {{ item.idAccion.idEmpleado.idPersona.Nombre }} {{ item.idAccion.idEmpleado.idPersona.Primer_Apellido }}
-                          </td>
-                          <td>
-                            <span class="status-badge pending">
-                              {{ item.id_Detalle_Accion.Accion }}
-                            </span>
-                          </td>
-                          <td>
-                            {% if item.Monto_TA %} ₡{{ item.Monto_TA }} {% else %} N/A {% endif %}
-                          </td>
-                          <td>
-                            {{ item.idAccion.Fecha_Registro|date:"d/m/Y" }}
-                          </td>
-                          <td>{{ item.Detalle|truncatechars:30 }}</td>
-                        </tr>
-                        {% endfor %} {% else %}
-                        <tr>
-                          <td colspan="6" style="text-align: center">
-                            No hay registros almacenados de Acciones de
-                            Personal.
-                          </td>
-                        </tr>
-                        {% endif %}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-
-              <!-- ======================================================
-                   VISTA PREVIA: ROTACIÓN DE PERSONAL (DESDE BD)
-              ====================================================== -->
-              <div class="form-section">
-                <h4 class="form-section-title">
-                  Historial Calculado de Rotación de Personal (IRP)
-                </h4>
-
-                <div class="report-preview">
-                  <div class="table-container">
-                    <table class="results-table">
-                      <thead>
-                        <tr>
-                          <th>Año / Mes</th>
-                          <th>Contrataciones</th>
-                          <th>Bajas Totales</th>
-                          <th>Personal Inicial (F1)</th>
-                          <th>Personal Final (F2)</th>
-                          <th>Índice (IRP)</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {% if rotaciones %} {% for rot in rotaciones %}
-                        <tr>
-                          <td>
-                            <strong
-                              >{{ rot.Anio }} - {% if rot.Mes %}{{ rot.Mes }}{% else %}Anual{% endif %}</strong
-                            >
-                          </td>
-                          <td>{{ rot.A_Contratados }}</td>
-                          <td>{{ rot.D_Total_Bajas }}</td>
-                          <td>{{ rot.F1_Inicio }}</td>
-                          <td>{{ rot.F2_Final }}</td>
-                          <td>
-                            <span class="status-badge success">
-                              {{ rot.IRP }}%
-                            </span>
-                          </td>
-                        </tr>
-                        {% endfor %} {% else %}
-                        <tr>
-                          <td colspan="6" style="text-align: center">
-                            No hay historial registrado de rotación de personal.
-                          </td>
-                        </tr>
-                        {% endif %}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-footer">
-                <button type="reset" class="btn btn-ghost">
-                  <i class="fas fa-rotate-left"></i> Limpiar
-                </button>
-
-                <button type="button" class="btn btn-secondary">
-                  <i class="fas fa-eye"></i> Vista previa
-                </button>
-
-                <button type="submit" class="btn btn-primary">
-                  <i class="fas fa-file-arrow-down"></i> Generar reporte
-                </button>
-              </div>
-            </form>
-          </div>
-        </section>
-
-        <footer class="footer">
-          © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
-        </footer>
-      </main>
+      <button type="button" class="btn-print" onclick="window.print()">
+        🖨️ Imprimir / Guardar en PDF
+      </button>
     </div>
+
+    <!-- PLANTILLA DE ACCIÓN DE PERSONAL IMPRESA -->
+    <div class="document-page">
+      <div class="doc-header">
+        <div>
+          <h1>Acción de Personal</h1>
+        </div>
+        <div class="doc-date">
+          Fecha: <span id="lbl-fecha-emision">{% now "d/m/Y" %}</span>[cite: 2]
+        </div>
+      </div>
+
+      <!-- 1. Información General del Colaborador -->
+      <div class="section-title">1. Información General del Colaborador</div>
+      [cite: 2]
+      <div class="info-grid">
+        <div class="info-item">
+          <strong>Nombre completo:</strong>
+          <span id="lbl-nombre">___________________________</span>
+        </div>
+        [cite: 2]
+        <div class="info-item">
+          <strong>Número de cédula:</strong>
+          <span id="lbl-cedula">___________________________</span>
+        </div>
+        [cite: 2]
+        <div class="info-item">
+          <strong>Puesto actual:</strong>
+          <span id="lbl-puesto">___________________________</span>
+        </div>
+        [cite: 2]
+        <div class="info-item">
+          <strong>Departamento:</strong>
+          <span id="lbl-departamento">___________________________</span>
+        </div>
+        [cite: 2]
+      </div>
+
+      <!-- 2. Tipo de Acción de Personal -->
+      <div class="section-title">
+        2. Tipo de Acción de Personal (marque una o más opciones)
+      </div>
+      [cite: 2]
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 10%">Código</th>
+            [cite: 2]
+            <th style="width: 35%">Tipo de Acción</th>
+            [cite: 2]
+            <th class="text-center" style="width: 12%">Selección</th>
+            [cite: 2]
+            <th style="width: 43%">Observación</th>
+            [cite: 2]
+          </tr>
+        </thead>
+        <tbody>
+          <!-- AP01: Ascenso -->
+          <tr>
+            <td>AP01</td>
+            <td>Ascenso</td>
+            <td class="text-center">
+              <input type="checkbox" id="chk-ascenso" />
+            </td>
+            <td id="obs-ascenso"></td>
+          </tr>
+
+          <!-- AP02: Ajuste Salarial -->
+          <tr>
+            <td>AP02</td>
+            <td>Ajuste salarial</td>
+            <td class="text-center">
+              <input type="checkbox" id="chk-ajustesalarial" />
+            </td>
+            <td id="obs-ajustesalarial"></td>
+          </tr>
+
+          <!-- AP03: Traslado Interno -->
+          <tr>
+            <td>AP03</td>
+            <td>Traslado interno</td>
+            <td class="text-center">
+              <input type="checkbox" id="chk-trasladointerno" />
+            </td>
+            <td id="obs-trasladointerno"></td>
+          </tr>
+
+          <!-- AP04: Premio -->
+          <tr>
+            <td>AP04</td>
+            <td>Premio o nuevo beneficio</td>
+            <td class="text-center">
+              <input type="checkbox" id="chk-premio" />
+            </td>
+            <td id="obs-premio"></td>
+          </tr>
+
+          <!-- AP05: Asignación de equipo -->
+          <tr>
+            <td>AP05</td>
+            <td>Asignación de equipo / insumos</td>
+            <td class="text-center">
+              <input type="checkbox" id="chk-asignaciondeequipoinsumos" />
+            </td>
+            <td id="obs-asignaciondeequipoinsumos"></td>
+          </tr>
+
+          <!-- AP06: Funciones temporales -->
+          <tr>
+            <td>AP06</td>
+            <td>Funciones temporales</td>
+            <td class="text-center">
+              <input type="checkbox" id="chk-funcionestemporales" />
+            </td>
+            <td id="obs-funcionestemporales"></td>
+          </tr>
+
+          <!-- AP07: Plan de mejora -->
+          <tr>
+            <td>AP07</td>
+            <td>Plan de mejora individual</td>
+            <td class="text-center">
+              <input type="checkbox" id="chk-plandemejoraindividual" />
+            </td>
+            <td id="obs-plandemejoraindividual"></td>
+          </tr>
+
+          <!-- AP08: Acción disciplinaria -->
+          <tr>
+            <td>AP08</td>
+            <td>Acción disciplinaria</td>
+            <td class="text-center">
+              <input type="checkbox" id="chk-acciondisciplinaria" />
+            </td>
+            <td id="obs-acciondisciplinaria"></td>
+          </tr>
+
+          <!-- AP09: Comunicado oficial -->
+          <tr>
+            <td>AP09</td>
+            <td>Comunicado oficial</td>
+            <td class="text-center">
+              <input type="checkbox" id="chk-comunicadooficial" />
+            </td>
+            <td id="obs-comunicadooficial"></td>
+          </tr>
+
+          <!-- AP10: Funciones temporales Interdepartamental -->
+          <tr>
+            <td>AP10</td>
+            <td>Funciones temporales Interdepartamental</td>
+            <td class="text-center">
+              <input
+                type="checkbox"
+                id="chk-funcionestemporalesinterdepartamental"
+              />
+            </td>
+            <td id="obs-funcionestemporalesinterdepartamental"></td>
+          </tr>
+
+          <!-- AP11: Licencia -->
+          <tr>
+            <td>AP11</td>
+            <td>Licencia (especifique tipo)</td>
+            <td class="text-center">
+              <input type="checkbox" id="chk-licencia" />
+            </td>
+            <td id="obs-licencia"></td>
+          </tr>
+
+          <!-- AP12: Otro -->
+          <tr>
+            <td>AP12</td>
+            <td>Otro (especifique)</td>
+            <td class="text-center">
+              <input type="checkbox" id="chk-otro" />
+            </td>
+            <td id="obs-otro"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- 3. Detalle de la Acción -->
+      <div class="section-title">3. Detalle de la Acción</div>
+      [cite: 2]
+      <p style="font-size: 8.5pt; font-weight: bold; margin-bottom: 4px">
+        Motivo o justificación de la acción:
+      </p>
+      [cite: 2]
+      <div class="detail-box" id="lbl-motivo-detalle">
+        <!-- Justificaciones de las acciones seleccionadas -->
+      </div>
+
+      <div class="signature-container">
+        <p>
+          <strong>Responsable que genera la solicitud:</strong>
+          Nombre:
+          <u id="lbl-resp-solicitud">{{ usuario_nombre }}</u>
+          &nbsp;&nbsp;|&nbsp;&nbsp; Firma: __________________
+          &nbsp;&nbsp;|&nbsp;&nbsp; Fecha: {% now "d/m/Y" %}[cite: 2]
+        </p>
+      </div>
+
+      <!-- 4. Aprobaciones y Seguimiento -->
+      <div class="section-title">4. Aprobaciones y Seguimiento</div>
+      [cite: 2]
+
+      <div class="signature-grid">
+        <div>
+          <br /><br />
+          <div class="signature-line">
+            <strong>Aprobación Jefatura Inmediata</strong><br />[cite: 2]
+            Nombre: ___________________<br />[cite: 2] Firma:
+            ___________________<br />[cite: 2] Fecha: ____ / ____ /
+            _______[cite: 2]
+          </div>
+        </div>
+        <div>
+          <br /><br />
+          <div class="signature-line">
+            <strong>Validación Talento Humano y Bienestar Organizacional</strong
+            ><br />[cite: 2] Nombre: ___________________<br />[cite: 2] Firma:
+            ___________________<br />[cite: 2] Fecha: ____ / ____ /
+            _______[cite: 2]
+          </div>
+        </div>
+        <div>
+          <br /><br />
+          <div class="signature-line">
+            <strong>Colaborador</strong><br />[cite: 2] Nombre:
+            <span id="lbl-firmante-emp">___________________</span><br />[cite:
+            2] Firma: ___________________<br />[cite: 2] Fecha: ____ / ____ /
+            _______[cite: 2]
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px; font-size: 8.5pt">
+        <p>
+          <strong
+            >Seguimiento posterior (revisión en
+            <span id="lbl-seg-dias">______</span> días si aplica):</strong
+          >[cite: 2] Responsable:
+          <span id="lbl-seg-resp">___________________</span>[cite: 2] Fecha
+          programada:
+          <span id="lbl-seg-fecha">____ / ____ / _______</span>[cite: 2]
+        </p>
+      </div>
+    </div>
+
+    <script>
+            // Datos inyectados desde Django
+            const empleadosData = {{ empleados_data_json|safe }};
+
+            function normalizarTexto(texto) {
+              if (!texto) return "";
+              return texto
+              .toString()
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "") // Remueve tildes/acentos
+              .replace(/[^a-z0-9]/g, "");     // Deja solo letras y números sin espacios
+            }
+
+            function actualizarReporte() {
+        const empId = document.getElementById("select-empleado").value;
+        const anioFiltro = document.getElementById("select-anio").value;
+        const mesFiltro = document.getElementById("select-mes").value;
+
+        // 1. Limpiar marcas y celdas de observación
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(chk => chk.checked = false);
+
+        const obsCeldas = document.querySelectorAll('td[id^="obs-"]');
+        obsCeldas.forEach(td => td.innerText = "");
+
+        document.getElementById("lbl-motivo-detalle").innerText = "";
+
+        if (!empId) {
+          document.getElementById("lbl-nombre").innerText = "___________________________";
+          document.getElementById("lbl-cedula").innerText = "___________________________";
+          document.getElementById("lbl-puesto").innerText = "___________________________";
+          document.getElementById("lbl-departamento").innerText = "___________________________";
+          document.getElementById("lbl-firmante-emp").innerText = "___________________";
+          return;
+        }
+
+        // 2. Buscar datos del colaborador
+        const emp = empleadosData.find(e => e.id === empId);
+        if (!emp) return;
+
+        // 3. Llenar cabecera
+        document.getElementById("lbl-nombre").innerText = emp.nombre;
+        document.getElementById("lbl-cedula").innerText = emp.cedula;
+        document.getElementById("lbl-puesto").innerText = emp.puesto;
+        document.getElementById("lbl-departamento").innerText = emp.departamento;
+        document.getElementById("lbl-firmante-emp").innerText = emp.nombre;
+
+        // 4. Filtrar por fecha
+        const accionesFiltradas = emp.acciones.filter(acc => {
+          let coincideAnio = (anioFiltro === "todos") || (acc.anio == anioFiltro);
+          let coincideMes = (mesFiltro === "todos") || (acc.mes == mesFiltro);
+          return coincideAnio && coincideMes;
+        });
+
+        let textosMotivos = [];
+
+        // 5. Poblar la tabla con el detalle asignado
+        accionesFiltradas.forEach(acc => {
+          const idNormalizado = normalizarTexto(acc.tipo);
+          const chk = document.getElementById("chk-" + idNormalizado);
+          const obsTd = document.getElementById("obs-" + idNormalizado);
+
+          if (chk) {
+            chk.checked = true;
+          }
+
+          if (obsTd) {
+            const fechaFormateada = acc.fecha ? `[${acc.fecha}] ` : "";
+            // Si existe un detalle ingresado se muestra, sino se asigna el nombre del tipo
+            const textoAMostrar = acc.detalle ? `${fechaFormateada}${acc.detalle}` : `${fechaFormateada}${acc.tipo}`;
+
+            obsTd.innerText = obsTd.innerText
+              ? `${obsTd.innerText} | ${textoAMostrar}`
+              : textoAMostrar;
+          }
+
+          if (acc.detalle) {
+            textosMotivos.push(`• [${acc.tipo}] (${acc.fecha || 'Sin fecha'}): ${acc.detalle}`);
+          }
+        });
+
+        // 6. Sección inferior: Resumen acumulado
+        if (textosMotivos.length > 0) {
+          document.getElementById("lbl-motivo-detalle").innerText = textosMotivos.join("\n");
+        } else {
+          document.getElementById("lbl-motivo-detalle").innerText = "No existen justificaciones registradas para el período seleccionado.";
+        }
+      }
+
+            function actualizarResponsable() {
+              const resp = document.getElementById("select-responsable").value;
+              document.getElementById("lbl-resp-solicitud").innerText = resp || "{{ usuario_nombre }}";
+            }
+
+            function actualizarSeguimiento() {
+              const resp = document.getElementById("select-seguimiento-resp").value;
+              const dias = document.getElementById("input-dias").value;
+              const fecha = document.getElementById("input-fecha-seg").value;
+
+              document.getElementById("lbl-seg-resp").innerText = resp || "___________________";
+              document.getElementById("lbl-seg-dias").innerText = dias || "______";
+
+              if (fecha) {
+                const partes = fecha.split("-");
+                document.getElementById("lbl-seg-fecha").innerText = `${partes[2]}/${partes[1]}/${partes[0]}`;
+              } else {
+                document.getElementById("lbl-seg-fecha").innerText = "____ / ____ / _______";
+              }
+            }
+    </script>
   </body>
 </html>

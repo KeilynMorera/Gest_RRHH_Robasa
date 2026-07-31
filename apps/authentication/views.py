@@ -3612,15 +3612,14 @@ def registrar_cabecera_accion(request, pk=None):
     else:
         form_cabecera = AccionPersonalForm(instance=accion_cabecera)
 
-    # OPTIMIZACIÓN: Cargar empleados con sus salarios recientes sin consulta N+1
+    # OPTIMIZACIÓN COMPATIBLE CON CUALQUIER BD (SQLite/MySQL/PostgreSQL):
     empleados = Empleado.objects.select_related('idPersona').all()
     
-    # Mapear el último salario registrado de forma eficiente
-    salarios_recientes = {
-        s.idEmpleado_id: s.Salario_Sem_Neto 
-        for s in SalarioEmpleado.objects.order_by('idEmpleado', '-idSalarioEmpleado').distinct('idEmpleado')
-    }
-    
+    # Mapear el último salario ordenando por ID descendente
+    salarios_recientes = {}
+    for s in SalarioEmpleado.objects.order_by('idSalarioEmpleado'):
+        salarios_recientes[s.idEmpleado_id] = s.Salario_Sem_Neto
+
     for emp in empleados:
         emp.salario_actual = salarios_recientes.get(emp.pk, 0)
 
@@ -6048,25 +6047,72 @@ def cerrar_sesion(request):
 
 
 
+import json
+from django.core.serializers.json import DjangoJSONEncoder
+from django.shortcuts import render
+
+@requiere_permiso("acciones_personal", "ver")
 def modulo_reportes(request):
-    """
-    Vista temporal para pruebas: corregido el nombre del campo Fecha en Accion.
-    """
-    # Se usa 'Fecha' en lugar de 'Fecha_Registro'
     acciones = AccionTipo.objects.select_related(
         'idAccion',
         'idAccion__idEmpleado',
         'idAccion__idEmpleado__idPersona',
+        'idAccion__idEmpleado__idPuesto',
+        'idAccion__idEmpleado__idPuesto__idDepartamento',
         'id_Detalle_Accion',
-        'idSalarioEmpleado'
-    ).order_by('-idAccion__Fecha')
+        'idSalarioEmpleado',
+        'id_PremioAsignado',
+        'id_PremioAsignado__idPremio'
+    ).order_by('-idAccion__Fecha', '-idAccion_Tipo')
 
+    empleados_dict = {}
+
+    for item in acciones:
+        emp = item.idAccion.idEmpleado if item.idAccion else None
+        if not emp or not emp.idPersona:
+            continue
+
+        emp_id = str(emp.pk)
+
+        if emp_id not in empleados_dict:
+            persona = emp.idPersona
+            puesto = emp.idPuesto
+            departamento = puesto.idDepartamento if puesto and hasattr(puesto, 'idDepartamento') else None
+
+            nombre_completo = getattr(persona, 'Nombre_Completo', str(persona))
+            cedula_val = getattr(persona, 'Cedula', '---') or '---'
+            nombre_puesto = getattr(puesto, 'Nombre', '---') if puesto else '---'
+            nombre_depto = getattr(departamento, 'Nombre', getattr(departamento, 'Nombre_Departamento', '---')) if departamento else '---'
+
+            empleados_dict[emp_id] = {
+                'id': emp_id,
+                'nombre': str(nombre_completo),
+                'cedula': str(cedula_val),
+                'puesto': str(nombre_puesto),
+                'departamento': str(nombre_depto),
+                'acciones': []
+            }
+
+        # EXTRAEMOS EL DETALLE REGISTRADO EN ACCION TIPO
+        detalle_especifico = item.Detalle or (item.id_Detalle_Accion.Detalle if item.id_Detalle_Accion else '')
+
+        empleados_dict[emp_id]['acciones'].append({
+            'tipo': item.id_Detalle_Accion.Accion if item.id_Detalle_Accion else 'Otro',
+            'detalle': detalle_especifico,  # <--- Detalle exacto guardado
+            'fecha': item.idAccion.Fecha.strftime('%d/%m/%Y') if item.idAccion and item.idAccion.Fecha else '',
+            'anio': item.idAccion.Fecha.year if item.idAccion and item.idAccion.Fecha else None,
+            'mes': item.idAccion.Fecha.month if item.idAccion and item.idAccion.Fecha else None,
+        })
+
+    empleados_json = json.dumps(list(empleados_dict.values()), cls=DjangoJSONEncoder)
     rotaciones = RotacionPersonal.objects.order_by('-Anio', '-Mes')
 
     context = {
         'acciones': acciones,
+        'empleados_lista': list(empleados_dict.values()),
+        'empleados_data_json': empleados_json,
         'rotaciones': rotaciones,
-        'usuario_nombre': "Usuario de Prueba",
+        'usuario_nombre': request.user.get_full_name() or request.user.username if request.user.is_authenticated else "Usuario de Prueba",
         'usuario_puesto': "Administrador",
         'usuario_foto': None,
     }
