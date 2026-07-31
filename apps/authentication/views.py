@@ -3484,35 +3484,23 @@ def accion_rotacion_view(request):
     return render(request, 'accion_rotacion.html')
 
 
+from decimal import Decimal
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.db import transaction, IntegrityError
+from django.http import JsonResponse
+
 # =========================================================
 # GUARDAR DETALLE DE LA ACCIÓN DE PERSONAL
 # =========================================================
 @requiere_permiso("acciones_personal", "crear")
 @transaction.atomic
 def guardar_accion_tipo(request, id_accion):
-
-    bloqueo = bloquear_si_no_puede(
-        request,
-        "acciones_personal",
-        "crear"
-    )
-
-    if bloqueo:
-        return bloqueo
-
     if request.method != "POST":
         return redirect("gestionar_accion")
 
-    accion = get_object_or_404(
-        AccionPersonal,
-        pk=id_accion
-    )
-
-    tipo_accion = get_object_or_404(
-        DetalleAccion,
-        pk=request.POST.get("Tipo_Accion")
-    )
-
+    accion = get_object_or_404(AccionPersonal, pk=id_accion)
+    tipo_accion = get_object_or_404(DetalleAccion, pk=request.POST.get("Tipo_Accion"))
     detalle = request.POST.get("Detalle")
 
     accion_tipo = AccionTipo(
@@ -3521,19 +3509,10 @@ def guardar_accion_tipo(request, id_accion):
         Detalle=detalle
     )
 
-    # =====================================================
-    # ASCENSO / AJUSTE SALARIAL
-    # =====================================================
+    # Ascenso / Ajuste Salarial
     if tipo_accion.Accion in ["Ascenso", "Ajuste Salarial"]:
-
-        salario = get_object_or_404(
-            SalarioEmpleado,
-            pk=request.POST.get("idSalarioEmpleado")
-        )
-
-        nuevo_salario = Decimal(
-            request.POST.get("nuevo_salario")
-        )
+        salario = get_object_or_404(SalarioEmpleado, pk=request.POST.get("idSalarioEmpleado"))
+        nuevo_salario = Decimal(request.POST.get("nuevo_salario"))
 
         salario.Salario_Sem_Neto = nuevo_salario
         salario.save()
@@ -3541,290 +3520,124 @@ def guardar_accion_tipo(request, id_accion):
         accion_tipo.idSalarioEmpleado = salario
         accion_tipo.Monto_TA = nuevo_salario
 
-    # =====================================================
-    # PREMIO
-    # =====================================================
+    # Premio
     elif tipo_accion.Accion == "Premio":
-
-        premio = get_object_or_404(
-            PremioAsignado,
-            pk=request.POST.get("idPremioAsignado")
-        )
-
+        premio = get_object_or_404(PremioAsignado, pk=request.POST.get("idPremioAsignado"))
         accion_tipo.id_PremioAsignado = premio
         accion_tipo.Monto_TA = premio.Monto_Liquidado
 
     accion_tipo.save()
 
-    messages.success(
-        request,
-        "La Acción de Personal fue registrada correctamente."
-    )
-
+    messages.success(request, "La Acción de Personal fue registrada correctamente.")
     return redirect("accion_rotacion")
 
 
 # =========================================================
 # GUARDAR CABECERA DE LA ACCIÓN DEL PERSONAL
 # =========================================================
-@requiere_permiso("acciones_personal", "ver")
+@requiere_permiso("acciones_personal", "crear")
 def registrar_cabecera_accion(request, pk=None):
-
     accion_cabecera = None
     paso_dos_habilitado = False
 
-    # -----------------------------------------------------
-    # GET CON PK (Editar)
-    # -----------------------------------------------------
     if pk:
-
-        bloqueo = bloquear_si_no_puede(
-            request,
-            "acciones_personal",
-            "editar"
-        )
-
-        if bloqueo:
-            return bloqueo
-
-        accion_cabecera = get_object_or_404(
-            AccionPersonal,
-            pk=pk
-        )
-
+        accion_cabecera = get_object_or_404(AccionPersonal, pk=pk)
         paso_dos_habilitado = True
 
-    # -----------------------------------------------------
-    # POST
-    # -----------------------------------------------------
     if request.method == 'POST':
-
         action = request.POST.get('action')
 
-        # ================================================
         # GUARDAR CABECERA
-        # ================================================
         if action == 'guardar_cabecera':
-
-            bloqueo = bloquear_si_no_puede(
-                request,
-                "acciones_personal",
-                "crear"
-            )
-
-            if bloqueo:
-                return bloqueo
-
             form_cabecera = AccionPersonalForm(request.POST)
-
             if form_cabecera.is_valid():
-
                 nueva_cabecera = form_cabecera.save()
-
                 messages.success(
                     request,
                     f"Cabecera guardada con éxito. Folio: {nueva_cabecera.idAccion}"
                 )
-
-                return redirect(
-                    'gestionar_accion',
-                    pk=nueva_cabecera.idAccion
-                )
-
+                return redirect('gestionar_accion', pk=nueva_cabecera.idAccion)
             else:
+                messages.error(request, "Error al validar los datos de la cabecera.")
 
-                messages.error(
-                    request,
-                    "Error al validar los datos de la cabecera."
-                )
-
-        # ================================================
         # FINALIZAR ACCIÓN
-        # ================================================
         elif action == 'finalizar_accion':
-
-            bloqueo = bloquear_si_no_puede(
-                request,
-                "acciones_personal",
-                "crear"
-            )
-
-            if bloqueo:
-                return bloqueo
-
-            id_cabecera_padre = request.POST.get(
-                'idAccion_padre'
-            )
-
+            id_cabecera_padre = request.POST.get('idAccion_padre')
             if not id_cabecera_padre:
+                messages.error(request, "Error crítico: No se encontró la cabecera asociada al movimiento.")
+                return redirect('crear_accion')
 
-                messages.error(
-                    request,
-                    "Error crítico: No se encontró la cabecera asociada al movimiento."
-                )
-
-                return redirect(
-                    'crear_accion'
-                )
-
-            cabecera_obj = get_object_or_404(
-                AccionPersonal,
-                pk=id_cabecera_padre
-            )
-
-            id_detalle_accion = request.POST.get(
-                'Tipo_Accion'
-            )
-
-            id_salario_empleado = request.POST.get(
-                'idSalario'
-            )
-
-            detalle_texto = request.POST.get(
-                'Detalle'
-            )
+            cabecera_obj = get_object_or_404(AccionPersonal, pk=id_cabecera_padre)
+            id_detalle_accion = request.POST.get('Tipo_Accion')
+            id_salario_empleado = request.POST.get('idSalario')
+            detalle_texto = request.POST.get('Detalle')
 
             if not id_detalle_accion or not detalle_texto:
-
-                messages.error(
-                    request,
-                    "Por favor complete todos los campos requeridos de la especificación."
-                )
-
-                return redirect(
-                    'gestionar_accion',
-                    pk=cabecera_obj.idAccion
-                )
+                messages.error(request, "Por favor complete todos los campos requeridos de la especificación.")
+                return redirect('gestionar_accion', pk=cabecera_obj.idAccion)
 
             try:
-
-                catalogo_accion = get_object_or_404(
-                    DetalleAccion,
-                    pk=id_detalle_accion
-                )
-
+                catalogo_accion = get_object_or_404(DetalleAccion, pk=id_detalle_accion)
+                
                 salario_obj = None
-
                 if id_salario_empleado:
-
-                    salario_obj = get_object_or_404(
-                        SalarioEmpleado,
-                        pk=id_salario_empleado
-                    )
+                    salario_obj = get_object_or_404(SalarioEmpleado, pk=id_salario_empleado)
 
                 premio_asignado = None
-
-                id_premio_asignado = request.POST.get(
-                    "idPremioAsignado"
-                )
-
+                id_premio_asignado = request.POST.get("idPremioAsignado")
                 if id_premio_asignado:
-
-                    premio_asignado = get_object_or_404(
-                        PremioAsignado,
-                        pk=id_premio_asignado
-                    )
+                    premio_asignado = get_object_or_404(PremioAsignado, pk=id_premio_asignado)
 
                 monto = None
-
                 if catalogo_accion.Accion == "Premio":
-
-                    monto = Decimal(
-                        request.POST.get("monto_premio")
-                    )
-
-                elif catalogo_accion.Accion in [
-
-                    "Ascenso",
-
-                    "Ajuste Salarial"
-
-                ]:
-
-                    monto = Decimal(
-                        request.POST.get("nuevo_salario")
-                    )
-
+                    monto = Decimal(request.POST.get("monto_premio"))
+                elif catalogo_accion.Accion in ["Ascenso", "Ajuste Salarial"]:
+                    monto = Decimal(request.POST.get("nuevo_salario"))
                     if salario_obj:
-
                         salario_obj.Salario_Sem_Neto = monto
                         salario_obj.save()
 
                 AccionTipo.objects.create(
-
                     idAccion=cabecera_obj,
-
                     id_Detalle_Accion=catalogo_accion,
-
                     idSalarioEmpleado=salario_obj,
-
                     id_PremioAsignado=premio_asignado,
-
                     Monto_TA=monto,
-
                     Detalle=detalle_texto
-
                 )
 
                 messages.success(
                     request,
                     f"El movimiento administrativo del Folio {cabecera_obj.idAccion} se ha sellado y guardado correctamente."
-
                 )
-
-                return redirect(
-                    'accion_rotacion'
-                )
+                return redirect('accion_rotacion')
 
             except Exception as e:
-
-                messages.error(
-                    request,
-                    f"Error al guardar en la base de datos: {str(e)}"
-                )
-
-                return redirect(
-                    'gestionar_accion',
-                    pk=cabecera_obj.idAccion
-                )
+                messages.error(request, f"Error al guardar en la base de datos: {str(e)}")
+                return redirect('gestionar_accion', pk=cabecera_obj.idAccion)
 
     else:
+        form_cabecera = AccionPersonalForm(instance=accion_cabecera)
 
-        form_cabecera = AccionPersonalForm(
-            instance=accion_cabecera
-        )
-
-    empleados = Empleado.objects.select_related(
-        'idPersona'
-    ).all()
-
+    # OPTIMIZACIÓN: Cargar empleados con sus salarios recientes sin consulta N+1
+    empleados = Empleado.objects.select_related('idPersona').all()
+    
+    # Mapear el último salario registrado de forma eficiente
+    salarios_recientes = {
+        s.idEmpleado_id: s.Salario_Sem_Neto 
+        for s in SalarioEmpleado.objects.order_by('idEmpleado', '-idSalarioEmpleado').distinct('idEmpleado')
+    }
+    
     for emp in empleados:
-
-        salario = SalarioEmpleado.objects.filter(
-            idEmpleado=emp
-        ).order_by(
-            '-idSalarioEmpleado'
-        ).first()
-
-        emp.salario_actual = (
-            salario.Salario_Sem_Neto
-            if salario else 0
-        )
+        emp.salario_actual = salarios_recientes.get(emp.pk, 0)
 
     context = {
-
         'form_cabecera': form_cabecera,
-
         'accion_cabecera': accion_cabecera,
-
         'paso_dos_habilitado': paso_dos_habilitado,
-
         'empleados': empleados,
-
         'tipos_accion': DetalleAccion.objects.all(),
-
         'salarios': SalarioEmpleado.objects.all(),
-
         'acciones': AccionTipo.objects.select_related(
             'idAccion',
             'id_Detalle_Accion',
@@ -3832,46 +3645,24 @@ def registrar_cabecera_accion(request, pk=None):
         ).order_by('-idAccion_Tipo'),
     }
 
-    return render(
-        request,
-        'accion_Personal.html',
-        context
-    )
+    return render(request, 'accion_Personal.html', context)
+
 
 # =========================================================
-# OBTENER SALARIO ACTUAL DEL EMPLEADO
+# OBTENER SALARIO ACTUAL DEL EMPLEADO (AJAX)
 # =========================================================
 @requiere_permiso("acciones_personal", "ver")
 def obtener_salario_empleado(request):
-
-    bloqueo = bloquear_si_no_puede(
-        request,
-        "acciones_personal",
-        "ver"
-    )
-
-    if bloqueo:
-        return bloqueo
-
     id_empleado = request.GET.get("idEmpleado")
-
     salario = SalarioEmpleado.objects.filter(
         idEmpleado=id_empleado
-    ).order_by(
-        "-idSalarioEmpleado"
-    ).first()
+    ).order_by("-idSalarioEmpleado").first()
 
     if salario:
-
         return JsonResponse({
-
             "success": True,
-
-            "idSalarioEmpleado":
-                salario.idSalarioEmpleado,
-
-            "salario":
-                float(salario.Salario_Sem_Neto)
+            "idSalarioEmpleado": salario.idSalarioEmpleado,
+            "salario": float(salario.Salario_Sem_Neto)
         })
 
     return JsonResponse({
@@ -3881,45 +3672,21 @@ def obtener_salario_empleado(request):
 
 
 # =========================================================
-# OBTENER PREMIO DEL EMPLEADO
+# OBTENER PREMIO DEL EMPLEADO (AJAX)
 # =========================================================
 @requiere_permiso("acciones_personal", "ver")
 def obtener_premio_empleado(request):
-
-    bloqueo = bloquear_si_no_puede(
-        request,
-        "acciones_personal",
-        "ver"
-    )
-
-    if bloqueo:
-        return bloqueo
-
     id_empleado = request.GET.get("idEmpleado")
-
     premio = PremioAsignado.objects.filter(
         id_KPI__idEmpleado=id_empleado
-    ).select_related(
-        "idPremio"
-    ).order_by(
-        "-Fecha_Registro"
-    ).first()
+    ).select_related("idPremio").order_by("-Fecha_Registro").first()
 
     if premio:
-
         return JsonResponse({
-
             "success": True,
-
-            "idPremioAsignado":
-                premio.id_PremioAsignado,
-
-            "monto":
-                float(premio.Monto_Liquidado),
-
-            "descripcion":
-                premio.idPremio.Descripcion
-
+            "idPremioAsignado": premio.id_PremioAsignado,
+            "monto": float(premio.Monto_Liquidado),
+            "descripcion": premio.idPremio.Descripcion
         })
 
     return JsonResponse({
@@ -3931,131 +3698,57 @@ def obtener_premio_empleado(request):
 # =========================================================
 # ROTACIÓN DE PERSONAL
 # =========================================================
-@requiere_permiso("acciones_personal", "ver")
+@requiere_permiso("acciones_personal", "ver") # ← Normalizado al slug 'acciones_personal'
 def rotacion_personal(request):
-
     data_calculada = {}
     registro = {}
 
     if request.method == "POST":
-
         action = request.POST.get("action")
-
-        # ==========================================
-        # VALIDAR PERMISOS SEGÚN LA ACCIÓN
-        # ==========================================
-        if action == "guardar":
-            bloqueo = bloquear_si_no_puede(
-                request,
-                "rotacion_personal",
-                "crear"
-            )
-
-        else:
-            bloqueo = bloquear_si_no_puede(
-                request,
-                "rotacion_personal",
-                "ver"
-            )
-
-        if bloqueo:
-            return bloqueo
-
+        
         anio = int(request.POST.get("Anio"))
         mes = request.POST.get("Mes")
+        mes = int(mes) if mes else None
 
+        # Contrataciones
+        contratados = Onboarding.objects.filter(Fecha_Inicio__year=anio)
         if mes:
-            mes = int(mes)
-        else:
-            mes = None
-
-        #=========================================================
-        # CONTRATACIONES
-        #=========================================================
-        contratados = Onboarding.objects.filter(
-            Fecha_Inicio__year=anio
-        )
-
-        if mes:
-            contratados = contratados.filter(
-                Fecha_Inicio__month=mes
-            )
-
+            contratados = contratados.filter(Fecha_Inicio__month=mes)
         A_Contratados = contratados.count()
 
-        #=========================================================
-        # DESVINCULADOS
-        #=========================================================
-        desvinculados = Offboarding.objects.filter(
-            Fecha_Salida__year=anio
-        )
-
+        # Desvinculaciones
+        desvinculados = Offboarding.objects.filter(Fecha_Salida__year=anio)
         if mes:
-            desvinculados = desvinculados.filter(
-                Fecha_Salida__month=mes
-            )
+            desvinculados = desvinculados.filter(Fecha_Salida__month=mes)
 
         D_Desvinculados = desvinculados.exclude(
-            idCausa__Categoria__in=[
-                "Retiro",
-                "Fuerza Mayor"
-            ]
+            idCausa__Categoria__in=["Retiro", "Fuerza Mayor"]
         ).count()
 
         D_Jubilaciones_Defuncionales = desvinculados.filter(
-            idCausa__Categoria__in=[
-                "Retiro",
-                "Fuerza Mayor"
-            ]
+            idCausa__Categoria__in=["Retiro", "Fuerza Mayor"]
         ).count()
 
-        D_Total_Bajas = (
-            D_Desvinculados +
-            D_Jubilaciones_Defuncionales
-        )
+        D_Total_Bajas = D_Desvinculados + D_Jubilaciones_Defuncionales
 
-        #=========================================================
-        # PERSONAL INICIAL
-        #=========================================================
-        empleados_inicio = Empleado.objects.filter(
-            Fecha_Ingreso__year__lt=anio,
-            Activo=True
-        ).count()
-
+        # Personal Inicial
         if mes:
             empleados_inicio = Empleado.objects.filter(
                 Fecha_Ingreso__lt=f"{anio}-{mes:02d}-01",
                 Activo=True
             ).count()
+        else:
+            empleados_inicio = Empleado.objects.filter(
+                Fecha_Ingreso__year__lt=anio,
+                Activo=True
+            ).count()
 
         F1_Inicio = empleados_inicio
-
-        #=========================================================
-        # PERSONAL FINAL
-        #=========================================================
-        F2_Final = (
-            F1_Inicio +
-            A_Contratados -
-            D_Total_Bajas
-        )
-
-        #=========================================================
-        # PROMEDIO DEL PERSONAL
-        #=========================================================
-        promedio = (
-            F1_Inicio +
-            F2_Final
-        ) / 2
+        F2_Final = F1_Inicio + A_Contratados - D_Total_Bajas
+        promedio = (F1_Inicio + F2_Final) / 2
 
         if promedio > 0:
-            IRP = round(
-                (
-                    D_Total_Bajas /
-                    promedio
-                ) * 100,
-                2
-            )
-
+            IRP = round((D_Total_Bajas / promedio) * 100, 2)
         else:
             IRP = Decimal("0.00")
 
@@ -4074,69 +3767,35 @@ def rotacion_personal(request):
             "irp_Sugerido_max": IRP_Sugerido_Max,
         }
 
-        registro = {
-            "Anio": anio,
-            "Mes": mes
-        }
+        registro = {"Anio": anio, "Mes": mes}
 
-        #=========================================================
-        # GUARDAR HISTORIAL
-        #=========================================================
+        # Guardar Historial
         if action == "guardar":
-
             try:
-
                 RotacionPersonal.objects.create(
-
                     Anio=anio,
-
                     Mes=mes,
-
                     A_Contratados=A_Contratados,
-
                     D_Desvinculados=D_Desvinculados,
-
                     D_Jubilaciones_Defuncionales=D_Jubilaciones_Defuncionales,
-
                     D_Total_Bajas=D_Total_Bajas,
-
                     F1_Inicio=F1_Inicio,
-
                     F2_Final=F2_Final,
-
                     IRP=IRP,
-
                     IRP_Sugerido_Min=IRP_Sugerido_Min,
-
                     IRP_Sugerido_Max=IRP_Sugerido_Max
                 )
-
-                messages.success(
-                    request,
-                    "Historial del período guardado correctamente."
-                )
-
+                messages.success(request, "Historial del período guardado correctamente.")
             except IntegrityError as e:
-
-                messages.error(
-                    request,
-                    str(e)
-                )
+                messages.error(request, str(e))
 
     context = {
         "registro": registro,
         "data_calculada": data_calculada,
-        "historial": RotacionPersonal.objects.order_by(
-            "-Anio",
-            "-Mes"
-        )
+        "historial": RotacionPersonal.objects.order_by("-Anio", "-Mes")
     }
 
-    return render(
-        request,
-        "rotacion_Personal.html",
-        context
-    )
+    return render(request, "rotacion_Personal.html", context)
 
 
 
@@ -6396,8 +6055,57 @@ def cerrar_sesion(request):
 
 
 
-def reportes_view(request):
-    return render(request, 'reportes.html')
+
+
+# =========================================================
+# GENERAR / IMPRIMIR REPORTE DE ACCIÓN DE PERSONAL
+# =========================================================
+@requiere_permiso("acciones_personal", "ver")
+def reportes_view(request, pk):
+    """
+    Obtiene toda la información del movimiento (cabecera + detalle)
+    y renderiza la plantilla oficial formateada para impresión/PDF.
+    """
+    # 1. Obtener la cabecera de la acción de personal con sus relaciones principales
+    accion_cabecera = get_object_or_404(
+        AccionPersonal.objects.select_related(
+            'idEmpleado',
+            'idEmpleado__idPersona'
+        ),
+        pk=pk
+    )
+
+    # 2. Obtener el movimiento específico asignado (Detalle, Salario, Premio, Montos)
+    detalle_movimiento = AccionTipo.objects.select_related(
+        'id_Detalle_Accion',
+        'idSalarioEmpleado',
+        'id_PremioAsignado',
+        'id_PremioAsignado__idPremio'
+    ).filter(idAccion=accion_cabecera).first()
+
+    # 3. Obtener el salario anterior (si el movimiento aplica cambio salarial)
+    salario_anterior = None
+    if detalle_movimiento and detalle_movimiento.idSalarioEmpleado:
+        salario_anterior = SalarioEmpleado.objects.filter(
+            idEmpleado=accion_cabecera.idEmpleado
+        ).exclude(
+            pk=detalle_movimiento.idSalarioEmpleado.pk
+        ).order_by('-idSalarioEmpleado').first()
+
+    context = {
+        'cabecera': accion_cabecera,
+        'detalle': detalle_movimiento,
+        'empleado': accion_cabecera.idEmpleado,
+        'salario_anterior': salario_anterior.Salario_Sem_Neto if salario_anterior else 0,
+        'fecha_impresion': timezone.now()
+    }
+
+    # Renderiza la plantilla formateada para documento/impresión
+    return render(request, 'reportes.html', context)
+
+
+
+
 
 def configuraciones_view(request):
     return render(request, 'configuraciones.html')
