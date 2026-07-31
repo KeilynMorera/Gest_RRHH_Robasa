@@ -39,9 +39,8 @@ def home(request):
 def inicio_view(request):
 
     # =========================================================
-    # 3. TOTAL DE EMPLEADOS ACTIVOS
+    # 1. TOTAL DE EMPLEADOS ACTIVOS
     # =========================================================
-
     total_empleados = (
         Empleado.objects
         .filter(
@@ -52,18 +51,16 @@ def inicio_view(request):
 
 
     # =========================================================
-    # 4. TOTAL DE PERSONAS
+    # 2. TOTAL DE PERSONAS
     # =========================================================
-
     total_personas = (
         Persona.objects.count()
     )
 
 
     # =========================================================
-    # 5. TOTAL DE PASANTES ACTIVOS
+    # 3. TOTAL DE PASANTES ACTIVOS
     # =========================================================
-
     total_pasantes = (
         Pasante.objects
         .filter(
@@ -74,36 +71,29 @@ def inicio_view(request):
 
 
     # =========================================================
-    # 6. TOTAL DE PROCESOS DE ONBOARDING
+    # 4. TOTAL DE PROCESOS DE ONBOARDING
     # =========================================================
-
     total_onboarding = (
         Onboarding.objects.count()
     )
 
-
     # =========================================================
-    # 7. TOTAL DE PROCESOS DE OFFBOARDING
+    # 5. TOTAL DE PROCESOS DE OFFBOARDING
     # =========================================================
-
     total_offboarding = (
         Offboarding.objects.count()
     )
 
-
     # =========================================================
-    # 8. TOTAL DE CHECKLISTS DE OFFBOARDING
+    # 6. TOTAL DE CHECKLISTS DE OFFBOARDING
     # =========================================================
-
     total_checklists_offboarding = (
         OffboardingChecklist.objects.count()
     )
 
-
     # =========================================================
-    # 9. PORCENTAJE PROMEDIO DE CHECKLISTS
+    # 7. PORCENTAJE PROMEDIO DE CHECKLISTS
     # =========================================================
-
     promedio_checklist = (
         OffboardingChecklist.objects
         .aggregate(
@@ -112,29 +102,23 @@ def inicio_view(request):
         or 0
     )
 
-
     # =========================================================
-    # 10. TOTAL DE KPIs REGISTRADOS
+    # 8. TOTAL DE KPIs REGISTRADOS
     # =========================================================
-
     total_kpis = (
         KpiCabecera.objects.count()
     )
 
-
     # =========================================================
-    # 11. TOTAL DE DETALLES KPI
+    # 9. TOTAL DE DETALLES KPI
     # =========================================================
-
     total_detalles_kpi = (
         KpiDetalle.objects.count()
     )
 
-
     # =========================================================
-    # 12. PROMEDIO DE CUMPLIMIENTO DE KPIs
+    # 10. PROMEDIO DE CUMPLIMIENTO DE KPIs
     # =========================================================
-
     promedio_kpi = (
         KpiDetalle.objects
         .aggregate(
@@ -143,29 +127,23 @@ def inicio_view(request):
         or 0
     )
 
-
     # =========================================================
-    # 13. TOTAL DE PREMIOS CONFIGURADOS
+    # 11. TOTAL DE PREMIOS CONFIGURADOS
     # =========================================================
-
     total_premios = (
         Premio.objects.count()
     )
 
-
     # =========================================================
-    # 14. TOTAL DE PREMIOS ASIGNADOS
+    # 12. TOTAL DE PREMIOS ASIGNADOS
     # =========================================================
-
     total_premios_asignados = (
         PremioAsignado.objects.count()
     )
 
-
     # =========================================================
-    # 15. MONTO TOTAL DE PREMIOS LIQUIDADOS
+    # 13. MONTO TOTAL DE PREMIOS LIQUIDADOS
     # =========================================================
-
     monto_total_premios = (
         PremioAsignado.objects
         .aggregate(
@@ -174,20 +152,17 @@ def inicio_view(request):
         or Decimal("0.00")
     )
 
-
     # =========================================================
-    # 16. TOTAL DE USUARIOS DEL SISTEMA
+    # 14. TOTAL DE USUARIOS DEL SISTEMA
     # =========================================================
-
     total_usuarios = (
         UsuarioSistema.objects.count()
     )
 
 
     # =========================================================
-    # 17. USUARIOS ACTIVOS
+    # 15. USUARIOS ACTIVOS
     # =========================================================
-
     usuarios_activos = (
         UsuarioSistema.objects
         .filter(
@@ -196,38 +171,30 @@ def inicio_view(request):
         .count()
     )
 
-
     # =========================================================
-    # 18. TOTAL DE ROLES
+    # 16. TOTAL DE ROLES
     # =========================================================
-
     total_roles = (
         Roles.objects.count()
     )
 
-
     # =========================================================
-    # 19. TOTAL DE ACCIONES / ROTACIONES
+    # 17. TOTAL DE ACCIONES / ROTACIONES
     # =========================================================
-
     total_acciones = (
         AccionPersonal.objects.count()
     )
 
-
     # =========================================================
-    # 20. TOTAL DE EVALUACIONES
+    # 18. TOTAL DE EVALUACIONES
     # =========================================================
-
     total_evaluaciones = (
         Evaluacion.objects.count()
     )
 
-
     # =========================================================
-    # 21. ÚLTIMOS PROCESOS DE ONBOARDING
+    # 19. ÚLTIMOS PROCESOS DE ONBOARDING
     # =========================================================
-
     ultimos_onboarding = (
         Onboarding.objects
         .select_related(
@@ -240,11 +207,9 @@ def inicio_view(request):
         )[:5]
     )
 
-
     # =========================================================
-    # 22. ÚLTIMOS PROCESOS DE OFFBOARDING
+    # 20. ÚLTIMOS PROCESOS DE OFFBOARDING
     # =========================================================
-
     ultimos_offboarding = (
         Offboarding.objects
         .select_related(
@@ -257,11 +222,9 @@ def inicio_view(request):
         )[:5]
     )
 
-
     # =========================================================
-    # 23. ÚLTIMOS KPIs
+    # 21. ÚLTIMOS KPIs
     # =========================================================
-
     ultimos_kpis = (
         KpiCabecera.objects
         .select_related(
@@ -274,11 +237,9 @@ def inicio_view(request):
         )[:5]
     )
 
-
     # =========================================================
-    # 24. ÚLTIMOS PREMIOS ASIGNADOS
+    # 22. ÚLTIMOS PREMIOS ASIGNADOS
     # =========================================================
-
     ultimos_premios = (
         PremioAsignado.objects
         .select_related(
@@ -292,11 +253,9 @@ def inicio_view(request):
         )[:5]
     )
 
-
     # =========================================================
-    # 25. CONTEXTO
+    # 23. CONTEXTO
     # =========================================================
-
     context = {
         # =====================================================
         # RESUMEN GENERAL
@@ -403,14 +362,11 @@ def inicio_view(request):
 
         "ultimos_premios":
             ultimos_premios,
-
     }
-
 
     # =========================================================
     # MOSTRAR DASHBOARD
     # =========================================================
-
     return render(
         request,
         "inicio.html",
@@ -3515,17 +3471,11 @@ def guardar_permiso(request):
         'permiso.html',
 
         {
-
             'empleados': empleados,
-
             'tipos_permiso': tipos_permiso,
-
             'asistencias_permiso': asistencias_permiso,
-
             'permisos': permisos
-
         }
-
     )
 
 
@@ -3817,9 +3767,7 @@ def registrar_cabecera_accion(request, pk=None):
                 )
 
                 messages.success(
-
                     request,
-
                     f"El movimiento administrativo del Folio {cabecera_obj.idAccion} se ha sellado y guardado correctamente."
 
                 )
@@ -3924,15 +3872,11 @@ def obtener_salario_empleado(request):
 
             "salario":
                 float(salario.Salario_Sem_Neto)
-
         })
 
     return JsonResponse({
-
         "success": False,
-
         "mensaje": "El empleado no posee salario registrado."
-
     })
 
 
@@ -3979,11 +3923,8 @@ def obtener_premio_empleado(request):
         })
 
     return JsonResponse({
-
         "success": False,
-
         "mensaje": "El empleado no posee premios registrados."
-
     })
 
 
@@ -4004,7 +3945,6 @@ def rotacion_personal(request):
         # VALIDAR PERMISOS SEGÚN LA ACCIÓN
         # ==========================================
         if action == "guardar":
-
             bloqueo = bloquear_si_no_puede(
                 request,
                 "rotacion_personal",
@@ -4012,7 +3952,6 @@ def rotacion_personal(request):
             )
 
         else:
-
             bloqueo = bloquear_si_no_puede(
                 request,
                 "rotacion_personal",
@@ -4033,13 +3972,11 @@ def rotacion_personal(request):
         #=========================================================
         # CONTRATACIONES
         #=========================================================
-
         contratados = Onboarding.objects.filter(
             Fecha_Inicio__year=anio
         )
 
         if mes:
-
             contratados = contratados.filter(
                 Fecha_Inicio__month=mes
             )
@@ -4049,13 +3986,11 @@ def rotacion_personal(request):
         #=========================================================
         # DESVINCULADOS
         #=========================================================
-
         desvinculados = Offboarding.objects.filter(
             Fecha_Salida__year=anio
         )
 
         if mes:
-
             desvinculados = desvinculados.filter(
                 Fecha_Salida__month=mes
             )
@@ -4082,14 +4017,12 @@ def rotacion_personal(request):
         #=========================================================
         # PERSONAL INICIAL
         #=========================================================
-
         empleados_inicio = Empleado.objects.filter(
             Fecha_Ingreso__year__lt=anio,
             Activo=True
         ).count()
 
         if mes:
-
             empleados_inicio = Empleado.objects.filter(
                 Fecha_Ingreso__lt=f"{anio}-{mes:02d}-01",
                 Activo=True
@@ -4100,7 +4033,6 @@ def rotacion_personal(request):
         #=========================================================
         # PERSONAL FINAL
         #=========================================================
-
         F2_Final = (
             F1_Inicio +
             A_Contratados -
@@ -4110,14 +4042,12 @@ def rotacion_personal(request):
         #=========================================================
         # PROMEDIO DEL PERSONAL
         #=========================================================
-
         promedio = (
             F1_Inicio +
             F2_Final
         ) / 2
 
         if promedio > 0:
-
             IRP = round(
                 (
                     D_Total_Bajas /
@@ -4127,14 +4057,12 @@ def rotacion_personal(request):
             )
 
         else:
-
             IRP = Decimal("0.00")
 
         IRP_Sugerido_Min = Decimal("1.00")
         IRP_Sugerido_Max = Decimal("4.00")
 
         data_calculada = {
-
             "A_Contratados": A_Contratados,
             "D_Desvinculados": D_Desvinculados,
             "D_Jubilaciones_Defuncionales": D_Jubilaciones_Defuncionales,
@@ -4144,20 +4072,16 @@ def rotacion_personal(request):
             "irp": IRP,
             "irp_Sugerido_min": IRP_Sugerido_Min,
             "irp_Sugerido_max": IRP_Sugerido_Max,
-
         }
 
         registro = {
-
             "Anio": anio,
             "Mes": mes
-
         }
 
         #=========================================================
         # GUARDAR HISTORIAL
         #=========================================================
-
         if action == "guardar":
 
             try:
@@ -4185,7 +4109,6 @@ def rotacion_personal(request):
                     IRP_Sugerido_Min=IRP_Sugerido_Min,
 
                     IRP_Sugerido_Max=IRP_Sugerido_Max
-
                 )
 
                 messages.success(
@@ -4201,16 +4124,12 @@ def rotacion_personal(request):
                 )
 
     context = {
-
         "registro": registro,
-
         "data_calculada": data_calculada,
-
         "historial": RotacionPersonal.objects.order_by(
             "-Anio",
             "-Mes"
         )
-
     }
 
     return render(
@@ -4337,13 +4256,9 @@ def crear_evaluacion(request):
             )
 
     context = {
-
         "empleados": empleados,
-
         "evaluadores": evaluadores,
-
         "periodos": periodos,
-
     }
 
     return render(
@@ -4432,17 +4347,11 @@ def crear_evaluacion_jefatura(request):
                 )
 
                 total = sum([
-
                     liderazgo,
-
                     aprendizaje,
-
                     adaptacion,
-
                     iniciativa,
-
                     madurez
-
                 ])
 
                 pct_total = (total / 5) * 100
@@ -4464,15 +4373,11 @@ def crear_evaluacion_jefatura(request):
                     Observaciones=observaciones,
 
                     idEvaluacion=evaluacion
-
                 )
 
                 messages.success(
-
                     request,
-
                     "Evaluación de jefatura registrada correctamente."
-
                 )
 
                 return redirect(
@@ -4482,31 +4387,20 @@ def crear_evaluacion_jefatura(request):
         except Exception as e:
 
             messages.error(
-
                 request,
-
                 f"Error al guardar: {str(e)}"
-
             )
 
     context = {
-
         "empleados": empleados,
-
         "evaluadores": evaluadores,
-
         "periodos": periodos,
-
     }
 
     return render(
-
         request,
-
         "eva_Jefatura.html",
-
         context
-
     )
 
 
@@ -4582,19 +4476,12 @@ def crear_matriz_9box(request):
             )
 
     context = {
-
         "empleados": empleados,
-
         "periodos": periodos,
-
         "perfiles": perfiles,
-
         "cuadrantes": cuadrantes,
-
         "desempenos": desempenos,
-
         "potenciales": potenciales,
-
     }
 
     return render(
@@ -4668,11 +4555,8 @@ def dashboard_resultados(request):
             if not matriz_seleccionada:
 
                 messages.warning(
-
                     request,
-
                     "No se encontraron resultados para los criterios seleccionados."
-
                 )
 
             else:
@@ -4684,7 +4568,6 @@ def dashboard_resultados(request):
                     idPeriodo_id=periodo_filtro
 
                 ).order_by(
-
                     "-Fecha_Evaluacion"
 
                 ).first()
@@ -4694,25 +4577,18 @@ def dashboard_resultados(request):
                     desempeno_seleccionado = (
 
                         EvaluacionDesempeno.objects.filter(
-
                             evaluacion=evaluacion
-
                         ).first()
-
                     )
 
                     if desempeno_seleccionado:
 
                         porcentaje_total = (
-
                             desempeno_seleccionado.pct_total_ev or 0
-
                         )
 
                         titulo_porcentaje = (
-
                             "Porcentaje de Desempeño"
-
                         )
 
                     else:
@@ -4720,81 +4596,53 @@ def dashboard_resultados(request):
                         potencial_seleccionado = (
 
                             EvaluacionJefePotencial.objects.filter(
-
                                 idEvaluacion=evaluacion
-
                             ).first()
-
                         )
 
                         if potencial_seleccionado:
 
                             porcentaje_total = (
-
                                 potencial_seleccionado.pct_totalEv or 0
-
                             )
 
                             titulo_porcentaje = (
-
                                 "Porcentaje Potencial (Jefatura)"
-
                             )
 
         except Exception as e:
 
             messages.error(
-
                 request,
-
                 f"Error al consultar los datos: {str(e)}"
-
             )
 
     context = {
-
         "empleados": empleados,
-
         "periodos": periodos,
-
         "matriz_seleccionada": matriz_seleccionada,
-
         "potencial_seleccionado": potencial_seleccionado,
-
         "desempeno_seleccionado": desempeno_seleccionado,
-
         "porcentaje_total": porcentaje_total,
-
         "titulo_porcentaje": titulo_porcentaje,
 
         "empleado_filtro_id": (
-
             int(empleado_filtro)
-
             if empleado_filtro else None
-
         ),
 
         "periodo_filtro_id": (
-
             int(periodo_filtro)
-
             if periodo_filtro else None
-
         ),
 
         "anio_filtro_val": anio_filtro or "",
-
     }
 
     return render(
-
         request,
-
         "result_Evaluacion.html",
-
         context
-
     )
 
 
@@ -4865,41 +4713,29 @@ def registrar_kpi_view(request):
             kpi_cabecera_id = cabecera.id_KPI
 
             messages.success(
-
                 request,
-
                 f"¡Cabecera registrada con éxito! ID Asignado: {kpi_cabecera_id}"
-
             )
 
         except IntegrityError:
 
             messages.error(
-
                 request,
-
                 "Error: Ya existe un registro de KPI para este colaborador en el mes y año seleccionados."
-
             )
 
         except Empleado.DoesNotExist:
 
             messages.error(
-
                 request,
-
                 "El colaborador seleccionado no es válido."
-
             )
 
         except (ValueError, TypeError):
 
             messages.error(
-
                 request,
-
                 "Error: Los datos de mes o año enviados no son válidos."
-
             )
 
     empleados = Empleado.objects.filter(
@@ -4909,19 +4745,12 @@ def registrar_kpi_view(request):
     categorias = KpiCategoria.objects.all()
 
     context = {
-
         'empleados': empleados,
-
         'categorias': categorias,
-
         'kpi_cabecera_id': kpi_cabecera_id,
-
         'el_empleado_seleccionado': el_empleado_seleccionado,
-
         'el_mes_seleccionado': el_mes_seleccionado,
-
         'el_anio_seleccionado': el_anio_seleccionado,
-
     }
 
     return render(
@@ -4977,15 +4806,11 @@ def registrar_kpi_detalle_view(request):
             )
 
             monto_total = (
-
                 float(monto_base)
-
                 *
-
                 (
                     float(pct_alcanzado) / 100.0
                 )
-
             )
 
             detalle = KpiDetalle(
@@ -5006,37 +4831,26 @@ def registrar_kpi_detalle_view(request):
                     monto_total,
                     2
                 )
-
             )
 
             detalle.save()
 
             messages.success(
-
                 request,
-
                 f"Indicador '{categoria.tipo_categoria}' añadido exitosamente."
-
             )
 
         except IntegrityError:
-
             messages.error(
-
                 request,
-
                 "Error: Esta categoría ya fue evaluada en este mes para el colaborador."
-
             )
 
         except Exception as e:
 
             messages.error(
-
                 request,
-
                 f"Error al guardar el detalle: {str(e)}"
-
             )
 
     return redirect(
@@ -5090,25 +4904,16 @@ def crear_premio(request):
         'idCuadrante_9box_Perfil'
 
     ).all().order_by(
-
         'idPremio'
-
     )
 
     return render(
-
         request,
-
         'kpi_Premio.html',
-
         {
-
             'form': form,
-
             'premios': premios,
-
         }
-
     )
 
 
@@ -5165,25 +4970,16 @@ def editar_premio(request, id):
         'idCuadrante_9box_Perfil'
 
     ).order_by(
-
         'idPremio'
-
     )
 
     return render(
-
         request,
-
         'kpi_Premio.html',
-
         {
-
             'form': form,
-
             'premios': premios,
-
         }
-
     )
 
 
@@ -5252,25 +5048,18 @@ def guardar_premio_asignado(request):
                     if detalle_kpi is None:
 
                         messages.error(
-
                             request,
-
                             'No se puede asignar este premio. '
                             'El KPI seleccionado no tiene un '
                             'detalle registrado para la categoría '
                             'asociada al premio.'
-
                         )
 
                         return render(
-
                             request,
-
                             'kpi_AsigPremio.html',
-
                             {
                                 'form': form,
-
                                 'premios_asignados':
                                     PremioAsignado.objects.select_related(
                                         'idPremio',
@@ -5281,7 +5070,6 @@ def guardar_premio_asignado(request):
                                         '-Fecha_Registro'
                                     )
                             }
-
                         )
 
                     premio_asignado = PremioAsignado(
@@ -5300,15 +5088,12 @@ def guardar_premio_asignado(request):
                     premio_asignado.save()
 
                     messages.success(
-
                         request,
-
                         (
                             'El premio fue asignado correctamente. '
                             f'Monto liquidado: '
                             f'{premio_asignado.Monto_Liquidado}'
                         )
-
                     )
 
                     return redirect(
@@ -5324,15 +5109,12 @@ def guardar_premio_asignado(request):
                 )
 
                 messages.error(
-
                     request,
-
                     (
                         'No fue posible guardar el premio asignado. '
                         'Verifique que los datos seleccionados '
                         'sean válidos.'
                     )
-
                 )
 
             except ValueError as e:
@@ -5357,27 +5139,20 @@ def guardar_premio_asignado(request):
                 )
 
                 messages.error(
-
                     request,
-
                     (
                         'Ocurrió un error inesperado al guardar '
                         'el premio asignado.'
                     )
-
                 )
 
         else:
-
             messages.error(
-
                 request,
-
                 (
                     'Por favor, revise los datos ingresados '
                     'en el formulario.'
                 )
-
             )
 
     else:
@@ -5385,15 +5160,10 @@ def guardar_premio_asignado(request):
         form = PremioAsignadoForm()
 
     return render(
-
         request,
-
         'kpi_AsigPremio.html',
-
         {
-
             'form': form,
-
             'premios_asignados':
                 PremioAsignado.objects.select_related(
 
@@ -5404,15 +5174,10 @@ def guardar_premio_asignado(request):
                     'id_KPI__idEmpleado',
 
                     'id_KPI__idEmpleado__idPersona'
-
                 ).order_by(
-
                     '-Fecha_Registro'
-
                 )
-
         }
-
     )
 
 
@@ -5429,7 +5194,6 @@ def obtener_monto_liquidado(request, idPremio, id_KPI):
     # Usado por el JavaScript de kpi_AsigPremio.html
     # para mostrar la vista previa antes de guardar.
     # =====================================================
-
     try:
 
         premio = get_object_or_404(Premio, idPremio=idPremio)
@@ -5445,7 +5209,6 @@ def obtener_monto_liquidado(request, idPremio, id_KPI):
         ).first()
 
         if detalle_kpi is None:
-
             return JsonResponse({
                 'success': False,
                 'error': (
@@ -5462,7 +5225,6 @@ def obtener_monto_liquidado(request, idPremio, id_KPI):
         })
 
     except Exception as e:
-
         return JsonResponse({
             'success': False,
             'error': str(e)
@@ -5589,7 +5351,6 @@ def registrar_onboarding(request, pk=None):
     paso_dos_habilitado = False
 
     if pk:
-
         onboarding = get_object_or_404(
             Onboarding,
             pk=pk
@@ -5645,7 +5406,6 @@ def registrar_onboarding(request, pk=None):
     # =====================================================
     # CARGAR ACTIVIDADES REGISTRADAS
     # =====================================================
-
     actividades = OnboardingActividad.objects.select_related(
         "idActividad",
         "id_Estatus_Vacante",
@@ -5655,13 +5415,11 @@ def registrar_onboarding(request, pk=None):
     )
 
     context = {
-
         "form": form,
         "form_detalle": OnboardingActividadForm(),
         "onboarding": onboarding,
         "paso_dos_habilitado": paso_dos_habilitado,
         "actividades": actividades,
-
     }
 
     return render(
@@ -5727,7 +5485,6 @@ def registrar_offboarding(request, pk=None):
     paso_dos_habilitado = False
 
     if pk:
-
         offboarding = get_object_or_404(
             Offboarding,
             pk=pk
@@ -5812,7 +5569,6 @@ def guardar_checklist_offboarding(request):
             # =====================================================
             # DATOS RECIBIDOS DEL FORMULARIO
             # =====================================================
-
             id_offboarding = request.POST.get(
                 "id_Offboarding"
             )
@@ -5836,7 +5592,6 @@ def guardar_checklist_offboarding(request):
             # =====================================================
             # VALIDACIONES
             # =====================================================
-
             if not id_offboarding:
 
                 messages.error(
@@ -5863,7 +5618,6 @@ def guardar_checklist_offboarding(request):
                 # =================================================
                 # OBTENER EL OFFBOARDING SELECCIONADO
                 # =================================================
-
                 offboarding = get_object_or_404(
                     Offboarding,
                     id_Offboarding=id_offboarding
@@ -5872,7 +5626,6 @@ def guardar_checklist_offboarding(request):
                 # =================================================
                 # OBTENER EL ESTADO SELECCIONADO
                 # =================================================
-
                 estado = get_object_or_404(
                     Estatus,
                     id_Estatus_Vacante=id_estatus
@@ -5881,7 +5634,6 @@ def guardar_checklist_offboarding(request):
                 # =================================================
                 # ¿ES CREAR O EDITAR?
                 # =================================================
-
                 try:
 
                     OffboardingChecklist.objects.get(
@@ -5891,7 +5643,6 @@ def guardar_checklist_offboarding(request):
                     accion = "editar"
 
                 except OffboardingChecklist.DoesNotExist:
-
                     accion = "crear"
 
                 bloqueo = bloquear_si_no_puede(
@@ -5932,7 +5683,6 @@ def guardar_checklist_offboarding(request):
                 # =================================================
                 # TRANSACCIÓN
                 # =================================================
-
                 with transaction.atomic():
 
                     try:
@@ -5962,7 +5712,6 @@ def guardar_checklist_offboarding(request):
                             id_Offboarding=offboarding,
 
                             id_Estatus_Vacante=estado
-
                         )
 
                         creado = True
@@ -6003,14 +5752,12 @@ def guardar_checklist_offboarding(request):
                         registros_creados += 1
 
                 if creado:
-
                     messages.success(
                         request,
                         f"Checklist #{checklist.id_Check} creado correctamente para el Offboarding #{offboarding.id_Offboarding}."
                     )
 
                 else:
-
                     messages.success(
                         request,
                         f"Checklist #{checklist.id_Check} actualizado correctamente."
@@ -6051,7 +5798,6 @@ def guardar_checklist_offboarding(request):
 
     ).order_by(
         "-Fecha_Salida"
-
     )
 
     for proceso in offboardings:
@@ -6141,18 +5887,14 @@ def editar_checklist_offboarding(request, id_check):
             if total_catalogo > 0:
 
                 checklist.pct_listo = round(
-
                     (
                         len(actividades)
                         / total_catalogo
                     ) * 100,
-
                     2
-
                 )
 
             else:
-
                 checklist.pct_listo = Decimal("0.00")
 
             with transaction.atomic():
@@ -6178,7 +5920,6 @@ def editar_checklist_offboarding(request, id_check):
                         idCatalogo=actividad,
 
                         Completado=True
-
                     )
 
             messages.success(
@@ -6191,7 +5932,6 @@ def editar_checklist_offboarding(request, id_check):
             )
 
         except Exception as e:
-
             messages.error(
                 request,
                 str(e)
@@ -6204,23 +5944,15 @@ def editar_checklist_offboarding(request, id_check):
     checks_seleccionados = list(
 
         OffboardingChecklistDetalle.objects.filter(
-
             id_Check=checklist
-
         ).values_list(
-
             "idCatalogo",
-
             flat=True
-
         )
-
     )
 
     context = {
-
         "modo_edicion": True,
-
         "checklist": checklist,
 
         "offboardings": Offboarding.objects.select_related(
@@ -6240,7 +5972,6 @@ def editar_checklist_offboarding(request, id_check):
             "id_Offboarding",
             "id_Estatus_Vacante"
         )
-
     }
 
     return render(
@@ -6249,8 +5980,6 @@ def editar_checklist_offboarding(request, id_check):
         context
     )
 
-
-from django.shortcuts import render, get_object_or_404
 
 # =========================================================
 # VER CHECKLIST DE OFFBOARDING
@@ -6533,7 +6262,6 @@ def login_usuario(request):
             .first()
         )
 
-
         # =====================================================
         # VALIDAR CORREO Y CONTRASEÑA
         # =====================================================
@@ -6555,12 +6283,10 @@ def login_usuario(request):
                 "login.html"
             )
 
-
         # =====================================================
         # VALIDAR SI EL USUARIO ESTÁ ACTIVO
         # =====================================================
         if not usuario.Activo:
-
             messages.error(
                 request,
                 "Su cuenta se encuentra inactiva. Contacte al administrador del sistema."
@@ -6589,11 +6315,9 @@ def login_usuario(request):
             usuario.id_Admin
         )
 
-
         request.session["usuario_correo"] = (
             usuario.Correo
         )
-
 
         # =====================================================
         # GUARDAR INFORMACIÓN DEL ROL
@@ -6602,11 +6326,9 @@ def login_usuario(request):
             usuario.idRol.idRol
         )
 
-
         request.session["usuario_rol"] = (
             usuario.idRol.TipoRol
         )
-
 
         # =====================================================
         # GUARDAR INFORMACIÓN DEL EMPLEADO
@@ -6615,23 +6337,19 @@ def login_usuario(request):
             empleado.idEmpleado
         )
 
-
         request.session["empleado_nombre"] = (
             persona.Nombre_Completo
         )
-
 
         # =====================================================
         # GUARDAR PUESTO
         # =====================================================
         if empleado.idPuesto:
-
             request.session["empleado_puesto"] = (
                 empleado.idPuesto.Nombre
             )
 
         else:
-
             request.session["empleado_puesto"] = (
                 "Sin puesto"
             )
@@ -6643,12 +6361,10 @@ def login_usuario(request):
         # La foto se obtiene directamente desde Persona
         # en la vista inicio_view.
         # =====================================================
-
         request.session.pop(
             "empleado_foto",
             None
         )
-
 
         # =====================================================
         # MENSAJE DE BIENVENIDA
@@ -6658,14 +6374,12 @@ def login_usuario(request):
             f"Bienvenido(a), {persona.Nombre_Completo}."
         )
 
-
         # =====================================================
         # REDIRIGIR AL INICIO
         # =====================================================
         return redirect(
             "inicio"
         )
-
 
     # =========================================================
     # MOSTRAR LOGIN
