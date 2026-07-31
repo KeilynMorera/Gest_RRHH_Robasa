@@ -134,8 +134,12 @@ urlpatterns = [
 
     # Ruta para el dashboard (pantalla de configuraciones del sistema)
     path('configuraciones.html/', views.configuraciones_view, name='configuraciones'),
+
+
+    
+    
     # Ruta para el dashboard (pantalla de configuraciones del sistema)
-    path('reportes.html/', views.reportes_view, name='reportes'),
+    path('reportes/', views.modulo_reportes, name='reportes'),
    
 ]
 

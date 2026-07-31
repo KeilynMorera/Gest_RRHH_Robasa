@@ -22,7 +22,6 @@
              LOGO DE LA EMPRESA
         ====================================================== -->
         <div class="logo-container">
-          <!-- Logo cargado desde archivos estáticos -->
           <img
             src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
             alt="Logo Robasa"
@@ -34,108 +33,88 @@
              MENÚ DE NAVEGACIÓN
         ====================================================== -->
         <nav class="menu">
-          <!-- Opción Inicio -->
           <a href="{% url 'inicio' %}">
             <i class="fas fa-house"></i>
             Inicio
           </a>
 
-          <!-- Opción Personas o Empleados -->
           <a href="{% url 'per_emp' %}">
             <i class="fas fa-user-group"></i>
             Personas o Empleados
           </a>
 
-          <!-- Opción Onboarding -->
           <a href="{% url 'crear_onboarding' %}">
             <i class="fas fa-rocket"></i>
             Onboarding / Entradas
           </a>
 
-          <!-- Opción Empresas -->
           <a href="{% url 'empresas' %}">
             <i class="fas fa-building"></i>
             Empresas
           </a>
 
-          <!-- Opción Gerencias, Departamentos y Puestos -->
           <a href="{% url 'comple_Empresa' %}">
             <i class="fas fa-briefcase"></i>
             Gerencias, Departamentos y Puestos
           </a>
 
-          <!-- Opción Salarios -->
           <a href="{% url 'salarios' %}">
             <i class="fas fa-money-bill-wave"></i>
             Salarios
           </a>
 
-          <!-- Opción Reclutamiento -->
           <a href="{% url 'reclutamiento' %}">
             <i class="fas fa-wallet"></i>
             Reclutamiento
           </a>
 
-          <!-- Opción Vacaciones -->
           <a href="{% url 'vacaciones' %}">
             <i class="fas fa-umbrella-beach"></i>
             Vacaciones
           </a>
 
-          <!-- Opción Asistencia y Permisos -->
           <a href="{% url 'elec_Asistencia' %}">
             <i class="fas fa-clock"></i>
             Asistencia y Permiso
           </a>
 
-          <!-- Acción o Rotación de Personal -->
           <a href="{% url 'accion_rotacion' %}">
             <i class="fas fa-clipboard-list"></i>
             Acciones o Rotaciones del Personal
           </a>
 
-          <!-- Opción Evaluaciones -->
           <a href="{% url 'evaluaciones' %}">
             <i class="fas fa-chart-line"></i>
             Evaluación de Desempeño
           </a>
 
-          <!-- Opción KPIs -->
           <a href="{% url 'elec_KPI' %}">
             <i class="fas fa-file-lines"></i>
             KPIs
           </a>
 
-          <!-- Opción Offboarding -->
           <a href="{% url 'elec_Offboarding' %}">
             <i class="fas fa-door-open"></i>
             Offboarding / Salidas
           </a>
 
-          <!-- Opción Reportes -->
-          <a href="{% url 'reportes' %}">
+          <a href="{% url 'reportes' %}" class="active">
             <i class="fas fa-file-lines"></i>
             Reportes
           </a>
 
-          <!-- Opción Usuarios y Roles -->
           <a href="{% url 'guardar_usuario_sistema' %}">
             <i class="fas fa-users-cog"></i>
             Usuarios y Roles
           </a>
 
-          <!-- Opción Configuración -->
           <a href="{% url 'configuraciones' %}">
             <i class="fas fa-gear"></i>
             Configuración
           </a>
         </nav>
 
-        <div class="logout">
-          <a href="login.html">
-            <i class="fas fa-right-from-bracket"></i> Cerrar sesión
-          </a>
-        </div>
+        
       </aside>
 
       <main class="main-content">
@@ -170,12 +149,10 @@
               {% endif %}
 
               <div class="user-info">
-                <strong> {{ usuario_nombre }} </strong>
-
-                <span> {{ usuario_puesto }} </span>
+                <strong>{{ usuario_nombre }}</strong>
+                <span>{{ usuario_puesto }}</span>
               </div>
             </div>
-            
           </div>
         </header>
 
@@ -223,13 +200,14 @@
                       <option disabled selected value="">
                         Seleccione un tipo...
                       </option>
+                      <option value="acciones">Acciones de Personal</option>
+                      <option value="rotacion">
+                        Rotación de Personal (IRP)
+                      </option>
                       <option value="empleados">Empleados</option>
                       <option value="evaluaciones">Evaluaciones</option>
                       <option value="vacaciones">Vacaciones</option>
-                      <option value="reclutamiento">Reclutamiento</option>
-                      <option value="vacantes">Vacantes</option>
                       <option value="asistencia">Asistencia</option>
-                      <option value="usuarios">Usuarios del Sistema</option>
                     </select>
                   </div>
 
@@ -261,162 +239,109 @@
                 </div>
               </div>
 
+              <!-- ======================================================
+                   VISTA PREVIA: ACCIONES DE PERSONAL (DESDE BD)
+              ====================================================== -->
               <div class="form-section">
                 <h4 class="form-section-title">
-                  Seleccione los Datos a Mostrar
+                  Historial Registrado de Acciones de Personal
                 </h4>
 
-                <div class="fields-selector">
-                  <label class="field-check">
-                    <input
-                      type="checkbox"
-                      name="campos_mostrar"
-                      value="nombre"
-                      checked
-                    />
-                    <span class="check-custom"></span>
-                    <div class="check-info">
-                      <strong>Nombre del Empleado</strong>
-                      <small>Muestra el nombre completo del colaborador.</small>
-                    </div>
-                  </label>
-
-                  <label class="field-check">
-                    <input
-                      type="checkbox"
-                      name="campos_mostrar"
-                      value="departamento"
-                      checked
-                    />
-                    <span class="check-custom"></span>
-                    <div class="check-info">
-                      <strong>Departamento</strong>
-                      <small>Área o departamento asignado.</small>
-                    </div>
-                  </label>
-
-                  <label class="field-check">
-                    <input
-                      type="checkbox"
-                      name="campos_mostrar"
-                      value="evaluacion"
-                      checked
-                    />
-                    <span class="check-custom"></span>
-                    <div class="check-info">
-                      <strong>Evaluación</strong>
-                      <small>Resultado o calificación obtenida.</small>
-                    </div>
-                  </label>
-
-                  <label class="field-check">
-                    <input
-                      type="checkbox"
-                      name="campos_mostrar"
-                      value="salario"
-                    />
-                    <span class="check-custom"></span>
-                    <div class="check-info">
-                      <strong>Salario</strong>
-                      <small>Información salarial autorizada.</small>
-                    </div>
-                  </label>
-
-                  <label class="field-check">
-                    <input
-                      type="checkbox"
-                      name="campos_mostrar"
-                      value="fecha_ingreso"
-                    />
-                    <span class="check-custom"></span>
-                    <div class="check-info">
-                      <strong>Fecha de Ingreso</strong>
-                      <small>Fecha oficial de contratación.</small>
-                    </div>
-                  </label>
-
-                  <label class="field-check">
-                    <input
-                      type="checkbox"
-                      name="campos_mostrar"
-                      value="estado"
-                      checked
-                    />
-                    <span class="check-custom"></span>
-                    <div class="check-info">
-                      <strong>Estado</strong>
-                      <small>Estado actual del registro administrativo.</small>
-                    </div>
-                  </label>
-                </div>
-              </div>
-
-              <div class="form-section">
-                <h4 class="form-section-title">Filtros Avanzados</h4>
-                <div class="filter-tags">
-                  <div class="filter-tag active">
-                    <i class="fas fa-building"></i> Recursos Humanos
-                  </div>
-                  <div class="filter-tag">
-                    <i class="fas fa-chart-column"></i> Alto desempeño
-                  </div>
-                  <div class="filter-tag">
-                    <i class="fas fa-user-check"></i> Activos
-                  </div>
-                  <div class="filter-tag">
-                    <i class="fas fa-calendar-days"></i> Últimos 6 meses
-                  </div>
-                  <div class="filter-tag">
-                    <i class="fas fa-money-bill-wave"></i> Salarios altos
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-section">
-                <h4 class="form-section-title">Vista Previa del Reporte</h4>
-
                 <div class="report-preview">
-                  <div class="preview-header">
-                    <div>
-                      <h3>Reporte Personalizado</h3>
-                      <span>5 columnas seleccionadas</span>
-                    </div>
-                    <div class="preview-format">
-                      <span class="format-badge pdf">PDF</span>
-                      <span class="format-badge excel">Excel</span>
-                    </div>
-                  </div>
-
                   <div class="table-container">
                     <table class="results-table">
                       <thead>
                         <tr>
-                          <th>Empleado</th>
-                          <th>Departamento</th>
-                          <th>Evaluación</th>
-                          <th>Estado</th>
-                          <th>Fecha</th>
+                          <th>Folio</th>
+                          <th>Colaborador</th>
+                          <th>Tipo de Acción</th>
+                          <th>Monto / Salario</th>
+                          <th>Fecha Registro</th>
+                          <th>Detalle</th>
                         </tr>
                       </thead>
                       <tbody>
+                        {% if acciones %} {% for item in acciones %}
                         <tr>
-                          <td>Carlos Méndez</td>
-                          <td>Comercial</td>
-                          <td>92%</td>
                           <td>
-                            <span class="status-badge success">Activo</span>
+                            <strong>#{{ item.idAccion.idAccion }}</strong>
                           </td>
-                          <td>20/07/2026</td>
+                          <td>
+                            {{ item.idAccion.idEmpleado.idPersona.Nombre }} {{ item.idAccion.idEmpleado.idPersona.Primer_Apellido }}
+                          </td>
+                          <td>
+                            <span class="status-badge pending">
+                              {{ item.id_Detalle_Accion.Accion }}
+                            </span>
+                          </td>
+                          <td>
+                            {% if item.Monto_TA %} ₡{{ item.Monto_TA }} {% else %} N/A {% endif %}
+                          </td>
+                          <td>
+                            {{ item.idAccion.Fecha_Registro|date:"d/m/Y" }}
+                          </td>
+                          <td>{{ item.Detalle|truncatechars:30 }}</td>
                         </tr>
+                        {% endfor %} {% else %}
                         <tr>
-                          <td>Ana Rodríguez</td>
-                          <td>Finanzas</td>
-                          <td>88%</td>
-                          <td>
-                            <span class="status-badge pending">Vacaciones</span>
+                          <td colspan="6" style="text-align: center">
+                            No hay registros almacenados de Acciones de
+                            Personal.
                           </td>
-                          <td>18/07/2026</td>
                         </tr>
+                        {% endif %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ======================================================
+                   VISTA PREVIA: ROTACIÓN DE PERSONAL (DESDE BD)
+              ====================================================== -->
+              <div class="form-section">
+                <h4 class="form-section-title">
+                  Historial Calculado de Rotación de Personal (IRP)
+                </h4>
+
+                <div class="report-preview">
+                  <div class="table-container">
+                    <table class="results-table">
+                      <thead>
+                        <tr>
+                          <th>Año / Mes</th>
+                          <th>Contrataciones</th>
+                          <th>Bajas Totales</th>
+                          <th>Personal Inicial (F1)</th>
+                          <th>Personal Final (F2)</th>
+                          <th>Índice (IRP)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% if rotaciones %} {% for rot in rotaciones %}
+                        <tr>
+                          <td>
+                            <strong
+                              >{{ rot.Anio }} - {% if rot.Mes %}{{ rot.Mes }}{% else %}Anual{% endif %}</strong
+                            >
+                          </td>
+                          <td>{{ rot.A_Contratados }}</td>
+                          <td>{{ rot.D_Total_Bajas }}</td>
+                          <td>{{ rot.F1_Inicio }}</td>
+                          <td>{{ rot.F2_Final }}</td>
+                          <td>
+                            <span class="status-badge success">
+                              {{ rot.IRP }}%
+                            </span>
+                          </td>
+                        </tr>
+                        {% endfor %} {% else %}
+                        <tr>
+                          <td colspan="6" style="text-align: center">
+                            No hay historial registrado de rotación de personal.
+                          </td>
+                        </tr>
+                        {% endif %}
                       </tbody>
                     </table>
                   </div>

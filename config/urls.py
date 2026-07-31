@@ -244,6 +244,14 @@ urlpatterns = [
    path('logout/', views.cerrar_sesion, name='cerrar_sesion'),
    path("inicio/", views.inicio_view, name="inicio"),
 
+
+
+   path('reportes/', views.modulo_reportes, name='reportes'),
+
+
+
+
+
 ]
 
 

@@ -3483,13 +3483,6 @@ def guardar_permiso(request):
 def accion_rotacion_view(request):
     return render(request, 'accion_rotacion.html')
 
-
-from decimal import Decimal
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from django.db import transaction, IntegrityError
-from django.http import JsonResponse
-
 # =========================================================
 # GUARDAR DETALLE DE LA ACCIÓN DE PERSONAL
 # =========================================================
@@ -6055,57 +6048,36 @@ def cerrar_sesion(request):
 
 
 
-
-
-# =========================================================
-# GENERAR / IMPRIMIR REPORTE DE ACCIÓN DE PERSONAL
-# =========================================================
-@requiere_permiso("acciones_personal", "ver")
-def reportes_view(request, pk):
+def modulo_reportes(request):
     """
-    Obtiene toda la información del movimiento (cabecera + detalle)
-    y renderiza la plantilla oficial formateada para impresión/PDF.
+    Vista temporal para pruebas: corregido el nombre del campo Fecha en Accion.
     """
-    # 1. Obtener la cabecera de la acción de personal con sus relaciones principales
-    accion_cabecera = get_object_or_404(
-        AccionPersonal.objects.select_related(
-            'idEmpleado',
-            'idEmpleado__idPersona'
-        ),
-        pk=pk
-    )
-
-    # 2. Obtener el movimiento específico asignado (Detalle, Salario, Premio, Montos)
-    detalle_movimiento = AccionTipo.objects.select_related(
+    # Se usa 'Fecha' en lugar de 'Fecha_Registro'
+    acciones = AccionTipo.objects.select_related(
+        'idAccion',
+        'idAccion__idEmpleado',
+        'idAccion__idEmpleado__idPersona',
         'id_Detalle_Accion',
-        'idSalarioEmpleado',
-        'id_PremioAsignado',
-        'id_PremioAsignado__idPremio'
-    ).filter(idAccion=accion_cabecera).first()
+        'idSalarioEmpleado'
+    ).order_by('-idAccion__Fecha')
 
-    # 3. Obtener el salario anterior (si el movimiento aplica cambio salarial)
-    salario_anterior = None
-    if detalle_movimiento and detalle_movimiento.idSalarioEmpleado:
-        salario_anterior = SalarioEmpleado.objects.filter(
-            idEmpleado=accion_cabecera.idEmpleado
-        ).exclude(
-            pk=detalle_movimiento.idSalarioEmpleado.pk
-        ).order_by('-idSalarioEmpleado').first()
+    rotaciones = RotacionPersonal.objects.order_by('-Anio', '-Mes')
 
     context = {
-        'cabecera': accion_cabecera,
-        'detalle': detalle_movimiento,
-        'empleado': accion_cabecera.idEmpleado,
-        'salario_anterior': salario_anterior.Salario_Sem_Neto if salario_anterior else 0,
-        'fecha_impresion': timezone.now()
+        'acciones': acciones,
+        'rotaciones': rotaciones,
+        'usuario_nombre': "Usuario de Prueba",
+        'usuario_puesto': "Administrador",
+        'usuario_foto': None,
     }
 
-    # Renderiza la plantilla formateada para documento/impresión
     return render(request, 'reportes.html', context)
 
 
 
 
+
+    
 
 def configuraciones_view(request):
     return render(request, 'configuraciones.html')
