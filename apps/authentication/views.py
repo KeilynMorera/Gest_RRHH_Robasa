@@ -3417,7 +3417,7 @@ def editar_asistencia(request, id):
 # =========================================================
 # GUARDAR PERMISO
 # =========================================================
-@requiere_permiso("permisos", "ver")
+@requiere_permiso("permisos", "crear")
 def guardar_permiso(request):
 
     # ==========================
@@ -3990,7 +3990,7 @@ def obtener_premio_empleado(request):
 # =========================================================
 # ROTACIÓN DE PERSONAL
 # =========================================================
-@requiere_permiso("rotacion_personal", "ver")
+@requiere_permiso("acciones_personal", "ver")
 def rotacion_personal(request):
 
     data_calculada = {}
@@ -4228,7 +4228,7 @@ def evaluaciones_view(request):
 # =========================================================
 # CREAR EVALUACIÓN + DESEMPEÑO (CABECERA + DETALLE)
 # =========================================================
-@requiere_permiso("evaluacion_desempeno", "ver")
+@requiere_permiso("evaluaciones", "ver")
 def crear_evaluacion(request):
 
     empleados = Empleado.objects.select_related(
@@ -4356,7 +4356,7 @@ def crear_evaluacion(request):
 # =========================================================
 # CREAR EVALUACIÓN DE POTENCIAL (JEFATURA)
 # =========================================================
-@requiere_permiso("evaluacion_jefatura", "ver")
+@requiere_permiso("evaluaciones", "ver")
 def crear_evaluacion_jefatura(request):
 
     empleados = Empleado.objects.select_related(
@@ -4806,7 +4806,7 @@ def elec_KPI_view(request):
 # =========================================================================
 # 1. VISTA SÓLO PARA LA CABECERA (Carga inicial y Guardado de Cabecera)
 # =========================================================================
-@requiere_permiso("kpis", "crear")
+@requiere_permiso("kpi", "crear")
 def registrar_kpi_view(request):
 
     kpi_cabecera_id = None
@@ -4934,7 +4934,7 @@ def registrar_kpi_view(request):
 # =========================================================================
 # 2. VISTA SÓLO PARA AGREGAR EL DETALLE (Procesamiento independiente)
 # =========================================================================
-@requiere_permiso("kpis", "crear")
+@requiere_permiso("kpi", "crear")
 def registrar_kpi_detalle_view(request):
 
     if request.method == 'POST':
@@ -5048,7 +5048,7 @@ def registrar_kpi_detalle_view(request):
 # =========================================================
 # CREAR PREMIO
 # =========================================================
-@requiere_permiso("kpis", "crear")
+@requiere_permiso("kpi", "crear")
 def crear_premio(request):
 
     if request.method == 'POST':
@@ -5115,7 +5115,7 @@ def crear_premio(request):
 # =========================================================
 # EDITAR PREMIO
 # =========================================================
-@requiere_permiso("kpis", "editar")
+@requiere_permiso("kpi", "editar")
 def editar_premio(request, id):
 
     premio = get_object_or_404(
@@ -5190,7 +5190,7 @@ def editar_premio(request, id):
 # =========================================================
 # VISTA: GUARDAR PREMIO ASIGNADO
 # =========================================================
-@requiere_permiso("kpis", "crear")
+@requiere_permiso("kpi", "crear")
 def guardar_premio_asignado(request):
 
     # =====================================================
@@ -6312,7 +6312,7 @@ def ver_checklist_offboarding(request, id_check):
 # =========================================================
 # GUARDAR USUARIO DEL SISTEMA
 # =========================================================
-@requiere_permiso("usuarios", "crear")  # O el decorador de seguridad/permisos que utilices
+@requiere_permiso("usuarios_sistema", "crear")  # O el decorador de seguridad/permisos que utilices
 def guardar_usuario_sistema(request):
 
     if request.method == "POST":
@@ -6395,7 +6395,7 @@ def guardar_usuario_sistema(request):
 # =========================================================
 # MODIFICAR USUARIO DEL SISTEMA
 # =========================================================
-@requiere_permiso("usuarios", "editar")  # O el decorador de seguridad que utilices
+@requiere_permiso("usuarios_sistema", "editar")  # O el decorador de seguridad que utilices
 def modificar_usuario_sistema(request, id_Admin):
 
     # Cargar el usuario objetivo o lanzar 404
