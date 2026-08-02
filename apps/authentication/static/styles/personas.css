@@ -672,6 +672,7 @@ textarea {
     border-color 0.2s,
     box-shadow 0.2s;
 }
+
 textarea:focus {
   border-color: #e8600a;
   box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
@@ -762,6 +763,7 @@ textarea:focus {
   font-size: 13px;
   pointer-events: none;
 }
+
 .table-search input {
   border: 1.5px solid #dde2f0;
   border-radius: 24px;
@@ -776,6 +778,7 @@ textarea:focus {
     border-color 0.2s,
     box-shadow 0.2s;
 }
+
 .table-search input:focus {
   border-color: #e8600a;
   box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.1);

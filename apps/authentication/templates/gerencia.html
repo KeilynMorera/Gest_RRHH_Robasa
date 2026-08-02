@@ -245,10 +245,16 @@
                       Empresa <span class="req">*</span>
                     </label>
 
-                    <select id="empresa" name="empresa" required>
+                    <select
+                      id="empresa"
+                      name="empresa"
+                      required
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <!-- Opción por defecto activa y seleccionable -->
                       <option
                         value=""
-                        disabled
                         {%
                         if
                         not
@@ -257,7 +263,7 @@
                         endif
                         %}
                       >
-                        Seleccione una empresa…
+                        -- Seleccione una empresa --
                       </option>
 
                       {% for empresa in empresas %}
@@ -265,11 +271,11 @@
                         value="{{ empresa.idEmpresa }}"
                         {%
                         if
+                        gerencia_editar
+                        and
                         gerencia_editar.idEmpresa.idEmpresa=""
                         ="empresa.idEmpresa"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
