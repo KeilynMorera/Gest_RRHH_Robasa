@@ -235,15 +235,32 @@
                 <h4 class="form-section-title">Datos del Pasante</h4>
 
                 <div class="form-grid">
+                  <!-- Persona (Pasante) -->
                   <div class="field">
                     <label for="persona">
                       <i class="fas fa-user field-icon"></i>
                       Persona <span class="req">*</span>
                     </label>
 
-                    <select id="persona" name="persona" required>
-                      <option value="" disabled selected>
-                        Seleccione una persona…
+                    <select
+                      id="persona"
+                      name="persona"
+                      required
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <!-- Opción por defecto activa y seleccionable -->
+                      <option
+                        value=""
+                        {%
+                        if
+                        not
+                        pasante_editar
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        -- Seleccione una persona --
                       </option>
 
                       {% for persona in personas %}
@@ -255,9 +272,7 @@
                         and
                         pasante_editar.idPersona.idPersona=""
                         ="persona.idPersona"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
@@ -267,15 +282,31 @@
                     </select>
                   </div>
 
+                  <!-- Puesto de práctica -->
                   <div class="field">
                     <label for="puesto">
                       <i class="fas fa-briefcase field-icon"></i>
                       Puesto de práctica <span class="req">*</span>
                     </label>
 
-                    <select id="puesto" name="puesto" required>
-                      <option value="" disabled selected>
-                        Seleccione un puesto…
+                    <select
+                      id="puesto"
+                      name="puesto"
+                      required
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <option
+                        value=""
+                        {%
+                        if
+                        not
+                        pasante_editar
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        -- Seleccione un puesto --
                       </option>
 
                       {% for puesto in puestos %}
@@ -287,9 +318,7 @@
                         and
                         pasante_editar.idPuesto.idPuesto=""
                         ="puesto.idPuesto"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
@@ -299,16 +328,33 @@
                     </select>
                   </div>
 
+                  <!-- Empleado supervisor -->
                   <div class="field field-full">
                     <label for="supervisor">
                       <i class="fas fa-user-tie field-icon"></i>
                       Empleado supervisor <span class="req">*</span>
                     </label>
 
-                    <select id="supervisor" name="empleado_sup" required>
-                      <option value="" disabled selected>
-                        Seleccione un supervisor…
+                    <select
+                      id="supervisor"
+                      name="empleado_sup"
+                      required
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <option
+                        value=""
+                        {%
+                        if
+                        not
+                        pasante_editar
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        -- Seleccione un supervisor --
                       </option>
+
                       {% for empleado in supervisores %}
                       <option
                         value="{{ empleado.idEmpleado }}"
@@ -318,9 +364,7 @@
                         and
                         pasante_editar.idEmpleado_Sup.idEmpleado=""
                         ="empleado.idEmpleado"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
