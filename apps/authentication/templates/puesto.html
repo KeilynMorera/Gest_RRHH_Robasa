@@ -369,21 +369,36 @@
                   </div>
 
                   <!-- ======================================================
-                       SELECCIÓN DE DEPARTAMENTO
-                  ====================================================== -->
+                        SELECCIÓN DE DEPARTAMENTO
+                    ====================================================== -->
                   <div class="field">
                     <label for="departamento">
                       <i class="fas fa-network-wired field-icon"></i>
-
                       Departamento <span class="req">*</span>
                     </label>
 
                     <!-- Select dinámico -->
-                    <select id="departamento" name="departamento" required>
-                      <option value="">Seleccione un departamento...</option>
+                    <select
+                      id="departamento"
+                      name="departamento"
+                      required
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <option
+                        value=""
+                        {%
+                        if
+                        not
+                        puesto_editar
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        -- Seleccione un departamento --
+                      </option>
 
                       {% for departamento in departamentos %}
-
                       <option
                         value="{{ departamento.pk }}"
                         {%
@@ -392,19 +407,16 @@
                         and
                         puesto_editar.idDepartamento.pk=""
                         ="departamento.pk"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
                         {{ departamento.Nombre }}
                       </option>
-
                       {% empty %}
-
-                      <option value="">No hay departamentos registrados</option>
-
+                      <option value="" disabled>
+                        No hay departamentos registrados
+                      </option>
                       {% endfor %}
                     </select>
                   </div>

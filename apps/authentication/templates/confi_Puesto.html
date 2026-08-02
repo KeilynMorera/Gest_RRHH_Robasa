@@ -297,17 +297,23 @@
                 <h4 class="form-section-title">Datos Generales</h4>
 
                 <div class="form-grid">
-                  <!-- Campo Puesto -->
+                  <!-- Campo Puesto (Compensación) -->
                   <div class="field field-full">
                     <label for="puesto">
                       <i class="fas fa-briefcase field-icon"></i>
                       Puesto <span class="req">*</span>
                     </label>
 
-                    <select id="puesto" name="puesto" required>
+                    <select
+                      id="puesto"
+                      name="puesto"
+                      required
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <!-- Opción por defecto activa y seleccionable -->
                       <option
                         value=""
-                        disabled
                         {%
                         if
                         not
@@ -316,7 +322,7 @@
                         endif
                         %}
                       >
-                        Seleccione un puesto...
+                        -- Seleccione un puesto --
                       </option>
 
                       {% for puesto in puestos %}
@@ -328,9 +334,7 @@
                         and
                         compensacion_editar.idPuesto.idPuesto=""
                         ="puesto.idPuesto"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >

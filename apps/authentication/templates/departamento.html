@@ -365,6 +365,7 @@
                   <!-- ======================================================
                        CAMPO: GERENCIA
                   ====================================================== -->
+                  <!-- Select de Gerencia -->
                   <div class="field">
                     <label for="gerencia">
                       <!-- Icono -->
@@ -375,10 +376,16 @@
                     </label>
 
                     <!-- Select -->
-                    <select id="gerencia" name="gerencia" required>
+                    <select
+                      id="gerencia"
+                      name="gerencia"
+                      required
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <!-- Opción por defecto activa y seleccionable -->
                       <option
                         value=""
-                        disabled
                         {%
                         if
                         not
@@ -387,7 +394,7 @@
                         endif
                         %}
                       >
-                        Seleccione una gerencia…
+                        -- Seleccione una gerencia --
                       </option>
 
                       {% for gerencia in gerencias %}
@@ -395,11 +402,11 @@
                         value="{{ gerencia.idGerencia }}"
                         {%
                         if
+                        departamento_editar
+                        and
                         departamento_editar.idGerencia.idGerencia=""
                         ="gerencia.idGerencia"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
