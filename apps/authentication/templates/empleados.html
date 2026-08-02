@@ -249,10 +249,17 @@
                       <i class="fas fa-user field-icon"></i>
                       Nombre de la persona <span class="req">*</span>
                     </label>
-                    <select id="persona" name="persona" required>
+
+                    <select
+                      id="persona"
+                      name="persona"
+                      required
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <!-- Opción por defecto (Sin disabled para que sea seleccionable) -->
                       <option
                         value=""
-                        disabled
                         {%
                         if
                         not
@@ -261,7 +268,7 @@
                         endif
                         %}
                       >
-                        Seleccione una persona...
+                        -- Seleccione una persona --
                       </option>
 
                       {% for persona in personas %}
@@ -273,9 +280,7 @@
                         and
                         empleado_editar.idPersona.idPersona=""
                         ="persona.idPersona"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
@@ -291,10 +296,17 @@
                       <i class="fas fa-briefcase field-icon"></i>
                       Puesto del empleado <span class="req">*</span>
                     </label>
-                    <select id="puesto" name="puesto" required>
+
+                    <select
+                      id="puesto"
+                      name="puesto"
+                      required
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <!-- Opción por defecto activa y seleccionable -->
                       <option
                         value=""
-                        disabled
                         {%
                         if
                         not
@@ -303,7 +315,7 @@
                         endif
                         %}
                       >
-                        Seleccione un puesto...
+                        -- Seleccione un puesto --
                       </option>
 
                       {% for puesto in puestos %}
@@ -315,9 +327,7 @@
                         and
                         empleado_editar.idPuesto.idPuesto=""
                         ="puesto.idPuesto"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
@@ -333,10 +343,17 @@
                       <i class="fas fa-file-contract field-icon"></i>
                       Tipo de contrato <span class="req">*</span>
                     </label>
-                    <select id="contrato" name="contrato" required>
+
+                    <select
+                      id="contrato"
+                      name="contrato"
+                      required
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <!-- Opción por defecto activa y seleccionable -->
                       <option
                         value=""
-                        disabled
                         {%
                         if
                         not
@@ -345,7 +362,7 @@
                         endif
                         %}
                       >
-                        Seleccione un contrato...
+                        -- Seleccione un contrato --
                       </option>
 
                       {% for contrato in contratos %}
@@ -357,9 +374,7 @@
                         and
                         empleado_editar.idContrato.idContrato=""
                         ="contrato.idContrato"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
