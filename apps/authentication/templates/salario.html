@@ -290,14 +290,19 @@
                   <div class="field field-full">
                     <label for="empleado">
                       <i class="fas fa-user field-icon"></i>
-                      Empleado
-                      <span class="req">*</span>
+                      Empleado <span class="req">*</span>
                     </label>
 
-                    <select id="empleado" name="empleado" required>
+                    <select
+                      id="empleado"
+                      name="empleado"
+                      required
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <!-- Placeholder por defecto -->
                       <option
                         value=""
-                        disabled
                         {%
                         if
                         not
@@ -309,10 +314,10 @@
                         endif
                         %}
                       >
-                        Seleccione un empleado…
+                        -- Seleccione un empleado --
                       </option>
 
-                      <!-- Recorrido dinámico de empleados -->
+                      <!-- Recorrido dinámico corregido -->
                       {% for empleado in empleados %}
                       <option
                         value="{{ empleado.idEmpleado }}"
@@ -322,17 +327,13 @@
                         and
                         saldo_editar.idEmpleado_Sal_Vac.idEmpleado=""
                         ="empleado.idEmpleado"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         elif
                         solicitud_editar
                         and
                         solicitud_editar.idEmpleado.idEmpleado=""
                         ="empleado.idEmpleado"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
@@ -341,7 +342,6 @@
                       {% endfor %}
                     </select>
                   </div>
-
                   <!-- Fecha de inicio -->
                   <div class="field">
                     <label for="fecha_inicio">
@@ -661,7 +661,8 @@
                     <td>{{ salario.Fecha_Inicio|date:"d/m/Y" }}</td>
 
                     <td>
-                      {% if salario.Fecha_Fin %}{{salario.Fecha_Fin|date:"d/m/Y" }}{% else %}—{% endif %}
+                      {% if salario.Fecha_Fin %}{{salario.Fecha_Fin|date:"d/m/Y"
+                      }}{% else %}—{% endif %}
                     </td>
 
                     <td>₡{{ salario.Salario_Bruto }}</td>
