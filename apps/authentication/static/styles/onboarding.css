@@ -982,8 +982,6 @@ textarea:focus {
 /* ============================================================
    ESTILOS ADICIONALES — Tabla de consulta y modificación
    ============================================================ */
-
-/* ── Textarea del formulario ─────────────────────────────────── */
 textarea {
   width: 100%;
   border: 1.5px solid #dde2f0;
@@ -998,13 +996,14 @@ textarea {
     border-color 0.2s,
     box-shadow 0.2s;
 }
+
 textarea:focus {
   border-color: #e8600a;
   box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
   background: #fff;
 }
 
-/* ── Botón Guardar Cambios (naranja suave / warning) ─────────── */
+/* Botón Guardar Cambios */
 .btn-warning {
   background: #f0a500;
   color: #ffffff;
@@ -1021,7 +1020,7 @@ textarea:focus {
   display: none !important;
 }
 
-/* ── Tarjeta de la tabla ─────────────────────────────────────── */
+/* Tarjeta de la tabla */
 .table-card {
   background: #ffffff;
   border-radius: 14px;
@@ -1031,7 +1030,7 @@ textarea:focus {
   overflow: hidden;
 }
 
-/* ── Encabezado de la tarjeta tabla ─────────────────────────── */
+/* Encabezado de la tarjeta tabla */
 .table-card-header {
   display: flex;
   align-items: center;
@@ -1074,19 +1073,21 @@ textarea:focus {
   margin: 0;
 }
 
-/* ── Buscador de la tabla ────────────────────────────────────── */
-.table-search input {
-  width: 100%;
-  min-width: 180px;
+/* Buscador de la tabla */
+.table-search {
+  position: relative;
 }
 
 .table-search i {
   position: absolute;
   left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
   color: #6b7499;
   font-size: 13px;
   pointer-events: none;
 }
+
 .table-search input {
   border: 1.5px solid #dde2f0;
   border-radius: 24px;
@@ -1101,19 +1102,20 @@ textarea:focus {
     border-color 0.2s,
     box-shadow 0.2s;
 }
+
 .table-search input:focus {
   border-color: #e8600a;
   box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.1);
   background: #fff;
 }
 
-/* ── Contenedor con scroll horizontal ───────────────────────── */
+/* Contenedor con scroll horizontal */
 .table-wrapper {
   overflow-x: auto;
   padding: 0 0 8px;
 }
 
-/* ── Tabla ───────────────────────────────────────────────────── */
+/* Tabla */
 .data-table {
   width: 100%;
   min-width: 0;
@@ -1175,51 +1177,13 @@ textarea:focus {
   text-overflow: ellipsis;
 }
 
-/* Columna acción: centrada */
+/* Columna acción */
 .col-accion {
   text-align: center;
   white-space: nowrap;
 }
 
-/* Celda vacía */
-.tabla-vacia {
-  text-align: center;
-  padding: 40px 20px;
-  color: #6b7499;
-  font-size: 14px;
-}
-.tabla-vacia i {
-  display: block;
-  font-size: 32px;
-  margin-bottom: 10px;
-  color: #c5cbdf;
-}
-
-/* ── Botón editar en la tabla ────────────────────────────────── */
-.btn-editar {
-  background: rgba(30, 42, 94, 0.08);
-  border: none;
-  border-radius: 8px;
-  width: 36px;
-  height: 36px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #1e2a5e;
-  font-size: 15px;
-  cursor: pointer;
-  transition:
-    background 0.2s,
-    color 0.2s,
-    transform 0.15s;
-}
-.btn-editar:hover {
-  background: #e8600a;
-  color: #ffffff;
-  transform: scale(1.1);
-}
-
-/* ── Botones de acción (Editar / Eliminar) ────────────────── */
+/* Botones de acción (Editar / Eliminar) */
 .col-accion .btn {
   width: 36px;
   height: 36px;
@@ -1232,7 +1196,7 @@ textarea:focus {
   transition: all 0.2s ease;
 }
 
-/* Botón editar */
+/* Botón editar en tabla */
 .col-accion .btn-warning {
   background: rgba(240, 165, 0, 0.12);
   color: #f0a500;
@@ -1260,9 +1224,39 @@ textarea:focus {
   box-shadow: 0 4px 10px rgba(220, 53, 69, 0.35);
 }
 
-/* Tamaño de iconos */
 .col-accion .btn i {
   font-size: 14px;
+}
+
+/* ==========================================================================
+   CONFIGURACIÓN GLOBAL ANTI-SCROLL HORIZONTAL
+========================================================================== */
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.dashboard-container {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.main-content {
+  width: calc(100% - 280px);
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.form-card,
+.table-card,
+.topbar,
+.breadcrumb,
+.footer {
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* ==========================================================================
