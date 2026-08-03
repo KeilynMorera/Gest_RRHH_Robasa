@@ -5,15 +5,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Acción de Personal - Plantilla Oficial</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #e2e8f0;
-        color: #1e293b;
-        margin: 0;
-        padding: 20px;
-      }
 
+    <!-- Hoja de estilos personalizada -->
+    <link rel="stylesheet" href="{% static 'styles/reportes.css' %}" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <style>
       /* Panel de Control (Oculto al Imprimir) */
       .control-panel {
         background: #ffffff;
@@ -229,467 +230,667 @@
       }
     </style>
   </head>
+
   <body>
-    <!-- PANEL DE CONFIGURACIÓN Y FILTRADO (NO SALE EN IMPRESIÓN) -->
-    <div class="control-panel">
-      <h2>Configuración de Acción de Personal</h2>
+    <!-- ======================================================
+          CONTENEDOR PRINCIPAL
+      ====================================================== -->
 
-      <div class="form-grid">
-        <!-- Selección de Empleado -->
-        <div class="form-group">
-          <label for="select-empleado">Seleccionar Colaborador:</label>
-          <select id="select-empleado" onchange="actualizarReporte()">
-            <option value="">-- Seleccione un Empleado --</option>
-            {% for emp in empleados_lista %}
-            <option value="{{ emp.id }}">
-              {{ emp.nombre }} (Cédula: {{ emp.cedula }})
-            </option>
-            {% endfor %}
-          </select>
-        </div>
+    <div class="dashboard-container">
+      <!-- ======================================================
+            SIDEBAR / MENÚ LATERAL
+        ====================================================== -->
 
-        <!-- Filtro por Año -->
-        <div class="form-group">
-          <label for="select-anio">Año de Registros:</label>
-          <select id="select-anio" onchange="actualizarReporte()">
-            <option value="todos">Todos los años</option>
-            <option value="2026" selected>2026</option>
-            <option value="2025">2025</option>
-            <option value="2024">2024</option>
-          </select>
-        </div>
-
-        <!-- Filtro por Mes -->
-        <div class="form-group">
-          <label for="select-mes">Mes de Registros:</label>
-          <select id="select-mes" onchange="actualizarReporte()">
-            <option value="todos" selected>Todos los meses</option>
-            <option value="1">Enero</option>
-            <option value="2">Febrero</option>
-            <option value="3">Marzo</option>
-            <option value="4">Abril</option>
-            <option value="5">Mayo</option>
-            <option value="6">Junio</option>
-            <option value="7">Julio</option>
-            <option value="8">Agosto</option>
-            <option value="9">Septiembre</option>
-            <option value="10">Octubre</option>
-            <option value="11">Noviembre</option>
-            <option value="12">Diciembre</option>
-          </select>
-        </div>
-
-        <!-- Responsable de Crear el Reporte -->
-        <div class="form-group">
-          <label for="select-responsable">Responsable que Genera:</label>
-          <select id="select-responsable" onchange="actualizarResponsable()">
-            <option value="{{ usuario_nombre }}">{{ usuario_nombre }}</option>
-            {% for emp in empleados_lista %}
-            <option value="{{ emp.nombre }}">{{ emp.nombre }}</option>
-            {% endfor %}
-          </select>
-        </div>
-      </div>
-
-      <!-- Sección de Seguimiento -->
-      <div class="form-grid">
-        <div class="form-group">
-          <label for="select-seguimiento-resp">Responsable Seguimiento:</label>
-          <select
-            id="select-seguimiento-resp"
-            onchange="actualizarSeguimiento()"
-          >
-            <option value="">-- Ninguno / No Aplica --</option>
-            {% for emp in empleados_lista %}
-            <option value="{{ emp.nombre }}">{{ emp.nombre }}</option>
-            {% endfor %}
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="input-dias">Días de revisión (si aplica):</label>
-          <input
-            type="number"
-            id="input-dias"
-            placeholder="Ej. 30"
-            oninput="actualizarSeguimiento()"
+      <aside class="sidebar">
+        <div class="logo-container">
+          <img
+            src="{% static 'imagenes/diseno_img/logoRobasa.png' %}"
+            alt="Logo Robasa"
+            class="logo-img"
           />
         </div>
 
-        <div class="form-group">
-          <label for="input-fecha-seg">Fecha Programada:</label>
-          <input
-            type="date"
-            id="input-fecha-seg"
-            onchange="actualizarSeguimiento()"
-          />
+        <!-- ======================================================
+              MENÚ DE NAVEGACIÓN
+          ====================================================== -->
+
+        <nav class="menu">
+          <a href="{% url 'inicio' %}">
+            <i class="fas fa-house"></i>
+            Inicio
+          </a>
+
+          <a href="{% url 'per_emp' %}">
+            <i class="fas fa-user-group"></i>
+            Personas o Empleados
+          </a>
+
+          <a href="{% url 'crear_onboarding' %}">
+            <i class="fas fa-rocket"></i>
+            Onboarding / Entradas
+          </a>
+
+          <a href="{% url 'empresas' %}">
+            <i class="fas fa-building"></i>
+            Empresas
+          </a>
+
+          <a href="{% url 'comple_Empresa' %}">
+            <i class="fas fa-briefcase"></i>
+            Gerencias, Departamentos y Puestos
+          </a>
+
+          <a href="{% url 'salarios' %}">
+            <i class="fas fa-money-bill-wave"></i>
+            Salarios
+          </a>
+
+          <a href="{% url 'reclutamiento' %}">
+            <i class="fas fa-wallet"></i>
+            Reclutamiento
+          </a>
+
+          <a href="{% url 'vacaciones' %}">
+            <i class="fas fa-umbrella-beach"></i>
+            Vacaciones
+          </a>
+
+          <a href="{% url 'elec_Asistencia' %}">
+            <i class="fas fa-clock"></i>
+            Asistencia y Permiso
+          </a>
+
+          <a href="{% url 'accion_rotacion' %}">
+            <i class="fas fa-clipboard-list"></i>
+            Acciones o Rotaciones del Personal
+          </a>
+
+          <a href="{% url 'evaluaciones' %}">
+            <i class="fas fa-chart-line"></i>
+            Evaluación de Desempeño
+          </a>
+
+          <a href="{% url 'elec_KPI' %}">
+            <i class="fas fa-file-lines"></i>
+            KPIs
+          </a>
+
+          <a href="{% url 'elec_Offboarding' %}">
+            <i class="fas fa-door-open"></i>
+            Offboarding / Salidas
+          </a>
+
+          <a href="{% url 'reportes' %}">
+            <i class="fas fa-file-lines"></i>
+            Reportes
+          </a>
+
+          <a href="{% url 'guardar_usuario_sistema' %}">
+            <i class="fas fa-users-cog"></i>
+            Usuarios y Roles
+          </a>
+
+          <a href="{% url 'configuraciones' %}">
+            <i class="fas fa-gear"></i>
+            Configuración
+          </a>
+        </nav>
+
+        <!-- ======================================================
+              CERRAR SESIÓN
+          ====================================================== -->
+
+        <div class="logout">
+          <a href="{% url 'cerrar_sesion' %}">
+            <i class="fas fa-sign-out-alt"></i>
+            Cerrar sesión
+          </a>
         </div>
-      </div>
+      </aside>
 
-      <button type="button" class="btn-print" onclick="window.print()">
-        🖨️ Imprimir / Guardar en PDF
-      </button>
-    </div>
+      <!-- ======================================================
+            CONTENIDO PRINCIPAL
+        ====================================================== -->
 
-    <!-- PLANTILLA DE ACCIÓN DE PERSONAL IMPRESA -->
-    <div class="document-page">
-      <div class="doc-header">
-        <div>
-          <h1>Acción de Personal</h1>
-        </div>
-        <div class="doc-date">
-          Fecha: <span id="lbl-fecha-emision">{% now "d/m/Y" %}</span>[cite: 2]
-        </div>
-      </div>
+      <main class="main-content">
+        <!-- ======================================================
+              HEADER
+          ====================================================== -->
 
-      <!-- 1. Información General del Colaborador -->
-      <div class="section-title">1. Información General del Colaborador</div>
-      [cite: 2]
-      <div class="info-grid">
-        <div class="info-item">
-          <strong>Nombre completo:</strong>
-          <span id="lbl-nombre">___________________________</span>
-        </div>
-        [cite: 2]
-        <div class="info-item">
-          <strong>Número de cédula:</strong>
-          <span id="lbl-cedula">___________________________</span>
-        </div>
-        [cite: 2]
-        <div class="info-item">
-          <strong>Puesto actual:</strong>
-          <span id="lbl-puesto">___________________________</span>
-        </div>
-        [cite: 2]
-        <div class="info-item">
-          <strong>Departamento:</strong>
-          <span id="lbl-departamento">___________________________</span>
-        </div>
-        [cite: 2]
-      </div>
+        <header class="topbar">
+          <div class="page-title">
+            <h1>Inicio</h1>
 
-      <!-- 2. Tipo de Acción de Personal -->
-      <div class="section-title">
-        2. Tipo de Acción de Personal (marque una o más opciones)
-      </div>
-      [cite: 2]
-      <table>
-        <thead>
-          <tr>
-            <th style="width: 10%">Código</th>
-            [cite: 2]
-            <th style="width: 35%">Tipo de Acción</th>
-            [cite: 2]
-            <th class="text-center" style="width: 12%">Selección</th>
-            [cite: 2]
-            <th style="width: 43%">Observación</th>
-            [cite: 2]
-          </tr>
-        </thead>
-        <tbody>
-          <!-- AP01: Ascenso -->
-          <tr>
-            <td>AP01</td>
-            <td>Ascenso</td>
-            <td class="text-center">
-              <input type="checkbox" id="chk-ascenso" />
-            </td>
-            <td id="obs-ascenso"></td>
-          </tr>
+            <p>Bienvenido al Sistema de Gestión de Talento Humano</p>
+          </div>
 
-          <!-- AP02: Ajuste Salarial -->
-          <tr>
-            <td>AP02</td>
-            <td>Ajuste salarial</td>
-            <td class="text-center">
-              <input type="checkbox" id="chk-ajustesalarial" />
-            </td>
-            <td id="obs-ajustesalarial"></td>
-          </tr>
+          <!-- ======================================================
+                BARRA DE BÚSQUEDA
+            ====================================================== -->
 
-          <!-- AP03: Traslado Interno -->
-          <tr>
-            <td>AP03</td>
-            <td>Traslado interno</td>
-            <td class="text-center">
-              <input type="checkbox" id="chk-trasladointerno" />
-            </td>
-            <td id="obs-trasladointerno"></td>
-          </tr>
+          <div class="search-box">
+            <i class="fas fa-search"></i>
 
-          <!-- AP04: Premio -->
-          <tr>
-            <td>AP04</td>
-            <td>Premio o nuevo beneficio</td>
-            <td class="text-center">
-              <input type="checkbox" id="chk-premio" />
-            </td>
-            <td id="obs-premio"></td>
-          </tr>
+            <input
+              type="text"
+              placeholder="Buscar empleado, módulo, reporte..."
+            />
+          </div>
 
-          <!-- AP05: Asignación de equipo -->
-          <tr>
-            <td>AP05</td>
-            <td>Asignación de equipo / insumos</td>
-            <td class="text-center">
-              <input type="checkbox" id="chk-asignaciondeequipoinsumos" />
-            </td>
-            <td id="obs-asignaciondeequipoinsumos"></td>
-          </tr>
+          <!-- ======================================================
+                ACCIONES
+            ====================================================== -->
 
-          <!-- AP06: Funciones temporales -->
-          <tr>
-            <td>AP06</td>
-            <td>Funciones temporales</td>
-            <td class="text-center">
-              <input type="checkbox" id="chk-funcionestemporales" />
-            </td>
-            <td id="obs-funcionestemporales"></td>
-          </tr>
+          <div class="topbar-actions">
+            <div class="notification">
+              <i class="fas fa-bell"></i>
 
-          <!-- AP07: Plan de mejora -->
-          <tr>
-            <td>AP07</td>
-            <td>Plan de mejora individual</td>
-            <td class="text-center">
-              <input type="checkbox" id="chk-plandemejoraindividual" />
-            </td>
-            <td id="obs-plandemejoraindividual"></td>
-          </tr>
+              <span class="badge"> 3 </span>
+            </div>
 
-          <!-- AP08: Acción disciplinaria -->
-          <tr>
-            <td>AP08</td>
-            <td>Acción disciplinaria</td>
-            <td class="text-center">
-              <input type="checkbox" id="chk-acciondisciplinaria" />
-            </td>
-            <td id="obs-acciondisciplinaria"></td>
-          </tr>
+            <div class="user-profile">
+              {% if usuario_foto %}
 
-          <!-- AP09: Comunicado oficial -->
-          <tr>
-            <td>AP09</td>
-            <td>Comunicado oficial</td>
-            <td class="text-center">
-              <input type="checkbox" id="chk-comunicadooficial" />
-            </td>
-            <td id="obs-comunicadooficial"></td>
-          </tr>
+              <img src="{{ usuario_foto }}" alt="{{ usuario_nombre }}" />
 
-          <!-- AP10: Funciones temporales Interdepartamental -->
-          <tr>
-            <td>AP10</td>
-            <td>Funciones temporales Interdepartamental</td>
-            <td class="text-center">
-              <input
-                type="checkbox"
-                id="chk-funcionestemporalesinterdepartamental"
+              {% else %}
+
+              <img
+                src="{% static 'media/fotos_personas/default_user.jpeg' %}"
+                alt="Usuario"
               />
-            </td>
-            <td id="obs-funcionestemporalesinterdepartamental"></td>
-          </tr>
 
-          <!-- AP11: Licencia -->
-          <tr>
-            <td>AP11</td>
-            <td>Licencia (especifique tipo)</td>
-            <td class="text-center">
-              <input type="checkbox" id="chk-licencia" />
-            </td>
-            <td id="obs-licencia"></td>
-          </tr>
+              {% endif %}
 
-          <!-- AP12: Otro -->
-          <tr>
-            <td>AP12</td>
-            <td>Otro (especifique)</td>
-            <td class="text-center">
-              <input type="checkbox" id="chk-otro" />
-            </td>
-            <td id="obs-otro"></td>
-          </tr>
-        </tbody>
-      </table>
+              <div class="user-info">
+                <strong> {{ usuario_nombre }} </strong>
 
-      <!-- 3. Detalle de la Acción -->
-      <div class="section-title">3. Detalle de la Acción</div>
-      [cite: 2]
-      <p style="font-size: 8.5pt; font-weight: bold; margin-bottom: 4px">
-        Motivo o justificación de la acción:
-      </p>
-      [cite: 2]
-      <div class="detail-box" id="lbl-motivo-detalle">
-        <!-- Justificaciones de las acciones seleccionadas -->
-      </div>
+                <span> {{ usuario_puesto }} </span>
+              </div>
+            </div>
+          </div>
+        </header>
 
-      <div class="signature-container">
-        <p>
-          <strong>Responsable que genera la solicitud:</strong>
-          Nombre:
-          <u id="lbl-resp-solicitud">{{ usuario_nombre }}</u>
-          &nbsp;&nbsp;|&nbsp;&nbsp; Firma: __________________
-          &nbsp;&nbsp;|&nbsp;&nbsp; Fecha: {% now "d/m/Y" %}[cite: 2]
-        </p>
-      </div>
+        <!-- PANEL DE CONFIGURACIÓN Y FILTRADO (NO SALE EN IMPRESIÓN) -->
+        <div class="control-panel">
+          <h2>Configuración de Acción de Personal</h2>
 
-      <!-- 4. Aprobaciones y Seguimiento -->
-      <div class="section-title">4. Aprobaciones y Seguimiento</div>
-      [cite: 2]
+          <div class="form-grid">
+            <!-- Selección de Empleado -->
+            <div class="form-group">
+              <label for="select-empleado">Seleccionar Colaborador:</label>
+              <select id="select-empleado" onchange="actualizarReporte()">
+                <option value="">-- Seleccione un Empleado --</option>
+                {% for emp in empleados_lista %}
+                <option value="{{ emp.id }}">
+                  {{ emp.nombre }} (Cédula: {{ emp.cedula }})
+                </option>
+                {% endfor %}
+              </select>
+            </div>
 
-      <div class="signature-grid">
-        <div>
-          <br /><br />
-          <div class="signature-line">
-            <strong>Aprobación Jefatura Inmediata</strong><br />[cite: 2]
-            Nombre: ___________________<br />[cite: 2] Firma:
-            ___________________<br />[cite: 2] Fecha: ____ / ____ /
-            _______[cite: 2]
+            <!-- Filtro por Año -->
+            <div class="form-group">
+              <label for="select-anio">Año de Registros:</label>
+              <select id="select-anio" onchange="actualizarReporte()">
+                <option value="todos">Todos los años</option>
+                <option value="2026" selected>2026</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+              </select>
+            </div>
+
+            <!-- Filtro por Mes -->
+            <div class="form-group">
+              <label for="select-mes">Mes de Registros:</label>
+              <select id="select-mes" onchange="actualizarReporte()">
+                <option value="todos" selected>Todos los meses</option>
+                <option value="1">Enero</option>
+                <option value="2">Febrero</option>
+                <option value="3">Marzo</option>
+                <option value="4">Abril</option>
+                <option value="5">Mayo</option>
+                <option value="6">Junio</option>
+                <option value="7">Julio</option>
+                <option value="8">Agosto</option>
+                <option value="9">Septiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+              </select>
+            </div>
+
+            <!-- Responsable de Crear el Reporte -->
+            <div class="form-group">
+              <label for="select-responsable">Responsable que Genera:</label>
+              <select
+                id="select-responsable"
+                onchange="actualizarResponsable()"
+              >
+                <option value="{{ usuario_nombre }}">
+                  {{ usuario_nombre }}
+                </option>
+                {% for emp in empleados_lista %}
+                <option value="{{ emp.nombre }}">{{ emp.nombre }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <!-- Sección de Seguimiento -->
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="select-seguimiento-resp"
+                >Responsable Seguimiento:</label
+              >
+              <select
+                id="select-seguimiento-resp"
+                onchange="actualizarSeguimiento()"
+              >
+                <option value="">-- Ninguno / No Aplica --</option>
+                {% for emp in empleados_lista %}
+                <option value="{{ emp.nombre }}">{{ emp.nombre }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="input-dias">Días de revisión (si aplica):</label>
+              <input
+                type="number"
+                id="input-dias"
+                placeholder="Ej. 30"
+                oninput="actualizarSeguimiento()"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="input-fecha-seg">Fecha Programada:</label>
+              <input
+                type="date"
+                id="input-fecha-seg"
+                onchange="actualizarSeguimiento()"
+              />
+            </div>
+          </div>
+
+          <button type="button" class="btn-print" onclick="window.print()">
+            🖨️ Imprimir / Guardar en PDF
+          </button>
+        </div>
+
+        <!-- PLANTILLA DE ACCIÓN DE PERSONAL IMPRESA -->
+        <div class="document-page">
+          <div class="doc-header">
+            <div>
+              <h1>Acción de Personal</h1>
+            </div>
+            <div class="doc-date">
+              Fecha: <span id="lbl-fecha-emision">{% now "d/m/Y" %}</span>[cite:
+              2]
+            </div>
+          </div>
+
+          <!-- 1. Información General del Colaborador -->
+          <div class="section-title">
+            1. Información General del Colaborador
+          </div>
+          [cite: 2]
+          <div class="info-grid">
+            <div class="info-item">
+              <strong>Nombre completo:</strong>
+              <span id="lbl-nombre">___________________________</span>
+            </div>
+            [cite: 2]
+            <div class="info-item">
+              <strong>Número de cédula:</strong>
+              <span id="lbl-cedula">___________________________</span>
+            </div>
+            [cite: 2]
+            <div class="info-item">
+              <strong>Puesto actual:</strong>
+              <span id="lbl-puesto">___________________________</span>
+            </div>
+            [cite: 2]
+            <div class="info-item">
+              <strong>Departamento:</strong>
+              <span id="lbl-departamento">___________________________</span>
+            </div>
+            [cite: 2]
+          </div>
+
+          <!-- 2. Tipo de Acción de Personal -->
+          <div class="section-title">
+            2. Tipo de Acción de Personal (marque una o más opciones)
+          </div>
+          [cite: 2]
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 10%">Código</th>
+                [cite: 2]
+                <th style="width: 35%">Tipo de Acción</th>
+                [cite: 2]
+                <th class="text-center" style="width: 12%">Selección</th>
+                [cite: 2]
+                <th style="width: 43%">Observación</th>
+                [cite: 2]
+              </tr>
+            </thead>
+            <tbody>
+              <!-- AP01: Ascenso -->
+              <tr>
+                <td>AP01</td>
+                <td>Ascenso</td>
+                <td class="text-center">
+                  <input type="checkbox" id="chk-ascenso" />
+                </td>
+                <td id="obs-ascenso"></td>
+              </tr>
+
+              <!-- AP02: Ajuste Salarial -->
+              <tr>
+                <td>AP02</td>
+                <td>Ajuste salarial</td>
+                <td class="text-center">
+                  <input type="checkbox" id="chk-ajustesalarial" />
+                </td>
+                <td id="obs-ajustesalarial"></td>
+              </tr>
+
+              <!-- AP03: Traslado Interno -->
+              <tr>
+                <td>AP03</td>
+                <td>Traslado interno</td>
+                <td class="text-center">
+                  <input type="checkbox" id="chk-trasladointerno" />
+                </td>
+                <td id="obs-trasladointerno"></td>
+              </tr>
+
+              <!-- AP04: Premio -->
+              <tr>
+                <td>AP04</td>
+                <td>Premio o nuevo beneficio</td>
+                <td class="text-center">
+                  <input type="checkbox" id="chk-premio" />
+                </td>
+                <td id="obs-premio"></td>
+              </tr>
+
+              <!-- AP05: Asignación de equipo -->
+              <tr>
+                <td>AP05</td>
+                <td>Asignación de equipo / insumos</td>
+                <td class="text-center">
+                  <input type="checkbox" id="chk-asignaciondeequipoinsumos" />
+                </td>
+                <td id="obs-asignaciondeequipoinsumos"></td>
+              </tr>
+
+              <!-- AP06: Funciones temporales -->
+              <tr>
+                <td>AP06</td>
+                <td>Funciones temporales</td>
+                <td class="text-center">
+                  <input type="checkbox" id="chk-funcionestemporales" />
+                </td>
+                <td id="obs-funcionestemporales"></td>
+              </tr>
+
+              <!-- AP07: Plan de mejora -->
+              <tr>
+                <td>AP07</td>
+                <td>Plan de mejora individual</td>
+                <td class="text-center">
+                  <input type="checkbox" id="chk-plandemejoraindividual" />
+                </td>
+                <td id="obs-plandemejoraindividual"></td>
+              </tr>
+
+              <!-- AP08: Acción disciplinaria -->
+              <tr>
+                <td>AP08</td>
+                <td>Acción disciplinaria</td>
+                <td class="text-center">
+                  <input type="checkbox" id="chk-acciondisciplinaria" />
+                </td>
+                <td id="obs-acciondisciplinaria"></td>
+              </tr>
+
+              <!-- AP09: Comunicado oficial -->
+              <tr>
+                <td>AP09</td>
+                <td>Comunicado oficial</td>
+                <td class="text-center">
+                  <input type="checkbox" id="chk-comunicadooficial" />
+                </td>
+                <td id="obs-comunicadooficial"></td>
+              </tr>
+
+              <!-- AP10: Funciones temporales Interdepartamental -->
+              <tr>
+                <td>AP10</td>
+                <td>Funciones temporales Interdepartamental</td>
+                <td class="text-center">
+                  <input
+                    type="checkbox"
+                    id="chk-funcionestemporalesinterdepartamental"
+                  />
+                </td>
+                <td id="obs-funcionestemporalesinterdepartamental"></td>
+              </tr>
+
+              <!-- AP11: Licencia -->
+              <tr>
+                <td>AP11</td>
+                <td>Licencia (especifique tipo)</td>
+                <td class="text-center">
+                  <input type="checkbox" id="chk-licencia" />
+                </td>
+                <td id="obs-licencia"></td>
+              </tr>
+
+              <!-- AP12: Otro -->
+              <tr>
+                <td>AP12</td>
+                <td>Otro (especifique)</td>
+                <td class="text-center">
+                  <input type="checkbox" id="chk-otro" />
+                </td>
+                <td id="obs-otro"></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- 3. Detalle de la Acción -->
+          <div class="section-title">3. Detalle de la Acción</div>
+          [cite: 2]
+          <p style="font-size: 8.5pt; font-weight: bold; margin-bottom: 4px">
+            Motivo o justificación de la acción:
+          </p>
+          [cite: 2]
+          <div class="detail-box" id="lbl-motivo-detalle">
+            <!-- Justificaciones de las acciones seleccionadas -->
+          </div>
+
+          <div class="signature-container">
+            <p>
+              <strong>Responsable que genera la solicitud:</strong>
+              Nombre:
+              <u id="lbl-resp-solicitud">{{ usuario_nombre }}</u>
+              &nbsp;&nbsp;|&nbsp;&nbsp; Firma: __________________
+              &nbsp;&nbsp;|&nbsp;&nbsp; Fecha: {% now "d/m/Y" %}[cite: 2]
+            </p>
+          </div>
+
+          <!-- 4. Aprobaciones y Seguimiento -->
+          <div class="section-title">4. Aprobaciones y Seguimiento</div>
+          [cite: 2]
+
+          <div class="signature-grid">
+            <div>
+              <br /><br />
+              <div class="signature-line">
+                <strong>Aprobación Jefatura Inmediata</strong><br />[cite: 2]
+                Nombre: ___________________<br />[cite: 2] Firma:
+                ___________________<br />[cite: 2] Fecha: ____ / ____ /
+                _______[cite: 2]
+              </div>
+            </div>
+            <div>
+              <br /><br />
+              <div class="signature-line">
+                <strong
+                  >Validación Talento Humano y Bienestar Organizacional</strong
+                ><br />[cite: 2] Nombre: ___________________<br />[cite: 2]
+                Firma: ___________________<br />[cite: 2] Fecha: ____ / ____ /
+                _______[cite: 2]
+              </div>
+            </div>
+            <div>
+              <br /><br />
+              <div class="signature-line">
+                <strong>Colaborador</strong><br />[cite: 2] Nombre:
+                <span id="lbl-firmante-emp">___________________</span
+                ><br />[cite: 2] Firma: ___________________<br />[cite: 2]
+                Fecha: ____ / ____ / _______[cite: 2]
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 20px; font-size: 8.5pt">
+            <p>
+              <strong
+                >Seguimiento posterior (revisión en
+                <span id="lbl-seg-dias">______</span> días si aplica):</strong
+              >[cite: 2] Responsable:
+              <span id="lbl-seg-resp">___________________</span>[cite: 2] Fecha
+              programada:
+              <span id="lbl-seg-fecha">____ / ____ / _______</span>[cite: 2]
+            </p>
           </div>
         </div>
-        <div>
-          <br /><br />
-          <div class="signature-line">
-            <strong>Validación Talento Humano y Bienestar Organizacional</strong
-            ><br />[cite: 2] Nombre: ___________________<br />[cite: 2] Firma:
-            ___________________<br />[cite: 2] Fecha: ____ / ____ /
-            _______[cite: 2]
-          </div>
-        </div>
-        <div>
-          <br /><br />
-          <div class="signature-line">
-            <strong>Colaborador</strong><br />[cite: 2] Nombre:
-            <span id="lbl-firmante-emp">___________________</span><br />[cite:
-            2] Firma: ___________________<br />[cite: 2] Fecha: ____ / ____ /
-            _______[cite: 2]
-          </div>
-        </div>
-      </div>
 
-      <div style="margin-top: 20px; font-size: 8.5pt">
-        <p>
-          <strong
-            >Seguimiento posterior (revisión en
-            <span id="lbl-seg-dias">______</span> días si aplica):</strong
-          >[cite: 2] Responsable:
-          <span id="lbl-seg-resp">___________________</span>[cite: 2] Fecha
-          programada:
-          <span id="lbl-seg-fecha">____ / ____ / _______</span>[cite: 2]
-        </p>
-      </div>
+        <!-- ======================================================
+              FOOTER
+          ====================================================== -->
+
+        <footer class="footer">
+          © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
+        </footer>
+      </main>
     </div>
+  </body>
+  <script>
+          // Datos inyectados desde Django
+          const empleadosData = {{ empleados_data_json|safe }};
 
-    <script>
-            // Datos inyectados desde Django
-            const empleadosData = {{ empleados_data_json|safe }};
-
-            function normalizarTexto(texto) {
-              if (!texto) return "";
-              return texto
-              .toString()
-              .toLowerCase()
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "") // Remueve tildes/acentos
-              .replace(/[^a-z0-9]/g, "");     // Deja solo letras y números sin espacios
-            }
-
-            function actualizarReporte() {
-        const empId = document.getElementById("select-empleado").value;
-        const anioFiltro = document.getElementById("select-anio").value;
-        const mesFiltro = document.getElementById("select-mes").value;
-
-        // 1. Limpiar marcas y celdas de observación
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(chk => chk.checked = false);
-
-        const obsCeldas = document.querySelectorAll('td[id^="obs-"]');
-        obsCeldas.forEach(td => td.innerText = "");
-
-        document.getElementById("lbl-motivo-detalle").innerText = "";
-
-        if (!empId) {
-          document.getElementById("lbl-nombre").innerText = "___________________________";
-          document.getElementById("lbl-cedula").innerText = "___________________________";
-          document.getElementById("lbl-puesto").innerText = "___________________________";
-          document.getElementById("lbl-departamento").innerText = "___________________________";
-          document.getElementById("lbl-firmante-emp").innerText = "___________________";
-          return;
-        }
-
-        // 2. Buscar datos del colaborador
-        const emp = empleadosData.find(e => e.id === empId);
-        if (!emp) return;
-
-        // 3. Llenar cabecera
-        document.getElementById("lbl-nombre").innerText = emp.nombre;
-        document.getElementById("lbl-cedula").innerText = emp.cedula;
-        document.getElementById("lbl-puesto").innerText = emp.puesto;
-        document.getElementById("lbl-departamento").innerText = emp.departamento;
-        document.getElementById("lbl-firmante-emp").innerText = emp.nombre;
-
-        // 4. Filtrar por fecha
-        const accionesFiltradas = emp.acciones.filter(acc => {
-          let coincideAnio = (anioFiltro === "todos") || (acc.anio == anioFiltro);
-          let coincideMes = (mesFiltro === "todos") || (acc.mes == mesFiltro);
-          return coincideAnio && coincideMes;
-        });
-
-        let textosMotivos = [];
-
-        // 5. Poblar la tabla con el detalle asignado
-        accionesFiltradas.forEach(acc => {
-          const idNormalizado = normalizarTexto(acc.tipo);
-          const chk = document.getElementById("chk-" + idNormalizado);
-          const obsTd = document.getElementById("obs-" + idNormalizado);
-
-          if (chk) {
-            chk.checked = true;
+          function normalizarTexto(texto) {
+            if (!texto) return "";
+            return texto
+            .toString()
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "") // Remueve tildes/acentos
+            .replace(/[^a-z0-9]/g, "");     // Deja solo letras y números sin espacios
           }
 
-          if (obsTd) {
-            const fechaFormateada = acc.fecha ? `[${acc.fecha}] ` : "";
-            // Si existe un detalle ingresado se muestra, sino se asigna el nombre del tipo
-            const textoAMostrar = acc.detalle ? `${fechaFormateada}${acc.detalle}` : `${fechaFormateada}${acc.tipo}`;
+          function actualizarReporte() {
+      const empId = document.getElementById("select-empleado").value;
+      const anioFiltro = document.getElementById("select-anio").value;
+      const mesFiltro = document.getElementById("select-mes").value;
 
-            obsTd.innerText = obsTd.innerText
-              ? `${obsTd.innerText} | ${textoAMostrar}`
-              : textoAMostrar;
-          }
+      // 1. Limpiar marcas y celdas de observación
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach(chk => chk.checked = false);
 
-          if (acc.detalle) {
-            textosMotivos.push(`• [${acc.tipo}] (${acc.fecha || 'Sin fecha'}): ${acc.detalle}`);
-          }
-        });
+      const obsCeldas = document.querySelectorAll('td[id^="obs-"]');
+      obsCeldas.forEach(td => td.innerText = "");
 
-        // 6. Sección inferior: Resumen acumulado
-        if (textosMotivos.length > 0) {
-          document.getElementById("lbl-motivo-detalle").innerText = textosMotivos.join("\n");
-        } else {
-          document.getElementById("lbl-motivo-detalle").innerText = "No existen justificaciones registradas para el período seleccionado.";
-        }
+      document.getElementById("lbl-motivo-detalle").innerText = "";
+
+      if (!empId) {
+        document.getElementById("lbl-nombre").innerText = "___________________________";
+        document.getElementById("lbl-cedula").innerText = "___________________________";
+        document.getElementById("lbl-puesto").innerText = "___________________________";
+        document.getElementById("lbl-departamento").innerText = "___________________________";
+        document.getElementById("lbl-firmante-emp").innerText = "___________________";
+        return;
       }
 
-            function actualizarResponsable() {
-              const resp = document.getElementById("select-responsable").value;
-              document.getElementById("lbl-resp-solicitud").innerText = resp || "{{ usuario_nombre }}";
+      // 2. Buscar datos del colaborador
+      const emp = empleadosData.find(e => e.id === empId);
+      if (!emp) return;
+
+      // 3. Llenar cabecera
+      document.getElementById("lbl-nombre").innerText = emp.nombre;
+      document.getElementById("lbl-cedula").innerText = emp.cedula;
+      document.getElementById("lbl-puesto").innerText = emp.puesto;
+      document.getElementById("lbl-departamento").innerText = emp.departamento;
+      document.getElementById("lbl-firmante-emp").innerText = emp.nombre;
+
+      // 4. Filtrar por fecha
+      const accionesFiltradas = emp.acciones.filter(acc => {
+        let coincideAnio = (anioFiltro === "todos") || (acc.anio == anioFiltro);
+        let coincideMes = (mesFiltro === "todos") || (acc.mes == mesFiltro);
+        return coincideAnio && coincideMes;
+      });
+
+      let textosMotivos = [];
+
+      // 5. Poblar la tabla con el detalle asignado
+      accionesFiltradas.forEach(acc => {
+        const idNormalizado = normalizarTexto(acc.tipo);
+        const chk = document.getElementById("chk-" + idNormalizado);
+        const obsTd = document.getElementById("obs-" + idNormalizado);
+
+        if (chk) {
+          chk.checked = true;
+        }
+
+        if (obsTd) {
+          const fechaFormateada = acc.fecha ? `[${acc.fecha}] ` : "";
+          // Si existe un detalle ingresado se muestra, sino se asigna el nombre del tipo
+          const textoAMostrar = acc.detalle ? `${fechaFormateada}${acc.detalle}` : `${fechaFormateada}${acc.tipo}`;
+
+          obsTd.innerText = obsTd.innerText
+            ? `${obsTd.innerText} | ${textoAMostrar}`
+            : textoAMostrar;
+        }
+
+        if (acc.detalle) {
+          textosMotivos.push(`• [${acc.tipo}] (${acc.fecha || 'Sin fecha'}): ${acc.detalle}`);
+        }
+      });
+
+      // 6. Sección inferior: Resumen acumulado
+      if (textosMotivos.length > 0) {
+        document.getElementById("lbl-motivo-detalle").innerText = textosMotivos.join("\n");
+      } else {
+        document.getElementById("lbl-motivo-detalle").innerText = "No existen justificaciones registradas para el período seleccionado.";
+      }
+    }
+
+          function actualizarResponsable() {
+            const resp = document.getElementById("select-responsable").value;
+            document.getElementById("lbl-resp-solicitud").innerText = resp || "{{ usuario_nombre }}";
+          }
+
+          function actualizarSeguimiento() {
+            const resp = document.getElementById("select-seguimiento-resp").value;
+            const dias = document.getElementById("input-dias").value;
+            const fecha = document.getElementById("input-fecha-seg").value;
+
+            document.getElementById("lbl-seg-resp").innerText = resp || "___________________";
+            document.getElementById("lbl-seg-dias").innerText = dias || "______";
+
+            if (fecha) {
+              const partes = fecha.split("-");
+              document.getElementById("lbl-seg-fecha").innerText = `${partes[2]}/${partes[1]}/${partes[0]}`;
+            } else {
+              document.getElementById("lbl-seg-fecha").innerText = "____ / ____ / _______";
             }
-
-            function actualizarSeguimiento() {
-              const resp = document.getElementById("select-seguimiento-resp").value;
-              const dias = document.getElementById("input-dias").value;
-              const fecha = document.getElementById("input-fecha-seg").value;
-
-              document.getElementById("lbl-seg-resp").innerText = resp || "___________________";
-              document.getElementById("lbl-seg-dias").innerText = dias || "______";
-
-              if (fecha) {
-                const partes = fecha.split("-");
-                document.getElementById("lbl-seg-fecha").innerText = `${partes[2]}/${partes[1]}/${partes[0]}`;
-              } else {
-                document.getElementById("lbl-seg-fecha").innerText = "____ / ____ / _______";
-              }
-            }
-    </script>
-  </body>
+          }
+  </script>
 </html>
