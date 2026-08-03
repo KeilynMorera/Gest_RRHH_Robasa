@@ -339,13 +339,30 @@
                   <div class="field field-full">
                     <label for="empleado">
                       <i class="fas fa-user field-icon"></i>
-                      Empleado
-                      <span class="req">*</span>
+                      Empleado <span class="req">*</span>
                     </label>
 
                     <!-- Lista dinámica de empleados -->
-                    <select id="empleado" name="empleado" required>
-                      <option value="">Seleccione un empleado...</option>
+                    <select
+                      id="empleado"
+                      name="empleado"
+                      required
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <!-- Opción por defecto activa y seleccionable -->
+                      <option
+                        value=""
+                        {%
+                        if
+                        not
+                        saldo_editar
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        -- Seleccione un empleado --
+                      </option>
 
                       {% for empleado in empleados %}
                       <option
@@ -356,9 +373,7 @@
                         and
                         saldo_editar.idEmpleado_Sal_Vac.idEmpleado=""
                         ="empleado.idEmpleado"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
@@ -391,47 +406,57 @@
               </div>
 
               <!-- ==========================================================================
-                   SECCIÓN: MÉTRICAS DEL SALDO
-                   ========================================================================== -->
+                    SECCIÓN: MÉTRICAS DEL SALDO
+                ========================================================================== -->
               <div class="form-section">
                 <!-- Título -->
                 <h4 class="form-section-title">Métricas del Saldo</h4>
 
                 <!-- Grid organizador -->
                 <div class="form-grid">
-                  <!-- ===================== DÍAS ACUMULADOS ===================== -->
+                  <!-- DÍAS ACUMULADOS -->
                   <div class="field">
                     <label for="dias_acumulados">
                       <i class="fas fa-calendar-plus field-icon"></i>
-                      Días Acumulados
-                      <span class="req">*</span>
+                      Días Acumulados <span class="req">*</span>
                     </label>
-
-                    <!-- Días acumulados por el colaborador -->
-                    <input type="number" id="dias_acumulados" readonly />
+                    <input
+                      type="number"
+                      step="any"
+                      id="dias_acumulados"
+                      name="dias_acumulados"
+                      readonly
+                    />
                   </div>
 
-                  <!-- ===================== DÍAS TOMADOS ===================== -->
+                  <!-- DÍAS TOMADOS -->
                   <div class="field">
                     <label for="dias_tomados">
                       <i class="fas fa-calendar-minus field-icon"></i>
-                      Días Tomados
-                      <span class="req">*</span>
+                      Días Tomados <span class="req">*</span>
                     </label>
-
-                    <!-- Cantidad de días utilizados -->
-                    <input type="number" id="dias_tomados" readonly />
+                    <input
+                      type="number"
+                      step="any"
+                      id="dias_tomados"
+                      name="dias_tomados"
+                      readonly
+                    />
                   </div>
 
-                  <!-- ===================== DÍAS DISPONIBLES ===================== -->
+                  <!-- DÍAS DISPONIBLES -->
                   <div class="field">
                     <label for="dias_disponibles">
                       <i class="fas fa-calendar-check field-icon"></i>
                       Días Disponibles
                     </label>
-
-                    <!-- Campo calculado automáticamente -->
-                    <input type="number" id="dias_disponibles" readonly />
+                    <input
+                      type="number"
+                      step="any"
+                      id="dias_disponibles"
+                      name="dias_disponibles"
+                      readonly
+                    />
                   </div>
                 </div>
               </div>

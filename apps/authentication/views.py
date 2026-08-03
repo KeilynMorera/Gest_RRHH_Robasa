@@ -2959,7 +2959,6 @@ def registrar_solicitud_vacacion(request):
 # =========================================================
 # EDITAR SOLICITUD DE VACACIONES
 # =========================================================
-
 @requiere_permiso("vacaciones", "editar")
 def editar_solicitud_vacacion(request, id):
 
@@ -3006,70 +3005,100 @@ def editar_solicitud_vacacion(request, id):
     )
 
 
+from datetime import date
+from django.db.models import Sum
+from django.shortcuts import render, get_object_or_404, redirect
+
 # =========================================================
-# GUARDAR CONSULTA DE VACACIONES
+# GUARDAR SALDO DE VACACIONES (CON LÓGICA PROGRESIVA ACUMULADA)
 # =========================================================
 @requiere_permiso("vacaciones", "ver")
 def guardar_saldo_vacaciones(request):
 
-    empleados = Empleado.objects.select_related(
-        'idPersona'
-    )
-
     if request.method == "POST":
-
-        # ==========================================
-        # VALIDAR PERMISO PARA CREAR
-        # ==========================================
-        bloqueo = bloquear_si_no_puede(
-            request,
-            "vacaciones",
-            "crear"
-        )
-
+        # 1. Validar permisos de creación
+        bloqueo = bloquear_si_no_puede(request, "vacaciones", "crear")
         if bloqueo:
             return bloqueo
 
         empleado_id = request.POST.get("empleado")
+        anio_param = request.POST.get("anio")
 
-        empleado = Empleado.objects.get(
-            idEmpleado=empleado_id
-        )
+        if empleado_id:
+            empleado = get_object_or_404(Empleado, idEmpleado=empleado_id)
 
-        anio_actual = date.today().year
+            try:
+                anio = int(anio_param) if anio_param else date.today().year
+            except ValueError:
+                anio = date.today().year
 
-        saldo, creado = VacacionSaldo.objects.get_or_create(
+            hoy = date.today()
+            fecha_corte = date(anio, 12, 31) if anio < hoy.year else hoy
 
-            idEmpleado_Sal_Vac=empleado,
+            # 2. BUSCAR SALDO ANTERIOR DE ESTE EMPLEADO
+            saldo_anterior = VacacionSaldo.objects.filter(
+                idEmpleado_Sal_Vac=empleado,
+                Anio__lt=anio
+            ).order_by('-Anio').first()
 
-            Anio=anio_actual
-        )
+            # 3. CÁLCULO DE DÍAS ACUMULADOS PROGRESIVO
+            if saldo_anterior:
+                disponibles_base = float(saldo_anterior.Dias_Disponibles or 0.0)
+                inicio_periodo = date(anio, 1, 1)
 
-        for s in VacacionSolicitud.objects.filter(
-            idEmpleado_Sol_Vac=empleado
-        ):
-            print(
-                s.idSolicitud,
-                s.Dias_Solicitud,
-                s.id_Estatus_Vacante.TipoEstatus
+                if fecha_corte > inicio_periodo:
+                    dias_en_periodo = (fecha_corte - inicio_periodo).days
+                    ganados_periodo = round((dias_en_periodo / 365.0) * 15, 2)
+                else:
+                    ganados_periodo = 0.0
+
+                acumulados = round(disponibles_base + ganados_periodo, 2)
+            else:
+                fecha_ingreso = getattr(empleado, 'Fecha_Ingreso', None) or getattr(empleado, 'fecha_ingreso', None)
+                if fecha_ingreso and fecha_corte > fecha_ingreso:
+                    dias_trabajados = (fecha_corte - fecha_ingreso).days
+                    acumulados = round((dias_trabajados / 365.0) * 15, 2)
+                else:
+                    acumulados = 0.0
+
+            # 4. SOLICITUDES DE VACACIONES TOMADAS EN EL AÑO CONSULTADO
+            solicitudes = VacacionSolicitud.objects.filter(
+                idEmpleado_Sol_Vac=empleado,
+                id_Estatus_Vacante__TipoEstatus__icontains="aprobad",
+                Fecha_Inicio__year=anio
+            )
+            suma_tomados = solicitudes.aggregate(total=Sum('Dias_Solicitud'))['total']
+            tomados = float(suma_tomados) if suma_tomados is not None else 0.0
+
+            # 5. DÍAS DISPONIBLES FINALES
+            disponibles = round(acumulados - tomados, 2)
+
+            # 6. GUARDAR / ACTUALIZAR EN BASE DE DATOS
+            saldo, creado = VacacionSaldo.objects.get_or_create(
+                idEmpleado_Sal_Vac=empleado,
+                Anio=anio
             )
 
-        saldo.save()
+            VacacionSaldo.objects.filter(pk=saldo.pk).update(
+                Dias_Acumulados=acumulados,
+                Dias_Tomado=tomados,
+                Dias_Disponibles=disponibles
+            )
 
+    # Cargar datos actualizados para re-renderizar la tabla
+    empleados = Empleado.objects.select_related('idPersona')
     saldos = VacacionSaldo.objects.select_related(
         'idEmpleado_Sal_Vac',
         'idEmpleado_Sal_Vac__idPersona'
     )
 
-    return render(
-        request,
-        'con_Vacacion.html',
-        {
-            'empleados': empleados,
-            'saldos': saldos
-        }
-    )
+    contexto = {
+        'empleados': empleados,
+        'saldos': saldos,
+        'saldo_editar': None
+    }
 
+    return render(request, 'con_Vacacion.html', contexto)
 
 # =========================================================
 # MODIFICAR CONSULTA DE VACACIONES
@@ -3124,44 +3153,86 @@ def editar_saldo_vacaciones(request, id):
     )
 
 
+from datetime import date
+from django.db.models import Sum
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+
 # =========================================================
-# OBTENER EL SALDO DE VACACIONES
+# OBTENER EL SALDO DE VACACIONES (ACUMULATIVO SOBRE EL ÚLTIMO SALDO)
 # =========================================================
 @requiere_permiso("vacaciones", "ver")
 def obtener_saldo_vacaciones(request):
+    empleado_id = request.GET.get("empleado")
+    anio_param = request.GET.get("anio")
 
-    empleado_id = request.GET.get(
-        "empleado"
-    )
+    if not empleado_id:
+        return JsonResponse({
+            'acumulados': 0,
+            'tomados': 0,
+            'disponibles': 0
+        })
 
-    empleado = Empleado.objects.get(
-        idEmpleado=empleado_id
-    )
+    empleado = get_object_or_404(Empleado, idEmpleado=empleado_id)
 
-    saldo = VacacionSaldo(
+    # 1. Obtener el año ingresado
+    try:
+        anio = int(anio_param) if anio_param else date.today().year
+    except ValueError:
+        anio = date.today().year
 
+    hoy = date.today()
+    fecha_corte = date(anio, 12, 31) if anio < hoy.year else hoy
+
+    # 2. BUSCAR SI YA TIENE UN SALDO GUARDADO ANTERIOR A ESTE AÑO
+    saldo_anterior = VacacionSaldo.objects.filter(
         idEmpleado_Sal_Vac=empleado,
+        Anio__lt=anio  # Saldo de años menores al que estamos consultando
+    ).order_by('-Anio').first()
 
-        Anio=date.today().year
+    # 3. CÁLCULO DE DÍAS ACUMULADOS PROGRESIVO
+    if saldo_anterior:
+        # Puntos de partida: Los disponibles que le quedaron en el período anterior
+        disponibles_base = float(saldo_anterior.Dias_Disponibles or 0.0)
+        
+        # Calculamos solo los días ganados desde el 1 de Enero del año consultado hasta la fecha de corte
+        inicio_periodo = date(anio, 1, 1)
+        if fecha_corte > inicio_periodo:
+            dias_en_periodo = (fecha_corte - inicio_periodo).days
+            ganados_periodo = round((dias_en_periodo / 365.0) * 15, 2)
+        else:
+            ganados_periodo = 0.0
+
+        # Los acumulados para este nuevo período son: Lo que traía disponible + lo ganado en este período
+        acumulados = round(disponibles_base + ganados_periodo, 2)
+
+    else:
+        # Si es la primera vez que se registra saldo para este empleado:
+        fecha_ingreso = getattr(empleado, 'Fecha_Ingreso', None) or getattr(empleado, 'fecha_ingreso', None)
+        if fecha_ingreso and fecha_corte > fecha_ingreso:
+            dias_trabajados = (fecha_corte - fecha_ingreso).days
+            acumulados = round((dias_trabajados / 365.0) * 15, 2)
+        else:
+            acumulados = 0.0
+
+    # 4. SOLICITUDES DE VACACIONES TOMADAS EN EL AÑO CONSULTADO
+    solicitudes = VacacionSolicitud.objects.filter(
+        idEmpleado_Sol_Vac=empleado,
+        id_Estatus_Vacante__TipoEstatus__icontains="aprobad",
+        Fecha_Inicio__year=anio # Solo restamos lo tomado en ESTE período
     )
 
-    acumulados = saldo.calcular_dias_acumulados()
+    resultado_tomados = solicitudes.aggregate(total=Sum('Dias_Solicitud'))['total']
+    tomados = float(resultado_tomados) if resultado_tomados is not None else 0.0
 
-    tomados = saldo.calcular_dias_tomados()
-
-    disponibles = acumulados - tomados
+    # 5. DÍAS DISPONIBLES FINALES
+    disponibles = round(acumulados - tomados, 2)
 
     return JsonResponse({
-
         'acumulados': acumulados,
-
         'tomados': tomados,
-
         'disponibles': disponibles
-
     })
-
-
 
 def elec_Asistencia_view(request):
     return render(request, 'elec_Asistencia.html')

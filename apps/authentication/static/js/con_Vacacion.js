@@ -1,68 +1,96 @@
 // ==========================================================================
-// BUSCADOR DE EMPLEADOS EN LA TABLA DE SALDOS DE VACACIONES
+// CONSULTA AJAX DE SALDOS Y FILTRO DE TABLA
 // ==========================================================================
 
-// Espera a que todo el contenido HTML esté cargado
 document.addEventListener("DOMContentLoaded", function () {
 
   // ========================================================================
-  // OBTENER ELEMENTOS DEL HTML
+  // 1. CÁLCULO AUTOMÁTICO DE DÍAS SEGÚN EMPLEADO Y AÑO
   // ========================================================================
+  const selectEmpleado = document.getElementById("empleado");
+  const inputAnio = document.getElementById("anio");
+  const inputAcumulados = document.getElementById("dias_acumulados");
+  const inputTomados = document.getElementById("dias_tomados");
+  const inputDisponibles = document.getElementById("dias_disponibles");
 
-  // Campo donde el usuario escribe el nombre que desea buscar
-  const filtro = document.getElementById("filtro-saldo");
+  function recalcularDias() {
+    if (!selectEmpleado) return;
 
-  // Tabla que contiene los registros de saldos
-  const tabla = document.getElementById("tabla-saldos");
+    const empleadoId = selectEmpleado.value;
+    // Si no hay año ingresado, toma el año actual
+    const anio = inputAnio && inputAnio.value ? inputAnio.value : new Date().getFullYear();
 
-  // Verifica que existan ambos elementos antes de continuar
-  if (!filtro || !tabla) {
-    return;
+    // Si deseleccionan el empleado, limpiamos los campos
+    if (!empleadoId) {
+      if (inputAcumulados) inputAcumulados.value = "";
+      if (inputTomados) inputTomados.value = "";
+      if (inputDisponibles) inputDisponibles.value = "";
+      return;
+    }
+
+    // Construimos la URL enviando EMPLEADO Y AÑO
+    const url = `/obtener-saldo-vacaciones/?empleado=${empleadoId}&anio=${anio}`;
+
+    fetch(url, {
+      headers: {
+        "X-Requested-With": "XMLHttpRequest"
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Error en la respuesta del servidor");
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Asignar los valores dinámicos
+        if (inputAcumulados) inputAcumulados.value = data.acumulados ?? 0;
+        if (inputTomados) inputTomados.value = data.tomados ?? 0;
+        if (inputDisponibles) inputDisponibles.value = data.disponibles ?? 0;
+      })
+      .catch(error => {
+        console.error("Error al obtener el saldo del empleado:", error);
+      });
   }
 
-  // Obtiene todas las filas del cuerpo de la tabla
-  const filas = tabla.querySelectorAll("tbody tr");
+  // Escuchar cambios en el selector de empleado
+  if (selectEmpleado) {
+    selectEmpleado.addEventListener("change", recalcularDias);
+  }
+
+  // Escuchar cambios o tipeo en el campo de Año
+  if (inputAnio) {
+    inputAnio.addEventListener("change", recalcularDias);
+    inputAnio.addEventListener("input", recalcularDias);
+  }
+
 
   // ========================================================================
-  // EVENTO DE BÚSQUEDA
+  // 2. BUSCADOR EN LA TABLA DE SALDOS
   // ========================================================================
+  const filtro = document.getElementById("filtro-saldo");
+  const tabla = document.getElementById("tabla-saldos");
 
-  filtro.addEventListener("input", function () {
+  if (filtro && tabla) {
+    const filas = tabla.querySelectorAll("tbody tr");
 
-    // Obtiene el texto escrito por el usuario
-    // y lo convierte a minúsculas para que la búsqueda
-    // no distinga entre mayúsculas y minúsculas
-    const textoBusqueda = filtro.value.toLowerCase().trim();
+    filtro.addEventListener("input", function () {
+      const textoBusqueda = filtro.value.toLowerCase().trim();
 
-    // Recorre todas las filas de la tabla
-    filas.forEach(function (fila) {
+      filas.forEach(function (fila) {
+        const celdas = fila.querySelectorAll("td");
 
-      // Obtiene todas las celdas de la fila
-      const celdas = fila.querySelectorAll("td");
+        if (celdas.length <= 1) return; // Ignora fila vacía
 
-      // Si la fila no tiene celdas, no se procesa
-      if (celdas.length === 0) {
-        return;
-      }
+        // Columna Nombre del Empleado (Índice 1)
+        const nombreEmpleado = celdas[1].textContent.toLowerCase().trim();
 
-      // La columna del empleado es la segunda columna
-      // Índice 0 = ID
-      // Índice 1 = Empleado
-      const nombreEmpleado = celdas[1].textContent
-        .toLowerCase()
-        .trim();
-
-      // Comprueba si el nombre contiene el texto buscado
-      if (nombreEmpleado.includes(textoBusqueda)) {
-
-        // Muestra la fila si coincide
-        fila.style.display = "";
-
-      } else {
-
-        // Oculta la fila si no coincide
-        fila.style.display = "none";
-      }
+        if (nombreEmpleado.includes(textoBusqueda)) {
+          fila.style.display = "";
+        } else {
+          fila.style.display = "none";
+        }
+      });
     });
-  });
+  }
 });

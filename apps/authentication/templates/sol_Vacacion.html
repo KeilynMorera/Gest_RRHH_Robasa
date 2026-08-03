@@ -328,9 +328,6 @@
                CUERPO DEL FORMULARIO
                ========================================================================== -->
           <div class="form-body">
-            <!-- ==========================================================================
-                 FORMULARIO HTML
-                 ========================================================================== -->
             <form method="POST" action="{% url 'solicitudes_vacaciones' %}">
               {% if solicitud_editar %}
 
@@ -364,13 +361,30 @@
                   <div class="field field-full">
                     <label for="empleado">
                       <i class="fas fa-user field-icon"></i>
-                      Empleado
-                      <span class="req">*</span>
+                      Empleado <span class="req">*</span>
                     </label>
 
                     <!-- Lista de empleados -->
-                    <select id="empleado" name="empleado" required>
-                      <option value="">Seleccione un empleado...</option>
+                    <select
+                      id="empleado"
+                      name="empleado"
+                      required
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <!-- Opción por defecto activa y seleccionable -->
+                      <option
+                        value=""
+                        {%
+                        if
+                        not
+                        solicitud_editar
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        -- Seleccione un empleado --
+                      </option>
 
                       {% for empleado in empleados %}
                       <option
@@ -381,9 +395,7 @@
                         and
                         solicitud_editar.idEmpleado_Sol_Vac.idEmpleado=""
                         ="empleado.idEmpleado"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
@@ -415,16 +427,32 @@
                   <div class="field">
                     <label for="estado">
                       <i class="fas fa-clipboard-check field-icon"></i>
-                      Estado
-                      <span class="req">*</span>
+                      Estado <span class="req">*</span>
                     </label>
 
                     <!-- Estado actual de la solicitud -->
-                    <select id="estado" name="estado" required>
-                      <option value="">Seleccione un estado...</option>
+                    <select
+                      id="estado"
+                      name="estado"
+                      required
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <!-- Opción por defecto activa y seleccionable -->
+                      <option
+                        value=""
+                        {%
+                        if
+                        not
+                        solicitud_editar
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        -- Seleccione un estado --
+                      </option>
 
                       {% for estado in estados %}
-
                       <option
                         value="{{ estado.id_Estatus_Vacante }}"
                         {%
@@ -433,15 +461,12 @@
                         and
                         solicitud_editar.id_Estatus_Vacante.id_Estatus_Vacante=""
                         ="estado.id_Estatus_Vacante"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
                         {{ estado.TipoEstatus }}
                       </option>
-
                       {% endfor %}
                     </select>
                   </div>
@@ -529,11 +554,27 @@
                     </label>
 
                     <!-- Lista de aprobadores -->
-                    <select id="aprobador" name="aprobador">
-                      <option value="">Seleccione el aprobador...</option>
+                    <select
+                      id="aprobador"
+                      name="aprobador"
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <!-- Opción por defecto activa y seleccionable -->
+                      <option
+                        value=""
+                        {%
+                        if
+                        not
+                        solicitud_editar
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        -- Seleccione el aprobador --
+                      </option>
 
                       {% for aprobador in aprobadores %}
-
                       <option
                         value="{{ aprobador.idEmpleado }}"
                         {%
@@ -542,15 +583,12 @@
                         and
                         solicitud_editar.idEmpleado_Respon.idEmpleado=""
                         ="aprobador.idEmpleado"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
                         {{ aprobador.idPersona.Nombre_Completo }}
                       </option>
-
                       {% endfor %}
                     </select>
                   </div>

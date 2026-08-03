@@ -133,7 +133,7 @@ urlpatterns = [
     # =========================================================
     path('guardar_saldo_vacaciones/', views.guardar_saldo_vacaciones, name='guardar_saldo_vacaciones'),
     path('editar_saldo_vacaciones/<int:id>/', views.editar_saldo_vacaciones, name='editar_saldo_vacaciones'),
-    path('obtener_saldo_vacaciones/', views.obtener_saldo_vacaciones, name='obtener_saldo_vacaciones'),
+    path('obtener-saldo-vacaciones/', views.obtener_saldo_vacaciones, name='obtener_saldo_vacaciones'),
     
 
     # =========================================================
