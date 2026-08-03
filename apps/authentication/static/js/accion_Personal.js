@@ -230,3 +230,113 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const selectEmpleado = document.getElementById("idEmpleado");
+
+  // Elementos Salario
+  const inputSalarioActual = document.getElementById("salario_actual");
+  const contenedorSalario = document.getElementById("contenedor-salario-actual");
+  const inputIdSalario = document.getElementById("idSalarioEmpleado");
+
+  // Elementos Premio Actual
+  const inputPremioActual = document.getElementById("premio_actual");
+  const contenedorPremio = document.getElementById("contenedor-premio-actual");
+  const inputIdPremio = document.getElementById("idPremioAsignado");
+
+  // Elementos Nuevo Premio
+  const inputNuevoPremio = document.getElementById("nuevo_premio");
+  const contenedorNuevoPremio = document.getElementById("contenedor-nuevo-premio");
+
+  // ==========================================================
+  // 1. APLICAR BLOQUEO VISUAL Y DE EDICIÓN
+  // ==========================================================
+  function bloquearCampoLectura(inputElement) {
+    if (!inputElement) return;
+
+    // A. Atributo HTML y estilo visual de casilla bloqueada
+    inputElement.setAttribute("readonly", true);
+    inputElement.tabIndex = -1; // Evita que gane foco con la tecla TAB
+    inputElement.style.backgroundColor = "#e9ecef";
+    inputElement.style.cursor = "not-allowed";
+
+    // B. Bloqueo de entrada por teclado o pegado
+    inputElement.addEventListener("keydown", function (e) {
+      e.preventDefault();
+      return false;
+    });
+
+    inputElement.addEventListener("paste", function (e) {
+      e.preventDefault();
+      return false;
+    });
+  }
+
+  // Aplicamos el bloqueo a las casillas "Actuales"
+  bloquearCampoLectura(inputSalarioActual);
+  bloquearCampoLectura(inputPremioActual);
+
+  // ==========================================================
+  // 2. CÓDIGO FETCH / AJAX
+  // ==========================================================
+  if (selectEmpleado) {
+    selectEmpleado.addEventListener("change", function () {
+      const idEmpleado = this.value;
+
+      // Reseteo si se deselecciona el empleado
+      if (!idEmpleado) {
+        if (inputSalarioActual) inputSalarioActual.value = "";
+        if (inputPremioActual) inputPremioActual.value = "";
+        if (inputNuevoPremio) inputNuevoPremio.value = "";
+
+        if (contenedorSalario) contenedorSalario.style.display = "none";
+        if (contenedorPremio) contenedorPremio.style.display = "none";
+        if (contenedorNuevoPremio) contenedorNuevoPremio.style.display = "none";
+        return;
+      }
+
+      // Consulta al backend Django
+      fetch(`/api/obtener-salario-empleado/${idEmpleado}/`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            // --- 1. CARGA SALARIO ACTUAL ---
+            if (inputSalarioActual) {
+              const montoSalario = parseFloat(data.salario_neto) || 0;
+              inputSalarioActual.value = `₡${montoSalario.toLocaleString("es-CR", { minimumFractionDigits: 2 })}`;
+            }
+            if (inputIdSalario) inputIdSalario.value = data.idSalario || "";
+            if (contenedorSalario) contenedorSalario.style.display = "block";
+
+            // --- 2. CARGA PREMIO ACTUAL ---
+            if (inputPremioActual) {
+              // Revisa si viene como 'premio_actual', 'premio' o 'monto_premio'
+              const valorRaw = data.premio_actual ?? data.premio ?? data.monto_premio ?? 0;
+              const montoPremio = parseFloat(valorRaw) || 0;
+
+              inputPremioActual.value = `₡${montoPremio.toLocaleString("es-CR", { minimumFractionDigits: 2 })}`;
+            }
+            if (inputIdPremio) inputIdPremio.value = data.idPremio || data.idPremioAsignado || "";
+            if (contenedorPremio) contenedorPremio.style.display = "block";
+
+            // --- 3. MOSTRAR CAMPO PARA NUEVO PREMIO ---
+            if (contenedorNuevoPremio) {
+              contenedorNuevoPremio.style.display = "block";
+              if (inputNuevoPremio) inputNuevoPremio.value = "";
+            }
+
+          } else {
+            if (inputSalarioActual) inputSalarioActual.value = "Sin registro";
+            if (inputPremioActual) inputPremioActual.value = "Sin registro";
+            if (contenedorNuevoPremio) contenedorNuevoPremio.style.display = "none";
+          }
+        })
+        .catch((error) => {
+          console.error("Error al cargar la información:", error);
+          if (inputSalarioActual) inputSalarioActual.value = "Error al cargar";
+          if (inputPremioActual) inputPremioActual.value = "Error al cargar";
+          if (contenedorNuevoPremio) contenedorNuevoPremio.style.display = "none";
+        });
+    });
+  }
+});

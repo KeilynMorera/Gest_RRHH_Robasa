@@ -359,8 +359,18 @@
                     id="contenedor-salario-actual"
                     style="display: none"
                   >
-                    <label> Salario Neto Actual </label>
-                    <input type="text" id="salario_actual" readonly />
+                    <label for="salario_actual">Salario Neto Actual</label>
+
+                    <!-- El atributo 'readonly' evita edición manual y permite enviar datos si fuera necesario -->
+                    <input
+                      type="text"
+                      id="salario_actual"
+                      name="salario_actual"
+                      readonly
+                      tabindex="-1"
+                      style="background-color: #e9ecef; cursor: not-allowed"
+                    />
+
                     <input
                       type="hidden"
                       id="idSalarioEmpleado"
@@ -404,7 +414,14 @@
                     id="contenedor-nuevo-premio"
                     style="display: none"
                   >
-                    <!-- Contenido dinámico del premio -->
+                    <label for="nuevo_premio"> Nuevo Premio </label>
+                    <input
+                      type="number"
+                      name="nuevo_premio"
+                      id="nuevo_premio"
+                      step="0.01"
+                      placeholder="0.00"
+                    />
                   </div>
                 </div>
 
