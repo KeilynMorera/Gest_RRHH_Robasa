@@ -382,13 +382,28 @@
                   <div class="field">
                     <label for="estatus">
                       <i class="fas fa-circle-check field-icon"></i>
-                      Estatus
-                      <span class="req">*</span>
+                      Estatus <span class="req">*</span>
                     </label>
 
-                    <select id="estatus" name="estatus" required>
-                      <option value="" disabled selected>
-                        Seleccione estado...
+                    <select
+                      id="estatus"
+                      name="estatus"
+                      required
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <!-- Opción por defecto activa y seleccionable -->
+                      <option
+                        value=""
+                        {%
+                        if
+                        not
+                        vacante_editar
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        -- Seleccione un estatus --
                       </option>
 
                       {% for estatus in estatuses %}
@@ -400,9 +415,7 @@
                         and
                         vacante_editar.id_Estatus_Vacante.id_Estatus_Vacante=""
                         ="estatus.id_Estatus_Vacante"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
@@ -481,13 +494,28 @@
                   <div class="field">
                     <label for="puesto">
                       <i class="fas fa-briefcase field-icon"></i>
-                      Puesto de la Vacante
-                      <span class="req">*</span>
+                      Puesto de la Vacante <span class="req">*</span>
                     </label>
 
-                    <select id="puesto" name="puesto" required>
-                      <option value="" disabled selected>
-                        Seleccione el puesto...
+                    <select
+                      id="puesto"
+                      name="puesto"
+                      required
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <!-- Opción por defecto activa y seleccionable -->
+                      <option
+                        value=""
+                        {%
+                        if
+                        not
+                        vacante_editar
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        -- Seleccione el puesto --
                       </option>
 
                       {% for puesto in puestos %}
@@ -499,9 +527,7 @@
                         and
                         vacante_editar.idPuesto.idPuesto=""
                         ="puesto.idPuesto"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
@@ -585,13 +611,28 @@
                   <div class="field">
                     <label for="empleado_aut">
                       <i class="fas fa-user-shield field-icon"></i>
-                      Autorizado por
-                      <span class="req">*</span>
+                      Autorizado por <span class="req">*</span>
                     </label>
 
-                    <select id="empleado_aut" name="empleado_aut" required>
-                      <option value="" disabled selected>
-                        Seleccione empleado...
+                    <select
+                      id="empleado_aut"
+                      name="empleado_aut"
+                      required
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <!-- Opción por defecto activa y seleccionable -->
+                      <option
+                        value=""
+                        {%
+                        if
+                        not
+                        vacante_editar
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        -- Seleccione un empleado --
                       </option>
 
                       {% for emp in empleados %}
@@ -603,13 +644,11 @@
                         and
                         vacante_editar.idEmpleado_Aut.idEmpleado=""
                         ="emp.idEmpleado"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
-                        {{ emp.idPersona.Nombre_Completo }} — {% if emp.idPuesto %} {{ emp.idPuesto.Nombre }} {% else %} Sin puesto asignado {% endif %}
+                        {{ emp.idPersona.Nombre_Completo }} — {% if emp.idPuesto %}{{ emp.idPuesto.Nombre }}{% else %}Sin puesto asignado{% endif %}
                       </option>
                       {% endfor %}
                     </select>
@@ -619,13 +658,28 @@
                   <div class="field">
                     <label for="empleado_eval">
                       <i class="fas fa-user-check field-icon"></i>
-                      Evaluador / Reclutador
-                      <span class="req">*</span>
+                      Evaluador / Reclutador <span class="req">*</span>
                     </label>
 
-                    <select id="empleado_eval" name="empleado_eval" required>
-                      <option value="" disabled selected>
-                        Seleccione empleado...
+                    <select
+                      id="empleado_eval"
+                      name="empleado_eval"
+                      required
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <!-- Opción por defecto activa y seleccionable -->
+                      <option
+                        value=""
+                        {%
+                        if
+                        not
+                        vacante_editar
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        -- Seleccione un empleado --
                       </option>
 
                       {% for emp in empleados %}
@@ -637,13 +691,11 @@
                         and
                         vacante_editar.idEmpleado_Rel_Ev.idEmpleado=""
                         ="emp.idEmpleado"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
-                        {{ emp.idPersona.Nombre_Completo }} — {% if emp.idPuesto %} {{ emp.idPuesto.Nombre }} {% else %} Sin puesto asignado {% endif %}
+                        {{ emp.idPersona.Nombre_Completo }} — {% if emp.idPuesto %}{{ emp.idPuesto.Nombre }}{% else %}Sin puesto asignado{% endif %}
                       </option>
                       {% endfor %}
                     </select>
@@ -653,13 +705,28 @@
                   <div class="field">
                     <label for="empleado_jefe">
                       <i class="fas fa-user-tie field-icon"></i>
-                      Jefe Directo del Puesto
-                      <span class="req">*</span>
+                      Jefe Directo del Puesto <span class="req">*</span>
                     </label>
 
-                    <select id="empleado_jefe" name="empleado_jefe" required>
-                      <option value="" disabled selected>
-                        Seleccione empleado...
+                    <select
+                      id="empleado_jefe"
+                      name="empleado_jefe"
+                      required
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <!-- Opción por defecto activa y seleccionable -->
+                      <option
+                        value=""
+                        {%
+                        if
+                        not
+                        vacante_editar
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        -- Seleccione un empleado --
                       </option>
 
                       {% for emp in empleados %}
@@ -671,13 +738,11 @@
                         and
                         vacante_editar.idEmpleado_Jef_Puest.idEmpleado=""
                         ="emp.idEmpleado"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
-                        {{ emp.idPersona.Nombre_Completo }} — {% if emp.idPuesto %} {{ emp.idPuesto.Nombre }} {% else %} Sin puesto asignado {% endif %}
+                        {{ emp.idPersona.Nombre_Completo }} — {% if emp.idPuesto %}{{ emp.idPuesto.Nombre }}{% else %}Sin puesto asignado{% endif %}
                       </option>
                       {% endfor %}
                     </select>
@@ -690,8 +755,13 @@
                       Empleado al que se releva
                     </label>
 
-                    <select id="empleado_sus" name="empleado_sus">
-                      <!-- Opción para indicar que no se sustituye a ningún colaborador -->
+                    <select
+                      id="empleado_sus"
+                      name="empleado_sus"
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <!-- Opción predeterminada seleccionada si no hay empleado a sustituir -->
                       <option
                         value=""
                         {%
@@ -701,9 +771,7 @@
                         or
                         not
                         vacante_editar.idEmpleado_Sus
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
@@ -722,13 +790,11 @@
                         and
                         vacante_editar.idEmpleado_Sus.idEmpleado=""
                         ="emp.idEmpleado"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
-                        {{ emp.idPersona.Nombre_Completo }} — {% if emp.idPuesto %} {{ emp.idPuesto.Nombre }} {% else %} Sin puesto asignado {% endif %}
+                        {{ emp.idPersona.Nombre_Completo }} — {% if emp.idPuesto %}{{ emp.idPuesto.Nombre }}{% else %}Sin puesto asignado{% endif %}
                       </option>
                       {% endfor %}
                     </select>

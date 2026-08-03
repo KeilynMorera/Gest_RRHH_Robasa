@@ -291,15 +291,31 @@
                   <div class="field">
                     <label for="vacante">
                       <i class="fas fa-briefcase field-icon"></i>
-                      Vacante a Aplicar
-                      <span class="req">*</span>
+                      Vacante a Aplicar <span class="req">*</span>
                     </label>
 
-                    <select id="vacante" name="vacante" required>
-                      <option value="">Seleccione una vacante...</option>
+                    <select
+                      id="vacante"
+                      name="vacante"
+                      required
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <!-- Opción por defecto activa y seleccionable -->
+                      <option
+                        value=""
+                        {%
+                        if
+                        not
+                        candidato_editar
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        -- Seleccione una vacante --
+                      </option>
 
                       {% for vacante in vacantes %}
-
                       <option
                         value="{{ vacante.id_Vacante }}"
                         {%
@@ -308,15 +324,12 @@
                         and
                         candidato_editar.id_Vacante.id_Vacante=""
                         ="vacante.id_Vacante"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
                         {{ vacante.TituloPublicacion }}
                       </option>
-
                       {% endfor %}
                     </select>
                   </div>
@@ -325,15 +338,31 @@
                   <div class="field">
                     <label for="persona">
                       <i class="fas fa-user field-icon"></i>
-                      Candidato / Persona
-                      <span class="req">*</span>
+                      Candidato / Persona <span class="req">*</span>
                     </label>
 
-                    <select id="persona" name="persona" required>
-                      <option value="">Seleccione una persona...</option>
+                    <select
+                      id="persona"
+                      name="persona"
+                      required
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <!-- Opción por defecto activa y seleccionable -->
+                      <option
+                        value=""
+                        {%
+                        if
+                        not
+                        candidato_editar
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        -- Seleccione una persona --
+                      </option>
 
                       {% for persona in personas %}
-
                       <option
                         value="{{ persona.idPersona }}"
                         {%
@@ -342,20 +371,17 @@
                         and
                         candidato_editar.idPersona.idPersona=""
                         ="persona.idPersona"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
                         {{ persona.Nombre_Completo }}
                       </option>
-
                       {% endfor %}
                     </select>
                   </div>
 
-                  <!-- Estado -->
+                  <!-- ===================== ESTADO ===================== -->
                   <div class="field">
                     <label>
                       <i class="fas fa-circle-dot field-icon"></i>
@@ -371,17 +397,13 @@
                           value="1"
                           {%
                           if
-                          not
                           candidato_editar
-                          or
+                          and
                           candidato_editar.Activo
-                          %}
-                          checked
-                          {%
+                          %}checked{%
                           endif
                           %}
                         />
-
                         <label for="estadoActivo">
                           <span class="dot"></span>
                           Activo
@@ -400,13 +422,10 @@
                           and
                           not
                           candidato_editar.Activo
-                          %}
-                          checked
-                          {%
+                          %}checked{%
                           endif
                           %}
                         />
-
                         <label for="estadoInactivo">
                           <span class="dot"></span>
                           Inactivo
@@ -419,13 +438,31 @@
                   <div class="field">
                     <label for="fase_actual">
                       <i class="fas fa-layer-group field-icon"></i>
-                      Fase Actual
-                      <span class="req">*</span>
+                      Fase Actual <span class="req">*</span>
                     </label>
 
-                    <select id="fase_actual" name="fase" required>
-                      {% for fase in fases %}
+                    <select
+                      id="fase_actual"
+                      name="fase"
+                      required
+                      class="form-control"
+                      autocomplete="off"
+                    >
+                      <!-- Opción por defecto activa y seleccionable -->
+                      <option
+                        value=""
+                        {%
+                        if
+                        not
+                        candidato_editar
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        -- Seleccione una fase --
+                      </option>
 
+                      {% for fase in fases %}
                       <option
                         value="{{ fase.id_Fase }}"
                         {%
@@ -434,15 +471,12 @@
                         and
                         candidato_editar.id_Fase.id_Fase=""
                         ="fase.id_Fase"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
                         {{ fase.Fase_Actual }}
                       </option>
-
                       {% endfor %}
                     </select>
                   </div>
