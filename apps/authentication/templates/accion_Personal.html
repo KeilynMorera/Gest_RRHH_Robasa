@@ -169,7 +169,6 @@
 
               <div class="user-info">
                 <strong> {{ usuario_nombre }} </strong>
-
                 <span> {{ usuario_puesto }} </span>
               </div>
             </div>
@@ -220,6 +219,9 @@
           {% endif %}
 
           <div class="form-body">
+            <!-- ======================================================
+                 FORMULARIO 1: CABECERA DEL REGISTRO
+            ====================================================== -->
             <form
               action="{% url 'crear_accion' %}"
               method="POST"
@@ -252,13 +254,11 @@
                   <div class="field">
                     <label for="idEmpleado">
                       <i class="fas fa-user-tie field-icon"></i>
-                      Colaborador Implicado
-                      <span class="req">*</span>
+                      Colaborador Implicado <span class="req">*</span>
                     </label>
 
                     <select name="idEmpleado" id="idEmpleado" required>
                       <option value="">Seleccione...</option>
-
                       {% for emp in empleados %}
                       <option value="{{ emp.idEmpleado }}">
                         {{ emp.idPersona.Nombre_Completo }} — {{ emp.idPuesto.Nombre }}
@@ -303,26 +303,27 @@
               </div>
             </form>
 
-            {% if accion_cabecera %}
-
+            <!-- ======================================================
+                 FORMULARIO 2: DETALLE Y BOTONES DE FINALIZACIÓN
+            ====================================================== -->
             <form
               method="POST"
-              action="{% url 'guardar_accion_tipo' accion_cabecera.idAccion %}"
+              action="{% if accion_cabecera %}{% url 'guardar_accion_tipo' accion_cabecera.idAccion %}{% else %}#{% endif %}"
               id="form-detalle"
             >
-              {% csrf_token %}
-
+              {% csrf_token %} {% if accion_cabecera %}
               <input
                 type="hidden"
                 name="idAccion_padre"
                 value="{{ accion_cabecera.idAccion }}"
               />
-
               {% endif %}
 
+              <!-- Contenedor unificado para la sección y sus botones -->
               <div
                 class="form-section {% if not paso_dos_habilitado %}disabled-section{% endif %}"
                 id="seccion-detalle"
+                style="display: none"
               >
                 <h4 class="form-section-title">
                   <i class="fas fa-layer-group"></i> 2. Tipo y Especificación
@@ -341,7 +342,6 @@
                     </label>
                     <select id="Tipo_Accion" name="Tipo_Accion" required>
                       <option value="">Seleccione...</option>
-
                       {% for tipo in tipos_accion %}
                       <option
                         value="{{ tipo.id_Detalle_Accion }}"
@@ -353,18 +353,14 @@
                     </select>
                   </div>
 
-                  <!-- ==========================
-                        SALARIO ACTUAL
-                  ========================== -->
+                  <!-- SALARIO ACTUAL -->
                   <div
                     class="field"
                     id="contenedor-salario-actual"
                     style="display: none"
                   >
                     <label> Salario Neto Actual </label>
-
                     <input type="text" id="salario_actual" readonly />
-
                     <input
                       type="hidden"
                       id="idSalarioEmpleado"
@@ -372,16 +368,13 @@
                     />
                   </div>
 
-                  <!-- ==========================
-                        NUEVO SALARIO
-                  ========================== -->
+                  <!-- NUEVO SALARIO -->
                   <div
                     class="field"
                     id="contenedor-nuevo-salario"
                     style="display: none"
                   >
                     <label> Nuevo Salario </label>
-
                     <input
                       type="number"
                       name="nuevo_salario"
@@ -390,33 +383,28 @@
                     />
                   </div>
 
-                  <!-- ==========================
-                        PREMIO ACTUAL
-                  ========================== -->
+                  <!-- PREMIO ACTUAL -->
                   <div
                     class="field"
                     id="contenedor-premio-actual"
                     style="display: none"
                   >
                     <label> Premio Actual </label>
-
                     <input type="text" id="premio_actual" readonly />
-
                     <input
                       type="hidden"
                       id="idPremioAsignado"
                       name="idPremioAsignado"
                     />
                   </div>
-                  <!-- ==========================
-                        NUEVO PREMIO
-                  ========================== -->
+
+                  <!-- NUEVO PREMIO -->
                   <div
                     class="field"
                     id="contenedor-nuevo-premio"
                     style="display: none"
                   >
-                    ...
+                    <!-- Contenido dinámico del premio -->
                   </div>
                 </div>
 
@@ -432,57 +420,35 @@
                     placeholder="Detalle del movimiento administrativo..."
                     maxlength="600"
                     required
-                    {%
-                    if
-                    not
-                    paso_dos_habilitado
-                    %}disabled{%
-                    endif
-                    %}
                   ></textarea>
-                  <small style="color: #6c757d; display: block; margin-top: 4px"
-                    >Máximo 600 caracteres.</small
+                  <small
+                    style="color: #6c757d; display: block; margin-top: 4px"
                   >
+                    Máximo 600 caracteres.
+                  </small>
                 </div>
-              </div>
 
-              <div class="form-footer">
-                <button
-                  type="reset"
-                  id="btn-limpiar"
-                  class="btn btn-ghost"
-                  {%
-                  if
-                  not
-                  paso_dos_habilitado
-                  %}disabled{%
-                  endif
-                  %}
-                >
-                  <i class="fas fa-xmark"></i> Limpiar Campos
-                </button>
+                <!-- Botones del Paso 2 encajados dentro de la sección ocultable -->
+                <div class="form-footer" style="margin-top: 20px">
+                  <button type="reset" id="btn-limpiar" class="btn btn-ghost">
+                    <i class="fas fa-xmark"></i> Limpiar Campos
+                  </button>
 
-                <button
-                  type="submit"
-                  id="btn-finalizar"
-                  class="btn btn-primary"
-                  {%
-                  if
-                  not
-                  paso_dos_habilitado
-                  %}disabled{%
-                  endif
-                  %}
-                >
-                  <i class="fas fa-shield-halved"></i> Aplicar y Sellar Acción
-                </button>
+                  <button
+                    type="submit"
+                    id="btn-finalizar"
+                    class="btn btn-primary"
+                  >
+                    <i class="fas fa-shield-halved"></i> Aplicar y Sellar Acción
+                  </button>
+                </div>
               </div>
             </form>
           </div>
         </section>
 
         <!-- ======================================================
-            TARJETA: HISTORIAL DE ACCIONES DE PERSONAL
+             TARJETA: HISTORIAL DE ACCIONES DE PERSONAL
         ====================================================== -->
         <section class="table-card">
           <div class="table-card-header">
@@ -495,7 +461,6 @@
                 <h2 class="table-card-title">
                   Historial de Acciones de Personal
                 </h2>
-
                 <p class="table-card-subtitle">
                   Solo se muestran acciones que ya cuentan con detalle
                   registrado.
@@ -506,7 +471,6 @@
             <!-- Buscador -->
             <div class="table-search">
               <i class="fas fa-search"></i>
-
               <input
                 type="text"
                 id="filtro-acciones"
@@ -532,17 +496,12 @@
                 {% for a in acciones %}
                 <tr>
                   <td>{{ a.idAccion.idAccion }}</td>
-
                   <td>{{ a.idAccion.idEmpleado.idPersona.Nombre_Completo }}</td>
-
                   <td>{{ a.id_Detalle_Accion.Accion }}</td>
-
                   <td>{{ a.Detalle|truncatechars:60 }}</td>
-
                   <td>
                     {% if a.Monto_TA %} ₡{{ a.Monto_TA }} {% else %} — {% endif %}
                   </td>
-
                   <td>{{ a.idAccion.Fecha }}</td>
                 </tr>
 

@@ -19,27 +19,50 @@ document.addEventListener("DOMContentLoaded", function () {
     const premioActual = document.getElementById("premio_actual");
     const idPremioAsignado = document.getElementById("idPremioAsignado");
 
+    // Elementos para el control de la Sección 2 y sus botones
+    const seccionDetalle = document.getElementById("seccion-detalle");
+    const inputFolio = document.getElementById("idAccion");
 
 
     //==============================
-    // OCULTAR TODO
+    // MOSTRAR/OCULTAR SECCIÓN 2 Y BOTONES
+    //==============================
+
+    function evaluarPasoDos() {
+        if (!seccionDetalle) return;
+
+        // Si existe el Folio con valor cargado, se muestra todo el bloque (formulario + botones)
+        const tieneFolio = inputFolio && inputFolio.value.trim() !== "";
+
+        if (tieneFolio) {
+            seccionDetalle.style.display = "block";
+        } else {
+            seccionDetalle.style.display = "none";
+        }
+    }
+
+    // Ejecución inicial al cargar el DOM
+    evaluarPasoDos();
+
+
+    //==============================
+    // OCULTAR CAMPOS DINÁMICOS
     //==============================
 
     function ocultarCampos(){
 
-        contSalarioActual.style.display = "none";
-        contNuevoSalario.style.display = "none";
+        if (contSalarioActual) contSalarioActual.style.display = "none";
+        if (contNuevoSalario) contNuevoSalario.style.display = "none";
 
-        contPremioActual.style.display = "none";
-        contNuevoPremio.style.display = "none";
+        if (contPremioActual) contPremioActual.style.display = "none";
+        if (contNuevoPremio) contNuevoPremio.style.display = "none";
 
-        salarioActual.value = "";
-        premioActual.value = "";
+        if (salarioActual) salarioActual.value = "";
+        if (premioActual) premioActual.value = "";
 
-        idSalarioEmpleado.value = "";
-        idPremioAsignado.value = "";
+        if (idSalarioEmpleado) idSalarioEmpleado.value = "";
+        if (idPremioAsignado) idPremioAsignado.value = "";
     }
-
 
 
     //==============================
@@ -56,22 +79,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if(data.success){
 
-                salarioActual.value =
-                    Number(data.salario).toLocaleString(
-                        "es-CR",
-                        {
-                            minimumFractionDigits:2,
-                            maximumFractionDigits:2
-                        }
-                    );
+                if (salarioActual) {
+                    salarioActual.value =
+                        Number(data.salario).toLocaleString(
+                            "es-CR",
+                            {
+                                minimumFractionDigits:2,
+                                maximumFractionDigits:2
+                            }
+                        );
+                }
 
-                idSalarioEmpleado.value =
-                    data.idSalarioEmpleado;
+                if (idSalarioEmpleado) {
+                    idSalarioEmpleado.value = data.idSalarioEmpleado;
+                }
 
             }else{
 
-                salarioActual.value = "";
-                idSalarioEmpleado.value = "";
+                if (salarioActual) salarioActual.value = "";
+                if (idSalarioEmpleado) idSalarioEmpleado.value = "";
 
                 alert(data.mensaje);
             }
@@ -79,7 +105,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
     }
-
 
 
     //==============================
@@ -96,24 +121,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if(data.success){
 
-                premioActual.value =
-                Number(data.monto).toLocaleString(
-                    "es-CR",
-                    {
-                        minimumFractionDigits:2,
-                        maximumFractionDigits:2
-                    }
-                );
+                if (premioActual) {
+                    premioActual.value =
+                    Number(data.monto).toLocaleString(
+                        "es-CR",
+                        {
+                            minimumFractionDigits:2,
+                            maximumFractionDigits:2
+                        }
+                    );
+                }
 
-                idPremioAsignado.value = data.idPremioAsignado;
+                if (idPremioAsignado) {
+                    idPremioAsignado.value = data.idPremioAsignado;
+                }
 
-                // ESTE ES EL QUE SE ENVIARÁ AL BACKEND
-                document.getElementById("monto_premio").value = data.monto;
+                const inputMontoPremio = document.getElementById("monto_premio");
+                if (inputMontoPremio) {
+                    inputMontoPremio.value = data.monto;
+                }
 
             }else{
 
-                premioActual.value="";
-                idPremioAsignado.value="";
+                if (premioActual) premioActual.value="";
+                if (idPremioAsignado) idPremioAsignado.value="";
 
                 alert(data.mensaje);
 
@@ -124,76 +155,78 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     //==============================
     // CAMBIO DE TIPO DE ACCIÓN
     //==============================
 
-    tipoAccion.addEventListener("change", function(){
+    if (tipoAccion) {
+        tipoAccion.addEventListener("change", function(){
 
-        ocultarCampos();
+            ocultarCampos();
 
-        if(!empleado.value){
-            alert("Seleccione primero un empleado.");
-            this.selectedIndex = 0;
-            return;
-        }
+            if(empleado && !empleado.value){
+                alert("Seleccione primero un empleado.");
+                this.selectedIndex = 0;
+                return;
+            }
 
-        const nombre =
-            this.options[this.selectedIndex]
-                .dataset.name;
-
-
-
-        //--------------------------
-        // ASCENSO O AJUSTE
-        //--------------------------
-
-        if(
-            nombre==="Ascenso" ||
-            nombre==="Ajuste Salarial"
-        ){
-
-            contSalarioActual.style.display="block";
-            contNuevoSalario.style.display="block";
-
-            cargarSalario(
-                empleado.value
-            );
-
-        }
+            const nombre =
+                this.options[this.selectedIndex]
+                    .dataset.name;
 
 
+            //--------------------------
+            // ASCENSO O AJUSTE
+            //--------------------------
 
-        //--------------------------
-        // PREMIO
-        //--------------------------
+            if(
+                nombre==="Ascenso" ||
+                nombre==="Ajuste Salarial"
+            ){
 
-        else if(nombre==="Premio"){
+                if (contSalarioActual) contSalarioActual.style.display="block";
+                if (contNuevoSalario) contNuevoSalario.style.display="block";
 
-            contPremioActual.style.display="block";
-            contNuevoPremio.style.display="block";
+                if (empleado) {
+                    cargarSalario(empleado.value);
+                }
 
-            cargarPremio(
-                empleado.value
-            );
+            }
 
-        }
 
-    });
+            //--------------------------
+            // PREMIO
+            //--------------------------
 
+            else if(nombre==="Premio"){
+
+                if (contPremioActual) contPremioActual.style.display="block";
+                if (contNuevoPremio) contNuevoPremio.style.display="block";
+
+                if (empleado) {
+                    cargarPremio(empleado.value);
+                }
+
+            }
+
+        });
+    }
 
 
     //==============================
     // SI CAMBIAN EL EMPLEADO
     //==============================
 
-    empleado.addEventListener("change",function(){
+    if (empleado) {
+        empleado.addEventListener("change",function(){
 
-        ocultarCampos();
+            ocultarCampos();
 
-        tipoAccion.selectedIndex=0;
+            if (tipoAccion) {
+                tipoAccion.selectedIndex=0;
+            }
 
-    });
+        });
+    }
 
 });
