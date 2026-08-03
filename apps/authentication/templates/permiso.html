@@ -256,7 +256,8 @@
 
                       {% for empleado in empleados %}
                       <option value="{{ empleado.idEmpleado }}">
-                        {{ empleado.idPersona.Nombre_Completo }} — {{ empleado.idPuesto.Nombre }}
+                        {{ empleado.idPersona.Nombre_Completo }} — {{
+                        empleado.idPuesto.Nombre }}
                       </option>
                       {% endfor %}
                     </select>
@@ -275,7 +276,8 @@
                       {% for a in asistencias_permiso %}
 
                       <option value="{{ a.idAsistencia }}">
-                        {{ a.idEmpleado.idPersona.Nombre_Completo }} - {{ a.Fecha }}
+                        {{ a.idEmpleado.idPersona.Nombre_Completo }} - {{
+                        a.Fecha }}
                       </option>
 
                       {% endfor %}
@@ -314,14 +316,24 @@
 
                     <div class="status-group">
                       <div class="status-option">
-                        <input type="radio" name="activo" value="1" checked />
+                        <input
+                          type="radio"
+                          id="aprobado_si"
+                          name="activo"
+                          value="1"
+                        />
                         <label for="aprobado_si">
                           <span class="dot"></span> Aprobado
                         </label>
                       </div>
 
                       <div class="status-option">
-                        <input type="radio" name="activo" value="0" />
+                        <input
+                          type="radio"
+                          id="aprobado_no"
+                          name="activo"
+                          value="0"
+                        />
                         <label for="aprobado_no">
                           <span class="dot"></span> No aprobado
                         </label>
