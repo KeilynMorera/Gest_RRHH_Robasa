@@ -4388,7 +4388,7 @@ def registrar_kpi_view(request):
 
         bloqueo = bloquear_si_no_puede(
             request,
-            "kpis",
+            "kpi",
             "crear"
         )
 
@@ -4492,7 +4492,7 @@ def registrar_kpi_detalle_view(request):
 
         bloqueo = bloquear_si_no_puede(
             request,
-            "kpis",
+            "kpi",
             "crear"
         )
 
@@ -4591,7 +4591,7 @@ def crear_premio(request):
 
         bloqueo = bloquear_si_no_puede(
             request,
-            "kpis",
+            "kpi",
             "crear"
         )
 
@@ -4654,7 +4654,7 @@ def editar_premio(request, id):
 
         bloqueo = bloquear_si_no_puede(
             request,
-            "kpis",
+            "kpi",
             "editar"
         )
 
@@ -4719,7 +4719,7 @@ def guardar_premio_asignado(request):
 
         bloqueo = bloquear_si_no_puede(
             request,
-            "kpis",
+            "kpi",
             "crear"
         )
 
