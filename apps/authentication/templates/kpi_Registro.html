@@ -258,6 +258,7 @@
                       endif
                       %}
                     >
+                      <!-- Opción por defecto -->
                       <option
                         value=""
                         disabled
@@ -271,18 +272,20 @@
                       >
                         Seleccione un colaborador
                       </option>
+
                       {% for empleado in empleados %}
                       <option
                         value="{{ empleado.idEmpleado }}"
                         {%
                         if
-                        el_empleado_seleccionado=""
-                        ="empleado.idEmpleado"
+                        el_empleado_seleccionado|slugify=""
+                        ="empleado.idEmpleado|slugify"
                         %}selected{%
                         endif
                         %}
                       >
-                        {{ empleado.idPersona.Nombre_Completo }} — {{ empleado.idPuesto.Nombre }}
+                        {{ empleado.idPersona.Nombre_Completo }} — {{
+                        empleado.idPuesto.Nombre }}
                       </option>
                       {% endfor %}
                     </select>

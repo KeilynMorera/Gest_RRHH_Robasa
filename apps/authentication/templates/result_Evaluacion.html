@@ -1,5 +1,4 @@
 <!-- Cargar la librería al inicio del template, para usar archivos estaticos -->
-<!-- Cargar la librería al inicio del template, para usar archivos estaticos -->
 {% load static %}
 
 <!doctype html>
@@ -270,7 +269,7 @@
                   ><i class="fas fa-user field-icon"></i> Colaborador</label
                 >
                 <select name="empleado_filtro" id="empleado_filtro" required>
-                  <option value="">Todos los empleados</option>
+                  <option value="">Seleccione un empleado</option>
                   {% for emp in empleados %}
                   <option
                     value="{{ emp.idEmpleado }}"
@@ -293,7 +292,7 @@
                   ><i class="fas fa-calendar field-icon"></i> Periodo</label
                 >
                 <select name="periodo_filtro" id="periodo_filtro" required>
-                  <option value="">Todos los periodos</option>
+                  <option value="">Seleccione un periodo</option>
                   {% for p in periodos %}
                   <option
                     value="{{ p.idPeriodo }}"
