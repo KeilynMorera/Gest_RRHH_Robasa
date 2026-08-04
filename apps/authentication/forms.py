@@ -40,6 +40,12 @@ class PremioForm(forms.ModelForm):
             'idCuadrante_9box_Perfil': forms.Select(attrs={'class': 'form-control'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Cambiar el texto predeterminado de los selects
+        self.fields['id_KPI_Categoria'].empty_label = "Seleccione una categoría..."
+        self.fields['idCuadrante_9box_Perfil'].empty_label = "Seleccione un perfil..."
+
 
 
 # =========================================================
