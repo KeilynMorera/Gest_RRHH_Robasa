@@ -446,7 +446,6 @@ class OnboardingActividadForm(forms.ModelForm):
 class OffboardingForm(forms.ModelForm):
 
     class Meta:
-
         model = Offboarding
 
         fields = [
@@ -457,7 +456,6 @@ class OffboardingForm(forms.ModelForm):
         ]
 
         widgets = {
-
             "idEmpleado": forms.Select(
                 attrs={
                     "class": "form-select",
@@ -486,23 +484,16 @@ class OffboardingForm(forms.ModelForm):
                     "placeholder": "Describa brevemente el motivo de la salida..."
                 }
             )
-
         }
 
         labels = {
-
             "idEmpleado": "Empleado",
-
             "idCausa": "Causa de Salida",
-
             "Fecha_Salida": "Fecha de Salida",
-
             "Descrip_Causa": "Descripción de la Causa"
-
         }
 
     def __init__(self, *args, **kwargs):
-
         super().__init__(*args, **kwargs)
 
         # =====================================================
@@ -513,6 +504,8 @@ class OffboardingForm(forms.ModelForm):
         ).order_by(
             "idPersona__Nombre_Completo"
         )
+        # Opción predeterminada para el select de empleados
+        self.fields["idEmpleado"].empty_label = "Seleccionar empleado..."
 
         # =====================================================
         # CAUSAS DE SALIDA
@@ -530,7 +523,6 @@ class OffboardingForm(forms.ModelForm):
         categorias = {}
 
         for causa in self.fields["idCausa"].queryset:
-
             categorias.setdefault(
                 causa.Categoria,
                 []

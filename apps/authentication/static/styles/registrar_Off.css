@@ -54,49 +54,114 @@ body {
   z-index: 1000;
 }
 
-/* ==========================================================================
-   LOGO
-   ========================================================================== */
-
-.logo-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  margin-bottom: 25px;
-  padding: 0 10px;
+/* =========================
+   LOGO ROBASA
+========================= */
+.logo {
+  text-align: center;
+  margin-bottom: 35px;
 }
 
+/* Imagen */
 .logo-img {
-  width: 85%;
-  max-width: 220px;
+  width: 320px;
+  max-width: 100%;
   height: auto;
-
   display: block;
-
-  padding: 12px;
-
-  border-radius: 18px;
-
+  margin: 0 auto 25px;
+  /* Hace que resalte */
+  padding: 18px;
+  border-radius: 22px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.12);
-
   backdrop-filter: blur(6px);
-
+  /* Glow */
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25))
     drop-shadow(0 0 25px rgba(255, 255, 255, 0.12)) brightness(1.18)
     contrast(1.15);
-
   transition: all 0.3s ease;
 }
 
+/* Hover elegante */
 .logo-img:hover {
   transform: scale(1.03);
-
   filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))
     drop-shadow(0 0 32px rgba(255, 255, 255, 0.18)) brightness(1.25)
     contrast(1.2);
+}
+
+.logo span {
+  font-size: 18px;
+  letter-spacing: 6px;
+  color: #9bc0ff;
+}
+
+/* Menú */
+.menu {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 5px; /* evita que el texto se pegue al scroll */
+}
+
+.menu a {
+  color: #fefefd;
+  text-decoration: none;
+  padding: 14px 18px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: 0.3s;
+}
+
+.menu a:hover,
+.menu a.active {
+  background: #4567b7;
+  color: white;
+}
+
+.menu i {
+  width: 20px;
+}
+
+/* Personalizar la barra de scroll */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* Logout */
+.logout {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.logout a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 12px;
+}
+
+.logout a:hover {
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* ==========================================================================
