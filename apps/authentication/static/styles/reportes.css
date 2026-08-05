@@ -183,35 +183,6 @@ body {
   font-size: 15px;
 }
 
-.search-box {
-  flex: 1;
-  max-width: 420px;
-  position: relative;
-}
-
-.search-box i {
-  position: absolute;
-  top: 50%;
-  left: 18px;
-  transform: translateY(-50%);
-  color: #8a94a6;
-}
-
-.search-box input {
-  width: 100%;
-  padding: 14px 18px 14px 48px;
-  border: 1px solid #dbe2ef;
-  border-radius: 12px;
-  font-size: 15px;
-  outline: none;
-  background: #ffffff;
-}
-
-.search-box input:focus {
-  border-color: #0c45ca;
-  box-shadow: 0 0 0 3px rgba(31, 100, 255, 0.1);
-}
-
 .topbar-actions {
   margin-left: auto;
   display: flex;
@@ -272,36 +243,6 @@ body {
 .user-info span {
   font-size: 12px;
   color: #7a8599;
-}
-
-/* Breadcrumb */
-.breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 18px 28px 0;
-  font-size: 13px;
-  color: #6b7499;
-}
-
-.breadcrumb a {
-  color: #6b7499;
-  text-decoration: none;
-  transition: color 0.15s;
-}
-
-.breadcrumb a:hover {
-  color: #e8600a;
-}
-
-.breadcrumb .sep {
-  font-size: 10px;
-  color: #c5cbdf;
-}
-
-.breadcrumb .current {
-  color: #e8600a;
-  font-weight: 700;
 }
 
 /* ==========================================================================
@@ -481,12 +422,17 @@ body {
 .form-footer {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 12px;
-  padding-top: 24px;
+  justify-content: flex-end; /* Empuja el contenido hacia la derecha */
+  width: 100%;
+  padding-top: 20px;
+  margin-top: 25px;
   border-top: 1.5px solid #e8ecf6;
-  margin-top: 10px;
-  flex-wrap: wrap;
+}
+
+/* Forzamos que el botón no ocupe todo el ancho si proviene de otro estilo */
+.btn-print {
+  margin-left: auto; /* Garantiza el empuje extremo a la derecha */
+  display: inline-flex;
 }
 
 /* Botones */
@@ -505,27 +451,6 @@ body {
   border: none;
   text-decoration: none;
   transition: all 0.2s ease;
-}
-
-.btn-ghost {
-  background: transparent;
-  border: 1.5px solid #dde2f0;
-  color: #6b7499;
-}
-
-.btn-ghost:hover {
-  border-color: #1e2a5e;
-  color: #1e2a5e;
-  background: #f0f2f8;
-}
-
-.btn-secondary {
-  background: #1e2a5e;
-  color: #ffffff;
-}
-
-.btn-secondary:hover {
-  background: #2e3f8f;
 }
 
 .btn-primary,
@@ -925,64 +850,6 @@ body {
   background: transparent;
 }
 
-/* ==========================================================================
-   REGLAS DE IMPRESIÓN DIRECTA
-   ========================================================================== */
-@media print {
-  body {
-    background-color: #ffffff !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  .sidebar,
-  .topbar,
-  .breadcrumb,
-  .control-panel,
-  .form-card,
-  .report-preview,
-  .footer,
-  .btn,
-  .btn-print {
-    display: none !important;
-  }
-
-  .main-content {
-    margin-left: 0 !important;
-    padding: 0 !important;
-    width: 100% !important;
-  }
-
-  .document-page {
-    box-shadow: none !important;
-    width: 100% !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    min-height: auto !important;
-  }
-
-  .editable-input {
-    border-bottom: none !important;
-  }
-
-  input[type="checkbox"] {
-    accent-color: #000000 !important;
-  }
-
-  .doc-header {
-    border-bottom-color: #000000 !important;
-  }
-
-  .doc-header h1 {
-    color: #000000 !important;
-  }
-
-  .section-title {
-    border-left-color: #000000 !important;
-    background-color: #f1f5f9 !important;
-  }
-}
-
 /* ======================================================
    ESTILOS DE TABLA - ACCIÓN DE PERSONAL
    ====================================================== */
@@ -1094,37 +961,6 @@ td[id^="obs-"] {
 }
 
 /* ======================================================
-   ESTILOS EXCLUSIVOS PARA IMPRESIÓN / PDF
-   ====================================================== */
-@media print {
-  .table-accion-personal {
-    font-size: 8pt;
-  }
-  
-  .table-accion-personal thead tr {
-    background-color: #2d3748 !important;
-    color: #ffffff !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-  .table-accion-personal th,
-  .table-accion-personal td {
-    padding: 5px 8px;
-    border: 1px solid #a0aec0 !important;
-  }
-
-  .table-accion-personal input[type="checkbox"] {
-    border: 1.5px solid #000 !important;
-  }
-
-  .table-accion-personal input[type="checkbox"]:checked {
-    background-color: #000 !important;
-    border-color: #000 !important;
-  }
-}
-
-/* ======================================================
    ESTILOS DE LA SECCIÓN 3: DETALLE Y OBSERVACIONES
    ====================================================== */
 
@@ -1165,26 +1001,6 @@ td[id^="obs-"] {
   margin: 0;
   font-size: 8.5pt;
   color: #1e293b;
-}
-
-/* ======================================================
-   AJUSTES PARA IMPRESIÓN / PDF DE OBSERVACIONES
-   ====================================================== */
-@media print {
-  .detail-box {
-    background-color: #ffffff !important;
-    border: 1px solid #a0aec0 !important;
-    border-left: 4px solid #2d3748 !important;
-    box-shadow: none !important;
-    font-size: 8.5pt !important;
-    padding: 8px 12px !important;
-    min-height: 60px !important;
-  }
-
-  .signature-container {
-    background-color: #ffffff !important;
-    border: 1px solid #cbd5e1 !important;
-  }
 }
 
 /* Tarjeta para el responsable que genera la solicitud */
@@ -1279,312 +1095,4 @@ td[id^="obs-"] {
 .tracking-details {
   display: flex;
   gap: 35px;
-}
-
-/* Reglas de impresión para firmas */
-@media print {
-  .signature-box, .signature-card-single, .tracking-box {
-    border-color: #000 !important;
-    background-color: transparent !important;
-  }
-  .signature-header {
-    background-color: #f0f0f0 !important;
-    border-bottom: 1px solid #000 !important;
-  }
-}
-
-/* ==========================================================================
-   DISEÑO RESPONSIVO OPTIMIZADO (MEDIA QUERIES)
-   Mantiene el Sidebar siempre a la izquierda adaptando proporciones
-   ========================================================================== */
-
-/* ── PANTALLAS GRANDES (Hasta 1400px) ── */
-@media screen and (max-width: 1400px) {
-  .main-content {
-    padding: 24px;
-  }
-  .topbar {
-    gap: 16px;
-  }
-  .search-box {
-    max-width: 380px;
-  }
-  .fields-selector {
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  }
-  .results-table {
-    min-width: 780px;
-  }
-  .form-card {
-    margin: 18px 20px 24px;
-  }
-}
-
-/* ── LAPTOPS MEDIANAS (Hasta 1200px) ── */
-@media screen and (max-width: 1200px) {
-  .sidebar {
-    width: 250px;
-    min-width: 250px;
-    max-width: 250px;
-    padding: 24px 16px;
-  }
-  .main-content {
-    margin-left: 250px;
-    width: calc(100% - 250px);
-    padding: 20px;
-  }
-  .topbar {
-    align-items: flex-start;
-    gap: 18px;
-  }
-  .page-title {
-    width: 100%;
-  }
-  .search-box {
-    flex: 1 1 100%;
-    max-width: 100%;
-  } /* Rompe fila: el buscador pasa abajo ocupando el 100% */
-  .topbar-actions {
-    width: 100%;
-    justify-content: flex-end;
-  }
-  .logo-img {
-    max-width: 200px;
-  }
-
-  /* Ajuste de rejillas */
-  .form-grid {
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  }
-  .fields-selector {
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  }
-  .field-check {
-    padding: 16px;
-  }
-  .report-preview {
-    overflow: hidden;
-  }
-}
-
-/* ─────────────────────────────────────────────
-   TABLETS (Hasta 992px)
-   Sidebar compacto solo iconos
-───────────────────────────────────────────── */
-@media screen and (max-width: 992px) {
-  .sidebar {
-    width: 90px;
-    min-width: 90px;
-    max-width: 90px;
-    padding: 18px 10px;
-    align-items: center;
-  }
-
-  .logo {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-
-  .logo span {
-    display: none; /* Oculta texto del logo */
-  }
-
-  .logo-img {
-    max-width: 55px;
-    padding: 8px;
-    margin-bottom: 20px;
-  }
-
-  .menu {
-    width: 100%;
-    align-items: center;
-    gap: 10px;
-    padding-right: 0;
-  }
-
-  .menu a {
-    width: 100%;
-    justify-content: center;
-    padding: 14px 10px;
-    font-size: 0; /* Oculta el texto */
-    gap: 0;
-  }
-
-  .menu a i {
-    font-size: 20px;
-    width: auto;
-  }
-
-  .logout {
-    width: 100%;
-  }
-
-  .logout a {
-    justify-content: center;
-    font-size: 0; /* Oculta texto logout */
-    padding: 14px 10px;
-    gap: 0;
-  }
-
-  .logout a i {
-    font-size: 20px;
-  }
-
-  .main-content {
-    margin-left: 90px;
-    width: calc(100% - 90px);
-    padding: 18px;
-  }
-
-  .topbar {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 14px;
-  }
-
-  .search-box {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .topbar-actions {
-    width: 100%;
-    justify-content: flex-end;
-  }
-
-  .user-info {
-    display: none;
-  }
-
-  .user-profile {
-    padding: 8px;
-    border-radius: 14px;
-  }
-}
-
-/* ─────────────────────────────────────────────
-   SMARTPHONES GRANDES (Hasta 768px)
-───────────────────────────────────────────── */
-@media screen and (max-width: 768px) {
-  .sidebar {
-    width: 78px;
-    min-width: 78px;
-    max-width: 78px;
-    padding: 14px 8px;
-  }
-
-  .logo-img {
-    max-width: 48px;
-    padding: 6px;
-  }
-
-  .menu a {
-    padding: 12px 8px;
-    border-radius: 10px;
-  }
-
-  .menu a i {
-    font-size: 18px;
-  }
-
-  .logout a {
-    padding: 12px 8px;
-  }
-
-  .logout a i {
-    font-size: 18px;
-  }
-
-  .main-content {
-    margin-left: 78px;
-    width: calc(100% - 78px);
-    padding: 14px;
-  }
-
-  .page-title h1 {
-    font-size: 22px;
-  }
-
-  .topbar-actions {
-    justify-content: flex-end;
-    gap: 12px;
-  }
-
-  .notification {
-    font-size: 20px;
-  }
-
-  .user-profile img {
-    width: 36px;
-    height: 36px;
-  }
-
-  .user-info {
-    display: none;
-  }
-}
-
-/* ─────────────────────────────────────────────
-   SMARTPHONES PEQUEÑOS (Hasta 576px)
-───────────────────────────────────────────── */
-@media screen and (max-width: 576px) {
-  .sidebar {
-    width: 70px;
-    min-width: 70px;
-    max-width: 70px;
-    padding: 12px 6px;
-  }
-
-  .logo-img {
-    max-width: 42px;
-    padding: 5px;
-  }
-
-  .menu {
-    gap: 8px;
-  }
-
-  .menu a {
-    padding: 10px 6px;
-  }
-
-  .menu a i {
-    font-size: 17px;
-  }
-
-  .logout a {
-    padding: 10px 6px;
-  }
-
-  .logout a i {
-    font-size: 17px;
-  }
-
-  .main-content {
-    margin-left: 70px;
-    width: calc(100% - 70px);
-    padding: 12px;
-  }
-
-  .page-title h1 {
-    font-size: 19px;
-  }
-
-  .user-profile {
-    padding: 6px;
-  }
-
-  .user-profile img {
-    width: 32px;
-    height: 32px;
-  }
-
-  .notification {
-    font-size: 18px;
-  }
-
-  .topbar-actions {
-    gap: 10px;
-  }
 }

@@ -15,6 +15,48 @@
     />
   </head>
 
+  <style>
+    /* Reglas exclusivas para cuando el usuario presiona "Imprimir" o "Guardar en PDF" */
+    @media print {
+      /* 1. Ocultar todos los elementos web que no forman parte del reporte imprimible */
+      .sidebar,
+      .topbar,
+      .control-panel,
+      .footer,
+      .form-footer,
+      button {
+        display: none !important;
+      }
+
+      /* 2. Resetear márgenes, fondos y contenedores para que ocupe toda la hoja impresa */
+      body,
+      .dashboard-container,
+      .main-content {
+        background: #ffffff !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        box-shadow: none !important;
+      }
+
+      /* 3. Ajustes de precisión para el contenedor del documento (.document-page) */
+      .document-page {
+        margin: 0 auto !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        width: 100% !important;
+        page-break-after: avoid;
+      }
+
+      /* Configuración de bordes de la página de impresión */
+      @page {
+        size: letter portrait; /* Tamaño carta, orientación vertical */
+        margin: 1.2cm 1.5cm; /* Márgenes limpios de impresión */
+      }
+    }
+  </style>
+
   <body>
     <!-- ======================================================
           CONTENEDOR PRINCIPAL
@@ -257,8 +299,10 @@
                 onchange="actualizarSeguimiento()"
               >
                 <option value="">-- Ninguno / No Aplica --</option>
-                {% for emp in empleados_lista %}
-                <option value="{{ emp.nombre }}">{{ emp.nombre }}</option>
+                {% for emp in todos_los_empleados %}
+                <option value="{{ emp.idPersona.Nombre_Completo }}">
+                  {{ emp.idPersona.Nombre_Completo }} - {{ emp.idPuesto.Nombre|default:"Sin Puesto" }}
+                </option>
                 {% endfor %}
               </select>
             </div>
@@ -283,9 +327,11 @@
             </div>
           </div>
 
-          <button type="button" class="btn-print" onclick="window.print()">
-            🖨️ Imprimir / Guardar en PDF
-          </button>
+          <div class="form-footer">
+            <button type="button" class="btn-print" onclick="window.print()">
+              🖨️ Imprimir / Guardar en PDF
+            </button>
+          </div>
         </div>
 
         <!-- PLANTILLA DE ACCIÓN DE PERSONAL IMPRESA -->

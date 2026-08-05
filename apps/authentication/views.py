@@ -6050,6 +6050,8 @@ def cerrar_sesion(request):
 import json
 from django.core.serializers.json import DjangoJSONEncoder
 from django.shortcuts import render
+# Asegúrate de importar Empleado desde tus modelos
+from .models import AccionTipo, RotacionPersonal, Empleado
 
 @requiere_permiso("acciones_personal", "ver")
 def modulo_reportes(request):
@@ -6098,7 +6100,7 @@ def modulo_reportes(request):
 
         empleados_dict[emp_id]['acciones'].append({
             'tipo': item.id_Detalle_Accion.Accion if item.id_Detalle_Accion else 'Otro',
-            'detalle': detalle_especifico,  # <--- Detalle exacto guardado
+            'detalle': detalle_especifico,
             'fecha': item.idAccion.Fecha.strftime('%d/%m/%Y') if item.idAccion and item.idAccion.Fecha else '',
             'anio': item.idAccion.Fecha.year if item.idAccion and item.idAccion.Fecha else None,
             'mes': item.idAccion.Fecha.month if item.idAccion and item.idAccion.Fecha else None,
@@ -6107,14 +6109,21 @@ def modulo_reportes(request):
     empleados_json = json.dumps(list(empleados_dict.values()), cls=DjangoJSONEncoder)
     rotaciones = RotacionPersonal.objects.order_by('-Anio', '-Mes')
 
+    
+    # Consulta para traer a todos los empleados activos junto con su Persona y Puesto
+    todos_los_empleados = Empleado.objects.select_related(
+        'idPersona', 
+        'idPuesto'
+    ).filter(
+        Activo=True
+    ).order_by('idPersona__Nombre_Completo')
+
     context = {
         'acciones': acciones,
         'empleados_lista': list(empleados_dict.values()),
+        'todos_los_empleados': todos_los_empleados,
         'empleados_data_json': empleados_json,
         'rotaciones': rotaciones,
-        'usuario_nombre': request.user.get_full_name() or request.user.username if request.user.is_authenticated else "Usuario de Prueba",
-        'usuario_puesto': "Administrador",
-        'usuario_foto': None,
     }
 
     return render(request, 'reportes.html', context)
