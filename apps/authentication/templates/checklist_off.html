@@ -228,7 +228,7 @@
 
             <!-- =====================================================
                     FORMULARIO
-====================================================== -->
+              ====================================================== -->
             <form
               method="POST"
               action="{% url 'guardar_checklist_offboarding' %}"
@@ -262,27 +262,32 @@
                     </label>
 
                     {% if modo_edicion or modo_ver %}
-                    <!-- Input oculto para asegurar que el ID viaje en el POST si el select está deshabilitado -->
                     <input
                       type="hidden"
                       name="id_Offboarding"
-                      value="{{ checklist.id_Offboarding.id_Offboarding }}"
+                      value="{{ checklist.id_Offboarding_id|default:checklist.id_Offboarding.id_Offboarding }}"
                     />
                     {% endif %}
 
                     <select
                       name="id_Offboarding"
+                      id="id_Offboarding"
+                      class="form-select"
                       required
-                      {%
-                      if
-                      modo_edicion
-                      or
-                      modo_ver
-                      %}disabled{%
-                      endif
-                      %}
                     >
-                      <option value="">Seleccione una salida...</option>
+                      <option
+                        value=""
+                        disabled
+                        {%
+                        if
+                        not
+                        checklist
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        Seleccionar Proceso Salida
+                      </option>
 
                       {% for off in offboardings %}
                       <option
@@ -291,7 +296,7 @@
                         if
                         checklist
                         and
-                        checklist.id_Offboarding_id=""
+                        checklist.id_Offboarding.id_Offboarding=""
                         ="off.id_Offboarding"
                         %}selected{%
                         endif
@@ -310,17 +315,20 @@
                       <span class="req">*</span>
                     </label>
 
-                    <select
-                      name="id_Estatus_Vacante"
-                      required
-                      {%
-                      if
-                      modo_ver
-                      %}disabled{%
-                      endif
-                      %}
-                    >
-                      <option value="">Seleccione...</option>
+                    <select name="id_Estatus_Vacante" required>
+                      <option
+                        value=""
+                        disabled
+                        {%
+                        if
+                        not
+                        checklist
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        Seleccionar Estado
+                      </option>
 
                       {% for estado in estados %}
                       <option
@@ -329,7 +337,7 @@
                         if
                         checklist
                         and
-                        checklist.id_Estatus_Vacante_id=""
+                        checklist.id_Estatus_Vacante.id_Estatus_Vacante=""
                         ="estado.id_Estatus_Vacante"
                         %}selected{%
                         endif
@@ -553,7 +561,9 @@
                         </div>
 
                         <span>
-                          {% if proceso.checklist_obj %} {{ proceso.checklist_obj.pct_listo|default:0 }}% {% else %} 0% {% endif %}
+                          {% if proceso.checklist_obj %} {{
+                          proceso.checklist_obj.pct_listo|default:0 }}% {% else
+                          %} 0% {% endif %}
                         </span>
                       </div>
                     </td>

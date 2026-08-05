@@ -5571,9 +5571,18 @@ from django.db import transaction, IntegrityError
 # =========================================================
 @requiere_permiso("offboarding", "editar")
 def modificar_checklist_offboarding(request, id_check):
-    # 1. Obtener el checklist por su PK (o por id_offboarding según tu modelo)
-    checklist = get_object_or_404(OffboardingChecklist, pk=id_check)
+    # 1. Obtener el checklist precargando las relaciones (id_Offboarding y id_Estatus_Vacante)
+    checklist = get_object_or_404(
+        OffboardingChecklist.objects.select_related("id_Offboarding", "id_Estatus_Vacante"),
+        pk=id_check
+    )
     
+    # Asegurar que la fecha venga en formato string YYYY-MM-DD para el input type="date"
+    if checklist.Fecha_Comp and isinstance(checklist.Fecha_Comp, (date, datetime)):
+        checklist.Fecha_Comp_formatted = checklist.Fecha_Comp.strftime("%Y-%m-%d")
+    else:
+        checklist.Fecha_Comp_formatted = checklist.Fecha_Comp
+
     # 2. Cargar catálogo ordenado
     catalogo = list(OffboardingCatalogo.objects.order_by("Num_Etapa", "idCatalogo"))
     total_catalogo = len(catalogo)
@@ -5610,8 +5619,8 @@ def modificar_checklist_offboarding(request, id_check):
 
     context = {
         "modo_edicion": True,
-        "checklist": checklist,  # <-- Pasa el registro para autollenar inputs en el HTML
-        "checks_seleccionados": checks_seleccionados,  # <-- IDs de las casillas que deben marcarse
+        "checklist": checklist,  # Contiene las claves foráneas listas para ser leídas por el template
+        "checks_seleccionados": checks_seleccionados,
         "offboardings": offboardings,
         "catalogo": catalogo,
         "checklists": OffboardingChecklist.objects.select_related(
