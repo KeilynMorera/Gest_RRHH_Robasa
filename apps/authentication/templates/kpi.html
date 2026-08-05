@@ -280,7 +280,7 @@
                       <div class="ranking-position">{{ forloop.counter }}</div>
                       <div class="ranking-user">
                         {% if top.id_KPI__idEmpleado__idPersona__Foto %}
-                          <img src="{{ top.id_KPI__idEmpleado__idPersona__Foto.url }}" alt="Avatar" />
+                          <img src="/media/{{ top.id_KPI__idEmpleado__idPersona__Foto }}" alt="Avatar" />
                         {% else %}
                           <img src="https://i.pravatar.cc/100?img={{ forloop.counter|add:10 }}" alt="Avatar Alternativo" />
                         {% endif %}
