@@ -8,7 +8,12 @@
 }
 
 body {
-  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  font-family:
+    "Segoe UI",
+    -apple-system,
+    BlinkMacSystemFont,
+    Roboto,
+    sans-serif;
   background: #f4f7fb;
   color: #1a2042;
   line-height: 1.5;
@@ -387,7 +392,10 @@ body {
   color: #1a2042;
   background: #f7f8fc;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background 0.2s;
 }
 
 .field textarea {
@@ -1095,4 +1103,206 @@ td[id^="obs-"] {
 .tracking-details {
   display: flex;
   gap: 35px;
+}
+
+/* ==========================================================================
+   MEDIA QUERIES - RESPONSIVE DESIGN (SIN DESPLAZAMIENTO LATERAL)
+   ========================================================================== */
+
+/* Bloqueo global de desbordamiento horizontal para evitar movimiento lateral */
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Pantallas Medianas / Tablets y Menores (Hasta 1024px) */
+@media screen and (max-width: 1024px) {
+  /* 1. Reducir Sidebar a columna fija de solo íconos */
+  .sidebar {
+    width: 75px !important;
+    padding: 20px 8px !important;
+    align-items: center;
+  }
+
+  /* 2. Ocultar el texto del Logo */
+  .logo span {
+    display: none !important;
+  }
+
+  .logo {
+    margin-bottom: 25px;
+  }
+
+  .logo-img {
+    width: 44px;
+    padding: 4px;
+    border-radius: 12px;
+  }
+
+  /* 3. OCULTAR TEXTO DEL MENÚ (Solo íconos) */
+  .menu a,
+  .logout a {
+    font-size: 0 !important;
+    justify-content: center !important;
+    padding: 12px 0 !important;
+    width: 100%;
+    gap: 0 !important;
+  }
+
+  .menu a span,
+  .logout a span {
+    display: none !important;
+  }
+
+  /* 4. VISIBILIDAD DE ÍCONOS */
+  .menu a i,
+  .logout a i {
+    font-size: 20px !important;
+    width: auto !important;
+    margin: 0 auto !important;
+  }
+
+  .menu {
+    width: 100%;
+    align-items: center;
+    padding-right: 0;
+  }
+
+  .logout {
+    width: 100%;
+  }
+
+  /* 5. Ajustar y Centrar Área de Contenido Principal */
+  .main-content {
+    margin-left: 75px !important;
+    width: calc(100% - 75px) !important;
+    max-width: calc(100% - 75px) !important;
+    padding: 20px 15px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  /* Contenedores principales centrado perfecto */
+  .form-card,
+  .control-panel,
+  .report-preview,
+  .document-page {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box;
+  }
+
+  /* Documento impreso adaptable */
+  .document-page {
+    min-height: auto;
+    height: auto;
+  }
+}
+
+/* Pantallas Pequeñas / Smartphones (Hasta 768px) */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 75px !important;
+  }
+
+  .main-content {
+    margin-left: 75px !important;
+    width: calc(100% - 75px) !important;
+    padding: 15px 10px;
+  }
+
+  /* Topbar alineada al centro */
+  .topbar {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+  }
+
+  .page-title {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .page-title h1 {
+    font-size: 22px;
+  }
+
+  .topbar-actions {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+    gap: 20px;
+  }
+
+  /* Formulario en 1 columna centrada */
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-card-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .form-card-header-left {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .form-footer {
+    justify-content: center;
+  }
+
+  .btn-print {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .form-body,
+  .control-panel {
+    padding: 16px;
+  }
+
+  /* Ajuste de grids en documento y firmas */
+  .signature-grid,
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .signature-info,
+  .tracking-details {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .document-page {
+    padding: 12px;
+  }
+}
+
+/* Teléfonos pequeños (Hasta 480px) */
+@media screen and (max-width: 480px) {
+  .user-profile {
+    padding: 6px 10px;
+  }
+
+  .user-info {
+    display: none;
+  }
+
+  .filter-tags {
+    flex-direction: column;
+  }
+
+  .filter-tag {
+    justify-content: center;
+    width: 100%;
+  }
 }
