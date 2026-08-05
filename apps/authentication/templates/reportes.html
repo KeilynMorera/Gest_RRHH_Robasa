@@ -13,222 +13,6 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
-
-    <style>
-      /* Panel de Control (Oculto al Imprimir) */
-      .control-panel {
-        background: #ffffff;
-        padding: 20px;
-        margin: 0 auto 25px auto;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        max-width: 900px;
-      }
-
-      .control-panel h2 {
-        margin-top: 0;
-        font-size: 1.25rem;
-        color: #0f172a;
-        border-bottom: 2px solid #e2e8f0;
-        padding-bottom: 10px;
-      }
-
-      .form-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 15px;
-        margin-bottom: 15px;
-      }
-
-      .form-group {
-        display: flex;
-        flex-direction: column;
-      }
-
-      .form-group label {
-        font-size: 0.85rem;
-        font-weight: bold;
-        margin-bottom: 5px;
-        color: #475569;
-      }
-
-      .form-group select,
-      .form-group input {
-        padding: 8px 12px;
-        border: 1px solid #cbd5e1;
-        border-radius: 4px;
-        font-size: 0.9rem;
-      }
-
-      .btn-print {
-        background-color: #2563eb;
-        color: #ffffff;
-        border: none;
-        padding: 10px 20px;
-        font-size: 0.95rem;
-        font-weight: bold;
-        border-radius: 4px;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .btn-print:hover {
-        background-color: #1d4ed8;
-      }
-
-      /* Documento Oficial (Hoja A4) */
-      .document-page {
-        background: #ffffff;
-        width: 210mm;
-        min-height: 297mm;
-        padding: 15mm 20mm;
-        margin: 0 auto;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        box-sizing: border-box;
-        font-size: 11pt;
-        line-height: 1.3;
-      }
-
-      .doc-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 2px solid #000;
-        padding-bottom: 8px;
-        margin-bottom: 15px;
-      }
-
-      .doc-header h1 {
-        margin: 0;
-        font-size: 1.4rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-
-      .doc-header .doc-date {
-        font-weight: bold;
-        font-size: 0.95rem;
-      }
-
-      .section-title {
-        font-size: 10pt;
-        font-weight: bold;
-        background-color: #f1f5f9;
-        padding: 4px 8px;
-        border-left: 4px solid #000;
-        margin-top: 12px;
-        margin-bottom: 8px;
-        text-transform: uppercase;
-      }
-
-      .info-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px 15px;
-        margin-bottom: 12px;
-        font-size: 9.5pt;
-      }
-
-      .info-item {
-        border-bottom: 1px dotted #94a3b8;
-        padding-bottom: 2px;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 8.5pt;
-        margin-bottom: 12px;
-      }
-
-      table,
-      th,
-      td {
-        border: 1px solid #000;
-      }
-
-      th,
-      td {
-        padding: 4px 6px;
-        text-align: left;
-      }
-
-      th {
-        background-color: #f8fafc;
-        font-weight: bold;
-      }
-
-      .text-center {
-        text-align: center;
-      }
-
-      .detail-box {
-        border: 1px solid #000;
-        min-height: 100px;
-        padding: 8px;
-        font-size: 9pt;
-        margin-bottom: 12px;
-        white-space: pre-wrap;
-        word-break: break-word;
-      }
-
-      .signature-container {
-        margin-top: 15px;
-        font-size: 9pt;
-      }
-
-      .signature-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-        margin-top: 40px;
-        text-align: center;
-        font-size: 8.5pt;
-      }
-
-      .signature-line {
-        border-top: 1px solid #000;
-        padding-top: 4px;
-      }
-
-      .editable-input {
-        border: none;
-        border-bottom: 1px solid #000;
-        outline: none;
-        font-family: inherit;
-        font-size: inherit;
-        padding: 0 4px;
-      }
-
-      /* Reglas de Impresión Directa */
-      @media print {
-        body {
-          background-color: #fff;
-          padding: 0;
-        }
-
-        .control-panel {
-          display: none !important;
-        }
-
-        .document-page {
-          box-shadow: none;
-          width: 100%;
-          padding: 0;
-          margin: 0;
-        }
-
-        .editable-input {
-          border-bottom: none;
-        }
-
-        input[type="checkbox"] {
-          accent-color: #000;
-        }
-      }
-    </style>
   </head>
 
   <body>
@@ -374,18 +158,17 @@
               <span class="badge"> 3 </span>
             </div>
 
+            <!-- ======================================================
+                 PERFIL DEL USUARIO
+              ====================================================== -->
             <div class="user-profile">
               {% if usuario_foto %}
-
               <img src="{{ usuario_foto }}" alt="{{ usuario_nombre }}" />
-
               {% else %}
-
               <img
                 src="{% static 'media/fotos_personas/default_user.jpeg' %}"
                 alt="Usuario"
               />
-
               {% endif %}
 
               <div class="user-info">
@@ -512,8 +295,7 @@
               <h1>Acción de Personal</h1>
             </div>
             <div class="doc-date">
-              Fecha: <span id="lbl-fecha-emision">{% now "d/m/Y" %}</span>[cite:
-              2]
+              Fecha: <span id="lbl-fecha-emision">{% now "d/m/Y" %}</span>
             </div>
           </div>
 
@@ -521,240 +303,282 @@
           <div class="section-title">
             1. Información General del Colaborador
           </div>
-          [cite: 2]
           <div class="info-grid">
             <div class="info-item">
               <strong>Nombre completo:</strong>
               <span id="lbl-nombre">___________________________</span>
             </div>
-            [cite: 2]
             <div class="info-item">
               <strong>Número de cédula:</strong>
               <span id="lbl-cedula">___________________________</span>
             </div>
-            [cite: 2]
             <div class="info-item">
               <strong>Puesto actual:</strong>
               <span id="lbl-puesto">___________________________</span>
             </div>
-            [cite: 2]
             <div class="info-item">
               <strong>Departamento:</strong>
               <span id="lbl-departamento">___________________________</span>
             </div>
-            [cite: 2]
           </div>
 
           <!-- 2. Tipo de Acción de Personal -->
           <div class="section-title">
             2. Tipo de Acción de Personal (marque una o más opciones)
           </div>
-          [cite: 2]
-          <table>
-            <thead>
-              <tr>
-                <th style="width: 10%">Código</th>
-                [cite: 2]
-                <th style="width: 35%">Tipo de Acción</th>
-                [cite: 2]
-                <th class="text-center" style="width: 12%">Selección</th>
-                [cite: 2]
-                <th style="width: 43%">Observación</th>
-                [cite: 2]
-              </tr>
-            </thead>
-            <tbody>
-              <!-- AP01: Ascenso -->
-              <tr>
-                <td>AP01</td>
-                <td>Ascenso</td>
-                <td class="text-center">
-                  <input type="checkbox" id="chk-ascenso" />
-                </td>
-                <td id="obs-ascenso"></td>
-              </tr>
 
-              <!-- AP02: Ajuste Salarial -->
-              <tr>
-                <td>AP02</td>
-                <td>Ajuste salarial</td>
-                <td class="text-center">
-                  <input type="checkbox" id="chk-ajustesalarial" />
-                </td>
-                <td id="obs-ajustesalarial"></td>
-              </tr>
+          <div class="table-responsive">
+            <table class="table-accion-personal">
+              <thead>
+                <tr>
+                  <th style="width: 10%" class="text-center">Código</th>
+                  <th style="width: 35%">Tipo de Acción</th>
+                  <th style="width: 12%" class="text-center">Selección</th>
+                  <th style="width: 43%">Observación</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- AP01: Ascenso -->
+                <tr>
+                  <td class="col-codigo">AP01</td>
+                  <td class="col-tipo">Ascenso</td>
+                  <td class="text-center">
+                    <input type="checkbox" id="chk-ascenso" disabled />
+                  </td>
+                  <td id="obs-ascenso"></td>
+                </tr>
 
-              <!-- AP03: Traslado Interno -->
-              <tr>
-                <td>AP03</td>
-                <td>Traslado interno</td>
-                <td class="text-center">
-                  <input type="checkbox" id="chk-trasladointerno" />
-                </td>
-                <td id="obs-trasladointerno"></td>
-              </tr>
+                <!-- AP02: Ajuste Salarial -->
+                <tr>
+                  <td class="col-codigo">AP02</td>
+                  <td class="col-tipo">Ajuste salarial</td>
+                  <td class="text-center">
+                    <input type="checkbox" id="chk-ajustesalarial" disabled />
+                  </td>
+                  <td id="obs-ajustesalarial"></td>
+                </tr>
 
-              <!-- AP04: Premio -->
-              <tr>
-                <td>AP04</td>
-                <td>Premio o nuevo beneficio</td>
-                <td class="text-center">
-                  <input type="checkbox" id="chk-premio" />
-                </td>
-                <td id="obs-premio"></td>
-              </tr>
+                <!-- AP03: Traslado Interno -->
+                <tr>
+                  <td class="col-codigo">AP03</td>
+                  <td class="col-tipo">Traslado interno</td>
+                  <td class="text-center">
+                    <input type="checkbox" id="chk-trasladointerno" disabled />
+                  </td>
+                  <td id="obs-trasladointerno"></td>
+                </tr>
 
-              <!-- AP05: Asignación de equipo -->
-              <tr>
-                <td>AP05</td>
-                <td>Asignación de equipo / insumos</td>
-                <td class="text-center">
-                  <input type="checkbox" id="chk-asignaciondeequipoinsumos" />
-                </td>
-                <td id="obs-asignaciondeequipoinsumos"></td>
-              </tr>
+                <!-- AP04: Premio -->
+                <tr>
+                  <td class="col-codigo">AP04</td>
+                  <td class="col-tipo">Premio o nuevo beneficio</td>
+                  <td class="text-center">
+                    <input type="checkbox" id="chk-premio" disabled />
+                  </td>
+                  <td id="obs-premio"></td>
+                </tr>
 
-              <!-- AP06: Funciones temporales -->
-              <tr>
-                <td>AP06</td>
-                <td>Funciones temporales</td>
-                <td class="text-center">
-                  <input type="checkbox" id="chk-funcionestemporales" />
-                </td>
-                <td id="obs-funcionestemporales"></td>
-              </tr>
+                <!-- AP05: Asignación de equipo -->
+                <tr>
+                  <td class="col-codigo">AP05</td>
+                  <td class="col-tipo">Asignación de equipo / insumos</td>
+                  <td class="text-center">
+                    <input
+                      type="checkbox"
+                      id="chk-asignaciondeequipoinsumos"
+                      disabled
+                    />
+                  </td>
+                  <td id="obs-asignaciondeequipoinsumos"></td>
+                </tr>
 
-              <!-- AP07: Plan de mejora -->
-              <tr>
-                <td>AP07</td>
-                <td>Plan de mejora individual</td>
-                <td class="text-center">
-                  <input type="checkbox" id="chk-plandemejoraindividual" />
-                </td>
-                <td id="obs-plandemejoraindividual"></td>
-              </tr>
+                <!-- AP06: Funciones temporales -->
+                <tr>
+                  <td class="col-codigo">AP06</td>
+                  <td class="col-tipo">Funciones temporales</td>
+                  <td class="text-center">
+                    <input
+                      type="checkbox"
+                      id="chk-funcionestemporales"
+                      disabled
+                    />
+                  </td>
+                  <td id="obs-funcionestemporales"></td>
+                </tr>
 
-              <!-- AP08: Acción disciplinaria -->
-              <tr>
-                <td>AP08</td>
-                <td>Acción disciplinaria</td>
-                <td class="text-center">
-                  <input type="checkbox" id="chk-acciondisciplinaria" />
-                </td>
-                <td id="obs-acciondisciplinaria"></td>
-              </tr>
+                <!-- AP07: Plan de mejora -->
+                <tr>
+                  <td class="col-codigo">AP07</td>
+                  <td class="col-tipo">Plan de mejora individual</td>
+                  <td class="text-center">
+                    <input
+                      type="checkbox"
+                      id="chk-plandemejoraindividual"
+                      disabled
+                    />
+                  </td>
+                  <td id="obs-plandemejoraindividual"></td>
+                </tr>
 
-              <!-- AP09: Comunicado oficial -->
-              <tr>
-                <td>AP09</td>
-                <td>Comunicado oficial</td>
-                <td class="text-center">
-                  <input type="checkbox" id="chk-comunicadooficial" />
-                </td>
-                <td id="obs-comunicadooficial"></td>
-              </tr>
+                <!-- AP08: Acción disciplinaria -->
+                <tr>
+                  <td class="col-codigo">AP08</td>
+                  <td class="col-tipo">Acción disciplinaria</td>
+                  <td class="text-center">
+                    <input
+                      type="checkbox"
+                      id="chk-acciondisciplinaria"
+                      disabled
+                    />
+                  </td>
+                  <td id="obs-acciondisciplinaria"></td>
+                </tr>
 
-              <!-- AP10: Funciones temporales Interdepartamental -->
-              <tr>
-                <td>AP10</td>
-                <td>Funciones temporales Interdepartamental</td>
-                <td class="text-center">
-                  <input
-                    type="checkbox"
-                    id="chk-funcionestemporalesinterdepartamental"
-                  />
-                </td>
-                <td id="obs-funcionestemporalesinterdepartamental"></td>
-              </tr>
+                <!-- AP09: Comunicado oficial -->
+                <tr>
+                  <td class="col-codigo">AP09</td>
+                  <td class="col-tipo">Comunicado oficial</td>
+                  <td class="text-center">
+                    <input
+                      type="checkbox"
+                      id="chk-comunicadooficial"
+                      disabled
+                    />
+                  </td>
+                  <td id="obs-comunicadooficial"></td>
+                </tr>
 
-              <!-- AP11: Licencia -->
-              <tr>
-                <td>AP11</td>
-                <td>Licencia (especifique tipo)</td>
-                <td class="text-center">
-                  <input type="checkbox" id="chk-licencia" />
-                </td>
-                <td id="obs-licencia"></td>
-              </tr>
+                <!-- AP10: Funciones temporales Interdepartamental -->
+                <tr>
+                  <td class="col-codigo">AP10</td>
+                  <td class="col-tipo">
+                    Funciones temporales Interdepartamental
+                  </td>
+                  <td class="text-center">
+                    <input
+                      type="checkbox"
+                      id="chk-funcionestemporalesinterdepartamental"
+                      disabled
+                    />
+                  </td>
+                  <td id="obs-funcionestemporalesinterdepartamental"></td>
+                </tr>
 
-              <!-- AP12: Otro -->
-              <tr>
-                <td>AP12</td>
-                <td>Otro (especifique)</td>
-                <td class="text-center">
-                  <input type="checkbox" id="chk-otro" />
-                </td>
-                <td id="obs-otro"></td>
-              </tr>
-            </tbody>
-          </table>
+                <!-- AP11: Licencia -->
+                <tr>
+                  <td class="col-codigo">AP11</td>
+                  <td class="col-tipo">Licencia (especifique tipo)</td>
+                  <td class="text-center">
+                    <input type="checkbox" id="chk-licencia" disabled />
+                  </td>
+                  <td id="obs-licencia"></td>
+                </tr>
+
+                <!-- AP12: Otro -->
+                <tr>
+                  <td class="col-codigo">AP12</td>
+                  <td class="col-tipo">Otro (especifique)</td>
+                  <td class="text-center">
+                    <input type="checkbox" id="chk-otro" disabled />
+                  </td>
+                  <td id="obs-otro"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
           <!-- 3. Detalle de la Acción -->
           <div class="section-title">3. Detalle de la Acción</div>
-          [cite: 2]
-          <p style="font-size: 8.5pt; font-weight: bold; margin-bottom: 4px">
+
+          <p
+            style="
+              font-size: 8.5pt;
+              font-weight: 600;
+              color: #475569;
+              margin-bottom: 6px;
+            "
+          >
+            <i
+              class="fas fa-align-left"
+              style="margin-right: 4px; color: #2563eb"
+            ></i>
             Motivo o justificación de la acción:
           </p>
-          [cite: 2]
-          <div class="detail-box" id="lbl-motivo-detalle">
-            <!-- Justificaciones de las acciones seleccionadas -->
+
+          <div class="detail-box empty" id="lbl-motivo-detalle">
+            No existen justificaciones registradas para el período seleccionado.
           </div>
 
-          <div class="signature-container">
-            <p>
+          <!-- Responsable Solicitante -->
+          <div class="signature-card-single">
+            <div class="signature-info">
               <strong>Responsable que genera la solicitud:</strong>
-              Nombre:
-              <u id="lbl-resp-solicitud">{{ usuario_nombre }}</u>
-              &nbsp;&nbsp;|&nbsp;&nbsp; Firma: __________________
-              &nbsp;&nbsp;|&nbsp;&nbsp; Fecha: {% now "d/m/Y" %}[cite: 2]
-            </p>
+              <span class="info-line"
+                >Nombre:
+                <u id="lbl-resp-solicitud">{{ usuario_nombre }}</u></span
+              >
+              <span class="info-line">Firma: ________________________</span>
+              <span class="info-line">Fecha: {% now "d/m/Y" %}</span>
+            </div>
           </div>
 
           <!-- 4. Aprobaciones y Seguimiento -->
           <div class="section-title">4. Aprobaciones y Seguimiento</div>
-          [cite: 2]
 
           <div class="signature-grid">
-            <div>
-              <br /><br />
-              <div class="signature-line">
-                <strong>Aprobación Jefatura Inmediata</strong><br />[cite: 2]
-                Nombre: ___________________<br />[cite: 2] Firma:
-                ___________________<br />[cite: 2] Fecha: ____ / ____ /
-                _______[cite: 2]
+            <!-- Jefatura Inmediata -->
+            <div class="signature-box">
+              <div class="signature-header">Aprobación Jefatura Inmediata</div>
+              <div class="signature-body">
+                <div class="sig-field">Nombre: ___________________</div>
+                <div class="sig-field">Firma: ___________________</div>
+                <div class="sig-field">Fecha: ____ / ____ / _______</div>
               </div>
             </div>
-            <div>
-              <br /><br />
-              <div class="signature-line">
-                <strong
-                  >Validación Talento Humano y Bienestar Organizacional</strong
-                ><br />[cite: 2] Nombre: ___________________<br />[cite: 2]
-                Firma: ___________________<br />[cite: 2] Fecha: ____ / ____ /
-                _______[cite: 2]
+
+            <!-- Talento Humano -->
+            <div class="signature-box">
+              <div class="signature-header">Validación Talento Humano</div>
+              <div class="signature-body">
+                <div class="sig-field">Nombre: ___________________</div>
+                <div class="sig-field">Firma: ___________________</div>
+                <div class="sig-field">Fecha: ____ / ____ / _______</div>
               </div>
             </div>
-            <div>
-              <br /><br />
-              <div class="signature-line">
-                <strong>Colaborador</strong><br />[cite: 2] Nombre:
-                <span id="lbl-firmante-emp">___________________</span
-                ><br />[cite: 2] Firma: ___________________<br />[cite: 2]
-                Fecha: ____ / ____ / _______[cite: 2]
+
+            <!-- Colaborador -->
+            <div class="signature-box">
+              <div class="signature-header">Colaborador</div>
+              <div class="signature-body">
+                <div class="sig-field">
+                  Nombre: <span id="lbl-firmante-emp">___________________</span>
+                </div>
+                <div class="sig-field">Firma: ___________________</div>
+                <div class="sig-field">Fecha: ____ / ____ / _______</div>
               </div>
             </div>
           </div>
 
-          <div style="margin-top: 20px; font-size: 8.5pt">
-            <p>
-              <strong
-                >Seguimiento posterior (revisión en
-                <span id="lbl-seg-dias">______</span> días si aplica):</strong
-              >[cite: 2] Responsable:
-              <span id="lbl-seg-resp">___________________</span>[cite: 2] Fecha
-              programada:
-              <span id="lbl-seg-fecha">____ / ____ / _______</span>[cite: 2]
-            </p>
+          <!-- Bloque de Seguimiento Posterior -->
+          <div class="tracking-box">
+            <div class="tracking-title">
+              <i
+                class="fas fa-calendar-check"
+                style="margin-right: 5px; color: #2563eb"
+              ></i>
+              Seguimiento posterior (revisión en
+              <span id="lbl-seg-dias">______</span> días si aplica)
+            </div>
+            <div class="tracking-details">
+              <span
+                ><strong>Responsable:</strong>
+                <span id="lbl-seg-resp">___________________</span></span
+              >
+              <span
+                ><strong>Fecha programada:</strong>
+                <span id="lbl-seg-fecha">____ / ____ / _______</span></span
+              >
+            </div>
           </div>
         </div>
 
@@ -851,10 +675,14 @@
       });
 
       // 6. Sección inferior: Resumen acumulado
+      const detailBox = document.getElementById("lbl-motivo-detalle");
+
       if (textosMotivos.length > 0) {
-        document.getElementById("lbl-motivo-detalle").innerText = textosMotivos.join("\n");
+        detailBox.innerText = textosMotivos.join("\n");
+        detailBox.classList.remove("empty");
       } else {
-        document.getElementById("lbl-motivo-detalle").innerText = "No existen justificaciones registradas para el período seleccionado.";
+        detailBox.innerText = "No existen justificaciones registradas para el período seleccionado.";
+        detailBox.classList.add("empty");
       }
     }
 
