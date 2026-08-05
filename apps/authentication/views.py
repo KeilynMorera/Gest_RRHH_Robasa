@@ -5560,147 +5560,67 @@ def guardar_checklist_offboarding(request):
     )
 
 
+from decimal import Decimal
+from datetime import date
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+from django.db import transaction, IntegrityError
+
 # =========================================================
-# EDITAR CHECKLIST DE OFFBOARDING
+# VISTA: MODIFICAR / CARGAR CHECKLIST EXISTENTE
 # =========================================================
 @requiere_permiso("offboarding", "editar")
-def editar_checklist_offboarding(request, id_check):
+def modificar_checklist_offboarding(request, id_check):
+    # 1. Obtener el checklist por su PK (o por id_offboarding según tu modelo)
+    checklist = get_object_or_404(OffboardingChecklist, pk=id_check)
+    
+    # 2. Cargar catálogo ordenado
+    catalogo = list(OffboardingCatalogo.objects.order_by("Num_Etapa", "idCatalogo"))
+    total_catalogo = len(catalogo)
 
-    checklist = get_object_or_404(
-        OffboardingChecklist,
-        pk=id_check
-    )
-
-    if request.method == "POST":
-
-        bloqueo = bloquear_si_no_puede(
-            request,
-            "offboarding",
-            "editar"
-        )
-
-        if bloqueo:
-            return bloqueo
-
-        try:
-
-            estado = get_object_or_404(
-                Estatus,
-                pk=request.POST.get("id_Estatus_Vacante")
-            )
-
-            checklist.id_Estatus_Vacante = estado
-
-            checklist.Fecha_Comp = (
-                request.POST.get("Fecha_Comp")
-                or None
-            )
-
-            checklist.Observacion = request.POST.get(
-                "Observacion"
-            )
-
-            actividades = request.POST.getlist(
-                "actividades[]"
-            )
-
-            total_catalogo = OffboardingCatalogo.objects.count()
-
-            if total_catalogo > 0:
-
-                checklist.pct_listo = round(
-                    (
-                        len(actividades)
-                        / total_catalogo
-                    ) * 100,
-                    2
-                )
-
-            else:
-                checklist.pct_listo = Decimal("0.00")
-
-            with transaction.atomic():
-
-                checklist.save()
-
-                # borrar el detalle anterior
-                OffboardingChecklistDetalle.objects.filter(
-                    id_Check=checklist
-                ).delete()
-
-                # crear nuevamente el detalle
-                for id_catalogo in actividades:
-
-                    actividad = OffboardingCatalogo.objects.get(
-                        pk=id_catalogo
-                    )
-
-                    OffboardingChecklistDetalle.objects.create(
-
-                        id_Check=checklist,
-
-                        idCatalogo=actividad,
-
-                        Completado=True
-                    )
-
-            messages.success(
-                request,
-                "Checklist actualizado correctamente."
-            )
-
-            return redirect(
-                "guardar_checklist_offboarding"
-            )
-
-        except Exception as e:
-            messages.error(
-                request,
-                str(e)
-            )
-
-    # ==========================================
-    # CHECKS SELECCIONADOS
-    # ==========================================
-
+    # 3. Intentar obtener los IDs de las actividades marcadas de la tabla de detalle
     checks_seleccionados = list(
-
         OffboardingChecklistDetalle.objects.filter(
-            id_Check=checklist
-        ).values_list(
-            "idCatalogo",
-            flat=True
-        )
+            id_Check=checklist,
+            Completado=True
+        ).values_list("idCatalogo_id", flat=True)
     )
+
+    # 4. RESPALDO/FALLBACK: Si no existen detalles pero hay un porcentaje guardado (ej. 15%)
+    if not checks_seleccionados and checklist.pct_listo and checklist.pct_listo > 0 and total_catalogo > 0:
+        porcentaje_decimal = float(checklist.pct_listo) / 100.0
+        cantidad_a_marcar = int(round(total_catalogo * porcentaje_decimal))
+        checks_seleccionados = [act.idCatalogo for act in catalogo[:cantidad_a_marcar]]
+
+    # Convertir a enteros puros para evitar desacoples de tipo
+    checks_seleccionados = [int(x) for x in checks_seleccionados if x is not None]
+
+    # 5. Obtener lista de offboardings para la tabla principal
+    offboardings = Offboarding.objects.select_related(
+        "idEmpleado", "idEmpleado__idPersona", "idCausa"
+    ).order_by("-Fecha_Salida")
+
+    for proceso in offboardings:
+        try:
+            proceso.checklist_obj = OffboardingChecklist.objects.get(
+                id_Offboarding=proceso.id_Offboarding
+            )
+        except OffboardingChecklist.DoesNotExist:
+            proceso.checklist_obj = None
 
     context = {
         "modo_edicion": True,
-        "checklist": checklist,
-
-        "offboardings": Offboarding.objects.select_related(
-            "idEmpleado"
-        ),
-
-        "catalogo": OffboardingCatalogo.objects.order_by(
-            "Num_Etapa",
-            "idCatalogo"
-        ),
-
-        "checks_seleccionados": checks_seleccionados,
-
-        "estados": Estatus.objects.all(),
-
+        "checklist": checklist,  # <-- Pasa el registro para autollenar inputs en el HTML
+        "checks_seleccionados": checks_seleccionados,  # <-- IDs de las casillas que deben marcarse
+        "offboardings": offboardings,
+        "catalogo": catalogo,
         "checklists": OffboardingChecklist.objects.select_related(
-            "id_Offboarding",
-            "id_Estatus_Vacante"
-        )
+            "id_Offboarding", "id_Estatus_Vacante"
+        ).order_by("-Fecha_Asignacion"),
+        "estados": Estatus.objects.order_by("id_Estatus_Vacante")
     }
 
-    return render(
-        request,
-        "checklist_off.html",
-        context
-    )
+    return render(request, "checklist_off.html", context)
 
 
 # =========================================================

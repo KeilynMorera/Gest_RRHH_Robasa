@@ -234,7 +234,8 @@ urlpatterns = [
 
     path("checklist_off/ver/<int:id_check>/", views.ver_checklist_offboarding, name="ver_checklist_offboarding"),
     
-    path("checklist_off/<int:id_check>/editar/", views.editar_checklist_offboarding, name="editar_checklist_offboarding"),
+    # Cargar formulario en modo edición
+    path('offboarding/checklist/modificar/<int:id_check>/', views.modificar_checklist_offboarding, name='modificar_checklist_offboarding'),
 
 
 

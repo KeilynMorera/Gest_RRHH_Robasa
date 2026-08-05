@@ -227,111 +227,161 @@
             </div>
 
             <!-- =====================================================
-                  FORMULARIO
-            ====================================================== -->
+                    FORMULARIO
+====================================================== -->
             <form
               method="POST"
               action="{% url 'guardar_checklist_offboarding' %}"
             >
               {% csrf_token %}
 
+              <!-- Si estás en modo edición, incluye el ID del checklist mediante un input hidden -->
+              {% if modo_edicion %}
+              <input
+                type="hidden"
+                name="id_Check"
+                value="{{ checklist.id_Check }}"
+              />
+              {% endif %}
+
               <div class="checklist-layout">
                 <!-- ==========================================
-                      PANEL IZQUIERDO
-                =========================================== -->
+                      PANEL IZQUIERDO: INFORMACIÓN
+                  =========================================== -->
                 <div class="card-panel form-panel">
                   <div class="panel-header">
                     <i class="fas fa-door-open"></i>
                     <h3>Información del proceso</h3>
                   </div>
 
+                  <!-- Campo Proceso de Offboarding -->
                   <div class="field-block">
                     <label>
                       Proceso de Offboarding
                       <span class="req">*</span>
                     </label>
 
-                    <select name="id_Offboarding" required>
+                    {% if modo_edicion or modo_ver %}
+                    <!-- Input oculto para asegurar que el ID viaje en el POST si el select está deshabilitado -->
+                    <input
+                      type="hidden"
+                      name="id_Offboarding"
+                      value="{{ checklist.id_Offboarding.id_Offboarding }}"
+                    />
+                    {% endif %}
+
+                    <select
+                      name="id_Offboarding"
+                      required
+                      {%
+                      if
+                      modo_edicion
+                      or
+                      modo_ver
+                      %}disabled{%
+                      endif
+                      %}
+                    >
                       <option value="">Seleccione una salida...</option>
 
                       {% for off in offboardings %}
-
                       <option
                         value="{{ off.id_Offboarding }}"
                         {%
                         if
-                        checklist.id_Offboarding.id_Offboarding=""
+                        checklist
+                        and
+                        checklist.id_Offboarding_id=""
                         ="off.id_Offboarding"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
                         {{ off.idEmpleado }} - {{ off.Fecha_Salida }}
                       </option>
-
                       {% endfor %}
                     </select>
                   </div>
 
+                  <!-- Campo Estado -->
                   <div class="field-block">
                     <label>
                       Estado
                       <span class="req">*</span>
                     </label>
 
-                    <select name="id_Estatus_Vacante" required>
+                    <select
+                      name="id_Estatus_Vacante"
+                      required
+                      {%
+                      if
+                      modo_ver
+                      %}disabled{%
+                      endif
+                      %}
+                    >
                       <option value="">Seleccione...</option>
 
                       {% for estado in estados %}
-
                       <option
                         value="{{ estado.id_Estatus_Vacante }}"
                         {%
                         if
-                        checklist.id_Estatus_Vacante.id_Estatus_Vacante=""
+                        checklist
+                        and
+                        checklist.id_Estatus_Vacante_id=""
                         ="estado.id_Estatus_Vacante"
-                        %}
-                        selected
-                        {%
+                        %}selected{%
                         endif
                         %}
                       >
                         {{ estado.TipoEstatus }}
                       </option>
-
                       {% endfor %}
                     </select>
                   </div>
 
+                  <!-- Campo Fecha de Completado -->
                   <div class="field-block">
-                    <label> Fecha de completado </label>
+                    <label>Fecha de completado</label>
 
                     <input
                       type="date"
                       name="Fecha_Comp"
-                      value="{{ checklist.Fecha_Comp|date:'Y-m-d' }}"
+                      value="{{ checklist.Fecha_Comp|date:'Y-m-d'|default:'' }}"
+                      {%
+                      if
+                      modo_ver
+                      %}disabled{%
+                      endif
+                      %}
                     />
                   </div>
 
+                  <!-- Campo Observaciones -->
                   <div class="field-block">
-                    <label> Observaciones </label>
+                    <label>Observaciones</label>
 
                     <textarea
                       name="Observacion"
                       rows="6"
                       maxlength="500"
                       placeholder="Ingrese observaciones..."
+                      {%
+                      if
+                      modo_ver
+                      %}disabled{%
+                      endif
+                      %}
                     >
-                    {{ checklist.Observacion }}</textarea
+                    {{ checklist.Observacion|default_if_none:'' }}</textarea
                     >
                   </div>
                 </div>
 
                 <!-- ==========================================
-                      TABLA DERECHA
-                =========================================== -->
+                      TABLA DERECHA: ACTIVIDADES DEL CHECKLIST
+                  =========================================== -->
                 <div class="card-panel table-panel">
                   <div class="panel-header">
                     <i class="fas fa-list-check"></i>
@@ -343,16 +393,13 @@
                       <thead>
                         <tr>
                           <th style="width: 70px">✓</th>
-
                           <th style="width: 160px">Etapa</th>
-
                           <th>Actividad</th>
                         </tr>
                       </thead>
 
                       <tbody>
                         {% for actividad in catalogo %}
-
                         <tr>
                           <td style="text-align: center">
                             <input
@@ -364,9 +411,13 @@
                               actividad.idCatalogo
                               in
                               checks_seleccionados
+                              %}checked{%
+                              endif
                               %}
-                              checked
                               {%
+                              if
+                              modo_ver
+                              %}disabled{%
                               endif
                               %}
                             />
@@ -376,7 +427,6 @@
                             <span class="badge-num">
                               {{ actividad.Num_Etapa }}
                             </span>
-
                             <span class="nombre-etapa">
                               {{ actividad.Etapa }}
                             </span>
@@ -384,9 +434,7 @@
 
                           <td>{{ actividad.Actividad }}</td>
                         </tr>
-
                         {% empty %}
-
                         <tr>
                           <td
                             colspan="3"
@@ -395,7 +443,6 @@
                             No existen actividades configuradas.
                           </td>
                         </tr>
-
                         {% endfor %}
                       </tbody>
                     </table>
@@ -404,14 +451,14 @@
               </div>
 
               <!-- ==========================================
-                    BOTÓN GUARDAR
-              =========================================== -->
-
+                    BOTÓN GUARDAR / ACTUALIZAR
+                =========================================== -->
               {% if not modo_ver %}
               <div class="btn-footer">
                 <button type="submit" class="btn-block">
                   <i class="fas fa-save"></i>
-                  Guardar Checklist
+                  {% if modo_edicion %}Actualizar Checklist{% else %}Guardar
+                  Checklist{% endif %}
                 </button>
               </div>
               {% endif %}
@@ -419,9 +466,8 @@
           </div>
 
           <!-- ======================================================
-                TARJETA: ASISTENCIA DE EMPLEADOS
-            ===================================================== -->
-          <!-- TARJETA: TABLA DE OFFBOARDING -->
+                TARJETA: TABLA DE OFFBOARDING
+            ====================================================== -->
           <section class="table-card">
             <div class="table-card-header">
               <div class="table-card-header-left">
@@ -460,53 +506,36 @@
                 </thead>
                 <tbody>
                   {% for proceso in offboardings %}
-
                   <tr>
-                    <!-- ==========================================
-                          ID OFFBOARDING
-                      =========================================== -->
+                    <!-- ID OFFBOARDING -->
                     <td>
                       <strong> #OFF-{{ proceso.id_Offboarding }} </strong>
                     </td>
 
-                    <!-- ==========================================
-                          COLABORADOR
-                      =========================================== -->
+                    <!-- COLABORADOR -->
                     <td>{{ proceso.idEmpleado.idPersona.Nombre_Completo }}</td>
 
-                    <!-- ==========================================
-                          CATEGORÍA / CAUSA
-                      =========================================== -->
+                    <!-- CATEGORÍA / CAUSA -->
                     <td>
                       {% if proceso.idCausa.Categoria == "Voluntaria" %}
-
                       <span class="badge-category bg-voluntaria">
                         {{ proceso.idCausa.Categoria }}
                       </span>
-
                       {% elif proceso.idCausa.Categoria == "Involuntaria" %}
-
                       <span class="badge-category bg-involuntaria">
                         {{ proceso.idCausa.Categoria }}
                       </span>
-
                       {% else %}
-
                       <span class="badge-category">
                         {{ proceso.idCausa.Categoria }}
                       </span>
-
                       {% endif %} - {{ proceso.idCausa.Causa }}
                     </td>
 
-                    <!-- ==========================================
-                          FECHA DE SALIDA
-                      =========================================== -->
+                    <!-- FECHA DE SALIDA -->
                     <td>{{ proceso.Fecha_Salida|date:"d/m/Y" }}</td>
 
-                    <!-- ==========================================
-                          PROGRESO
-                      =========================================== -->
+                    <!-- PROGRESO -->
                     <td>
                       <div class="progress-container">
                         <div
@@ -519,15 +548,7 @@
                         >
                           <div
                             class="progress-bar"
-                            style="
-                            width:
-                            {% if proceso.checklist_obj %}
-                            {{ proceso.checklist_obj.pct_listo|default:0 }}
-                             {% else %}
-                             0
-                             {% endif %}
-                             %;
-                             "
+                            style="width: {% if proceso.checklist_obj %}{{ proceso.checklist_obj.pct_listo|default:0 }}{% else %}0{% endif %}%;"
                           ></div>
                         </div>
 
@@ -537,53 +558,30 @@
                       </div>
                     </td>
 
-                    <!-- ==========================================
-                          ACCIÓN
-                      =========================================== -->
+                    <!-- ACCIÓN -->
                     <td class="col-accion">
                       {% if proceso.checklist_obj %}
-
-                      <!-- ======================================
-                            YA TIENE CHECKLIST
-                            EDITAR CHECKLIST EXISTENTE
-                      ======================================= -->
-
                       <a
-                        href="{% url 'editar_checklist_offboarding' proceso.checklist_obj.id_Check %}"
+                        href="{% url 'modificar_checklist_offboarding' proceso.checklist_obj.id_Check %}"
                         class="btn btn-warning btn-sm"
                         title="Editar Checklist"
                       >
                         <i class="fas fa-pen-to-square"></i>
                       </a>
-
                       {% else %}
-
-                      <!-- ======================================
-                            NO TIENE CHECKLIST
-                            CREAR NUEVO CHECKLIST
-                        ======================================= -->
-                      <a
-                        href="?id_Offboarding={{ proceso.id_Offboarding }}"
-                        class="btn btn-primary btn-sm"
-                        title="Crear Checklist"
-                      >
-                        <i class="fas fa-plus"></i>
-                      </a>
-
+                      <span class="text-muted" title="Sin checklist guardado">
+                        <i class="fas fa-minus-circle"></i>
+                      </span>
                       {% endif %}
                     </td>
                   </tr>
-
                   {% empty %}
-
                   <tr>
                     <td colspan="6" class="tabla-vacia">
                       <i class="fas fa-door-open"></i>
-
                       No existen procesos de Offboarding registrados.
                     </td>
                   </tr>
-
                   {% endfor %}
                 </tbody>
               </table>
