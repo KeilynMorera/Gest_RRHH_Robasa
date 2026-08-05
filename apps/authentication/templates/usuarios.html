@@ -187,16 +187,30 @@
                   <i class="fas fa-user-tie"></i> Colaborador Asociado
                   <span class="req" style="color: #e53935">*</span>
                 </label>
+
                 <select
                   name="idEmpleado_Admin"
                   id="idEmpleado_Admin"
                   class="form-control"
                   required
+                  autocomplete="off"
                 >
-                  <option value="">Seleccione un empleado</option>
+                  <!-- Placeholder por defecto -->
+                  <option
+                    value=""
+                    {%
+                    if
+                    not
+                    usuario_editar
+                    %}selected{%
+                    endif
+                    %}
+                  >
+                    -- Seleccione un empleado --
+                  </option>
 
+                  <!-- Recorrido dinámico -->
                   {% for empleado in empleados %}
-
                   <option
                     value="{{ empleado.idEmpleado }}"
                     {%
@@ -205,15 +219,13 @@
                     and
                     usuario_editar.idEmpleado_Admin.idEmpleado=""
                     ="empleado.idEmpleado"
-                    %}
-                    selected
-                    {%
+                    %}selected{%
                     endif
                     %}
                   >
-                    {{ empleado }}
+                    {{ empleado.idPersona.Nombre_Completo }} — {{
+                    empleado.idPuesto.Nombre }}
                   </option>
-
                   {% endfor %}
                 </select>
               </div>
@@ -294,38 +306,29 @@
                   <i class="fas fa-toggle-on"></i> Estado de la Cuenta
                   <span class="req" style="color: #e53935">*</span>
                 </label>
+
                 <div class="status-group">
                   <!-- ESTADO ACTIVO -->
                   <div class="status-option">
                     <input
                       type="radio"
-                      name="Activo"
                       id="activo_1"
+                      name="Activo"
                       value="1"
+                      required
+                      autocomplete="off"
                       {%
                       if
                       usuario_editar
-                      %}
-                      {%
-                      if
-                      usuario_editar.Activo
-                      %}
-                      checked
-                      {%
-                      endif
-                      %}
-                      {%
-                      else
-                      %}
-                      checked
-                      {%
+                      and
+                      usuario_editar.Activo=""
+                      ="1"
+                      %}checked{%
                       endif
                       %}
                     />
-
                     <label for="activo_1">
-                      <span class="dot"></span>
-                      Activo
+                      <span class="dot"></span> Activo
                     </label>
                   </div>
 
@@ -333,25 +336,23 @@
                   <div class="status-option">
                     <input
                       type="radio"
-                      name="Activo"
                       id="activo_0"
+                      name="Activo"
                       value="0"
+                      required
+                      autocomplete="off"
                       {%
                       if
                       usuario_editar
                       and
-                      not
-                      usuario_editar.Activo
-                      %}
-                      checked
-                      {%
+                      usuario_editar.Activo=""
+                      ="0"
+                      %}checked{%
                       endif
                       %}
                     />
-
                     <label for="activo_0">
-                      <span class="dot"></span>
-                      Inactivo
+                      <span class="dot"></span> Inactivo
                     </label>
                   </div>
                 </div>
@@ -461,4 +462,5 @@
       </main>
     </div>
   </body>
+  <script src="{% static 'js/usuarios.js' %}"></script>
 </html>

@@ -11,7 +11,7 @@
 body {
   font-family: "Segoe UI", sans-serif; /* Tipografía limpia y moderna */
   background: #f4f7fb; /* Color de fondo gris claro azulado para el dashboard */
-  color: #d35b1a; /* Color principal de texto (tono naranja/óxido) */
+  color: #000000; /* Color principal de texto (tono naranja/óxido) */
 }
 
 /* ==========================================================================

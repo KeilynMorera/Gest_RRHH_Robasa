@@ -842,7 +842,7 @@ select.form-control {
 }
 
 /* ==========================================================================
-   RADIO BUTTONS - APROBACIÓN DE PERMISO (Componente de Selección Avanzado)
+   RADIO BUTTONS - APROBACIÓN DE PERMISO & ESTADOS (Componente de Selección Avanzado)
    ========================================================================== */
 
 /* Contenedor del grupo de opciones de estado */
@@ -867,7 +867,7 @@ select.form-control {
   height: 0; /* Elimina su alto para que no interfiera en clics accidentales */
 }
 
-/* Estilización de la etiqueta que actuará como el "botón" visual */
+/* Estilización de la etiqueta que actuará como el "botón" visual (ESTADO NEUTRO/DESACTIVADO POR DEFECTO) */
 .status-option label {
   display: flex; /* Permite alinear el texto y el punto indicador de forma interna */
   align-items: center; /* Centrado vertical interno */
@@ -883,47 +883,92 @@ select.form-control {
   cursor: pointer; /* Cambia el puntero a mano indicando que es clickeable */
   transition: all 0.2s ease; /* Transición suave para todos sus estados (hover, focus) */
   user-select: none; /* Evita que el texto de la opción se sombree azul al hacer doble clic */
+  box-shadow: none !important; /* Garantiza que no haya halo ni sombras por defecto */
 }
 
-/* Estado Hover (Al pasar el mouse por encima) */
-.status-option label:hover {
-  border-color: #e8600a;
-  background: #fffaf6;
-  color: #e8600a;
-}
-
-/* Estado de Radio Seleccionado en variante general (Naranja) */
-/* Usa el selector de hermano adyacente (+) para modificar el label cuando el input previo está en :checked */
-.status-option input:checked + label {
-  border-color: #e8600a;
-  background: rgba(232, 96, 10, 0.08); /* Fondo naranja al 8% de opacidad */
-  color: #e8600a;
-  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12); /* Efecto halo de enfoque exterior */
-}
-
-/* Punto indicador circular dentro de la opción */
+/* Punto indicador circular dentro de la opción (NEUTRO) */
 .status-option .dot {
   width: 9px;
   height: 9px;
   border-radius: 50%; /* Hace el contenedor perfectamente redondo */
-  background: currentColor; /* Hereda de forma dinámica el valor de la propiedad 'color' del label parent */
+  background-color: #a0aec0; /* Color gris neutro cuando NO está seleccionado */
   flex-shrink: 0; /* Previene que el círculo se deforme si el texto es muy largo */
+  transition: background-color 0.2s ease;
 }
 
-/* Variante especial cuando se selecciona la opción específica de "Aprobado" (Verde) */
+/* Estado Hover (Al pasar el mouse por encima de un botón inactivo) */
+.status-option label:hover {
+  border-color: #cbd5e1;
+  background: #edf2f7;
+  color: #475569;
+}
+
+.status-option label:hover .dot {
+  background-color: #64748b;
+}
+
+/* ==========================================================================
+   ESTADOS DE SELECCIÓN EXCLUSIVAMENTE CON :checked
+   ========================================================================== */
+
+/* Estado de Radio Seleccionado genérico (Naranja por defecto) */
+.status-option input[type="radio"]:checked + label {
+  border-color: #e8600a;
+  background: rgba(232, 96, 10, 0.08); /* Fondo naranja al 8% de opacidad */
+  color: #e8600a;
+  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12) !important; /* Efecto halo de enfoque exterior */
+}
+
+.status-option input[type="radio"]:checked + label .dot {
+  background-color: #e8600a; /* Sincroniza el dot con el color naranja */
+}
+
+/* Variante específica: Activo (Verde) */
+.status-option input#activo_1:checked + label {
+  border-color: #22a06b;
+  background: rgba(34, 160, 107, 0.1);
+  color: #22a06b;
+  box-shadow: 0 0 0 3px rgba(34, 160, 107, 0.12) !important;
+}
+
+.status-option input#activo_1:checked + label .dot {
+  background-color: #22a06b;
+}
+
+/* Variante específica: Inactivo (Naranja / Rojo) */
+.status-option input#activo_0:checked + label {
+  border-color: #e8600a;
+  background: rgba(232, 96, 10, 0.08);
+  color: #e8600a;
+  box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12) !important;
+}
+
+.status-option input#activo_0:checked + label .dot {
+  background-color: #e8600a;
+}
+
+/* Variante específica: Aprobado (Verde) */
 .status-option input#aprobado_si:checked + label {
   border-color: #22a06b;
   background: rgba(34, 160, 107, 0.1);
   color: #22a06b;
-  box-shadow: 0 0 0 3px rgba(34, 160, 107, 0.12);
+  box-shadow: 0 0 0 3px rgba(34, 160, 107, 0.12) !important;
 }
 
-/* Variante especial cuando se selecciona la opción específica de "No aprobado" (Rojo) */
+.status-option input#aprobado_si:checked + label .dot {
+  background-color: #22a06b;
+}
+
+/* Variante específica: No Aprobado (Rojo) */
 .status-option input#aprobado_no:checked + label {
   border-color: #e53935;
   background: rgba(229, 57, 53, 0.08);
   color: #e53935;
-  box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.1);
+  box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.1) !important;
+}
+
+.status-option input#aprobado_no:checked + label .dot {
+  background-color: #e53935;
 }
 
 /* =========================================================
@@ -970,10 +1015,7 @@ select.form-control {
 
 /* ============================================================
    ESTILOS ADICIONALES — Tabla de consulta y modificación
-   Agregar al final de personas.css
    ============================================================ */
-
-/* ── Textarea del formulario ─────────────────────────────────── */
 textarea {
   width: 100%;
   border: 1.5px solid #dde2f0;
@@ -988,13 +1030,14 @@ textarea {
     border-color 0.2s,
     box-shadow 0.2s;
 }
+
 textarea:focus {
   border-color: #e8600a;
   box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.12);
   background: #fff;
 }
 
-/* ── Botón Guardar Cambios (naranja suave / warning) ─────────── */
+/* Botón Guardar Cambios */
 .btn-warning {
   background: #f0a500;
   color: #ffffff;
@@ -1011,7 +1054,7 @@ textarea:focus {
   display: none !important;
 }
 
-/* ── Tarjeta de la tabla ─────────────────────────────────────── */
+/* Tarjeta de la tabla */
 .table-card {
   background: #ffffff;
   border-radius: 14px;
@@ -1021,7 +1064,7 @@ textarea:focus {
   overflow: hidden;
 }
 
-/* ── Encabezado de la tarjeta tabla ─────────────────────────── */
+/* Encabezado de la tarjeta tabla */
 .table-card-header {
   display: flex;
   align-items: center;
@@ -1064,19 +1107,21 @@ textarea:focus {
   margin: 0;
 }
 
-/* ── Buscador de la tabla ────────────────────────────────────── */
-.table-search input {
-  width: 100%;
-  min-width: 180px;
+/* Buscador de la tabla */
+.table-search {
+  position: relative;
 }
 
 .table-search i {
   position: absolute;
   left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
   color: #6b7499;
   font-size: 13px;
   pointer-events: none;
 }
+
 .table-search input {
   border: 1.5px solid #dde2f0;
   border-radius: 24px;
@@ -1091,19 +1136,20 @@ textarea:focus {
     border-color 0.2s,
     box-shadow 0.2s;
 }
+
 .table-search input:focus {
   border-color: #e8600a;
   box-shadow: 0 0 0 3px rgba(232, 96, 10, 0.1);
   background: #fff;
 }
 
-/* ── Contenedor con scroll horizontal ───────────────────────── */
+/* Contenedor con scroll horizontal */
 .table-wrapper {
   overflow-x: auto;
   padding: 0 0 8px;
 }
 
-/* ── Tabla ───────────────────────────────────────────────────── */
+/* Tabla */
 .data-table {
   width: 100%;
   min-width: 0;
@@ -1165,57 +1211,13 @@ textarea:focus {
   text-overflow: ellipsis;
 }
 
-/* Columna acción: centrada */
+/* Columna acción */
 .col-accion {
   text-align: center;
   white-space: nowrap;
 }
 
-/* Celda vacía */
-.tabla-vacia {
-  text-align: center;
-  padding: 40px 20px;
-  color: #6b7499;
-  font-size: 14px;
-}
-.tabla-vacia i {
-  display: block;
-  font-size: 32px;
-  margin-bottom: 10px;
-  color: #c5cbdf;
-}
-
-/* ── Botón editar en la tabla ────────────────────────────────── */
-.btn-editar {
-  background: rgba(30, 42, 94, 0.08);
-  border: none;
-  border-radius: 8px;
-  width: 36px;
-  height: 36px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #1e2a5e;
-  font-size: 15px;
-  cursor: pointer;
-  transition:
-    background 0.2s,
-    color 0.2s,
-    transform 0.15s;
-}
-.btn-editar:hover {
-  background: #e8600a;
-  color: #ffffff;
-  transform: scale(1.1);
-}
-
-/* ── Columna acción ───────────────────────────────────────── */
-.col-accion {
-  text-align: center;
-  white-space: nowrap;
-}
-
-/* ── Botones de acción (Editar / Eliminar) ────────────────── */
+/* Botones de acción (Editar / Eliminar) */
 .col-accion .btn {
   width: 36px;
   height: 36px;
@@ -1228,7 +1230,7 @@ textarea:focus {
   transition: all 0.2s ease;
 }
 
-/* Botón editar */
+/* Botón editar en tabla */
 .col-accion .btn-warning {
   background: rgba(240, 165, 0, 0.12);
   color: #f0a500;
@@ -1256,7 +1258,6 @@ textarea:focus {
   box-shadow: 0 4px 10px rgba(220, 53, 69, 0.35);
 }
 
-/* Tamaño de iconos */
 .col-accion .btn i {
   font-size: 14px;
 }
