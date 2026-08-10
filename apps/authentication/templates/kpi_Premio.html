@@ -127,9 +127,14 @@
           </a>
         </nav>
 
+        <!-- ======================================================
+              CERRAR SESIÓN
+          ====================================================== -->
+
         <div class="logout">
-          <a href="login.html">
-            <i class="fas fa-right-from-bracket"></i> Cerrar sesión
+          <a href="{% url 'cerrar_sesion' %}">
+            <i class="fas fa-sign-out-alt"></i>
+            Cerrar sesión
           </a>
         </div>
       </aside>
@@ -217,7 +222,6 @@
                 <i
                   class="fas {% if message.tags == 'success' %}fa-circle-check{% else %}fa-circle-exclamation{% endif %}"
                 ></i>
-
                 {{ message }}
               </div>
               {% endfor %}
@@ -329,8 +333,7 @@
                   <button type="submit" class="btn btn-primary">
                     <i class="fas fa-floppy-disk"></i>
 
-                    {% if form.instance.pk %} Actualizar Premio {% else %}
-                    Guardar Incentivo {% endif %}
+                    {% if form.instance.pk %} Actualizar Premio {% else %} Guardar Incentivo {% endif %}
                   </button>
                 </div>
               </form>
@@ -349,8 +352,7 @@
 
                 <div>
                   <h2 class="form-card-title">
-                    {% if form.instance.pk %} Modificar Premio KPI {% else %}
-                    Gestión de Premios KPI {% endif %}
+                    {% if form.instance.pk %} Modificar Premio KPI {% else %} Gestión de Premios KPI {% endif %}
                   </h2>
 
                   <p class="table-card-subtitle">
@@ -417,7 +419,6 @@
                       </a>
                     </td>
                   </tr>
-
                   {% empty %}
 
                   <tr>
@@ -437,7 +438,6 @@
                       No existen premios registrados.
                     </td>
                   </tr>
-
                   {% endfor %}
                 </tbody>
               </table>

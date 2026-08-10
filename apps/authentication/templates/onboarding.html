@@ -297,17 +297,14 @@
               <div class="form-section">
                 <h4 class="form-section-title">
                   <i class="fas fa-tasks"></i>
-
                   2. Actividad del Onboarding
                 </h4>
 
                 <div class="form-grid">
                   <!-- Actividad -->
-
                   <div class="field" style="grid-column: span 2">
                     <label for="{{ form_detalle.idActividad.id_for_label }}">
                       Actividad
-
                       <span class="req">*</span>
                     </label>
 
@@ -320,7 +317,6 @@
                       for="{{ form_detalle.id_Estatus_Vacante.id_for_label }}"
                     >
                       Estado
-
                       <span class="req">*</span>
                     </label>
 
@@ -341,7 +337,6 @@
                   </div>
 
                   <!-- Fecha Realizada -->
-
                   <div class="field">
                     <label
                       for="{{ form_detalle.Fecha_Realizada.id_for_label }}"
@@ -353,7 +348,6 @@
                   </div>
 
                   <!-- Observaciones -->
-
                   <div class="field" style="grid-column: span 2">
                     <label for="{{ form_detalle.Observaciones.id_for_label }}">
                       Observaciones
@@ -411,9 +405,13 @@
                 <thead>
                   <tr>
                     <th>Actividad</th>
+
                     <th>Estado</th>
+
                     <th>Fecha Programada</th>
+                    
                     <th>Fecha Realizada</th>
+                    
                     <th>Observaciones</th>
                   </tr>
                 </thead>

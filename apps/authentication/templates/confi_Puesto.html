@@ -148,12 +148,13 @@
           </a>
         </nav>
 
-        <!-- =========================================================
-             BOTÓN DE CIERRE DE SESIÓN
-        ========================================================= -->
+        <!-- ======================================================
+              CERRAR SESIÓN
+          ====================================================== -->
+
         <div class="logout">
-          <a href="login.html">
-            <i class="fas fa-right-from-bracket"></i>
+          <a href="{% url 'cerrar_sesion' %}">
+            <i class="fas fa-sign-out-alt"></i>
             Cerrar sesión
           </a>
         </div>
@@ -536,8 +537,7 @@
                 <button type="submit" class="btn btn-primary">
                   <i class="fas fa-floppy-disk"></i>
 
-                  {% if compensacion_editar %} Guardar cambios {% else %}
-                  Guardar compensación {% endif %}
+                  {% if compensacion_editar %} Guardar cambios {% else %} Guardar compensación {% endif %}
                 </button>
               </div>
             </form>

@@ -129,9 +129,13 @@
           </a>
         </nav>
 
+        <!-- ======================================================
+              CERRAR SESIÓN
+          ====================================================== -->
+
         <div class="logout">
-          <a href="login.html">
-            <i class="fas fa-right-from-bracket"></i>
+          <a href="{% url 'cerrar_sesion' %}">
+            <i class="fas fa-sign-out-alt"></i>
             Cerrar sesión
           </a>
         </div>
@@ -561,12 +565,19 @@
                 <thead>
                   <tr>
                     <th>ID</th>
+                    
                     <th>Persona</th>
+                    
                     <th>Universidad</th>
+                    
                     <th>Carrera</th>
+                    
                     <th>Puesto</th>
+                    
                     <th>Supervisor</th>
+                    
                     <th>Estado</th>
+                    
                     <th>Acción</th>
                   </tr>
                 </thead>

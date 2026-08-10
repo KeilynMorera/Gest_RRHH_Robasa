@@ -126,10 +126,15 @@
           </a>
         </nav>
 
+        <!-- ======================================================
+              CERRAR SESIÓN
+          ====================================================== -->
+
         <div class="logout">
-          <a href="login.html"
-            ><i class="fas fa-right-from-bracket"></i> Cerrar sesión</a
-          >
+          <a href="{% url 'cerrar_sesion' %}">
+            <i class="fas fa-sign-out-alt"></i>
+            Cerrar sesión
+          </a>
         </div>
       </aside>
 
@@ -512,8 +517,7 @@
                       gap: 5px;
                     "
                   >
-                    <i class="fas fa-check-circle"></i> Cabecera Lista y
-                    Registrada (ID: {{ kpi_cabecera_id }})
+                    <i class="fas fa-check-circle"></i> Cabecera Lista y Registrada (ID: {{ kpi_cabecera_id }})
                   </span>
                   <a
                     href="{% url 'registrar_kpi' %}"

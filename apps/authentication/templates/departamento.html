@@ -169,11 +169,12 @@
         </nav>
 
         <!-- ======================================================
-             BOTÓN DE CERRAR SESIÓN
-        ====================================================== -->
+              CERRAR SESIÓN
+          ====================================================== -->
+
         <div class="logout">
-          <a href="login.html">
-            <i class="fas fa-right-from-bracket"></i>
+          <a href="{% url 'cerrar_sesion' %}">
+            <i class="fas fa-sign-out-alt"></i>
             Cerrar sesión
           </a>
         </div>
@@ -438,8 +439,7 @@
                 <button type="submit" class="btn btn-primary">
                   <i class="fas fa-floppy-disk"></i>
 
-                  {% if departamento_editar %} Guardar cambios {% else %}
-                  Guardar departamento {% endif %}
+                  {% if departamento_editar %} Guardar cambios {% else %} Guardar departamento {% endif %}
                 </button>
               </div>
             </form>

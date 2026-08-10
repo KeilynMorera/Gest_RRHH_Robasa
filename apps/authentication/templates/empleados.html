@@ -130,9 +130,14 @@
           </a>
         </nav>
 
+        <!-- ======================================================
+              CERRAR SESIÓN
+          ====================================================== -->
+
         <div class="logout">
-          <a href="{% url 'home' %}" data-label="Cerrar sesión">
-            <i class="fas fa-right-from-bracket"></i> Cerrar sesión
+          <a href="{% url 'cerrar_sesion' %}">
+            <i class="fas fa-sign-out-alt"></i>
+            Cerrar sesión
           </a>
         </div>
       </aside>
@@ -146,8 +151,7 @@
           <div class="page-title">
             <h1>Empleados</h1>
             <p>
-              {% if editar_empleado %} Modificar datos del empleado {% else %}
-              Registro de un nuevo empleado {% endif %}
+              {% if editar_empleado %} Modificar datos del empleado {% else %} Registro de un nuevo empleado {% endif %}
             </p>
           </div>
           <div class="search-box">
@@ -189,8 +193,7 @@
           <a href="{% url 'per_emp' %}">Registro Personal</a>
           <i class="fas fa-chevron-right sep"></i>
           <span class="current">
-            {% if editar_empleado %} Modificar empleado {% else %} Registro de
-            nuevo empleado {% endif %}
+            {% if editar_empleado %} Modificar empleado {% else %} Registro de nuevo empleado {% endif %}
           </span>
         </div>
 
@@ -206,15 +209,10 @@
 
               <div>
                 <h2 class="form-card-title">
-                  {% if empleado_editar %} Modificar Empleado {% else %}
-                  Registro de un nuevo Empleado {% endif %}
+                  {% if empleado_editar %} Modificar Empleado {% else %} Registro de un nuevo Empleado {% endif %}
                 </h2>
                 <p class="form-card-subtitle">
-                  {% if empleado_editar %} Actualice los datos del empleado y
-                  haga clic en "Modificar empleado" para guardar los cambios. {%
-                  else %} Complete el formulario con los datos del nuevo
-                  empleado y haga clic en "Guardar empleado" para registrarlo.
-                  {% endif %}
+                  {% if empleado_editar %} Actualice los datos del empleado y haga clic en "Modificar empleado" para guardar los cambios. {% else %} Complete el formulario con los datos del nuevo empleado y haga clic en "Guardar empleado" para registrarlo. {% endif %}
                 </p>
               </div>
             </div>

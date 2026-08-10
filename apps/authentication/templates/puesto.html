@@ -26,10 +26,6 @@
     <!-- Título mostrado en la pestaña del navegador -->
     <title>Registro de Puestos - Gestión de Talento Humano</title>
 
-    <!-- ======================================================
-         HOJAS DE ESTILO
-    ====================================================== -->
-
     <!-- Archivo CSS personalizado -->
     <link rel="stylesheet" href="{% static 'styles/pasantes.css' %}" />
 
@@ -163,19 +159,17 @@
         </nav>
 
         <!-- ======================================================
-             BOTÓN DE CERRAR SESIÓN
-        ====================================================== -->
+              CERRAR SESIÓN
+          ====================================================== -->
+
         <div class="logout">
-          <a href="login.html">
-            <i class="fas fa-right-from-bracket"></i>
+          <a href="{% url 'cerrar_sesion' %}">
+            <i class="fas fa-sign-out-alt"></i>
             Cerrar sesión
           </a>
         </div>
       </aside>
 
-      <!-- ======================================================
-           CONTENIDO PRINCIPAL
-      ====================================================== -->
       <main class="main-content">
         <!-- ======================================================
              BARRA SUPERIOR
@@ -325,7 +319,6 @@
                   <div class="field field-full">
                     <label for="nombre_puesto">
                       <i class="fas fa-briefcase field-icon"></i>
-
                       Nombre puesto <span class="req">*</span>
                     </label>
 
@@ -346,7 +339,6 @@
                   <div class="field field-full">
                     <label for="descripcion_puesto">
                       <i class="fas fa-file-signature field-icon"></i>
-
                       Descripción sobre el Puesto
                       <span class="req">*</span>
                     </label>
@@ -430,14 +422,12 @@
                 <!-- Botón cancelar -->
                 <a href="{% url 'comple_Empresa' %}" class="btn btn-ghost">
                   <i class="fas fa-arrow-left"></i>
-
                   Cancelar
                 </a>
 
                 <!-- Botón limpiar -->
                 <button type="reset" class="btn btn-secondary">
                   <i class="fas fa-rotate-left"></i>
-
                   Limpiar
                 </button>
 
@@ -445,8 +435,7 @@
                 <button type="submit" class="btn btn-primary">
                   <i class="fas fa-floppy-disk"></i>
 
-                  {% if puesto_editar %} Guardar cambios {% else %} Guardar
-                  puesto {% endif %}
+                  {% if puesto_editar %} Guardar cambios {% else %} Guardar puesto {% endif %}
                 </button>
               </div>
             </form>
@@ -485,9 +474,13 @@
                 <thead>
                   <tr>
                     <th>ID</th>
+                    
                     <th>Nombre Puesto</th>
+                    
                     <th>Descripción</th>
+                    
                     <th>Departamento</th>
+                    
                     <th class="col-accion">Acción</th>
                   </tr>
                 </thead>

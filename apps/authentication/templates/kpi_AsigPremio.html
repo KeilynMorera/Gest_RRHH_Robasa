@@ -9,15 +9,7 @@
 
     <title>Premios KPI - Gestión de Talento Humano | Robasa</title>
 
-    <!-- ==========================================================
-       CSS
-  =========================================================== -->
-
     <link rel="stylesheet" href="{% static 'styles/kpi_AsigPremio.css' %}" />
-
-    <!-- ==========================================================
-       FONT AWESOME
-  =========================================================== -->
 
     <link
       rel="stylesheet"
@@ -140,14 +132,13 @@
       </aside>
 
       <!-- ==========================================================
-       CONTENIDO PRINCIPAL
-  =========================================================== -->
-
+            CONTENIDO PRINCIPAL
+        =========================================================== -->
       <main class="main-content">
-        <!-- ======================================================
-         TOPBAR
-    ====================================================== -->
 
+        <!-- ======================================================
+              TOPBAR
+          ====================================================== -->
         <header class="topbar">
           <div class="page-title">
             <h1>Incentivos y Premios</h1>
@@ -211,14 +202,13 @@
         </div>
 
         <!-- ======================================================
-         TARJETA PRINCIPAL
-    ====================================================== -->
-
+              TARJETA PRINCIPAL
+          ====================================================== -->
         <section class="form-card">
+          
           <!-- ====================================================
-           ENCABEZADO
-      ==================================================== -->
-
+                ENCABEZADO
+            ==================================================== -->
           <div class="form-card-header">
             <div class="form-card-header-left">
               <div class="form-card-icon">
@@ -243,16 +233,14 @@
           </div>
 
           <!-- ====================================================
-           CUERPO DEL FORMULARIO
-      ==================================================== -->
-
+                CUERPO DEL FORMULARIO
+            ==================================================== -->
           <div class="form-body">
+
             <!-- ==================================================
-             MENSAJES DJANGO
-        ================================================== -->
-
+                  MENSAJES DJANGO
+            ================================================== -->
             {% if messages %}
-
             <div class="messages-container" style="margin-bottom: 20px">
               {% for message in messages %}
 
@@ -282,16 +270,13 @@
 
                 {{ message }}
               </div>
-
               {% endfor %}
             </div>
-
             {% endif %}
 
             <!-- ==================================================
                   FORMULARIO
               ================================================== -->
-
             <form
               method="POST"
               action="{% url 'guardar_premio_asignado' %}"
@@ -302,11 +287,9 @@
               <!-- ==================================================
                     SECCIÓN: ASIGNACIÓN DEL PREMIO
                 ================================================== -->
-
               <div class="form-section">
                 <h4 class="form-section-title">
                   <i class="fas fa-user-tag"></i>
-
                   Asignación del Incentivo Evaluado
                 </h4>
 
@@ -314,13 +297,10 @@
                   <!-- ==================================================
                         KPI
                     ================================================== -->
-
                   <div class="field">
                     <label for="{{ form.id_KPI.id_for_label }}">
                       <i class="fas fa-chart-column field-icon"></i>
-
                       Registro KPI Evaluado
-
                       <span class="req"> * </span>
                     </label>
 
@@ -332,15 +312,12 @@
                   </div>
 
                   <!-- ==================================================
-                   PREMIO
-              ================================================== -->
-
+                        PREMIO
+                    ================================================== -->
                   <div class="field">
                     <label for="{{ form.idPremio.id_for_label }}">
                       <i class="fas fa-trophy field-icon"></i>
-
                       Premio Asociado
-
                       <span class="req"> * </span>
                     </label>
 
@@ -354,11 +331,9 @@
                   <!-- ==================================================
                         MONTO LIQUIDADO - SOLO VISUALIZACIÓN
                     ================================================== -->
-
                   <div class="field">
                     <label for="Monto_Liquidado_Preview">
                       <i class="fas fa-money-bill-wave field-icon"></i>
-
                       Monto Liquidado
                     </label>
 
@@ -387,13 +362,10 @@
                   <!-- ==================================================
                         FECHA DE REGISTRO
                     ================================================== -->
-
                   <div class="field">
                     <label for="{{ form.Fecha_Registro.id_for_label }}">
                       <i class="fas fa-calendar-check field-icon"></i>
-
                       Fecha de Registro
-
                       <span class="req"> * </span>
                     </label>
 
@@ -411,11 +383,9 @@
               <!-- ==================================================
                     HISTORIAL
                 ================================================== -->
-
               <div class="form-section">
                 <h4 class="form-section-title">
                   <i class="fas fa-clock-rotate-left"></i>
-
                   Historial de Premios Asignados
                 </h4>
 
@@ -480,17 +450,14 @@
               <!-- ==================================================
                     BOTONES
                 ================================================== -->
-
               <div class="form-footer">
                 <button type="reset" class="btn btn-ghost" id="btn-limpiar">
                   <i class="fas fa-rotate-left"></i>
-
                   Limpiar Campos
                 </button>
 
                 <button type="submit" class="btn btn-primary">
                   <i class="fas fa-floppy-disk"></i>
-
                   Guardar Premio Asignado
                 </button>
               </div>
@@ -501,7 +468,6 @@
         <!-- ======================================================
               FOOTER
           ====================================================== -->
-
         <footer class="footer">
           © 2026 Distribuidora Robasa - Sistema de Gestión de Talento Humano
         </footer>

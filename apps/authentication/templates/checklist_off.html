@@ -124,6 +124,17 @@
             Configuración
           </a>
         </nav>
+
+        <!-- ======================================================
+              CERRAR SESIÓN
+          ====================================================== -->
+
+        <div class="logout">
+          <a href="{% url 'cerrar_sesion' %}">
+            <i class="fas fa-sign-out-alt"></i>
+            Cerrar sesión
+          </a>
+        </div>
       </aside>
 
       <main class="main-content">
@@ -465,8 +476,7 @@
               <div class="btn-footer">
                 <button type="submit" class="btn-block">
                   <i class="fas fa-save"></i>
-                  {% if modo_edicion %}Actualizar Checklist{% else %}Guardar
-                  Checklist{% endif %}
+                  {% if modo_edicion %}Actualizar Checklist{% else %}Guardar Checklist{% endif %}
                 </button>
               </div>
               {% endif %}

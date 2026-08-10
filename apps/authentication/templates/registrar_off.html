@@ -126,8 +126,15 @@
           </a>
         </nav>
 
+        <!-- ======================================================
+              CERRAR SESIÓN
+          ====================================================== -->
+
         <div class="logout">
-          <a href="#"><i class="fas fa-right-from-bracket"></i> Salir</a>
+          <a href="{% url 'cerrar_sesion' %}">
+            <i class="fas fa-sign-out-alt"></i>
+            Cerrar sesión
+          </a>
         </div>
       </aside>
 
@@ -279,8 +286,7 @@
 
                 <button type="submit" class="btn btn-primary">
                   <i class="fas fa-arrow-right-to-bracket"></i>
-                  {% if offboarding %} Actualizar Proceso {% else %} Iniciar
-                  Proceso de Salida {% endif %}
+                  {% if offboarding %} Actualizar Proceso {% else %} Iniciar Proceso de Salida {% endif %}
                 </button>
               </div>
             </form>
@@ -302,9 +308,13 @@
             <thead>
               <tr>
                 <th>ID Offboarding</th>
+                
                 <th>Colaborador</th>
+                
                 <th>Categoría / Causa</th>
+                
                 <th>Fecha Salida</th>
+                
                 <th>Checklist Operativo</th>
               </tr>
             </thead>
@@ -357,7 +367,6 @@
                   No existen procesos de Offboarding registrados.
                 </td>
               </tr>
-
               {% endfor %}
             </tbody>
           </table>

@@ -58,15 +58,10 @@
   </style>
 
   <body>
-    <!-- ======================================================
-          CONTENEDOR PRINCIPAL
-      ====================================================== -->
-
     <div class="dashboard-container">
       <!-- ======================================================
             SIDEBAR / MENÚ LATERAL
         ====================================================== -->
-
       <aside class="sidebar">
         <div class="logo-container">
           <img
@@ -79,7 +74,6 @@
         <!-- ======================================================
               MENÚ DE NAVEGACIÓN
           ====================================================== -->
-
         <nav class="menu">
           <a href="{% url 'inicio' %}">
             <i class="fas fa-house"></i>
@@ -174,15 +168,10 @@
         </div>
       </aside>
 
-      <!-- ======================================================
-            CONTENIDO PRINCIPAL
-        ====================================================== -->
-
       <main class="main-content">
         <!-- ======================================================
               HEADER
           ====================================================== -->
-
         <header class="topbar">
           <div class="page-title">
             <h1>Reportes</h1>
@@ -301,7 +290,8 @@
                 <option value="">-- Ninguno / No Aplica --</option>
                 {% for emp in todos_los_empleados %}
                 <option value="{{ emp.idPersona.Nombre_Completo }}">
-                  {{ emp.idPersona.Nombre_Completo }} - {{ emp.idPuesto.Nombre|default:"Sin Puesto" }}
+                  {{ emp.idPersona.Nombre_Completo }} - {{
+                  emp.idPuesto.Nombre|default:"Sin Puesto" }}
                 </option>
                 {% endfor %}
               </select>

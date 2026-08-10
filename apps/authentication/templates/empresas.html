@@ -150,11 +150,12 @@
         </nav>
 
         <!-- ======================================================
-             BOTÓN DE CERRAR SESIÓN
-        ====================================================== -->
+              CERRAR SESIÓN
+          ====================================================== -->
+
         <div class="logout">
-          <a href="login.html">
-            <i class="fas fa-right-from-bracket"></i>
+          <a href="{% url 'cerrar_sesion' %}">
+            <i class="fas fa-sign-out-alt"></i>
             Cerrar sesión
           </a>
         </div>
@@ -477,8 +478,6 @@
               </table>
             </div>
           </section>
-
-          <!-- Fin del cuerpo del formulario -->
         </section>
 
         <!-- ======================================================
