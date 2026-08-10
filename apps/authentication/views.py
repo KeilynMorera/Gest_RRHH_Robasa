@@ -9,17 +9,16 @@ from django.db import transaction
 from django.db import IntegrityError
 from django.utils import timezone
 from django.shortcuts import render
-# ── AQUÍ SE AGREGA LA IMPORTACIÓN PARA CORREGIR EL ERROR ─────────────────
 from django.db.models import Avg, Sum 
-from django.db.models import Q # Asegúrate de tener esta importación al inicio de tu archivo views.py
+from django.db.models import Q # Tener esta importación al inicio de tu archivo views.py
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 
 from .forms import PremioAsignadoForm
 
-#Importa todo lo que se encuentra en el archivo models.py
-#Donde se encuentran los modelos de las tablas de la base de datos
+# Importa todo lo que se encuentra en el archivo models.py
+# Donde se encuentran los modelos de las tablas de la base de datos
 from .models import *
 
 from .forms import *
@@ -49,14 +48,12 @@ def inicio_view(request):
         .count()
     )
 
-
     # =========================================================
     # 2. TOTAL DE PERSONAS
     # =========================================================
     total_personas = (
         Persona.objects.count()
     )
-
 
     # =========================================================
     # 3. TOTAL DE PASANTES ACTIVOS
@@ -68,7 +65,6 @@ def inicio_view(request):
         )
         .count()
     )
-
 
     # =========================================================
     # 4. TOTAL DE PROCESOS DE ONBOARDING
@@ -260,7 +256,6 @@ def inicio_view(request):
         # =====================================================
         # RESUMEN GENERAL
         # =====================================================
-
         "total_empleados":
             total_empleados,
 
@@ -274,7 +269,6 @@ def inicio_view(request):
         # =====================================================
         # ONBOARDING / OFFBOARDING
         # =====================================================
-
         "total_onboarding":
             total_onboarding,
 
@@ -294,7 +288,6 @@ def inicio_view(request):
         # =====================================================
         # KPIs
         # =====================================================
-
         "total_kpis":
             total_kpis,
 
@@ -311,7 +304,6 @@ def inicio_view(request):
         # =====================================================
         # PREMIOS
         # =====================================================
-
         "total_premios":
             total_premios,
 
@@ -325,7 +317,6 @@ def inicio_view(request):
         # =====================================================
         # USUARIOS Y ROLES
         # =====================================================
-
         "total_usuarios":
             total_usuarios,
 
@@ -339,7 +330,6 @@ def inicio_view(request):
         # =====================================================
         # ACCIONES Y EVALUACIONES
         # =====================================================
-
         "total_acciones":
             total_acciones,
 
@@ -350,7 +340,6 @@ def inicio_view(request):
         # =====================================================
         # ÚLTIMOS REGISTROS
         # =====================================================
-
         "ultimos_onboarding":
             ultimos_onboarding,
 
@@ -374,12 +363,6 @@ def inicio_view(request):
     )
 
 
-# =========================================================
-# Vista: Empresas — registro, modificación y listado
-# NOTA: esta función reemplaza tanto 'registrar_empresa'
-#       como 'empresas_view'. En urls.py debe quedar
-#       una sola ruta apuntando aquí con name='empresas'.
-# =========================================================
 # =========================================================
 # Vista: Empresas — registro, modificación y listado
 # =========================================================
@@ -484,54 +467,74 @@ def eliminar_empresa(request, idEmpresa):
 # =========================================================
 # Vista: Elección Complementos de la Empresa: Gerencia, Departamento y Puesto
 # =========================================================
-
 def comple_Empresa_view(request):
     return render(request, 'comple_Empresa.html')
 
 
+# =========================================================
+# Vista: Guardar Gerencia
+# =========================================================
+# Decorador personalizado: Verifica que el usuario tenga el permiso "ver" 
+# en el módulo "estructura_organizacional" antes de ejecutar la vista.
 @requiere_permiso("estructura_organizacional", "ver")
 def gerencias_view(request):
 
+    # Comprueba si la solicitud es de tipo POST (procesamiento/envío de formulario)
     if request.method == 'POST':
+        # Captura el ID de la gerencia desde el formulario.
+        # Si tiene valor, se interpretará como edición; si está vacío o no existe, como una creación.
         gerencia_id  = request.POST.get('gerencia_id')  # vacío = nuevo registro
 
         # ─────────────────────────────────────────────
         # BLOQUEAR SEGÚN SI ES CREAR O MODIFICAR
         # ─────────────────────────────────────────────
+        # Control granular de permisos: se evalúa si el usuario puede "editar" o "crear"
         if gerencia_id:
             bloqueo = bloquear_si_no_puede(request, "estructura_organizacional", "editar")
         else:
             bloqueo = bloquear_si_no_puede(request, "estructura_organizacional", "crear")
 
+        # Si el usuario no tiene los permisos necesarios, la función devuelve una respuesta de bloqueo/error
         if bloqueo:
             return bloqueo
 
+        # Obtiene los datos enviados en el cuerpo del formulario POST
         nombre       = request.POST.get('nombre_gerencia')
         empresa_id   = request.POST.get('empresa')
+        
+        # Recupera la instancia de la Empresa mediante su clave primaria (Primary Key)
         empresa_obj  = Empresa.objects.get(pk=empresa_id)
  
+        # Lógica para actualizar un registro existente
         if gerencia_id:
-            # Modificar registro existente
+            # Busca la Gerencia existente por su clave primaria
             gerencia = Gerencia.objects.get(pk=gerencia_id)
+            # Actualiza sus propiedades con los valores del formulario
             gerencia.Nombre    = nombre
             gerencia.idEmpresa = empresa_obj
+            # Guarda los cambios en la base de datos
             gerencia.save()
+        
+        # Lógica para crear un nuevo registro
         else:
-            # Crear nuevo registro
+            # Crea y guarda directamente una nueva instancia de Gerencia
             Gerencia.objects.create(
                 Nombre    = nombre,
                 idEmpresa = empresa_obj,
             )
  
+        # Redirige al usuario a la vista nombrada 'gerencias' (patrón Post/Redirect/Get)
         return redirect('gerencias')
  
-    # GET normal: formulario vacío + tabla
+    # Solicitud GET: Renderiza la plantilla del formulario y la tabla de registros
     return render(request, 'gerencia.html', {
+        # Pasa todas las empresas para llenar el desplegable/select
         'empresas'       : Empresa.objects.all(),
+        # Optimiza la consulta cargando de forma eficiente la relación con Empresa (JOIN) y ordenando alfabéticamente
         'gerencias'      : Gerencia.objects.select_related('idEmpresa').order_by('Nombre'),
+        # Indica que el formulario no está en modo de edición en la carga inicial
         'gerencia_editar': None,
     })
- 
  
 # =========================================================
 # Vista: Editar gerencia — recarga el formulario con datos
@@ -556,64 +559,84 @@ def eliminar_gerencia_view(request, pk):
     return redirect('gerencias')
 
 
-
+# =========================================================
+# Vista: Guardar Departamento
+# =========================================================
+# Decorador personalizado: Garantiza que el usuario tenga el permiso "ver" 
+# en el módulo "estructura_organizacional" antes de entrar a la función.
 @requiere_permiso("estructura_organizacional", "ver")
 def departamentos_view(request):
 
+    # Procesa el envío del formulario mediante la petición POST
     if request.method == 'POST':
 
+        # Obtiene el ID del departamento (si existe en la petición).
+        # Un valor presente indica actualización de registro; un valor vacío indica creación.
         departamento_id = request.POST.get('departamento_id')
 
         # ─────────────────────────────────────────────
         # BLOQUEAR SEGÚN SI ES CREAR O MODIFICAR
         # ─────────────────────────────────────────────
+        # Verificación dinámica de permisos según el flujo de la petición
         if departamento_id:
             bloqueo = bloquear_si_no_puede(request, "estructura_organizacional", "editar")
         else:
             bloqueo = bloquear_si_no_puede(request, "estructura_organizacional", "crear")
 
+        # Si el usuario no tiene los permisos suficientes, retorna la respuesta de bloqueo/redirección
         if bloqueo:
             return bloqueo
 
+        # Extrae los valores del formulario enviado
         nombre = request.POST.get('nombre_departamento')
 
+        # Captura el ID de la gerencia padre asociada y recupera su instancia del modelo
         gerencia_id = request.POST.get('gerencia')
         gerencia_obj = Gerencia.objects.get(pk=gerencia_id)
 
+        # Lógica para modificar un departamento existente
         if departamento_id:
-            # Modificar
+            # Busca la instancia del departamento por su clave primaria
             departamento = Departamento.objects.get(
                 pk=departamento_id
             )
 
+            # Asigna los nuevos valores recopilados
             departamento.Nombre = nombre
             departamento.idGerencia = gerencia_obj
 
+            # Persiste las modificaciones en la base de datos
             departamento.save()
 
+        # Lógica para crear un nuevo departamento
         else:
-            # Crear
+            # Crea e inserta directamente la nueva instancia
             Departamento.objects.create(
                 Nombre=nombre,
                 idGerencia=gerencia_obj
             )
 
+        # Redirige a la vista de departamentos (patrón POST/Redirect/GET)
         return redirect('departamentos')
 
-    # GET
+    # Petición GET: Carga el formulario vacío y la tabla de datos
     return render(
         request,
         'departamento.html',
         {
+            # Carga las gerencias ordenadas y optimiza trayendo la relación con 'idEmpresa'
             'gerencias': Gerencia.objects.select_related(
                 'idEmpresa'
             ).order_by('Nombre'),
 
+            # Carga los departamentos optimizando la consulta anidada (JOIN con Gerencia y Empresa)
+            # para prevenir el problema de rendimiento por consultas N+1 en el HTML
             'departamentos': Departamento.objects.select_related(
                 'idGerencia',
                 'idGerencia__idEmpresa'
             ).order_by('Nombre'),
 
+            # Indica que el formulario inicia en modo de creación por defecto
             'departamento_editar': None,
         }
     )
@@ -661,82 +684,107 @@ def eliminar_departamento_view(request, pk):
 
 
 
+# =========================================================
+# Vista: Guardar Puesto
+# =========================================================
+# Decorador personalizado: Verifica que el usuario tenga el permiso "ver" 
+# en el módulo "estructura_organizacional" antes de permitir el acceso a la vista.
 @requiere_permiso("estructura_organizacional", "ver")
 def puestos_view(request):
 
+    # Procesa el envío de datos mediante una petición POST (formulario)
     if request.method == 'POST':
 
+        # Obtiene el ID del puesto desde la petición POST.
+        # Si contiene un valor, indica una edición; si viene vacío, es una creación.
         puesto_id = request.POST.get('puesto_id')
 
         # ─────────────────────────────────────────────
         # BLOQUEAR SEGÚN SI ES CREAR O MODIFICAR
         # ─────────────────────────────────────────────
+        # Control granular de permisos: evalúa si el usuario tiene permiso de "editar" o "crear"
         if puesto_id:
             bloqueo = bloquear_si_no_puede(request, "estructura_organizacional", "editar")
         else:
             bloqueo = bloquear_si_no_puede(request, "estructura_organizacional", "crear")
 
+        # Si el usuario no cumple con el permiso correspondiente, retorna la respuesta de bloqueo
         if bloqueo:
             return bloqueo
 
+        # Obtiene los datos del formulario POST para el puesto
         nombre = request.POST.get('nombre_puesto')
         descripcion = request.POST.get('descripcion')
 
+        # Obtiene la clave del departamento seleccionado y recupera su instancia correspondiente
         departamento_id = request.POST.get('departamento')
         departamento_obj = Departamento.objects.get(
             pk=departamento_id
         )
 
+        # Lógica para modificar un puesto existente
         if puesto_id:
 
+            # Busca la instancia del puesto existente por su clave primaria
             puesto = Puesto.objects.get(
                 pk=puesto_id
             )
 
+            # Actualiza los atributos del puesto con los datos del formulario
             puesto.Nombre = nombre
             puesto.Descripcion = descripcion
             puesto.idDepartamento = departamento_obj
 
+            # Persiste las modificaciones en la base de datos
             puesto.save()
 
+        # Lógica para registrar un nuevo puesto
         else:
 
+            # Instancia y guarda directamente el nuevo puesto en la base de datos
             Puesto.objects.create(
                 Nombre=nombre,
                 Descripcion=descripcion,
                 idDepartamento=departamento_obj
             )
 
+        # Redirige a la vista nombrada 'puestos' aplicando el patrón POST/Redirect/GET
         return redirect('puestos')
 
     # ==========================
-    # PRUEBA
+    # PRUEBA (Bloque de depuración/log)
     # ==========================
 
+    # Consulta todos los departamentos optimizando la relación ForeignKey con 'idGerencia' (JOIN en SQL)
     departamentos = Departamento.objects.select_related(
         'idGerencia'
     ).order_by('Nombre')
 
     print("DEPARTAMENTOS ENVIADOS AL TEMPLATE:")
 
+    # Imprime en la consola del servidor los ID y nombres de los departamentos recuperados
     for d in departamentos:
         print(d.id_Departamento, d.Nombre)
 
     # ==========================
-    # GET
+    # GET (Renderizado de la vista)
     # ==========================
 
     return render(
         request,
         'puesto.html',
         {
+            # Pasa la lista de departamentos para poblar el menú desplegable/select
             'departamentos': departamentos,
 
+            # Carga los puestos y realiza un JOIN doble (con Departamento y Gerencia)
+            # para evitar consultas N+1 al mostrar la información en la plantilla HTML
             'puestos': Puesto.objects.select_related(
                 'idDepartamento',
                 'idDepartamento__idGerencia'
             ).order_by('Nombre'),
 
+            # Define que por defecto el formulario no está cargando un puesto para edición
             'puesto_editar': None,
         }
     )
@@ -782,24 +830,35 @@ def eliminar_puesto_view(request, pk):
     return redirect('puestos')
 
 
+# =========================================================
+# Vista: Guardar / Editar / Listar Compensación por Puesto
+# =========================================================
+# Decorador personalizado: Garantiza que el usuario cuente con el permiso "ver" 
+# dentro del módulo "estructura_organizacional" antes de ejecutar la función.
 @requiere_permiso("estructura_organizacional", "ver")
 def compensacion_puesto_view(request):
 
+    # Procesa la solicitud cuando el usuario envía el formulario (solicitud POST)
     if request.method == 'POST':
 
+        # Obtiene el ID del esquema de compensación desde la petición POST.
+        # Si contiene un valor, se tratará de una edición; si está vacío, de un nuevo registro.
         compensacion_id = request.POST.get('compensacion_id')
 
         # ─────────────────────────────────────────────
         # BLOQUEAR SEGÚN SI ES CREAR O MODIFICAR
         # ─────────────────────────────────────────────
+        # Control granular de permisos: evalúa dinámicamente el nivel de acceso requerido
         if compensacion_id:
             bloqueo = bloquear_si_no_puede(request, "estructura_organizacional", "editar")
         else:
             bloqueo = bloquear_si_no_puede(request, "estructura_organizacional", "crear")
 
+        # Si el usuario no tiene los permisos suficientes, interrumpe el flujo y devuelve la vista de bloqueo/redirección
         if bloqueo:
             return bloqueo
 
+        # Extrae todos los rubros económicos y la vigencia desde el formulario enviado
         salario_bruto = request.POST.get('salario_bruto')
         salario_sem_neto = request.POST.get('salario_sem_neto')
         comision_base = request.POST.get('comision_base')
@@ -809,18 +868,21 @@ def compensacion_puesto_view(request):
         bono_base = request.POST.get('bono_base')
         vigencia = request.POST.get('vigencia')
 
+        # Obtiene el ID del puesto asociado y recupera la instancia del modelo Puesto
         puesto_id = request.POST.get('puesto')
         puesto_obj = Puesto.objects.get(
             pk=puesto_id
         )
 
+        # Lógica para modificar un registro de compensación existente
         if compensacion_id:
 
-            # Modificar
+            # Busca el registro de compensación mediante su clave primaria
             compensacion = Compensacion_Puesto.objects.get(
                 pk=compensacion_id
             )
 
+            # Reasigna cada uno de los campos con los nuevos valores del formulario
             compensacion.Salario_Bruto = salario_bruto
             compensacion.Salario_Sem_Neto = salario_sem_neto
             compensacion.Comision_Base = comision_base
@@ -831,11 +893,13 @@ def compensacion_puesto_view(request):
             compensacion.Vigencia = vigencia
             compensacion.idPuesto = puesto_obj
 
+            # Guarda los cambios aplicados en la base de datos
             compensacion.save()
 
+        # Lógica para crear una nueva compensación
         else:
 
-            # Crear
+            # Crea e inserta directamente la nueva instancia de Compensacion_Puesto
             Compensacion_Puesto.objects.create(
                 Salario_Bruto=salario_bruto,
                 Salario_Sem_Neto=salario_sem_neto,
@@ -848,22 +912,27 @@ def compensacion_puesto_view(request):
                 idPuesto=puesto_obj
             )
 
+        # Redirige a la vista nombrada 'compensacion_puesto' (patrón POST/Redirect/GET)
         return redirect('compensacion_puesto')
 
-    # GET
+    # Solicitud GET: Carga y muestra la página principal con el formulario y la tabla de registros
     return render(
         request,
         'confi_Puesto.html',
         {
+            # Pasa la lista de puestos ordenados por nombre, optimizando la consulta a la relación 'idDepartamento'
             'puestos': Puesto.objects.select_related(
                 'idDepartamento'
             ).order_by('Nombre'),
 
+            # Carga el historial de compensaciones ordenado descendentemente por vigencia (-Vigencia),
+            # utilizando select_related anidado para traer Puesto y Departamento en una sola consulta SQL
             'compensaciones': Compensacion_Puesto.objects.select_related(
                 'idPuesto',
                 'idPuesto__idDepartamento'
             ).order_by('-Vigencia'),
 
+            # Indica que el formulario no está en modo de edición en la carga inicial
             'compensacion_editar': None,
         }
     )
@@ -912,25 +981,36 @@ def per_emp_view(request):
     return render(request, 'per_emp.html')
 
 
+# =========================================================
+# Vista: Registrar Personas
+# =========================================================
+# Decorador de seguridad: Verifica que el usuario posea el permiso "ver" 
+# sobre el módulo "empleados" antes de dar acceso a la vista.
 @requiere_permiso("empleados", "ver")
 def registrar_persona(request):
 
     # ── POST: crear o modificar ────────────────────────────
+    # Procesa la solicitud enviada desde el formulario HTML
     if request.method == 'POST':
+        # Captura la acción explícita enviada desde el formulario ('crear' o 'modificar')
         accion     = request.POST.get('accion')      # 'crear' o 'modificar'
+        # ID del registro; si no está presente, implica que es un nuevo registro
         persona_id = request.POST.get('persona_id')  # vacío si es nuevo
 
         # ─────────────────────────────────────────────
         # BLOQUEAR SEGÚN LA ACCIÓN
         # ─────────────────────────────────────────────
+        # Validación granular de permisos: verifica "editar" o "crear" según la acción detectada
         if accion == 'modificar':
             bloqueo = bloquear_si_no_puede(request, "empleados", "editar")
         else:
             bloqueo = bloquear_si_no_puede(request, "empleados", "crear")
 
+        # Retorna la vista o mensaje de bloqueo si el usuario carece de los permisos requeridos
         if bloqueo:
             return bloqueo
 
+        # Extrae los datos de texto del formulario
         nombre     = request.POST.get('nombre_completo')
         cedula     = request.POST.get('cedula')
         sexo_id    = request.POST.get('sexo')
@@ -939,10 +1019,14 @@ def registrar_persona(request):
         celular    = request.POST.get('celular')
         correo     = request.POST.get('correo')
         direccion  = request.POST.get('direccion')
+        
+        # Obtiene el archivo de imagen adjunto desde la solicitud MULTIPART (request.FILES)
         foto       = request.FILES.get('foto')
 
+        # Recupera el objeto relacionado PersonaSexo por su clave primaria
         sexo_obj = PersonaSexo.objects.get(pk=sexo_id)
 
+        # Lógica para guardar un nuevo registro de Persona
         if accion == 'crear' or not accion:
             # 'not accion' mantiene compatibilidad si el botón
             # anterior no enviaba el campo 'accion'
@@ -956,12 +1040,19 @@ def registrar_persona(request):
                 Correo           = correo,
                 Direccion        = direccion,
             )
+            # Asigna la foto en caso de que se haya subido un archivo
             if foto:
                 nueva.Foto = foto
+            
+            # Persiste el nuevo registro en la base de datos
             nueva.save()
 
+        # Lógica para actualizar una persona existente
         elif accion == 'modificar' and persona_id:
+            # Recupera la instancia existente por su clave primaria
             persona = Persona.objects.get(pk=persona_id)
+            
+            # Sobrescribe los atributos con los nuevos valores
             persona.Nombre_Completo  = nombre
             persona.Cedula           = cedula
             persona.idSexo           = sexo_obj
@@ -970,22 +1061,34 @@ def registrar_persona(request):
             persona.Celular          = celular
             persona.Correo           = correo
             persona.Direccion        = direccion
+            
+            # Solo actualiza la imagen si se adjuntó un archivo nuevo
             if foto:                  # solo reemplaza si se subió una nueva
                 persona.Foto = foto
+                
+            # Guarda los cambios en la base de datos
             persona.save()
 
-        # Patrón PRG: redirige para evitar reenvío del form al recargar
+        # Patrón PRG (Post/Redirect/Get): redirige para limpiar la petición POST 
+        # y evitar el reenvío duplicado del formulario al recargar la página
         return redirect('personas')
 
     # ── GET: mostrar formulario + tabla con todos los registros ──
+    # Renderiza el formulario de captura y la lista completa de personas
     return render(request, 'personas.html', {
+        # Colección completa del catálogo de sexos/géneros para el elemento <select>
         'sexos'   : PersonaSexo.objects.all(),
+        # Consulta optimizada (select_related) para cargar las personas junto con su género en una sola consulta SQL,
+        # ordenadas alfabéticamente por su nombre completo
         'personas': Persona.objects.select_related('idSexo')
                                    .all()
                                    .order_by('Nombre_Completo'),
     })
 
 
+# =========================================================
+# Vista: Editar persona
+# =========================================================
 @requiere_permiso("empleados", "editar")
 def editar_persona(request, id_persona):
 
@@ -1093,21 +1196,27 @@ def eliminar_persona(request, id_persona):
 
 
 # =========================================================
-# Vista: Empleados — registro, modificación y listado
+# Vista: Registrar Empleado
 # =========================================================
+# Decorador de seguridad: Valida que el usuario tenga el permiso "ver" 
+# en el módulo "empleados" antes de ejecutar la vista.
 @requiere_permiso("empleados", "ver")
 def registrar_empleado(request):
 
     # ── POST: crear o modificar ────────────────────────────
+    # Procesa la solicitud cuando el formulario es enviado con datos
     if request.method == 'POST':
 
+        # Captura la acción explícita enviada desde el formulario ('crear' o 'modificar')
         accion      = request.POST.get('accion')        # 'crear' o 'modificar'
+        # Captura el ID del empleado (si existe); vendrá vacío si se trata de un nuevo registro
         empleado_id = request.POST.get('empleado_id')   # vacío si es nuevo
 
         # =========================================================
         # BLOQUEAR SEGÚN LA ACCIÓN
         # =========================================================
-
+        # Control granular de permisos: exige permiso de "editar" para modificar 
+        # y de "crear" para insertar un nuevo empleado
         if accion == 'modificar':
 
             bloqueo = bloquear_si_no_puede(
@@ -1124,14 +1233,14 @@ def registrar_empleado(request):
                 "crear"
             )
 
-        # Si el usuario no tiene permiso, se detiene la operación
+        # Si el usuario no cumple con el nivel de permiso requerido, interrumpe el flujo
         if bloqueo:
             return bloqueo
 
         # =========================================================
         # OBTENER DATOS DEL FORMULARIO
         # =========================================================
-
+        # Extrae los IDs de las relaciones y los datos propios del empleado
         persona_id    = request.POST.get('persona')
         puesto_id     = request.POST.get('puesto')
         contrato_id   = request.POST.get('contrato')
@@ -1141,7 +1250,7 @@ def registrar_empleado(request):
         # =========================================================
         # OBTENER OBJETOS RELACIONADOS
         # =========================================================
-
+        # Recupera las instancias de los modelos foráneos utilizando sus claves primarias (PK)
         persona_obj = Persona.objects.get(
             pk=persona_id
         )
@@ -1154,12 +1263,13 @@ def registrar_empleado(request):
             pk=contrato_id
         )
 
+        # Convierte el valor en texto ('1' o '0') recibido del formulario a un tipo booleano de Python (True/False)
         activo_bool = activo == '1'
 
         # =========================================================
         # CREAR EMPLEADO
         # =========================================================
-
+        # Lógica para registrar un nuevo empleado
         if accion == 'crear' or not accion:
 
             Empleado.objects.create(
@@ -1178,13 +1288,15 @@ def registrar_empleado(request):
         # =========================================================
         # MODIFICAR EMPLEADO
         # =========================================================
-
+        # Lógica para actualizar los datos de un empleado existente
         elif accion == 'modificar' and empleado_id:
 
+            # Recupera la instancia del empleado a editar por su clave primaria
             empleado = Empleado.objects.get(
                 pk=empleado_id
             )
 
+            # Actualiza sus campos con las nuevas instancias y valores
             empleado.idPersona = persona_obj
 
             empleado.idPuesto = puesto_obj
@@ -1195,10 +1307,11 @@ def registrar_empleado(request):
 
             empleado.Activo = activo_bool
 
+            # Persiste las modificaciones en la base de datos
             empleado.save()
 
         # =========================================================
-        # PATRÓN PRG
+        # PATRÓN PRG (Post/Redirect/Get)
         # Evita reenviar el formulario al recargar la página
         # =========================================================
 
@@ -1207,17 +1320,19 @@ def registrar_empleado(request):
     # =========================================================
     # GET: MOSTRAR FORMULARIO + TABLA
     # =========================================================
-
+    # Renderizado inicial del formulario con las opciones para los elementos <select> y la tabla general
     return render(
         request,
         'empleados.html',
         {
 
+            # Carga la lista de personas ordenada alfabéticamente
             'personas':
                 Persona.objects.order_by(
                     'Nombre_Completo'
                 ),
 
+            # Carga la lista de puestos optimizando la consulta a Departamento mediante select_related
             'puestos':
                 Puesto.objects.select_related(
                     'idDepartamento'
@@ -1225,9 +1340,12 @@ def registrar_empleado(request):
                     'Nombre'
                 ),
 
+            # Carga todos los tipos/contratos disponibles para el menú desplegable
             'contratos':
                 Contrato.objects.all(),
 
+            # Carga los empleados trayendo de forma eficiente en una sola consulta SQL (JOIN) 
+            # las relaciones con Persona, Puesto y Contrato, ordenándolos por el nombre de la persona
             'empleados':
                 Empleado.objects.select_related(
                     'idPersona',
@@ -1347,21 +1465,26 @@ def eliminar_empleado(request, id_empleado):
 
 
 # =========================================================
-# Vista: Pasantes — registro, modificación y listado
+# Vista: Registro Pasantes
 # =========================================================
+# Decorador de seguridad: Verifica que el usuario cuente con el permiso "ver" 
+# dentro del módulo "empleados" antes de permitir la ejecución de la vista.
 @requiere_permiso("empleados", "ver")
 def registrar_pasante(request):
 
     # ── POST: crear o modificar ────────────────────────────
+    # Procesa la petición cuando el usuario envía los datos del formulario
     if request.method == 'POST':
 
+        # Captura la acción a realizar ('crear' o 'modificar') enviada desde el cliente
         accion     = request.POST.get('accion')       # 'crear' o 'modificar'
+        # Captura el ID del pasante (si se va a editar); para un nuevo registro vendrá vacío
         pasante_id = request.POST.get('pasante_id')   # vacío si es nuevo
 
         # =========================================================
         # BLOQUEAR SEGÚN LA ACCIÓN
         # =========================================================
-
+        # Control granular de permisos: aplica la regla de autorización "editar" o "crear" según el caso
         if accion == 'modificar':
 
             bloqueo = bloquear_si_no_puede(
@@ -1378,18 +1501,19 @@ def registrar_pasante(request):
                 "crear"
             )
 
-        # Si el usuario no tiene permiso, se detiene la operación
+        # Si el usuario carece de los permisos requeridos, interrumpe la ejecución y retorna la respuesta de bloqueo
         if bloqueo:
             return bloqueo
 
         # =========================================================
         # OBTENER DATOS DEL FORMULARIO
         # =========================================================
-
+        # Extrae los IDs de las claves foráneas y los datos académicos/laborales del formulario
         persona_id    = request.POST.get('persona')
         puesto_id     = request.POST.get('puesto')
         supervisor_id = request.POST.get('empleado_sup')
         fecha_inicio  = request.POST.get('fecha_inicio')
+        # Asigna None (NULL en base de datos) en caso de que la fecha final no sea enviada
         fecha_fin     = request.POST.get('fecha_fin') or None
         universidad   = request.POST.get('universidad')
         carrera       = request.POST.get('carrera')
@@ -1399,7 +1523,7 @@ def registrar_pasante(request):
         # =========================================================
         # OBTENER OBJETOS RELACIONADOS
         # =========================================================
-
+        # Recupera las instancias correspondientes a partir de sus claves primarias
         persona_obj = Persona.objects.get(
             pk=persona_id
         )
@@ -1412,12 +1536,13 @@ def registrar_pasante(request):
             pk=supervisor_id
         )
 
+        # Convierte la cadena '1' o '0' enviada por el formulario en un booleano de Python (True/False)
         activo_bool = activo == '1'
 
         # =========================================================
         # CREAR PASANTE
         # =========================================================
-
+        # Lógica para registrar un nuevo pasante
         if accion == 'crear' or not accion:
 
             Pasante.objects.create(
@@ -1432,12 +1557,12 @@ def registrar_pasante(request):
 
                 Fecha_Fin=fecha_fin,
 
-                # Se mantiene el nombre exacto de tu modelo
+                # Se mantiene el nombre exacto del campo en el modelo ('Univercidad')
                 Univercidad=universidad,
 
                 Carrera=carrera,
 
-                # Se mantiene el nombre exacto de tu modelo
+                # Se mantiene el nombre exacto del campo en el modelo ('Tutor_Univercitario')
                 Tutor_Univercitario=tutor_univ,
 
                 Activo=activo_bool,
@@ -1446,13 +1571,15 @@ def registrar_pasante(request):
         # =========================================================
         # MODIFICAR PASANTE
         # =========================================================
-
+        # Lógica para actualizar la información de un pasante existente
         elif accion == 'modificar' and pasante_id:
 
+            # Recupera el objeto Pasante existente desde la base de datos
             pasante = Pasante.objects.get(
                 pk=pasante_id
             )
 
+            # Reasigna todos sus campos con los valores actualizados
             pasante.idPersona = persona_obj
 
             pasante.idPuesto = puesto_obj
@@ -1471,11 +1598,12 @@ def registrar_pasante(request):
 
             pasante.Activo = activo_bool
 
+            # Guarda los cambios en la base de datos
             pasante.save()
 
         # =========================================================
-        # PATRÓN PRG
-        # Evita reenviar el formulario al recargar
+        # PATRÓN PRG (Post/Redirect/Get)
+        # Evita reenviar el formulario al recargar la página
         # =========================================================
 
         return redirect(
@@ -1485,17 +1613,19 @@ def registrar_pasante(request):
     # =========================================================
     # GET: MOSTRAR FORMULARIO + TABLA
     # =========================================================
-
+    # Renderizado inicial de la plantilla pasantes.html con los catalogos requeridos
     return render(
         request,
         'pasantes.html',
         {
 
+            # Carga la lista general de personas ordenadas alfabéticamente
             'personas':
                 Persona.objects.order_by(
                     'Nombre_Completo'
                 ),
 
+            # Carga el catálogo de puestos ordenados por nombre
             'puestos':
                 Puesto.objects.order_by(
                     'Nombre'
@@ -1503,7 +1633,7 @@ def registrar_pasante(request):
 
             # =====================================================
             # OBTENCIÓN DE SUPERVISORES
-            # Trae los empleados y su persona relacionada
+            # Trae los empleados y realiza un JOIN con Persona para mostrar su nombre
             # =====================================================
 
             'supervisores':
@@ -1515,7 +1645,7 @@ def registrar_pasante(request):
 
             # =====================================================
             # LISTADO DE PASANTES
-            # Optimizado con select_related para evitar N+1
+            # Optimizado con select_related para evitar N+1 (incluye la relación anidada del supervisor)
             # =====================================================
 
             'pasantes':
@@ -1636,391 +1766,29 @@ def editar_pasante(request, id_pasante):
     )
 
 
+from decimal import Decimal
+from django.shortcuts import render, redirect, get_object_or_404
+# Importa tus modelos y decoradores/funciones de permisos según corresponda
 
 # =========================================================
 # Vista: Salarios — registro, modificación y listado
 # =========================================================
-@requiere_permiso("empleados", "ver")
+@requiere_permiso("salarios", "ver")  # Exige permiso de lectura en el módulo 'salarios' para acceder a la vista
 def registrar_salario(request):
 
-    # =========================================================
-    # POST: CREAR O MODIFICAR
-    # =========================================================
+    # -----------------------------------------------------
+    # PROCESAMIENTO DE PETICIONES POST (CREAR / EDITAR)
+    # -----------------------------------------------------
     if request.method == 'POST':
 
-        accion = request.POST.get(
-            'accion'
-        )
-
-        salario_id = request.POST.get(
-            'salario_id'
-        )
-
-        # =========================================================
-        # BLOQUEAR SEGÚN LA ACCIÓN
-        # =========================================================
-
-        if accion == 'modificar':
-
-            bloqueo = bloquear_si_no_puede(
-                request,
-                "empleados",
-                "editar"
-            )
-
-        else:
-
-            bloqueo = bloquear_si_no_puede(
-                request,
-                "empleados",
-                "crear"
-            )
-
-        # Si el usuario no tiene permiso, se detiene la operación
-        if bloqueo:
-            return bloqueo
-
-        # =========================================================
-        # OBTENER DATOS DEL FORMULARIO
-        # =========================================================
-
-        empleado_id = request.POST.get(
-            'empleado'
-        )
-
-        fecha_inicio = request.POST.get(
-            'fecha_inicio'
-        )
-
-        fecha_fin = request.POST.get(
-            'fecha_fin'
-        )
-
-        salario_bruto = Decimal(
-            request.POST.get(
-                'salario_bruto'
-            ) or 0
-        )
-
-        salario_sem_neto = Decimal(
-            request.POST.get(
-                'salario_sem_neto'
-            ) or 0
-        )
-
-        comision = Decimal(
-            request.POST.get(
-                'comision_base'
-            ) or 0
-        )
-
-        variable = Decimal(
-            request.POST.get(
-                'variable_base'
-            ) or 0
-        )
-
-        viaticos = Decimal(
-            request.POST.get(
-                'viaticos_alimenticios'
-            ) or 0
-        )
-
-        kilometraje = Decimal(
-            request.POST.get(
-                'kilometraje_base'
-            ) or 0
-        )
-
-        bono = Decimal(
-            request.POST.get(
-                'bono_base'
-            ) or 0
-        )
-
-        observaciones = request.POST.get(
-            'observaciones'
-        )
-
-        # =========================================================
-        # OBTENER EMPLEADO RELACIONADO
-        # =========================================================
-
-        empleado_obj = Empleado.objects.get(
-            pk=empleado_id
-        )
-
-        # =========================================================
-        # CREAR SALARIO
-        # =========================================================
-
-        if accion == 'crear' or not accion:
-
-            SalarioEmpleado.objects.create(
-
-                idEmpleado=empleado_obj,
-
-                Fecha_Inicio=fecha_inicio,
-
-                Fecha_Fin=(
-                    fecha_fin
-                    if fecha_fin
-                    else None
-                ),
-
-                Salario_Bruto=salario_bruto,
-
-                Salario_Sem_Neto=salario_sem_neto,
-
-                Comision_Base=comision,
-
-                Variable_Base=variable,
-
-                Viaticos_Alimenticios=viaticos,
-
-                Kilometraje_Base=kilometraje,
-
-                Bono_Base=bono,
-
-                Observaciones=observaciones
-            )
-
-        # =========================================================
-        # MODIFICAR SALARIO
-        # =========================================================
-
-        elif accion == 'modificar' and salario_id:
-
-            salario = SalarioEmpleado.objects.get(
-                pk=salario_id
-            )
-
-            salario.idEmpleado = empleado_obj
-
-            salario.Fecha_Inicio = fecha_inicio
-
-            salario.Fecha_Fin = (
-                fecha_fin
-                if fecha_fin
-                else None
-            )
-
-            salario.Salario_Bruto = salario_bruto
-
-            salario.Salario_Sem_Neto = salario_sem_neto
-
-            salario.Comision_Base = comision
-
-            salario.Variable_Base = variable
-
-            salario.Viaticos_Alimenticios = viaticos
-
-            salario.Kilometraje_Base = kilometraje
-
-            salario.Bono_Base = bono
-
-            salario.Observaciones = observaciones
-
-            salario.save()
-
-        # =========================================================
-        # PATRÓN PRG
-        # Evita reenviar el formulario al recargar
-        # =========================================================
-
-        return redirect(
-            'salarios'
-        )
-
-    # =========================================================
-    # GET: MOSTRAR FORMULARIO + TABLA
-    # =========================================================
-
-    return render(
-        request,
-        'salario.html',
-        {
-
-            # =====================================================
-            # EMPLEADOS ACTIVOS
-            # =====================================================
-
-            'empleados':
-                Empleado.objects.select_related(
-                    'idPersona',
-                    'idPuesto'
-                ).filter(
-                    Activo=True
-                ).order_by(
-                    'idPersona__Nombre_Completo'
-                ),
-
-            # =====================================================
-            # LISTADO DE SALARIOS
-            # =====================================================
-
-            'salarios':
-                SalarioEmpleado.objects.select_related(
-                    'idEmpleado',
-                    'idEmpleado__idPersona',
-                    'idEmpleado__idPuesto'
-                ).order_by(
-                    '-Fecha_Inicio'
-                ),
-
-            'salario_editar':
-                None
-        }
-    )
-
-
-# =========================================================
-# Vista: Editar Salario
-# Carga el formulario con los datos del salario seleccionado
-# =========================================================
-@requiere_permiso("empleados", "editar")
-def editar_salario(request, id_salario):
-
-    # =========================================================
-    # OBTENER EL SALARIO A MODIFICAR
-    # =========================================================
-
-    salario = get_object_or_404(
-        SalarioEmpleado,
-        pk=id_salario
-    )
-
-    # =========================================================
-    # SI PRESIONA GUARDAR CAMBIOS
-    # =========================================================
-
-    if request.method == 'POST':
-
-        salario.idEmpleado = Empleado.objects.get(
-            pk=request.POST.get(
-                'empleado'
-            )
-        )
-
-        salario.Fecha_Inicio = request.POST.get(
-            'fecha_inicio'
-        )
-
-        salario.Fecha_Fin = (
-            request.POST.get(
-                'fecha_fin'
-            )
-            or None
-        )
-
-        salario.Salario_Bruto = Decimal(
-            request.POST.get(
-                'salario_bruto'
-            )
-            or 0
-        )
-
-        salario.Salario_Sem_Neto = Decimal(
-            request.POST.get(
-                'salario_sem_neto'
-            )
-            or 0
-        )
-
-        salario.Comision_Base = Decimal(
-            request.POST.get(
-                'comision_base'
-            )
-            or 0
-        )
-
-        salario.Variable_Base = Decimal(
-            request.POST.get(
-                'variable_base'
-            )
-            or 0
-        )
-
-        salario.Viaticos_Alimenticios = Decimal(
-            request.POST.get(
-                'viaticos_alimenticios'
-            )
-            or 0
-        )
-
-        salario.Kilometraje_Base = Decimal(
-            request.POST.get(
-                'kilometraje_base'
-            )
-            or 0
-        )
-
-        salario.Bono_Base = Decimal(
-            request.POST.get(
-                'bono_base'
-            )
-            or 0
-        )
-
-        salario.Observaciones = request.POST.get(
-            'observaciones'
-        )
-
-        salario.save()
-
-        return redirect(
-            'salarios'
-        )
-
-    # =========================================================
-    # GET: PRE-RELLENAR FORMULARIO
-    # =========================================================
-
-    return render(
-        request,
-        'salario.html',
-        {
-
-            'salario_editar':
-                salario,
-
-            'empleados':
-                Empleado.objects.select_related(
-                    'idPersona',
-                    'idPuesto'
-                ).filter(
-                    Activo=True
-                ).order_by(
-                    'idPersona__Nombre_Completo'
-                ),
-
-            'salarios':
-                SalarioEmpleado.objects.select_related(
-                    'idEmpleado',
-                    'idEmpleado__idPersona',
-                    'idEmpleado__idPuesto'
-                ).order_by(
-                    '-Fecha_Inicio'
-                )
-        }
-    )
-
-
-
-# =========================================================
-# Vista: Salarios — registro, modificación y listado
-# =========================================================
-@requiere_permiso("salarios", "ver")
-def registrar_salario(request):
-
-    if request.method == 'POST':
-
+        # Captura la acción a realizar ('crear' o 'modificar') y el ID del salario en caso de edición
         accion = request.POST.get('accion')
         salario_id = request.POST.get('salario_id')
 
         # =====================================================
-        # BLOQUEAR SEGÚN LA ACCIÓN
+        # BLOQUEAR SEGÚN LA ACCIÓN (VERIFICACIÓN DE PERMISOS)
         # =====================================================
+        # Evalúa dinámicamente si el usuario posee permiso específico para 'editar' o 'crear'
         if accion == 'modificar':
             bloqueo = bloquear_si_no_puede(
                 request,
@@ -2034,21 +1802,18 @@ def registrar_salario(request):
                 "crear"
             )
 
+        # Si el usuario no tiene permisos, se interrumpe el flujo y se retorna la respuesta de bloqueo (ej. 403 u otra vista)
         if bloqueo:
             return bloqueo
 
         # =====================================================
         # DATOS DEL FORMULARIO
         # =====================================================
+        # Extracción y casteo de datos del POST. Se asigna 0 por defecto a los numéricos si vienen vacíos.
         empleado_id = request.POST.get('empleado')
 
-        fecha_inicio = request.POST.get(
-            'fecha_inicio'
-        )
-
-        fecha_fin = request.POST.get(
-            'fecha_fin'
-        )
+        fecha_inicio = request.POST.get('fecha_inicio')
+        fecha_fin = request.POST.get('fecha_fin')
 
         salario_bruto = Decimal(
             request.POST.get('salario_bruto') or 0
@@ -2078,13 +1843,12 @@ def registrar_salario(request):
             request.POST.get('bono_base') or 0
         )
 
-        observaciones = request.POST.get(
-            'observaciones'
-        )
+        observaciones = request.POST.get('observaciones')
 
         # =====================================================
         # OBTENER EMPLEADO
         # =====================================================
+        # Busca la instancia del empleado asociado. (Nota: get_object_or_404 es más seguro si el ID puede ser inválido)
         empleado_obj = Empleado.objects.get(
             pk=empleado_id
         )
@@ -2095,31 +1859,20 @@ def registrar_salario(request):
         if accion == 'crear' or not accion:
 
             SalarioEmpleado.objects.create(
-
                 idEmpleado=empleado_obj,
-
                 Fecha_Inicio=fecha_inicio,
-
                 Fecha_Fin=(
                     fecha_fin
                     if fecha_fin
                     else None
-                ),
-
+                ),  # Si la fecha_fin está vacía, guarda un valor NULL en BD
                 Salario_Bruto=salario_bruto,
-
                 Salario_Sem_Neto=salario_sem_neto,
-
                 Comision_Base=comision,
-
                 Variable_Base=variable,
-
                 Viaticos_Alimenticios=viaticos,
-
                 Kilometraje_Base=kilometraje,
-
                 Bono_Base=bono,
-
                 Observaciones=observaciones
             )
 
@@ -2128,52 +1881,52 @@ def registrar_salario(request):
         # =====================================================
         elif accion == 'modificar' and salario_id:
 
+            # Obtiene el salario a editar o lanza un HTTP 404 si el ID no existe
             salario = get_object_or_404(
                 SalarioEmpleado,
                 pk=salario_id
             )
 
+            # Actualiza cada campo con los nuevos valores del formulario
             salario.idEmpleado = empleado_obj
-
             salario.Fecha_Inicio = fecha_inicio
-
             salario.Fecha_Fin = (
                 fecha_fin
                 if fecha_fin
                 else None
             )
-
             salario.Salario_Bruto = salario_bruto
-
             salario.Salario_Sem_Neto = salario_sem_neto
-
             salario.Comision_Base = comision
-
             salario.Variable_Base = variable
-
             salario.Viaticos_Alimenticios = viaticos
-
             salario.Kilometraje_Base = kilometraje
-
             salario.Bono_Base = bono
-
             salario.Observaciones = observaciones
 
+            # Guarda los cambios en la base de datos
             salario.save()
 
         # =====================================================
-        # PATRÓN PRG
+        # PATRÓN PRG (Post/Redirect/Get)
         # =====================================================
+        # Redirige para evitar el reenvío duplicado de formularios al recargar la página
         return redirect('salarios')
 
-    # =========================================================
-    # GET: MOSTRAR FORMULARIO + LISTADO
-    # =========================================================
+    # -----------------------------------------------------
+    # PROCESAMIENTO DE PETICIONES GET (MOSTRAR VISTA)
+    # -----------------------------------------------------
+    # Carga datos adicionales si se pasa un ID por parámetro GET (ej: ?editar=123)
+    salario_id_editar = request.GET.get('editar')
+    salario_editar = None
+    if salario_id_editar:
+        salario_editar = get_object_or_404(SalarioEmpleado, pk=salario_id_editar)
+
     return render(
         request,
         'salario.html',
         {
-
+            # Carga empleados activos optimizando la consulta SQL con select_related
             'empleados': Empleado.objects.select_related(
                 'idPersona',
                 'idPuesto'
@@ -2183,6 +1936,7 @@ def registrar_salario(request):
                 'idPersona__Nombre_Completo'
             ),
 
+            # Carga el historial de salarios optimizando lecturas de relaciones y ordenando del más reciente al más antiguo
             'salarios': SalarioEmpleado.objects.select_related(
                 'idEmpleado',
                 'idEmpleado__idPersona',
@@ -2191,7 +1945,8 @@ def registrar_salario(request):
                 '-Fecha_Inicio'
             ),
 
-            'salario_editar': None
+            # Pasa el objeto a editar si existe, o None si es un registro nuevo
+            'salario_editar': salario_editar
         }
     )
 
@@ -6127,12 +5882,6 @@ def modulo_reportes(request):
     }
 
     return render(request, 'reportes.html', context)
-
-
-
-
-
-    
 
 def configuraciones_view(request):
     return render(request, 'configuraciones.html')
