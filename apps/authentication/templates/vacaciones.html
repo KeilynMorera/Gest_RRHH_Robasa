@@ -20,9 +20,6 @@
 <!-- Idioma principal del sistema -->
 <html lang="es">
   <head>
-    <!-- ==========================================================================
-         CONFIGURACIÓN GENERAL DEL DOCUMENTO
-         ========================================================================== -->
 
     <!-- Codificación UTF-8 -->
     <meta charset="UTF-8" />
@@ -33,41 +30,15 @@
     <!-- Título mostrado en la pestaña del navegador -->
     <title>Solicitud de Vacaciones - Gestión de Talento Humano</title>
 
-    <!-- ==========================================================================
-         HOJA DE ESTILOS PERSONALIZADA
-         ========================================================================== -->
-
-    <!-- 
-      Archivo CSS principal para las tarjetas del módulo.
-      Ubicación:
-      static/styles/tarjetas.css
-    -->
     <link rel="stylesheet" href="{% static 'styles/tarjetas.css' %}" />
 
-    <!-- ==========================================================================
-         LIBRERÍA FONT AWESOME
-         ========================================================================== -->
-
-    <!-- 
-      Librería externa de iconos visuales.
-      Utilizada para:
-      - Usuarios
-      - Reportes
-      - Vacaciones
-      - Configuración
-      - Etc.
-    -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
   </head>
 
-  <!-- ==========================================================================
-       CUERPO PRINCIPAL DEL SISTEMA
-       ========================================================================== -->
   <body>
-    <!-- Contenedor principal del dashboard -->
     <div class="dashboard-container">
       <!-- ==========================================================================
            SIDEBAR / MENÚ LATERAL
@@ -189,21 +160,18 @@
           </a>
         </nav>
 
-        <!-- ==========================================================================
-             BOTÓN CERRAR SESIÓN
-             ========================================================================== -->
+        <!-- ======================================================
+              CERRAR SESIÓN
+          ====================================================== -->
+
         <div class="logout">
-          <!-- Redirección al login -->
-          <a href="login.html">
-            <i class="fas fa-right-from-bracket"></i>
+          <a href="{% url 'cerrar_sesion' %}">
+            <i class="fas fa-sign-out-alt"></i>
             Cerrar sesión
           </a>
         </div>
       </aside>
 
-      <!-- ==========================================================================
-           CONTENIDO PRINCIPAL DEL MÓDULO
-           ========================================================================== -->
       <main class="main-content">
         <!-- ==========================================================================
              BARRA SUPERIOR

@@ -1,29 +1,9 @@
-<!-- ==========================================================================
-     CARGA DE LIBRERÍAS DJANGO
-     ========================================================================== -->
-
-<!-- 
-  Se carga la librería static de Django.
-  Permite utilizar archivos estáticos como:
-  - CSS
-  - JavaScript
-  - Imágenes
-  - Fuentes
--->
 {% load static %}
 
-<!-- ==========================================================================
-     DOCUMENTO HTML
-     ========================================================================== -->
 <!doctype html>
 
-<!-- Idioma principal del documento -->
 <html lang="es">
   <head>
-    <!-- ==========================================================================
-         CONFIGURACIÓN GENERAL DEL DOCUMENTO
-         ========================================================================== -->
-
     <!-- Codificación UTF-8 para soportar caracteres especiales -->
     <meta charset="UTF-8" />
 
@@ -33,39 +13,14 @@
     <!-- Título que aparece en la pestaña del navegador -->
     <title>Registro de Vacante - Gestión de Talento Humano</title>
 
-    <!-- ==========================================================================
-         HOJA DE ESTILOS LOCAL
-         ========================================================================== -->
-
-    <!-- 
-      Carga el archivo CSS personalizado del módulo de vacantes.
-      El archivo se encuentra en:
-      static/styles/confi_Puesto.css
-    -->
     <link rel="stylesheet" href="{% static 'styles/confi_Puesto.css' %}" />
 
-    <!-- ==========================================================================
-         LIBRERÍA DE ICONOS FONT AWESOME
-         ========================================================================== -->
-
-    <!-- 
-      Librería externa para utilizar iconos visuales:
-      Ejemplo:
-      - Casas
-      - Usuarios
-      - Carpetas
-      - Reportes
-      - Configuración
-    -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
   </head>
 
-  <!-- ==========================================================================
-       CUERPO PRINCIPAL DEL SISTEMA
-       ========================================================================== -->
   <body>
     <!-- Contenedor general del dashboard -->
     <div class="dashboard-container">
@@ -191,21 +146,18 @@
           </a>
         </nav>
 
-        <!-- ==========================================================================
-             CERRAR SESIÓN
-             ========================================================================== -->
+        <!-- ======================================================
+              CERRAR SESIÓN
+          ====================================================== -->
+
         <div class="logout">
-          <!-- Enlace de salida del sistema -->
-          <a href="login.html">
-            <i class="fas fa-right-from-bracket"></i>
+          <a href="{% url 'cerrar_sesion' %}">
+            <i class="fas fa-sign-out-alt"></i>
             Cerrar sesión
           </a>
         </div>
       </aside>
 
-      <!-- ==========================================================================
-           CONTENIDO PRINCIPAL DEL SISTEMA
-           ========================================================================== -->
       <main class="main-content">
         <!-- ==========================================================================
              BARRA SUPERIOR
@@ -849,12 +801,19 @@
                 <thead>
                   <tr>
                     <th>ID</th>
+                    
                     <th>Título Publicación</th>
+                    
                     <th>Puesto</th>
+                    
                     <th>Salario Bruto</th>
+                    
                     <th>Compensación Total</th>
+                    
                     <th>Cierre Proceso</th>
+                    
                     <th>Estatus</th>
+                    
                     <th class="col-accion">Acción</th>
                   </tr>
                 </thead>
