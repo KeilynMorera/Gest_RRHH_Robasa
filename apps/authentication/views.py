@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from decimal import Decimal, InvalidOperation
 from django.db.models import Max
-from django.db.models import Sum
 from datetime import date, datetime
 from django.contrib import messages
 from django.db import transaction
@@ -15,6 +14,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 
+
 from .forms import PremioAsignadoForm
 
 # Importa todo lo que se encuentra en el archivo models.py
@@ -24,6 +24,9 @@ from .models import *
 from .forms import *
 
 from apps.authentication.decorators import requiere_permiso, bloquear_si_no_puede
+
+
+
 
 # =========================================================
 # Vista: Login
@@ -2068,22 +2071,26 @@ def editar_salario(request, id_salario):
 
 
 # =========================================================
-# Obtener compensación base según el puesto del empleado
+# Obtener compensación base según el puesto del empleado (API Endpoint)
 # =========================================================
-@requiere_permiso("salarios", "ver")
+@requiere_permiso("salarios", "ver")  # Exige permiso de lectura en 'salarios' para consultar estos datos
 def obtener_compensacion_empleado(
     request,
     id_empleado
 ):
 
     try:
-
+        # -----------------------------------------------------
+        # 1. BÚSQUEDA DEL EMPLEADO Y SU PUESTO
+        # -----------------------------------------------------
+        # Carga el empleado optimizando la consulta a la tabla 'Puesto' mediante select_related
         empleado = Empleado.objects.select_related(
             'idPuesto'
         ).get(
             pk=id_empleado
         )
 
+        # Logs en consola para depuración durante el desarrollo
         print(
             "EMPLEADO:",
             empleado
@@ -2099,6 +2106,10 @@ def obtener_compensacion_empleado(
             empleado.idPuesto.idPuesto
         )
 
+        # -----------------------------------------------------
+        # 2. BÚSQUEDA DE COMPENSACIONES VIGENTES
+        # -----------------------------------------------------
+        # Filtra las compensaciones configuradas para el puesto del empleado
         compensaciones = Compensacion_Puesto.objects.filter(
             idPuesto=empleado.idPuesto
         )
@@ -2108,12 +2119,13 @@ def obtener_compensacion_empleado(
             compensaciones.count()
         )
 
+        # Obtiene la compensación más reciente aplicando un orden descendente por 'Vigencia'
         compensacion = compensaciones.order_by(
             '-Vigencia'
         ).first()
 
         # =====================================================
-        # NO EXISTE COMPENSACIÓN
+        # CASO 1: NO EXISTE COMPENSACIÓN CONFIGURADA
         # =====================================================
         if compensacion is None:
 
@@ -2126,8 +2138,9 @@ def obtener_compensacion_empleado(
             })
 
         # =====================================================
-        # DEVOLVER COMPENSACIÓN
+        # CASO 2: RETORNAR COMPENSACIÓN EXITOSA
         # =====================================================
+        # Se convierten los valores Decimal de la BD a float para ser serializables a JSON
         return JsonResponse({
 
             'success': True,
@@ -2173,6 +2186,7 @@ def obtener_compensacion_empleado(
                     compensacion.Bono_Base
                 ),
 
+            # Formatea la fecha de vigencia a YYYY-MM-DD o None si está vacía
             'vigencia':
                 compensacion.Vigencia.strftime(
                     '%Y-%m-%d'
@@ -2183,7 +2197,7 @@ def obtener_compensacion_empleado(
         })
 
     # =====================================================
-    # EMPLEADO NO ENCONTRADO
+    # CONTROL DE EXCEPCIONES: EMPLEADO NO ENCONTRADO
     # =====================================================
     except Empleado.DoesNotExist:
 
@@ -2196,7 +2210,7 @@ def obtener_compensacion_empleado(
         })
 
     # =====================================================
-    # ERROR GENERAL
+    # CONTROL DE EXCEPCIONES: ERROR GENERAL NO CONTROLADO
     # =====================================================
     except Exception as e:
 
@@ -2210,31 +2224,40 @@ def obtener_compensacion_empleado(
 
 
 
-
 def reclutamiento_view(request):
     return render(request, 'reclutamiento.html')
 
-@requiere_permiso("reclutamiento", "ver")
+
+# =========================================================
+# Vista: Vacantes — Registro, Modificación y Listado
+# =========================================================
+@requiere_permiso("reclutamiento", "ver")  # Control de acceso general: Requiere permiso 'ver' en el módulo 'reclutamiento'
 def registrar_vacante(request):
 
+    # -----------------------------------------------------
+    # PROCESAMIENTO DE PETICIONES POST (CREAR / EDITAR)
+    # -----------------------------------------------------
     if request.method == 'POST':
 
+        # Obtención de variables de control del formulario
         accion = request.POST.get('accion')
         vacante_asig_id = request.POST.get('vacante_asig_id')
 
         # ─────────────────────────────────────────────
-        # BLOQUEAR SEGÚN LA ACCIÓN
+        # BLOQUEAR SEGÚN LA ACCIÓN (CONTROL DE PERMISOS)
         # ─────────────────────────────────────────────
+        # Se verifica dinámicamente si el usuario tiene permiso para crear o editar
         if accion == 'modificar':
             bloqueo = bloquear_si_no_puede(request, "reclutamiento", "editar")
         else:
             bloqueo = bloquear_si_no_puede(request, "reclutamiento", "crear")
 
+        # Si el usuario no cuenta con el permiso requerido, se interrumpe y retorna la respuesta de bloqueo
         if bloqueo:
             return bloqueo
 
         # =====================================================
-        # DATOS DE VACANTE
+        # EXTRAER DATOS PROPIOS DE LA VACANTE
         # =====================================================
         fecha_registro = request.POST.get('fecha_registro')
         titulo = request.POST.get('titulo_publicacion')
@@ -2245,110 +2268,101 @@ def registrar_vacante(request):
         cierre = request.POST.get('cierre_proceso')
 
         # =====================================================
-        # RELACIONES
+        # EXTRAER LLAVES FORÁNEAS Y RELACIONES
         # =====================================================
         estatus_id = request.POST.get('estatus')
 
-        empleado_aut_id = request.POST.get('empleado_aut')
-        empleado_eval_id = request.POST.get('empleado_eval')
-        empleado_jefe_id = request.POST.get('empleado_jefe')
-        empleado_sus_id = request.POST.get('empleado_sus')
+        empleado_aut_id = request.POST.get('empleado_aut')      # Empleado que autoriza
+        empleado_eval_id = request.POST.get('empleado_eval')    # Empleado que evalúa
+        empleado_jefe_id = request.POST.get('empleado_jefe')    # Jefe del puesto
+        empleado_sus_id = request.POST.get('empleado_sus')      # Empleado a sustituir (opcional)
         puesto_id = request.POST.get('puesto')
 
-        # =====================================================
-        # CREAR
-        # =====================================================
-
+        # Logs de depuración en consola
         print("SALARIO BRUTO:", salario_bruto)
         print("COMPENSACION TOTAL:", compensacion_total)
         
+        # =====================================================
+        # CREAR NUEVA VACANTE Y ASIGNACIÓN
+        # =====================================================
         if accion == 'crear':
 
+            # 1. Crear el registro principal de la Vacante
             vacante = Vacante.objects.create(
-
                 Fecha_Registro=fecha_registro,
                 TituloPublicacion=titulo,
                 Motivo=motivo,
                 Expe_Requerida=experiencia,
                 Salario_Bruto=salario_bruto,
                 Compensacion_Total=compensacion_total,
-                Cierre_Proceso=cierre if cierre else None
+                Cierre_Proceso=cierre if cierre else None  # Evita guardar cadenas vacías en campos de tipo Date/Null
             )
 
+            # 2. Crear la asignación intermedia vinculando la vacante con estatus, puesto y responsables
+            # Nota: Usar el sufijo '_id' permite asignar directamente la PK sin hacer una consulta extra a la BD
             Vacante_Asig.objects.create(
-
                 id_Vacante=vacante,
-
                 id_Estatus_Vacante_id=estatus_id,
-
                 idEmpleado_Aut_id=empleado_aut_id,
-
                 idEmpleado_Rel_Ev_id=empleado_eval_id,
-
                 idEmpleado_Jef_Puest_id=empleado_jefe_id,
-
                 idEmpleado_Sus_id=(
                     empleado_sus_id
-                    if empleado_sus_id else None
+                    if empleado_sus_id else None  # Asigna NULL si no hay empleado a sustituir
                 ),
-
                 idPuesto_id=puesto_id
             )
 
         # =====================================================
-        # MODIFICAR
+        # MODIFICAR VACANTE Y ASIGNACIÓN EXISTENTE
         # =====================================================
         elif accion == 'modificar':
 
+            # Obtiene el registro de asignación existente o retorna un error HTTP 404 si el ID no es válido
             asignacion = get_object_or_404(
                 Vacante_Asig,
                 pk=vacante_asig_id
             )
 
-            # Obtener la vacante asociada
+            # Obtiene la instancia del modelo Vacante vinculada
             vacante = asignacion.id_Vacante
 
+            # Actualizar campos del modelo principal Vacante
             vacante.Fecha_Registro = fecha_registro
             vacante.TituloPublicacion = titulo
             vacante.Motivo = motivo
             vacante.Expe_Requerida = experiencia
-
             vacante.Salario_Bruto = salario_bruto
             vacante.Compensacion_Total = compensacion_total
-
             vacante.Cierre_Proceso = (
                 cierre if cierre else None
             )
+            vacante.save()  # Guarda los cambios de la vacante en la BD
 
-            vacante.save()
-
+            # Actualizar llaves foráneas en el modelo de Asignación
             asignacion.id_Estatus_Vacante_id = estatus_id
             asignacion.idEmpleado_Aut_id = empleado_aut_id
             asignacion.idEmpleado_Rel_Ev_id = empleado_eval_id
             asignacion.idEmpleado_Jef_Puest_id = empleado_jefe_id
-
             asignacion.idEmpleado_Sus_id = (
                 empleado_sus_id if empleado_sus_id else None
             )
-
             asignacion.idPuesto_id = puesto_id
+            asignacion.save()  # Guarda los cambios de la asignación en la BD
 
-            asignacion.save()
-
+        # Aplicación del patrón PRG (Post/Redirect/Get) para evitar reenvíos de formulario al recargar
         return redirect('vacantes')
     
-    
-
-    # =========================================================
-    # CARGA INICIAL DE PANTALLA
-    # =========================================================
+    # -----------------------------------------------------
+    # PROCESAMIENTO DE PETICIONES GET (MOSTRAR PANTALLA)
+    # -----------------------------------------------------
     return render(
         request,
         'vacante.html',
         {
-
             'vacante_editar': None,
 
+            # Catálogos para poblar los controles del formulario
             'estatuses': Estatus.objects.all(),
 
             'empleados': Empleado.objects.select_related(
@@ -2357,6 +2371,8 @@ def registrar_vacante(request):
 
             'puestos': Puesto.objects.all(),
 
+            # Consulta optimizada con select_related para traer todas las relaciones
+            # de la vacante y las personas asociadas en un solo JOIN de SQL (evita el problema de consultas N+1)
             'vacantes': Vacante_Asig.objects.select_related(
                 'id_Vacante',
                 'id_Estatus_Vacante',
@@ -2368,7 +2384,6 @@ def registrar_vacante(request):
             )
         }
     )
-
 
 @requiere_permiso("reclutamiento", "editar")
 def editar_vacante(request, id_vacante_asig):
@@ -2404,6 +2419,7 @@ def editar_vacante(request, id_vacante_asig):
             )
         }
     )
+
 
 def obtener_compensacion_puesto(request, id_puesto):
 
@@ -2540,26 +2556,37 @@ def registrar_candidato(request):
     )
 
 
-@requiere_permiso("reclutamiento", "editar")
-def editar_candidato(request,id):
+# =========================================================
+# Vista: Cargar pantalla para Editar un Candidato
+# =========================================================
+@requiere_permiso("reclutamiento", "editar")  # Restringe la acción específicamente a usuarios con permiso de edición
+def editar_candidato(request, id):
+    """
+    Recupera la información de un registro de candidato específico
+    y renderiza la plantilla principal de reclutamiento prellenando
+    el formulario con sus datos actuales.
+    """
 
+    # 1. Búsqueda del candidato por ID en la BD (o devuelve 404 si no existe)
     candidato = get_object_or_404(
         Vacante_Candidato,
         pk=id
     )
 
+    # 2. Construcción del contexto para el renderizado del template
     contexto = {
-
+        # Pasa el objeto específico para que la plantilla identifique el modo edición
+        # y pre-llene los campos del formulario con los valores actuales
         'candidato_editar': candidato,
 
+        # Catálogos para poblar las opciones desplegables (<select>) del formulario
         'personas': Persona.objects.all(),
-
         'vacantes': Vacante.objects.all(),
-
         'fases': FaseCandidato.objects.all(),
-
         'procesos': ProcesoFase.objects.all(),
 
+        # Consulta optimizada con select_related para mantener visible la tabla
+        # con todos los candidatos registrados sin generar consultas N+1 a la BD
         'candidatos': Vacante_Candidato.objects.select_related(
             'idPersona',
             'id_Vacante',
@@ -2568,6 +2595,8 @@ def editar_candidato(request,id):
         )
     }
 
+    # Reutiliza el mismo template principal ('reclut_Vacante.html') 
+    # enviándole el contexto configurado en modo edición
     return render(
         request,
         'reclut_Vacante.html',
@@ -2583,131 +2612,98 @@ def vacaciones_view(request):
 # =========================================================
 # REGISTRAR Y MODIFICAR SOLICITUD DE VACACIONES
 # =========================================================
-@requiere_permiso("vacaciones", "ver")
+@requiere_permiso("vacaciones", "ver")  # Exige permiso de lectura en el módulo 'vacaciones' para ingresar
 def registrar_solicitud_vacacion(request):
 
+    # -----------------------------------------------------
+    # PROCESAMIENTO DE PETICIONES POST (CREAR / EDITAR)
+    # -----------------------------------------------------
     if request.method == 'POST':
 
+        # Captura la acción a realizar ('crear' o 'modificar') y el ID en caso de edición
         accion = request.POST.get('accion')
-
         solicitud_id = request.POST.get('solicitud_id')
 
         # ─────────────────────────────────────────────
-        # BLOQUEAR SEGÚN LA ACCIÓN
+        # BLOQUEAR SEGÚN LA ACCIÓN (CONTROL DE PERMISOS)
         # ─────────────────────────────────────────────
+        # Evalúa si el usuario tiene permiso explícito para 'editar' o 'crear' en vacaciones
         if accion == 'modificar':
             bloqueo = bloquear_si_no_puede(request, "vacaciones", "editar")
         else:
             bloqueo = bloquear_si_no_puede(request, "vacaciones", "crear")
 
+        # Si no posee el permiso, se interrumpe la ejecución enviando la vista/respuesta de bloqueo
         if bloqueo:
             return bloqueo
 
-
         # ============================================
-        # CREAR
+        # CREAR NUEVA SOLICITUD DE VACACIONES
         # ============================================
-
         if accion == 'crear':
 
+            # Registra la nueva solicitud mapeando los nombres del formulario POST.
+            # Nota: El uso de '_id' asigna directamente las Foreign Keys sin hacer queries extra.
             VacacionSolicitud.objects.create(
-
                 Fecha_Solicitud=request.POST.get('fecha_solicitud'),
-
                 Fecha_Inicio=request.POST.get('fecha_inicio'),
-
                 Fecha_Fin=request.POST.get('fecha_fin'),
-
                 Dias_Solicitud=request.POST.get('dias_solicitados'),
-
                 id_Estatus_Vacante_id=request.POST.get('estado'),
-
-                idEmpleado_Sol_Vac_id=request.POST.get('empleado'),
-
-                idEmpleado_Respon_id=request.POST.get('aprobador')
-
+                idEmpleado_Sol_Vac_id=request.POST.get('empleado'),   # Empleado solicitante
+                idEmpleado_Respon_id=request.POST.get('aprobador')   # Empleado responsable/aprobador
             )
 
-
         # ============================================
-        # MODIFICAR
+        # MODIFICAR SOLICITUD EXISTENTE
         # ============================================
-
         elif accion == 'modificar':
 
+            # Obtiene la solicitud a editar o lanza un HTTP 404 si el ID es inexistente
             solicitud = get_object_or_404(
                 VacacionSolicitud,
                 pk=solicitud_id
             )
 
-            solicitud.Fecha_Solicitud = request.POST.get(
-                'fecha_solicitud'
-            )
+            # Actualización de atributos con los datos capturados del formulario
+            solicitud.Fecha_Solicitud = request.POST.get('fecha_solicitud')
+            solicitud.Fecha_Inicio = request.POST.get('fecha_inicio')
+            solicitud.Fecha_Fin = request.POST.get('fecha_fin')
+            solicitud.Dias_Solicitud = request.POST.get('dias_solicitados')
+            solicitud.id_Estatus_Vacante_id = request.POST.get('estado')
+            solicitud.idEmpleado_Sol_Vac_id = request.POST.get('empleado')
+            solicitud.idEmpleado_Respon_id = request.POST.get('aprobador')
 
-            solicitud.Fecha_Inicio = request.POST.get(
-                'fecha_inicio'
-            )
-
-            solicitud.Fecha_Fin = request.POST.get(
-                'fecha_fin'
-            )
-
-            solicitud.Dias_Solicitud = request.POST.get(
-                'dias_solicitados'
-            )
-
-            solicitud.id_Estatus_Vacante_id = request.POST.get(
-                'estado'
-            )
-
-            solicitud.idEmpleado_Sol_Vac_id = request.POST.get(
-                'empleado'
-            )
-
-            solicitud.idEmpleado_Respon_id = request.POST.get(
-                'aprobador'
-            )
-
+            # Impacta las modificaciones realizadas en la base de datos
             solicitud.save()
 
-
+        # Patrón PRG (Post/Redirect/Get) para evitar reenvío accidental de datos al refrescar la página
         return redirect('solicitudes_vacaciones')
 
-
-    # ============================================
-    # GET
-    # ============================================
-
+    # -----------------------------------------------------
+    # PROCESAMIENTO DE PETICIONES GET (MOSTRAR VISTA)
+    # -----------------------------------------------------
     contexto = {
-
         'solicitud_editar': None,
 
+        # Catalogos de opciones para popular los selectores del formulario
         'empleados': Empleado.objects.all(),
-
         'aprobadores': Empleado.objects.all(),
-
         'estados': Estatus.objects.all(),
 
+        # Carga optimizada con select_related para traer los datos del solicitante,
+        # aprobador y estatus en una sola consulta JOIN de SQL (evita el problema N+1)
         'solicitudes': VacacionSolicitud.objects.select_related(
-
             'idEmpleado_Sol_Vac',
-
             'idEmpleado_Respon',
-
             'id_Estatus_Vacante'
-
         )
-
     }
 
     return render(
-
         request,
-
         'sol_Vacacion.html',
-
         contexto
-
     )
 
 
@@ -2760,87 +2756,117 @@ def editar_solicitud_vacacion(request, id):
     )
 
 
-from datetime import date
-from django.db.models import Sum
-from django.shortcuts import render, get_object_or_404, redirect
-
 # =========================================================
 # GUARDAR SALDO DE VACACIONES (CON LÓGICA PROGRESIVA ACUMULADA)
 # =========================================================
-@requiere_permiso("vacaciones", "ver")
+@requiere_permiso("vacaciones", "ver")  # Restringe la vista a usuarios con permisos de lectura
 def guardar_saldo_vacaciones(request):
 
     if request.method == "POST":
-        # 1. Validar permisos de creación
+        # -----------------------------------------------------
+        # 1. VALIDACIÓN DE PERMISOS DE ESCRITURA
+        # -----------------------------------------------------
         bloqueo = bloquear_si_no_puede(request, "vacaciones", "crear")
         if bloqueo:
             return bloqueo
 
+        # Obtiene los parámetros enviados desde el formulario POST
         empleado_id = request.POST.get("empleado")
         anio_param = request.POST.get("anio")
 
         if empleado_id:
+            # Obtiene el empleado o lanza error HTTP 404 si no existe
             empleado = get_object_or_404(Empleado, idEmpleado=empleado_id)
 
+            # Casteo seguro del año; si no viene o falla la conversión, asigna el año actual
             try:
                 anio = int(anio_param) if anio_param else date.today().year
             except ValueError:
                 anio = date.today().year
 
+            # Determina la fecha límite/corte para el cálculo
             hoy = date.today()
+            # Si se procesa un año pasado, el corte es al 31 de diciembre; si es el año actual, el corte es hoy
             fecha_corte = date(anio, 12, 31) if anio < hoy.year else hoy
 
+            # -----------------------------------------------------
             # 2. BUSCAR SALDO ANTERIOR DE ESTE EMPLEADO
+            # -----------------------------------------------------
+            # Busca el último registro de saldo guardado para el empleado de un año previo
             saldo_anterior = VacacionSaldo.objects.filter(
                 idEmpleado_Sal_Vac=empleado,
                 Anio__lt=anio
             ).order_by('-Anio').first()
 
+            # -----------------------------------------------------
             # 3. CÁLCULO DE DÍAS ACUMULADOS PROGRESIVO
+            # -----------------------------------------------------
             if saldo_anterior:
+                # Caso A: Existe un saldo histórico previo.
                 disponibles_base = float(saldo_anterior.Dias_Disponibles or 0.0)
                 inicio_periodo = date(anio, 1, 1)
 
                 if fecha_corte > inicio_periodo:
+                    # Calcula días transcurridos dentro del año evaluado
                     dias_en_periodo = (fecha_corte - inicio_periodo).days
+                    # Proporcional de días ganados basados en 15 días anuales por norma legal/empresa
                     ganados_periodo = round((dias_en_periodo / 365.0) * 15, 2)
                 else:
                     ganados_periodo = 0.0
 
+                # Suma los días remanentes del periodo anterior con los nuevos ganados
                 acumulados = round(disponibles_base + ganados_periodo, 2)
             else:
+                # Caso B: Primer año del empleado (sin saldo histórico).
+                # Compatibilidad para buscar el campo de fecha de ingreso en minúscula o Mayúscula
                 fecha_ingreso = getattr(empleado, 'Fecha_Ingreso', None) or getattr(empleado, 'fecha_ingreso', None)
+                
                 if fecha_ingreso and fecha_corte > fecha_ingreso:
+                    # Calcula proporcional desde la fecha real de ingreso a la empresa
                     dias_trabajados = (fecha_corte - fecha_ingreso).days
                     acumulados = round((dias_trabajados / 365.0) * 15, 2)
                 else:
                     acumulados = 0.0
 
+            # -----------------------------------------------------
             # 4. SOLICITUDES DE VACACIONES TOMADAS EN EL AÑO CONSULTADO
+            # -----------------------------------------------------
+            # Consulta solicitudes aprobadas en el año indicado
             solicitudes = VacacionSolicitud.objects.filter(
                 idEmpleado_Sol_Vac=empleado,
                 id_Estatus_Vacante__TipoEstatus__icontains="aprobad",
                 Fecha_Inicio__year=anio
             )
+            # Agregación SQL para sumar el total de días tomados
             suma_tomados = solicitudes.aggregate(total=Sum('Dias_Solicitud'))['total']
             tomados = float(suma_tomados) if suma_tomados is not None else 0.0
 
+            # -----------------------------------------------------
             # 5. DÍAS DISPONIBLES FINALES
+            # -----------------------------------------------------
+            # Diferencia entre acumulados ganados y tomados efectivamente
             disponibles = round(acumulados - tomados, 2)
 
+            # -----------------------------------------------------
             # 6. GUARDAR / ACTUALIZAR EN BASE DE DATOS
+            # -----------------------------------------------------
+            # Obtiene o crea la tupla de registro para evitar duplicidad del par (Empleado, Año)
             saldo, creado = VacacionSaldo.objects.get_or_create(
                 idEmpleado_Sal_Vac=empleado,
                 Anio=anio
             )
 
+            # Actualiza los campos calculados directamente vía queryset para optimizar escritura
             VacacionSaldo.objects.filter(pk=saldo.pk).update(
                 Dias_Acumulados=acumulados,
                 Dias_Tomado=tomados,
                 Dias_Disponibles=disponibles
             )
 
-    # Cargar datos actualizados para re-renderizar la tabla
+    # -----------------------------------------------------
+    # PROCESAMIENTO DE PETICIÓN GET O RE-RENDERIZADO POST
+    # -----------------------------------------------------
+    # Carga optimizada de tablas relacionadas usando select_related
     empleados = Empleado.objects.select_related('idPersona')
     saldos = VacacionSaldo.objects.select_related(
         'idEmpleado_Sal_Vac',
@@ -2854,6 +2880,7 @@ def guardar_saldo_vacaciones(request):
     }
 
     return render(request, 'con_Vacacion.html', contexto)
+
 
 # =========================================================
 # MODIFICAR CONSULTA DE VACACIONES
@@ -2907,11 +2934,6 @@ def editar_saldo_vacaciones(request, id):
         }
     )
 
-
-from datetime import date
-from django.db.models import Sum
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
 
 # =========================================================
 # OBTENER EL SALDO DE VACACIONES (ACUMULATIVO SOBRE EL ÚLTIMO SALDO)
@@ -2989,6 +3011,8 @@ def obtener_saldo_vacaciones(request):
         'disponibles': disponibles
     })
 
+
+
 def elec_Asistencia_view(request):
     return render(request, 'elec_Asistencia.html')
 
@@ -2996,20 +3020,25 @@ def elec_Asistencia_view(request):
 # =========================================================
 # GUARDAR ASISTENCIA
 # =========================================================
-@requiere_permiso("asistencia", "ver")
+@requiere_permiso("asistencia", "ver")  # Exige permiso de lectura en el módulo 'asistencia' para acceder
 def guardar_asistencia(request):
 
+    # Carga de catálogos base para los desplegables de la plantilla
+    # Optimizado con select_related para traer la información personal del empleado
     empleados = Empleado.objects.select_related(
         'idPersona'
     )
-
     estados = AsistenciaEstado.objects.all()
 
+    # -----------------------------------------------------
+    # PROCESAMIENTO DE PETICIONES POST (CREAR ASISTENCIA)
+    # -----------------------------------------------------
     if request.method == "POST":
 
         # ==========================================
         # VALIDAR PERMISO PARA CREAR
         # ==========================================
+        # Restringe la acción si el usuario no cuenta con privilegios de creación
         bloqueo = bloquear_si_no_puede(
             request,
             "asistencia",
@@ -3019,6 +3048,7 @@ def guardar_asistencia(request):
         if bloqueo:
             return bloqueo
 
+        # Obtención de las instancias de modelos relacionadas a partir de los IDs enviados por POST
         empleado = Empleado.objects.get(
             idEmpleado=request.POST.get("empleado")
         )
@@ -3027,7 +3057,7 @@ def guardar_asistencia(request):
             idAsis_Estado=request.POST.get("estado")
         )
 
-        # Convertir string a objeto time
+        # Convierte las cadenas de texto del formulario ("HH:MM") a objetos de tipo datetime.time
         hora_entrada = datetime.strptime(
             request.POST.get("hora_entrada"),
             "%H:%M"
@@ -3038,49 +3068,38 @@ def guardar_asistencia(request):
             "%H:%M"
         ).time()
 
+        # Construcción de la nueva instancia del modelo Asistencia
         asistencia = Asistencia(
-
             Fecha=request.POST.get("fecha"),
-
             Hora_Entrada=hora_entrada,
-
             Hora_Salida=hora_salida,
-
             idEmpleado=empleado,
-
             idAsis_Estado=estado
-
         )
 
-        # El modelo calculará automáticamente Horas_Extra
+        # Guarda la asistencia en BD (dispara la lógica interna del método save() del modelo, 
+        # como el cálculo automático de Horas_Extra si está implementado allí)
         asistencia.save()
 
+    # -----------------------------------------------------
+    # RENDERIZADO DE PANTALLA Y TABLA DE ASISTENCIAS
+    # -----------------------------------------------------
+    # Consulta optimizada con select_related multinivel para traer en una sola consulta
+    # la asistencia, los datos del empleado, su persona asociada y el estado de asistencia
     asistencias = Asistencia.objects.select_related(
-
         'idEmpleado',
-
         'idEmpleado__idPersona',
-
         'idAsis_Estado'
-
     )
 
     return render(
-
         request,
-
         'asistencia.html',
-
         {
-
             'empleados': empleados,
-
             'estados': estados,
-
             'asistencias': asistencias
-
         }
-
     )
 
 
@@ -3199,24 +3218,24 @@ def editar_asistencia(request, id):
 # =========================================================
 # GUARDAR PERMISO
 # =========================================================
-@requiere_permiso("permisos", "crear")
+@requiere_permiso("permisos", "crear")  # Exige permiso específico de creación en el módulo 'permisos'
 def guardar_permiso(request):
 
-    # ==========================
-    # EMPLEADOS
-    # ==========================
+    # ==========================================
+    # 1. CARGA DE CATÁLOGOS BASE Y FILTROS
+    # ==========================================
+    
+    # Consulta optimizada para traer empleados junto con los datos de su Persona relacionada (JOIN)
     empleados = Empleado.objects.select_related(
         'idPersona'
     )
 
-    # ==========================
-    # TIPOS DE PERMISO
-    # ==========================
+    # Catálogo con la lista completa de tipos de permiso disponibles
     tipos_permiso = TipoPermiso.objects.all()
 
-    # ==========================
-    # SOLO ASISTENCIAS CON ESTADO "Permiso"
-    # ==========================
+    # Filtra únicamente las asistencias cuyo estado corresponda a "Permiso", 
+    # evitando vincular permisos a asistencias normales o faltas. 
+    # Incluye select_related multinivel para evitar consultas N+1 en la UI.
     asistencias_permiso = Asistencia.objects.select_related(
         'idEmpleado',
         'idEmpleado__idPersona',
@@ -3225,23 +3244,25 @@ def guardar_permiso(request):
         idAsis_Estado__TipoEstado='Permiso'
     )
 
-    # ==========================
-    # GUARDAR
-    # ==========================
+    # ==========================================
+    # 2. PROCESAMIENTO DE PETICIÓN POST (GUARDAR)
+    # ==========================================
     if request.method == "POST":
 
-        # ==========================================
-        # VALIDAR PERMISO PARA CREAR
-        # ==========================================
+        # ─────────────────────────────────────────────
+        # VALIDAR PERMISO PARA CREAR EN TIEMPO DE EJECUCIÓN
+        # ─────────────────────────────────────────────
         bloqueo = bloquear_si_no_puede(
             request,
             "permisos",
             "crear"
         )
 
+        # Si la validación falla, interrumpe el flujo y retorna la respuesta de restricción
         if bloqueo:
             return bloqueo
 
+        # Obtención de las instancias de los modelos relacionados mediante los IDs del formulario
         empleado = Empleado.objects.get(
             idEmpleado=request.POST.get("empleado")
         )
@@ -3254,48 +3275,44 @@ def guardar_permiso(request):
             id_TipoPermiso=request.POST.get("tipo_permiso")
         )
 
+        # Captura y evaluación del flag de estado activo/inactivo
         activo = request.POST.get("activo")
 
+        # Construcción de la instancia del nuevo registro de Permiso
         permiso = Permiso(
-
-            Activo=True if activo == "1" else False,
-
+            Activo=True if activo == "1" else False,  # Conversión del string del form a Booleano
             Justificacion=request.POST.get(
                 "justificacion"
             ),
-
             id_TipoPermiso=tipo_permiso,
-
             idAsistencia=asistencia,
-
             idEmpleado=empleado
-
         )
 
+        # Guarda la nueva instancia en la base de datos
         permiso.save()
 
+        # Redirección tras guardar con éxito para evitar el reenvío del formulario (Patrón PRG)
         return redirect(
             'guardar_permiso'
         )
 
+    # ==========================================
+    # 3. CONSULTA PARA PANTALLA Y RENDERIZADO (GET)
+    # ==========================================
+
+    # Carga de la lista general de permisos registrados con optimización de relaciones JOIN
     permisos = Permiso.objects.select_related(
-
         'idEmpleado',
-
         'idEmpleado__idPersona',
-
         'idAsistencia',
-
         'id_TipoPermiso'
-
     )
 
+    # Renderiza la plantilla inyectando todos los catálogos y consultas necesarias
     return render(
-
         request,
-
         'permiso.html',
-
         {
             'empleados': empleados,
             'tipos_permiso': tipos_permiso,
@@ -3309,79 +3326,56 @@ def guardar_permiso(request):
 def accion_rotacion_view(request):
     return render(request, 'accion_rotacion.html')
 
-# =========================================================
-# GUARDAR DETALLE DE LA ACCIÓN DE PERSONAL
-# =========================================================
-@requiere_permiso("acciones_personal", "crear")
-@transaction.atomic
-def guardar_accion_tipo(request, id_accion):
-    if request.method != "POST":
-        return redirect("gestionar_accion")
-
-    accion = get_object_or_404(AccionPersonal, pk=id_accion)
-    tipo_accion = get_object_or_404(DetalleAccion, pk=request.POST.get("Tipo_Accion"))
-    detalle = request.POST.get("Detalle")
-
-    accion_tipo = AccionTipo(
-        idAccion=accion,
-        id_Detalle_Accion=tipo_accion,
-        Detalle=detalle
-    )
-
-    # Ascenso / Ajuste Salarial
-    if tipo_accion.Accion in ["Ascenso", "Ajuste Salarial"]:
-        salario = get_object_or_404(SalarioEmpleado, pk=request.POST.get("idSalarioEmpleado"))
-        nuevo_salario = Decimal(request.POST.get("nuevo_salario"))
-
-        salario.Salario_Sem_Neto = nuevo_salario
-        salario.save()
-
-        accion_tipo.idSalarioEmpleado = salario
-        accion_tipo.Monto_TA = nuevo_salario
-
-    # Premio
-    elif tipo_accion.Accion == "Premio":
-        premio = get_object_or_404(PremioAsignado, pk=request.POST.get("idPremioAsignado"))
-        accion_tipo.id_PremioAsignado = premio
-        accion_tipo.Monto_TA = premio.Monto_Liquidado
-
-    accion_tipo.save()
-
-    messages.success(request, "La Acción de Personal fue registrada correctamente.")
-    return redirect("accion_rotacion")
-
 
 # =========================================================
 # GUARDAR CABECERA DE LA ACCIÓN DEL PERSONAL
 # =========================================================
-@requiere_permiso("acciones_personal", "crear")
+@requiere_permiso("acciones_personal", "crear")  # Restringe la acción a usuarios con permiso de creación
 def registrar_cabecera_accion(request, pk=None):
+    """
+    Gestiona el proceso en 2 pasos de Acciones de Personal:
+    Paso 1: Crear o cargar la cabecera (AccionPersonal).
+    Paso 2: Registrar el detalle/especificación del movimiento (AccionTipo)
+            y actualizar salarios o asignaciones de premios según aplique.
+    """
     accion_cabecera = None
     paso_dos_habilitado = False
 
+    # Si se recibe una PK por URL, se busca la cabecera existente y se habilita el paso 2
     if pk:
         accion_cabecera = get_object_or_404(AccionPersonal, pk=pk)
         paso_dos_habilitado = True
 
+    # -----------------------------------------------------
+    # PROCESAMIENTO DE PETICIONES POST
+    # -----------------------------------------------------
     if request.method == 'POST':
         action = request.POST.get('action')
 
-        # GUARDAR CABECERA
+        # =================================================
+        # FLUJO 1: GUARDAR CABECERA (PASO 1)
+        # =================================================
         if action == 'guardar_cabecera':
             form_cabecera = AccionPersonalForm(request.POST)
+            
             if form_cabecera.is_valid():
                 nueva_cabecera = form_cabecera.save()
                 messages.success(
                     request,
                     f"Cabecera guardada con éxito. Folio: {nueva_cabecera.idAccion}"
                 )
+                # Redirige a la misma vista pasando la PK para activar el Paso 2
                 return redirect('gestionar_accion', pk=nueva_cabecera.idAccion)
             else:
                 messages.error(request, "Error al validar los datos de la cabecera.")
 
-        # FINALIZAR ACCIÓN
+        # =================================================
+        # FLUJO 2: FINALIZAR/SELLAR ACCIÓN (PASO 2)
+        # =================================================
         elif action == 'finalizar_accion':
             id_cabecera_padre = request.POST.get('idAccion_padre')
+            
+            # Validación de integridad: debe existir la cabecera previa
             if not id_cabecera_padre:
                 messages.error(request, "Error crítico: No se encontró la cabecera asociada al movimiento.")
                 return redirect('crear_accion')
@@ -3391,11 +3385,13 @@ def registrar_cabecera_accion(request, pk=None):
             id_salario_empleado = request.POST.get('idSalario')
             detalle_texto = request.POST.get('Detalle')
 
+            # Validar campos obligatorios de la especificación
             if not id_detalle_accion or not detalle_texto:
                 messages.error(request, "Por favor complete todos los campos requeridos de la especificación.")
                 return redirect('gestionar_accion', pk=cabecera_obj.idAccion)
 
             try:
+                # Carga de catálogo y objetos relacionados opcionales
                 catalogo_accion = get_object_or_404(DetalleAccion, pk=id_detalle_accion)
                 
                 salario_obj = None
@@ -3407,15 +3403,20 @@ def registrar_cabecera_accion(request, pk=None):
                 if id_premio_asignado:
                     premio_asignado = get_object_or_404(PremioAsignado, pk=id_premio_asignado)
 
+                # --- Lógica de negocio condicional según el tipo de acción ---
                 monto = None
                 if catalogo_accion.Accion == "Premio":
+                    # Asigna el monto capturado para un premio
                     monto = Decimal(request.POST.get("monto_premio"))
+                    
                 elif catalogo_accion.Accion in ["Ascenso", "Ajuste Salarial"]:
+                    # Asigna el nuevo salario e impacta la actualización directa en el registro del empleado
                     monto = Decimal(request.POST.get("nuevo_salario"))
                     if salario_obj:
                         salario_obj.Salario_Sem_Neto = monto
                         salario_obj.save()
 
+                # Registro definitivo del detalle de la acción (AccionTipo)
                 AccionTipo.objects.create(
                     idAccion=cabecera_obj,
                     id_Detalle_Accion=catalogo_accion,
@@ -3435,20 +3436,27 @@ def registrar_cabecera_accion(request, pk=None):
                 messages.error(request, f"Error al guardar en la base de datos: {str(e)}")
                 return redirect('gestionar_accion', pk=cabecera_obj.idAccion)
 
+    # -----------------------------------------------------
+    # PROCESAMIENTO DE PETICIÓN GET
+    # -----------------------------------------------------
     else:
+        # Inicializa el formulario de cabecera (vacío o con instancia para editar/ver)
         form_cabecera = AccionPersonalForm(instance=accion_cabecera)
 
-    # OPTIMIZACIÓN COMPATIBLE CON CUALQUIER BD (SQLite/MySQL/PostgreSQL):
+    # OPTIMIZACIÓN EN PYTHON COMPATIBLE CON CUALQUIER BD (SQLite/MySQL/PostgreSQL):
+    # Carga todos los empleados optimizando la relación con Persona
     empleados = Empleado.objects.select_related('idPersona').all()
     
-    # Mapear el último salario ordenando por ID descendente
+    # Construye un mapa en memoria {idEmpleado: ultimo_salario} recorriendo salarios en orden ascendente
     salarios_recientes = {}
     for s in SalarioEmpleado.objects.order_by('idSalarioEmpleado'):
         salarios_recientes[s.idEmpleado_id] = s.Salario_Sem_Neto
 
+    # Asigna dinámicamente el último salario a cada objeto de empleado en la lista
     for emp in empleados:
         emp.salario_actual = salarios_recientes.get(emp.pk, 0)
 
+    # Construcción del contexto para renderizar la plantilla
     context = {
         'form_cabecera': form_cabecera,
         'accion_cabecera': accion_cabecera,
@@ -3456,6 +3464,7 @@ def registrar_cabecera_accion(request, pk=None):
         'empleados': empleados,
         'tipos_accion': DetalleAccion.objects.all(),
         'salarios': SalarioEmpleado.objects.all(),
+        # Consulta de histórico de acciones optimizada con JOINs multinivel
         'acciones': AccionTipo.objects.select_related(
             'idAccion',
             'id_Detalle_Accion',
@@ -3467,22 +3476,90 @@ def registrar_cabecera_accion(request, pk=None):
 
 
 # =========================================================
+# GUARDAR DETALLE DE LA ACCIÓN DE PERSONAL
+# =========================================================
+@requiere_permiso("acciones_personal", "crear")  # Restringe la vista a usuarios con permiso de creación
+@transaction.atomic  # Garantiza integridad de la BD: si falla algún paso, revierte (rollback) todas las operaciones escritas
+def guardar_accion_tipo(request, id_accion):
+    
+    # Restringe la ejecución exclusivamente a peticiones POST
+    if request.method != "POST":
+        return redirect("gestionar_accion")
+
+    # 1. Búsqueda y validación de las instancias base o lanza 404 si no existen
+    accion = get_object_or_404(AccionPersonal, pk=id_accion)
+    tipo_accion = get_object_or_404(DetalleAccion, pk=request.POST.get("Tipo_Accion"))
+    detalle = request.POST.get("Detalle")
+
+    # Instanciación inicial del objeto AccionTipo (Detalle de la acción)
+    accion_tipo = AccionTipo(
+        idAccion=accion,
+        id_Detalle_Accion=tipo_accion,
+        Detalle=detalle
+    )
+
+    # -----------------------------------------------------
+    # LÓGICA DE NEGOCIO CONDICIONAL SEGÚN EL TIPO DE ACCIÓN
+    # -----------------------------------------------------
+
+    # Caso A: Modificaciones salariales (Ascenso o Ajuste Salarial)
+    if tipo_accion.Accion in ["Ascenso", "Ajuste Salarial"]:
+        salario = get_object_or_404(SalarioEmpleado, pk=request.POST.get("idSalarioEmpleado"))
+        nuevo_salario = Decimal(request.POST.get("nuevo_salario"))
+
+        # Actualiza e impacta el nuevo salario semanal neto en la tabla de SalarioEmpleado
+        salario.Salario_Sem_Neto = nuevo_salario
+        salario.save()
+
+        # Vincula la relación del salario y registra el monto actualizado en la acción
+        accion_tipo.idSalarioEmpleado = salario
+        accion_tipo.Monto_TA = nuevo_salario
+
+    # Caso B: Asignación de Premio
+    elif tipo_accion.Accion == "Premio":
+        premio = get_object_or_404(PremioAsignado, pk=request.POST.get("idPremioAsignado"))
+        
+        # Asocia la asignación del premio y registra su monto liquidado correspondiente
+        accion_tipo.id_PremioAsignado = premio
+        accion_tipo.Monto_TA = premio.Monto_Liquidado
+
+    # 2. Guarda definitivamente el detalle del movimiento en la base de datos
+    accion_tipo.save()
+
+    # Notificación de éxito al usuario y redirección al listado/módulo de rotación
+    messages.success(request, "La Acción de Personal fue registrada correctamente.")
+    return redirect("accion_rotacion")
+
+
+# =========================================================
 # OBTENER SALARIO ACTUAL DEL EMPLEADO (AJAX)
 # =========================================================
-@requiere_permiso("acciones_personal", "ver")
+@requiere_permiso("acciones_personal", "ver")  # Exige permiso de lectura en 'acciones_personal' para consultar la API
 def obtener_salario_empleado(request):
+    """
+    Endpoint para solicitudes asíncronas (AJAX).
+    Recibe el ID de un empleado vía GET y retorna en JSON su último
+    salario semanal neto registrado en el sistema.
+    """
+    # 1. Obtención del parámetro 'idEmpleado' enviado desde la petición JavaScript
     id_empleado = request.GET.get("idEmpleado")
+
+    # 2. Búsqueda del último registro salarial del empleado
+    # Se ordena descendentemente por ID (-idSalarioEmpleado) y se toma el primero (.first())
     salario = SalarioEmpleado.objects.filter(
         idEmpleado=id_empleado
     ).order_by("-idSalarioEmpleado").first()
 
+    # 3. Construcción y retorno de la respuesta en formato JSON
     if salario:
+        # Caso de éxito: Retorna confirmación, ID del registro salarial y el monto convertido a float
         return JsonResponse({
             "success": True,
             "idSalarioEmpleado": salario.idSalarioEmpleado,
             "salario": float(salario.Salario_Sem_Neto)
         })
 
+    # Caso alternativo: El empleado no cuenta con registros salariales asociados en la BD
     return JsonResponse({
         "success": False,
         "mensaje": "El empleado no posee salario registrado."
@@ -3492,14 +3569,27 @@ def obtener_salario_empleado(request):
 # =========================================================
 # OBTENER PREMIO DEL EMPLEADO (AJAX)
 # =========================================================
-@requiere_permiso("acciones_personal", "ver")
+@requiere_permiso("acciones_personal", "ver")  # Requiere permiso de lectura en el módulo 'acciones_personal'
 def obtener_premio_empleado(request):
+    """
+    Endpoint para solicitudes asíncronas (AJAX).
+    Recibe el ID de un empleado vía GET y consulta a través de la relación de su KPI
+    el último premio asignado, retornando sus detalles en formato JSON.
+    """
+    # 1. Captura del ID del empleado enviado mediante parámetros Query String en GET
     id_empleado = request.GET.get("idEmpleado")
+
+    # 2. Consulta a la BD filtrando por el empleado asociado al KPI
+    # - Realiza la búsqueda a través de la relación inversa 'id_KPI__idEmpleado'
+    # - Optimiza con select_related('idPremio') para obtener la descripción sin consultas adicionales
+    # - Ordena por fecha de registro descendente para traer la asignación más reciente
     premio = PremioAsignado.objects.filter(
         id_KPI__idEmpleado=id_empleado
     ).select_related("idPremio").order_by("-Fecha_Registro").first()
 
+    # 3. Construcción y retorno de la respuesta JSON
     if premio:
+        # Caso exitoso: Retorna datos del premio (ID asignación, monto liquidado y descripción)
         return JsonResponse({
             "success": True,
             "idPremioAsignado": premio.id_PremioAsignado,
@@ -3507,72 +3597,101 @@ def obtener_premio_empleado(request):
             "descripcion": premio.idPremio.Descripcion
         })
 
+    # Caso en que el empleado no tenga ningún premio vinculado en su historial
     return JsonResponse({
         "success": False,
         "mensaje": "El empleado no posee premios registrados."
     })
 
 
+
 # =========================================================
 # ROTACIÓN DE PERSONAL
 # =========================================================
-@requiere_permiso("acciones_personal", "ver") # ← Normalizado al slug 'acciones_personal'
+@requiere_permiso("acciones_personal", "ver")  # Normalizado al slug 'acciones_personal'
 def rotacion_personal(request):
+    """
+    Calcula los indicadores de rotación de personal (IRP) en un período (Año/Mes) 
+    a partir de las contrataciones (Onboarding), bajas (Offboarding) y plantilla inicial/final.
+    Permite previsualizar los resultados o guardarlos en el historial acumulado.
+    """
     data_calculada = {}
     registro = {}
 
+    # -----------------------------------------------------
+    # PROCESAMIENTO DE PETICIONES POST (CÁLCULO Y GUARDADO)
+    # -----------------------------------------------------
     if request.method == "POST":
         action = request.POST.get("action")
         
+        # Extracción y casteo del período a evaluar
         anio = int(request.POST.get("Anio"))
         mes = request.POST.get("Mes")
         mes = int(mes) if mes else None
 
-        # Contrataciones
+        # -------------------------------------------------
+        # 1. CONTRATACIONES (ONBOARDING)
+        # -------------------------------------------------
         contratados = Onboarding.objects.filter(Fecha_Inicio__year=anio)
         if mes:
             contratados = contratados.filter(Fecha_Inicio__month=mes)
         A_Contratados = contratados.count()
 
-        # Desvinculaciones
+        # -------------------------------------------------
+        # 2. DESVINCULACIONES / BAJAS (OFFBOARDING)
+        # -------------------------------------------------
         desvinculados = Offboarding.objects.filter(Fecha_Salida__year=anio)
         if mes:
             desvinculados = desvinculados.filter(Fecha_Salida__month=mes)
 
+        # Bajas regulares (excluye salidas por retiro o fuerza mayor)
         D_Desvinculados = desvinculados.exclude(
             idCausa__Categoria__in=["Retiro", "Fuerza Mayor"]
         ).count()
 
+        # Bajas no atribuibles a rotación voluntaria/operativa (Jubilaciones o Defunciones)
         D_Jubilaciones_Defuncionales = desvinculados.filter(
             idCausa__Categoria__in=["Retiro", "Fuerza Mayor"]
         ).count()
 
+        # Sumatoria total de bajas en el período
         D_Total_Bajas = D_Desvinculados + D_Jubilaciones_Defuncionales
 
-        # Personal Inicial
+        # -------------------------------------------------
+        # 3. PERSONAL INICIAL (PLANTILLA BASE)
+        # -------------------------------------------------
         if mes:
+            # Empleados contratados antes del primer día del mes en evaluación y activos
             empleados_inicio = Empleado.objects.filter(
                 Fecha_Ingreso__lt=f"{anio}-{mes:02d}-01",
                 Activo=True
             ).count()
         else:
+            # Empleados contratados en años anteriores al año evaluado y activos
             empleados_inicio = Empleado.objects.filter(
                 Fecha_Ingreso__year__lt=anio,
                 Activo=True
             ).count()
 
+        # -------------------------------------------------
+        # 4. FÓRMULA DEL ÍNDICE DE ROTACIÓN DE PERSONAL (IRP)
+        # -------------------------------------------------
         F1_Inicio = empleados_inicio
+        # Balance final = Inicio + Altas - Bajas
         F2_Final = F1_Inicio + A_Contratados - D_Total_Bajas
         promedio = (F1_Inicio + F2_Final) / 2
 
+        # Cálculo porcentual del IRP frente a la plantilla promedio
         if promedio > 0:
             IRP = round((D_Total_Bajas / promedio) * 100, 2)
         else:
             IRP = Decimal("0.00")
 
+        # Umbrales o rangos objetivo sugeridos para el indicador IRP
         IRP_Sugerido_Min = Decimal("1.00")
         IRP_Sugerido_Max = Decimal("4.00")
 
+        # Mapeo del diccionario con las métricas calculadas
         data_calculada = {
             "A_Contratados": A_Contratados,
             "D_Desvinculados": D_Desvinculados,
@@ -3585,11 +3704,15 @@ def rotacion_personal(request):
             "irp_Sugerido_max": IRP_Sugerido_Max,
         }
 
+        # Datos del formulario para mantener la selección en el frontend
         registro = {"Anio": anio, "Mes": mes}
 
-        # Guardar Historial
+        # -------------------------------------------------
+        # 5. GUARDAR REGISTRO EN EL HISTORIAL
+        # -------------------------------------------------
         if action == "guardar":
             try:
+                # Crea la tupla del período consolidado en la BD
                 RotacionPersonal.objects.create(
                     Anio=anio,
                     Mes=mes,
@@ -3605,11 +3728,16 @@ def rotacion_personal(request):
                 )
                 messages.success(request, "Historial del período guardado correctamente.")
             except IntegrityError as e:
+                # Captura violaciones de unicidad si el período (Año/Mes) ya había sido guardado previa o incorrectamente
                 messages.error(request, str(e))
 
+    # -----------------------------------------------------
+    # PROCESAMIENTO GET Y RENDERIZADO DE PANTALLA
+    # -----------------------------------------------------
     context = {
         "registro": registro,
         "data_calculada": data_calculada,
+        # Carga el histórico guardado ordenando cronológicamente de forma descendente
         "historial": RotacionPersonal.objects.order_by("-Anio", "-Mes")
     }
 
