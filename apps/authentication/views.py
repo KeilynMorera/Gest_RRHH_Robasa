@@ -13,9 +13,11 @@ from django.db.models import Q # Tener esta importación al inicio de tu archivo
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import logout
 from django.shortcuts import redirect
+from django.http import HttpResponseForbidden
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 
 
-from .forms import PremioAsignadoForm
 
 # Importa todo lo que se encuentra en el archivo models.py
 # Donde se encuentran los modelos de las tablas de la base de datos
@@ -3752,21 +3754,25 @@ def evaluaciones_view(request):
 # =========================================================
 # CREAR EVALUACIÓN + DESEMPEÑO (CABECERA + DETALLE)
 # =========================================================
-@requiere_permiso("evaluaciones", "ver")
+@requiere_permiso("evaluaciones", "ver")  # Exige permiso de lectura inicial para cargar el formulario
 def crear_evaluacion(request):
-
-    empleados = Empleado.objects.select_related(
-        "idPersona"
-    ).all()
-
-    evaluadores = Empleado.objects.select_related(
-        "idPersona"
-    ).all()
-
+    """
+    Gestiona el registro completo de una evaluación de desempeño.
+    Crea tanto la cabecera (Evaluacion) como el detalle con sus criterios 
+    y porcentaje final (EvaluacionDesempeno) dentro de una transacción atómica.
+    """
+    # Consulta de catálogos necesarios para los desplegables de la plantilla
+    # Optimiza las relaciones con Persona mediante select_related
+    empleados = Empleado.objects.select_related("idPersona").all()
+    evaluadores = Empleado.objects.select_related("idPersona").all()
     periodos = Periodo.objects.all()
 
+    # -----------------------------------------------------
+    # PROCESAMIENTO DE PETICIÓN POST (GUARDAR REGISTRO)
+    # -----------------------------------------------------
     if request.method == "POST":
 
+        # Validación secundaria/específica de permisos de escritura (Creación)
         bloqueo = bloquear_si_no_puede(
             request,
             "evaluacion_desempeno",
@@ -3777,46 +3783,40 @@ def crear_evaluacion(request):
             return bloqueo
 
         try:
-
+            # Garantiza que la cabecera y el detalle se guarden juntos; 
+            # si falla uno, se revierte toda la operación (rollback)
             with transaction.atomic():
 
                 # ============================
-                # CABECERA
+                # 1. CABECERA (Evaluacion)
                 # ============================
                 idEmpleado = request.POST.get("idEmpleado")
                 idEvaluador = request.POST.get("idEvaluador")
                 fecha = request.POST.get("Fecha_Evaluacion")
                 periodo_id = request.POST.get("periodo")
 
+                # Creación del registro principal/cabecera
                 evaluacion = Evaluacion.objects.create(
-
                     Fecha_Evaluacion=fecha,
-
                     idPeriodo_id=periodo_id,
-
-                    idEmpleado_Ev_id=idEmpleado,
-
-                    idEmpleado_Jef_id=idEvaluador
-
+                    idEmpleado_Ev_id=idEmpleado,  # ID del empleado evaluado
+                    idEmpleado_Jef_id=idEvaluador # ID del jefe/evaluador
                 )
 
                 # ============================
-                # DETALLE
+                # 2. DETALLE (EvaluacionDesempeno)
                 # ============================
+                # Conversión de valores del formulario HTML ('1' o '0') a booleanos (True/False)
                 c1 = request.POST.get("Cumple_Metas_Objetivos") == "1"
                 c2 = request.POST.get("Cumple_FuncionesAsig") == "1"
                 c3 = request.POST.get("Entregables_Calidad_Tiempo") == "1"
                 c4 = request.POST.get("Cumple_Asistencia") == "1"
                 c5 = request.POST.get("Muestra_Compromiso_Colaboracion") == "1"
 
-                total = sum([
-                    c1,
-                    c2,
-                    c3,
-                    c4,
-                    c5
-                ])
+                # Sumatoria de criterios cumplidos (los booleanos suman True=1, False=0)
+                total = sum([c1, c2, c3, c4, c5])
 
+                # Cálculo del porcentaje final asignado (Escala sobre 5 criterios = 100%)
                 pct_total = (total / 5) * 100
 
                 observaciones = request.POST.get(
@@ -3824,24 +3824,16 @@ def crear_evaluacion(request):
                     ""
                 )
 
+                # Creación del detalle de desempeño asociado a la cabecera recién creada
                 EvaluacionDesempeno.objects.create(
-
                     cumple_metas_objetivos=c1,
-
                     cumple_funciones_asig=c2,
-
                     entregables_calidad_tiempo=c3,
-
                     cumple_asistencia=c4,
-
                     muestra_compromiso_colaboracion=c5,
-
                     pct_total_ev=pct_total,
-
                     observaciones=observaciones,
-
-                    evaluacion=evaluacion
-
+                    evaluacion=evaluacion  # Asocia la FK del objeto de cabecera
                 )
 
                 messages.success(
@@ -3849,17 +3841,18 @@ def crear_evaluacion(request):
                     "Evaluación registrada correctamente."
                 )
 
-                return redirect(
-                    "crear_evaluacion"
-                )
+                return redirect("crear_evaluacion")
 
         except Exception as e:
-
+            # Captura y despliega cualquier error ocurrido durante la transacción
             messages.error(
                 request,
                 f"Error al guardar: {str(e)}"
             )
 
+    # -----------------------------------------------------
+    # PROCESAMIENTO GET Y RENDERIZADO
+    # -----------------------------------------------------
     context = {
         "empleados": empleados,
         "evaluadores": evaluadores,
@@ -3876,21 +3869,36 @@ def crear_evaluacion(request):
 # =========================================================
 # CREAR EVALUACIÓN DE POTENCIAL (JEFATURA)
 # =========================================================
-@requiere_permiso("evaluaciones", "ver")
+@requiere_permiso("evaluaciones", "ver")  # Permiso previo para visualizar la vista de evaluaciones
 def crear_evaluacion_jefatura(request):
+    """
+    Vista encargada de procesar el registro de la evaluación de potencial por jefatura.
+    
+    Flujo de ejecución:
+    1. Carga los catálogos de Empleados, Evaluadores y Periodos.
+    2. Si la petición es POST:
+       a. Verifica los permisos de escritura ('crear') específicos para 'evaluacion_jefatura'.
+       b. Inicia un bloque transaccional atómico (`transaction.atomic()`).
+       c. Crea el registro principal en la tabla `Evaluacion` (Cabecera).
+       d. Procesa las 5 competencias cualitativas a valores booleanos y calcula el porcentaje ponderado.
+       e. Crea el detalle en la tabla `EvaluacionJefePotencial`.
+       f. Muestra un mensaje flash de éxito y redirige a la misma vista (Patrón PRG).
+    3. Si la petición es GET (o falla el proceso):
+       a. Renderiza el plantilla `eva_Jefatura.html` pasándole los catálogos en el contexto.
+    """
 
-    empleados = Empleado.objects.select_related(
-        "idPersona"
-    ).all()
-
-    evaluadores = Empleado.objects.select_related(
-        "idPersona"
-    ).all()
-
+    # 1. Carga de catálogos base para popular los selectores desplegables de la plantilla HTML
+    # Se utiliza select_related("idPersona") para optimizar las consultas SQL (evita el problema N+1)
+    empleados = Empleado.objects.select_related("idPersona").all()
+    evaluadores = Empleado.objects.select_related("idPersona").all()
     periodos = Periodo.objects.all()
 
+    # -----------------------------------------------------
+    # PROCESAMIENTO DE PETICIÓN POST (CREAR EVALUACIÓN)
+    # -----------------------------------------------------
     if request.method == "POST":
 
+        # Validar en tiempo de ejecución si el usuario tiene permiso explícito de creación
         bloqueo = bloquear_si_no_puede(
             request,
             "evaluacion_jefatura",
@@ -3898,59 +3906,43 @@ def crear_evaluacion_jefatura(request):
         )
 
         if bloqueo:
-            return bloqueo
+            return bloqueo  # Interrumpe el flujo y retorna la respuesta de bloqueo (p. ej., 403 Forbidden o redirección)
 
         try:
-
+            # Transacción Atómica: Si ocurre cualquier excepción en este bloque, 
+            # la base de datos revierte automáticamente los cambios (Rollback)
             with transaction.atomic():
 
                 # ====================================
-                # CABECERA
+                # 1. REGISTRO DE LA CABECERA (Evaluacion)
                 # ====================================
                 idEmpleado = request.POST.get("idEmpleado")
                 idEvaluador = request.POST.get("idEvaluador")
                 fecha = request.POST.get("Fecha_Evaluacion")
                 periodo_id = request.POST.get("periodo")
 
+                # Inserción en la tabla padre (Cabecera general de la evaluación)
                 evaluacion = Evaluacion.objects.create(
-
                     Fecha_Evaluacion=fecha,
-
                     idPeriodo_id=periodo_id,
-
-                    idEmpleado_Ev_id=idEmpleado,
-
-                    idEmpleado_Jef_id=idEvaluador
-
+                    idEmpleado_Ev_id=idEmpleado,  # Clave foránea del empleado evaluado
+                    idEmpleado_Jef_id=idEvaluador # Clave foránea de la jefatura / evaluador
                 )
 
                 # ====================================
-                # DETALLE DE JEFATURA
+                # 2. DETALLE DE POTENCIAL (EvaluacionJefePotencial)
                 # ====================================
-                liderazgo = request.POST.get(
-                    "Capacidad_Liderazgo"
-                ) == "1"
+                # Conversión de las entradas del formulario ('1' o '0') a tipos de datos Booleanos (True/False)
+                liderazgo = request.POST.get("Capacidad_Liderazgo") == "1"
+                aprendizaje = request.POST.get("Aprendizaje_Rapido") == "1"
+                adaptacion = request.POST.get("Adaptacion_Cambio") == "1"
+                iniciativa = request.POST.get("Iniciativa_Mejora") == "1"
+                madurez = request.POST.get("Madurez_Emocional") == "1"
 
-                aprendizaje = request.POST.get(
-                    "Aprendizaje_Rapido"
-                ) == "1"
+                observaciones = request.POST.get("Observaciones", "")
 
-                adaptacion = request.POST.get(
-                    "Adaptacion_Cambio"
-                ) == "1"
-
-                iniciativa = request.POST.get(
-                    "Iniciativa_Mejora"
-                ) == "1"
-
-                madurez = request.POST.get(
-                    "Madurez_Emocional"
-                ) == "1"
-
-                observaciones = request.POST.get(
-                    "Observaciones"
-                )
-
+                # Sumatoria de competencias cumplidas
+                # En Python: True se evalúa como 1 y False como 0
                 total = sum([
                     liderazgo,
                     aprendizaje,
@@ -3959,43 +3951,40 @@ def crear_evaluacion_jefatura(request):
                     madurez
                 ])
 
+                # Cálculo del porcentaje ponderado (Cada competencia equivale al 20% del total)
                 pct_total = (total / 5) * 100
 
+                # Inserción en la tabla hija (Detalle específico de la evaluación por jefatura)
                 EvaluacionJefePotencial.objects.create(
-
                     Capacidad_Liderazgo=liderazgo,
-
                     Aprendizaje_Rapido=aprendizaje,
-
                     Adaptacion_Cambio=adaptacion,
-
                     Iniciativa_Mejora=iniciativa,
-
                     Madurez_Emocional=madurez,
-
                     pct_totalEv=pct_total,
-
                     Observaciones=observaciones,
-
-                    idEvaluacion=evaluacion
+                    idEvaluacion=evaluacion  # Asignación del objeto cabecera recién creado
                 )
 
+                # Notificación exitosa mediante el framework de mensajes de Django
                 messages.success(
                     request,
                     "Evaluación de jefatura registrada correctamente."
                 )
 
-                return redirect(
-                    "crear_evaluacion_jefatura"
-                )
+                # Redirección tras guardar con éxito (evita el reenvío duplicado de formularios al refrescar)
+                return redirect("crear_evaluacion_jefatura")
 
         except Exception as e:
-
+            # Captura cualquier falla durante la transacción (ej. campos nulos, error de integridad)
             messages.error(
                 request,
                 f"Error al guardar: {str(e)}"
             )
 
+    # -----------------------------------------------------
+    # RENDERIZADO DE PANTALLA (PETICIONES GET O CON ERRORES)
+    # -----------------------------------------------------
     context = {
         "empleados": empleados,
         "evaluadores": evaluadores,
@@ -4012,9 +4001,15 @@ def crear_evaluacion_jefatura(request):
 # =========================================================
 # CREAR MATRIZ 9 BOX
 # =========================================================
-@requiere_permiso("evaluaciones", "crear")
+@requiere_permiso("evaluaciones", "crear")  # Restringe la vista a usuarios con permisos de creación en 'evaluaciones'
 def crear_matriz_9box(request):
-
+    """
+    Gestiona el registro de la clasificación de un empleado en la Matriz 9 Box (Talento vs. Desempeño).
+    Carga todos los catálogos paramétricos necesarios para definir el cuadrante, perfil, desempeño, 
+    potencial y plan de acción asociado.
+    """
+    # 1. Carga de catálogos base para popular los selectores de la plantilla HTML
+    # Optimiza la relación de empleados con Persona usando select_related
     empleados = Empleado.objects.select_related("idPersona").all()
     periodos = Periodo.objects.all()
     perfiles = Cuadrante9BoxPerfil.objects.all()
@@ -4022,8 +4017,12 @@ def crear_matriz_9box(request):
     desempenos = Cuadrante9BoxDesempeno.objects.all()
     potenciales = Cuadrante9BoxPotencial.objects.all()
 
+    # -----------------------------------------------------
+    # PROCESAMIENTO DE PETICIÓN POST (CREAR REGISTRO)
+    # -----------------------------------------------------
     if request.method == "POST":
 
+        # Validación explicita en tiempo de ejecución para permisos de escritura
         bloqueo = bloquear_si_no_puede(
             request,
             "evaluaciones",
@@ -4031,39 +4030,22 @@ def crear_matriz_9box(request):
         )
 
         if bloqueo:
-            return bloqueo
+            return bloqueo  # Retorna la respuesta de restricción de acceso
 
         try:
-
+            # Garantiza la integridad referencial al guardar la asignación
             with transaction.atomic():
 
+                # Inserción en la tabla de unión de la matriz 9 Box con las claves foráneas enviadas
                 UnionMatrizEmp.objects.create(
-
                     Anio=request.POST.get("Anio"),
-
                     Plan_Accion=request.POST.get("Plan_Accion"),
-
                     idPeriodo_id=request.POST.get("periodo"),
-
-                    idCuadrante_9box_id=request.POST.get(
-                        "idCuadrante_9box"
-                    ),
-
-                    idCuadrante_9box_Perfil_id=request.POST.get(
-                        "idCuadrante_9box_Perfil"
-                    ),
-
-                    idCuadrante_9box_Desempeno_id=request.POST.get(
-                        "idCuadrante_9box_Desempeno"
-                    ),
-
-                    idCuadrante_9box_Potencial_id=request.POST.get(
-                        "idCuadrante_9box_Potencial"
-                    ),
-
-                    idEmpleado_id=request.POST.get(
-                        "idEmpleado"
-                    )
+                    idCuadrante_9box_id=request.POST.get("idCuadrante_9box"),
+                    idCuadrante_9box_Perfil_id=request.POST.get("idCuadrante_9box_Perfil"),
+                    idCuadrante_9box_Desempeno_id=request.POST.get("idCuadrante_9box_Desempeno"),
+                    idCuadrante_9box_Potencial_id=request.POST.get("idCuadrante_9box_Potencial"),
+                    idEmpleado_id=request.POST.get("idEmpleado")
                 )
 
                 messages.success(
@@ -4071,15 +4053,19 @@ def crear_matriz_9box(request):
                     "Matriz 9 Box registrada correctamente."
                 )
 
+                # Redirección tras guardado exitoso (Patrón PRG para evitar re-envío de formularios)
                 return redirect("crear_matriz_9box")
 
         except Exception as e:
-
+            # Captura de excepciones en caso de inconsistencia o fallo al guardar
             messages.error(
                 request,
                 f"Error al guardar: {str(e)}"
             )
 
+    # -----------------------------------------------------
+    # RENDERIZADO DE PANTALLA (PETICIONES GET O CON ERRORES)
+    # -----------------------------------------------------
     context = {
         "empleados": empleados,
         "periodos": periodos,
@@ -4099,15 +4085,32 @@ def crear_matriz_9box(request):
 # =========================================================
 # DASHBOARD RESULTADOS
 # =========================================================
-@requiere_permiso("evaluaciones", "ver")
+@requiere_permiso("evaluaciones", "ver")  # Exige permiso de lectura en el módulo 'evaluaciones'
 def dashboard_resultados(request):
+    """
+    Consolida y visualiza los resultados de evaluación de un empleado para un período y año específicos.
+    
+    Flujo de consulta:
+    1. Obtiene los catálogos para filtros (Empleados y Períodos).
+    2. Lee los parámetros GET enviados desde el formulario de búsqueda.
+    3. Si existen los tres filtros (empleado, período y año):
+       a. Consulta la matriz 9 Box (`UnionMatrizEmp`) con optimización de relaciones (`select_related`).
+       b. Si existe la matriz, busca la evaluación de cabecera más reciente.
+       c. Intenta obtener primero el detalle de desempeño (`EvaluacionDesempeno`).
+       d. Si no hay desempeño, busca como alternativa el detalle de potencial (`EvaluacionJefePotencial`).
+       e. Extrae el porcentaje correspondiente y define la etiqueta adecuada para el dashboard.
+    4. Mantiene el estado de los filtros para conservarlos en el frontend (plantilla).
+    """
 
+    # 1. Carga de catálogos base para los filtros desplegables de la plantilla HTML
+    # Uso de select_related para evitar el problema N+1 al cargar las personas asociadas
     empleados = Empleado.objects.select_related(
         "idPersona"
     ).all()
 
     periodos = Periodo.objects.all()
 
+    # 2. Captura de parámetros GET enviados desde la barra o formulario de filtros
     empleado_filtro = request.GET.get(
         "empleado_filtro"
     )
@@ -4120,6 +4123,7 @@ def dashboard_resultados(request):
         "anio_filtro"
     )
 
+    # Inicialización de variables para la vista/contexto
     matriz_seleccionada = None
     potencial_seleccionado = None
     desempeno_seleccionado = None
@@ -4127,67 +4131,53 @@ def dashboard_resultados(request):
     porcentaje_total = 0
     titulo_porcentaje = "Sin evaluación"
 
+    # 3. Procesamiento de consulta solo si se envían los 3 parámetros obligatorios
     if empleado_filtro and periodo_filtro and anio_filtro:
 
         try:
-
+            # Consulta optimizada de la asignación en la Matriz 9 Box
+            # Carga de forma anticipada (JOIN) las tablas relacionadas requeridas en el dashboard
             matriz_seleccionada = UnionMatrizEmp.objects.select_related(
-
                 "idEmpleado__idPersona",
-
                 "idEmpleado__idPuesto",
-
                 "idPeriodo",
-
                 "idCuadrante_9box",
-
                 "idCuadrante_9box_Desempeno",
-
                 "idCuadrante_9box_Potencial",
-
                 "idCuadrante_9box_Perfil"
-
             ).filter(
-
                 idEmpleado_id=empleado_filtro,
-
                 idPeriodo_id=periodo_filtro,
-
                 Anio=anio_filtro
-
             ).first()
 
             if not matriz_seleccionada:
-
+                # Notificación en caso de que no haya registro en la matriz con los filtros dados
                 messages.warning(
                     request,
                     "No se encontraron resultados para los criterios seleccionados."
                 )
 
             else:
-
+                # Si existe matriz, busca la cabecera de evaluación correspondiente al empleado y período
+                # Ordena descendente por fecha para obtener la más reciente
                 evaluacion = Evaluacion.objects.filter(
-
                     idEmpleado_Ev_id=empleado_filtro,
-
                     idPeriodo_id=periodo_filtro
-
                 ).order_by(
                     "-Fecha_Evaluacion"
-
                 ).first()
 
                 if evaluacion:
-
+                    # Intenta obtener el detalle de Evaluación de Desempeño
                     desempeno_seleccionado = (
-
                         EvaluacionDesempeno.objects.filter(
                             evaluacion=evaluacion
                         ).first()
                     )
 
                     if desempeno_seleccionado:
-
+                        # Asigna el porcentaje y título de Desempeño si existe el registro
                         porcentaje_total = (
                             desempeno_seleccionado.pct_total_ev or 0
                         )
@@ -4197,16 +4187,15 @@ def dashboard_resultados(request):
                         )
 
                     else:
-
+                        # Si no hay registro de desempeño, busca el detalle de Evaluación de Potencial (Jefatura)
                         potencial_seleccionado = (
-
                             EvaluacionJefePotencial.objects.filter(
                                 idEvaluacion=evaluacion
                             ).first()
                         )
 
                         if potencial_seleccionado:
-
+                            # Asigna el porcentaje y título de Potencial si existe el registro
                             porcentaje_total = (
                                 potencial_seleccionado.pct_totalEv or 0
                             )
@@ -4216,12 +4205,13 @@ def dashboard_resultados(request):
                             )
 
         except Exception as e:
-
+            # Captura de errores inesperados durante la ejecución de las consultas SQL
             messages.error(
                 request,
                 f"Error al consultar los datos: {str(e)}"
             )
 
+    # 4. Construcción del contexto para el renderizado del template
     context = {
         "empleados": empleados,
         "periodos": periodos,
@@ -4231,6 +4221,7 @@ def dashboard_resultados(request):
         "porcentaje_total": porcentaje_total,
         "titulo_porcentaje": titulo_porcentaje,
 
+        # Conversión/mantenimiento de valores filtrados para rellenar/mantener el formulario en el frontend
         "empleado_filtro_id": (
             int(empleado_filtro)
             if empleado_filtro else None
@@ -4259,16 +4250,34 @@ def elec_KPI_view(request):
 # =========================================================================
 # 1. VISTA SÓLO PARA LA CABECERA (Carga inicial y Guardado de Cabecera)
 # =========================================================================
-@requiere_permiso("kpi", "crear")
+@requiere_permiso("kpi", "crear")  # Garantiza que el usuario tenga permisos de creación en el módulo 'kpi'
 def registrar_kpi_view(request):
+    """
+    Gestiona la carga inicial y la creación de la cabecera para la evaluación de KPIs.
+    
+    Flujo de ejecución:
+    1. Inicializa variables de estado y valores por defecto (Año 2026).
+    2. Si la petición es POST:
+       a. Valida los permisos de escritura del usuario.
+       b. Captura y castea los parámetros enviados (`idEmpleado`, `Mes`, `Anio`).
+       c. Intenta recuperar el objeto `Empleado` e instanciar/guardar `KpiCabecera`.
+       d. Captura excepciones específicas (duplicidad por restricción `unique_together`, empleado inexistente, o datos corruptos).
+    3. Carga la lista de empleados activos y categorías de KPI para los selectores.
+    4. Renderiza la plantilla `kpi_Registro.html` manteniendo el estado de la cabecera creada o seleccionada.
+    """
 
+    # Inicialización de variables para el contexto del template
     kpi_cabecera_id = None
     el_empleado_seleccionado = ""
     el_mes_seleccionado = ""
-    el_anio_seleccionado = "2026"
+    el_anio_seleccionado = "2026"  # Valor predeterminado para el año en curso
 
+    # -----------------------------------------------------
+    # PROCESAMIENTO DE PETICIÓN POST (GUARDAR CABECERA)
+    # -----------------------------------------------------
     if request.method == 'POST':
 
+        # Validar en tiempo de ejecución si el usuario tiene permiso para crear KPI
         bloqueo = bloquear_si_no_puede(
             request,
             "kpi",
@@ -4276,12 +4285,14 @@ def registrar_kpi_view(request):
         )
 
         if bloqueo:
-            return bloqueo
+            return bloqueo  # Corta el flujo y retorna la respuesta de acceso denegado
 
+        # Captura de datos enviados desde el formulario POST
         id_empleado = request.POST.get('idEmpleado')
         mes = request.POST.get('Mes')
         anio = request.POST.get('Anio')
 
+        # Conversión de valores a enteros para mantener la selección activa en los selectores HTML
         el_empleado_seleccionado = (
             int(id_empleado)
             if id_empleado else ""
@@ -4298,23 +4309,22 @@ def registrar_kpi_view(request):
         )
 
         try:
-
+            # Obtención de la instancia del empleado
             empleado = Empleado.objects.get(
                 pk=id_empleado
             )
 
+            # Instanciación de la cabecera del KPI
             cabecera = KpiCabecera(
-
                 idEmpleado=empleado,
-
                 mes=int(mes),
-
                 anio=int(anio)
-
             )
 
+            # Inserción en la base de datos
             cabecera.save()
 
+            # Captura del ID primario autogenerado para habilitar el registro de detalles
             kpi_cabecera_id = cabecera.id_KPI
 
             messages.success(
@@ -4323,36 +4333,41 @@ def registrar_kpi_view(request):
             )
 
         except IntegrityError:
-
+            # Se dispara si ya existe un registro con la combinación única (Empleado + Mes + Año)
             messages.error(
                 request,
                 "Error: Ya existe un registro de KPI para este colaborador en el mes y año seleccionados."
             )
 
         except Empleado.DoesNotExist:
-
+            # Manejo de error si la clave primaria del empleado enviada no existe
             messages.error(
                 request,
                 "El colaborador seleccionado no es válido."
             )
 
         except (ValueError, TypeError):
-
+            # Manejo de fallos en la conversión de tipos (ej. envío de texto no numérico en mes/año)
             messages.error(
                 request,
                 "Error: Los datos de mes o año enviados no son válidos."
             )
 
+    # -----------------------------------------------------
+    # CARGA DE CATÁLOGOS Y RENDERIZADO (GET / POST)
+    # -----------------------------------------------------
+    # Carga únicamente los empleados en estado Activo para el selector
     empleados = Empleado.objects.filter(
         Activo=True
     )
 
     categorias = KpiCategoria.objects.all()
 
+    # Construcción del contexto para el template
     context = {
         'empleados': empleados,
         'categorias': categorias,
-        'kpi_cabecera_id': kpi_cabecera_id,
+        'kpi_cabecera_id': kpi_cabecera_id,  # Si no es None, habilita el formulario de detalles en el frontend
         'el_empleado_seleccionado': el_empleado_seleccionado,
         'el_mes_seleccionado': el_mes_seleccionado,
         'el_anio_seleccionado': el_anio_seleccionado,
@@ -4368,11 +4383,25 @@ def registrar_kpi_view(request):
 # =========================================================================
 # 2. VISTA SÓLO PARA AGREGAR EL DETALLE (Procesamiento independiente)
 # =========================================================================
-@requiere_permiso("kpi", "crear")
+@requiere_permiso("kpi", "crear")  # Restringe la ejecución a usuarios con permiso de creación en 'kpi'
 def registrar_kpi_detalle_view(request):
+    """
+    Procesa de manera independiente la adición de una línea de detalle (indicador específico)
+    asociada a una cabecera de KPI existente.
+    
+    Flujo de ejecución:
+    1. Verifica que la solicitud sea POST (procesamiento de formulario).
+    2. Valida los permisos de escritura del usuario en tiempo de ejecución.
+    3. Captura los datos del formulario (`id_KPI`, `id_KPI_Categoria`, `pct_Alcanzado`, `Monto_Base`).
+    4. Obtiene los objetos correspondientes mediante `get_object_or_404`.
+    5. Calcula el `Monto_Total` alcanzado con base en el porcentaje y el monto base.
+    6. Crea y guarda la instancia de `KpiDetalle` (con redondeo a 2 decimales).
+    7. Redirige a la vista principal de registro (`registrar_kpi`).
+    """
 
     if request.method == 'POST':
 
+        # Validar en tiempo de ejecución si el usuario tiene permiso para crear detalles de KPI
         bloqueo = bloquear_si_no_puede(
             request,
             "kpi",
@@ -4380,8 +4409,9 @@ def registrar_kpi_detalle_view(request):
         )
 
         if bloqueo:
-            return bloqueo
+            return bloqueo  # Corta el flujo y retorna la respuesta de restricción de acceso
 
+        # Captura de los valores enviados por el formulario POST
         id_kpi_cabecera = request.POST.get(
             'id_KPI'
         )
@@ -4399,17 +4429,19 @@ def registrar_kpi_detalle_view(request):
         )
 
         try:
-
+            # Recupera la cabecera padre existente; si no existe, lanza un error HTTP 404
             cabecera = get_object_or_404(
                 KpiCabecera,
                 pk=id_kpi_cabecera
             )
 
+            # Recupera la categoría/indicador a evaluar; si no existe, lanza un error HTTP 404
             categoria = get_object_or_404(
                 KpiCategoria,
                 pk=id_categoria
             )
 
+            # Cálculo en memoria del monto alcanzado según el porcentaje (Ej: Monto_Base * (85.0 / 100))
             monto_total = (
                 float(monto_base)
                 *
@@ -4418,26 +4450,23 @@ def registrar_kpi_detalle_view(request):
                 )
             )
 
+            # Creación e instanciación del objeto de detalle con casting numérico explicito
             detalle = KpiDetalle(
-
-                id_KPI=cabecera,
-
-                id_KPI_Categoria=categoria,
-
+                id_KPI=cabecera,                       # Clave foránea a la cabecera
+                id_KPI_Categoria=categoria,           # Clave foránea a la categoría
                 pct_Alcanzado=float(
                     pct_alcanzado
                 ),
-
                 Monto_Base=float(
                     monto_base
                 ),
-
                 Monto_Total=round(
                     monto_total,
-                    2
+                    2                                  # Redondeo del resultado a 2 decimales
                 )
             )
 
+            # Inserción en la base de datos
             detalle.save()
 
             messages.success(
@@ -4446,32 +4475,51 @@ def registrar_kpi_detalle_view(request):
             )
 
         except IntegrityError:
+            # Captura violación de restricción única (ej. prevenir duplicados de una misma categoría en la misma cabecera)
             messages.error(
                 request,
                 "Error: Esta categoría ya fue evaluada en este mes para el colaborador."
             )
 
         except Exception as e:
-
+            # Captura de errores inesperados (ej. fallos en la conversión a float o tipos incompatibles)
             messages.error(
                 request,
                 f"Error al guardar el detalle: {str(e)}"
             )
 
+    # Redirección final mediante el patrón Post/Redirect/Get hacia la vista principal de registro
     return redirect(
         'registrar_kpi'
     )
 
 
-
 # =========================================================
 # CREAR PREMIO
 # =========================================================
-@requiere_permiso("kpi", "crear")
+@requiere_permiso("kpi", "crear")  # Garantiza que el usuario posea permisos de creación en el módulo 'kpi'
 def crear_premio(request):
+    """
+    Gestiona la creación de nuevos premios vinculados a las categorías de KPI y perfiles de la Matriz 9 Box,
+    además de obtener el listado histórico de los premios registrados.
+    
+    Flujo de ejecución:
+    1. Si la petición es POST:
+       a. Verifica los permisos de escritura del usuario en tiempo de ejecución.
+       b. Instancia el formulario `PremioForm` con la información enviada.
+       c. Si el formulario es válido, guarda el nuevo registro, emite un mensaje de éxito y redirige (Patrón PRG).
+    2. Si la petición es GET:
+       a. Instancia un formulario `PremioForm` vacío listo para ser renderizado.
+    3. Carga la lista completa de premios optimizando la consulta con `select_related`.
+    4. Renderiza la plantilla `kpi_Premio.html` pasando el formulario y la colección de premios en el contexto.
+    """
 
+    # -----------------------------------------------------
+    # PROCESAMIENTO DE PETICIÓN POST (CREACIÓN DE PREMIO)
+    # -----------------------------------------------------
     if request.method == 'POST':
 
+        # Validar en tiempo de ejecución si el usuario tiene permiso explícito para crear premios
         bloqueo = bloquear_si_no_puede(
             request,
             "kpi",
@@ -4479,14 +4527,17 @@ def crear_premio(request):
         )
 
         if bloqueo:
-            return bloqueo
+            return bloqueo  # Interrumpe el flujo y retorna la respuesta de restricción de acceso
 
+        # Instancia el formulario con los datos recibidos en la solicitud POST
         form = PremioForm(
             request.POST
         )
 
+        # Validación del formulario (comprueba reglas del Modelo y tipado de campos)
         if form.is_valid():
 
+            # Guarda la nueva instancia del modelo Premio en la base de datos
             form.save()
 
             messages.success(
@@ -4494,24 +4545,31 @@ def crear_premio(request):
                 '¡Premio guardado exitosamente!'
             )
 
+            # Redirección tras éxito para limpiar el formulario y evitar el reenvío de datos (Patrón PRG)
             return redirect(
                 'crear_premio'
             )
 
+    # -----------------------------------------------------
+    # PROCESAMIENTO DE PETICIÓN GET (CARGA INICIAL)
+    # -----------------------------------------------------
     else:
-
+        # Crea una instancia vacía del formulario para su presentación inicial en el HTML
         form = PremioForm()
 
+    # -----------------------------------------------------
+    # CONSULTA Y RENDERIZADO DE LA PLANTILLA
+    # -----------------------------------------------------
+    # Consulta optimizada mediante JOINs explícitos (select_related) para cargar
+    # la categoría de KPI y el perfil 9 Box asociados a cada premio sin generar consultas N+1
     premios = Premio.objects.select_related(
-
         'id_KPI_Categoria',
-
         'idCuadrante_9box_Perfil'
-
     ).all().order_by(
         'idPremio'
     )
 
+    # Renderiza la vista 'kpi_Premio.html' enviando el formulario (lleno con errores o vacío) y los registros
     return render(
         request,
         'kpi_Premio.html',
@@ -4591,28 +4649,33 @@ def editar_premio(request, id):
 # =========================================================
 # VISTA: GUARDAR PREMIO ASIGNADO
 # =========================================================
+# Decorador personalizado para restringir el acceso a la vista.
+# Requiere que el usuario tenga el permiso de "crear" dentro del módulo "kpi".
 @requiere_permiso("kpi", "crear")
 def guardar_premio_asignado(request):
 
     # =====================================================
-    # MÉTODO POST
+    # MÉTODO POST: PROCESAMIENTO DEL FORMULARIO
     # =====================================================
-
+    # Se evalúa si el navegador/cliente envió una solicitud de tipo POST (envío de datos).
     if request.method == 'POST':
 
+        # Verificación explícita de seguridad adicional.
+        # Si el usuario no cumple los criterios, 'bloquear_si_no_puede' retorna una respuesta de bloqueo/redirección.
         bloqueo = bloquear_si_no_puede(
             request,
             "kpi",
             "crear"
         )
 
+        # Si existe una respuesta de bloqueo, se interrumpe la ejecución y se devuelve dicha respuesta.
         if bloqueo:
             return bloqueo
 
         # =================================================
         # CREAR FORMULARIO CON LOS DATOS RECIBIDOS
         # =================================================
-
+        # Se vinculan los datos ingresados en el formulario (request.POST) con la clase PremioAsignadoForm.
         form = PremioAsignadoForm(
             request.POST
         )
@@ -4620,13 +4683,15 @@ def guardar_premio_asignado(request):
         # =================================================
         # VALIDAR FORMULARIO
         # =================================================
-
+        # Ejecuta las validaciones del formulario. Si todos los campos son válidos, accede a 'cleaned_data'.
         if form.is_valid():
 
             try:
-
+                # Se utiliza una transacción atómica para garantizar que todas las operaciones dentro
+                # del bloque se ejecuten correctamente o se reviertan (rollback) si ocurre algún error.
                 with transaction.atomic():
 
+                    # Extracción de campos validados desde el diccionario cleaned_data
                     premio = (
                         form.cleaned_data['idPremio']
                     )
@@ -4639,19 +4704,22 @@ def guardar_premio_asignado(request):
                         form.cleaned_data['Fecha_Registro']
                     )
 
+                    # =================================================
+                    # VALIDACIÓN DE NEGOCIO: EXISTENCIA DEL DETALLE KPI
+                    # =================================================
+                    # Se busca si el KPI seleccionado posee un detalle asignado que coincida 
+                    # con la misma categoría asociada al premio.
                     detalle_kpi = (
                         KpiDetalle.objects.filter(
-
                             id_KPI=kpi,
-
-                            id_KPI_Categoria=
-                                premio.id_KPI_Categoria
-
+                            id_KPI_Categoria=premio.id_KPI_Categoria
                         ).first()
                     )
 
+                    # Si no existe coincidencia entre el KPI y la categoría del premio:
                     if detalle_kpi is None:
 
+                        # Se envía un mensaje de error al usuario informando la inconsistencia.
                         messages.error(
                             request,
                             'No se puede asignar este premio. '
@@ -4660,6 +4728,7 @@ def guardar_premio_asignado(request):
                             'asociada al premio.'
                         )
 
+                        # Se vuelve a renderizar el formulario con sus datos actuales y la lista de premios actualizados.
                         return render(
                             request,
                             'kpi_AsigPremio.html',
@@ -4677,21 +4746,20 @@ def guardar_premio_asignado(request):
                             }
                         )
 
+                    # =================================================
+                    # REGISTRO Y GUARDADO DE LA ASIGNACIÓN
+                    # =================================================
+                    # Instancia del modelo PremioAsignado con los datos recibidos del formulario.
                     premio_asignado = PremioAsignado(
-
-                        Fecha_Registro=
-                            fecha_registro,
-
-                        idPremio=
-                            premio,
-
-                        id_KPI=
-                            kpi
-
+                        Fecha_Registro=fecha_registro,
+                        idPremio=premio,
+                        id_KPI=kpi
                     )
 
+                    # Guarda el objeto en la base de datos (aquí se pueden ejecutar signals o reglas del modelo).
                     premio_asignado.save()
 
+                    # Mensaje de confirmación que incluye el monto calculado o procesado.
                     messages.success(
                         request,
                         (
@@ -4701,15 +4769,19 @@ def guardar_premio_asignado(request):
                         )
                     )
 
+                    # Redirección mediante el patrón Post/Redirect/Get para prevenir reenvíos dobles del formulario.
                     return redirect(
                         'guardar_premio_asignado'
                     )
 
+            # =================================================
+            # MANEJO DE EXCEPCIONES
+            # =================================================
+            # Captura errores relacionados con restricciones de clave única, foráneas o de base de datos.
             except IntegrityError as e:
 
                 print(
-                    'ERROR DE INTEGRIDAD AL GUARDAR '
-                    'PREMIO ASIGNADO:',
+                    'ERROR DE INTEGRIDAD AL GUARDAR PREMIO ASIGNADO:',
                     str(e)
                 )
 
@@ -4717,16 +4789,15 @@ def guardar_premio_asignado(request):
                     request,
                     (
                         'No fue posible guardar el premio asignado. '
-                        'Verifique que los datos seleccionados '
-                        'sean válidos.'
+                        'Verifique que los datos seleccionados sean válidos.'
                     )
                 )
 
+            # Captura errores de valor lanzados por la lógica del modelo o métodos de validación.
             except ValueError as e:
 
                 print(
-                    'ERROR DE VALIDACIÓN AL GUARDAR '
-                    'PREMIO ASIGNADO:',
+                    'ERROR DE VALIDACIÓN AL GUARDAR PREMIO ASIGNADO:',
                     str(e)
                 )
 
@@ -4735,11 +4806,11 @@ def guardar_premio_asignado(request):
                     str(e)
                 )
 
+            # Captura cualquier otro tipo de error no controlado previamente.
             except Exception as e:
 
                 print(
-                    'ERROR INESPERADO AL GUARDAR '
-                    'PREMIO ASIGNADO:',
+                    'ERROR INESPERADO AL GUARDAR PREMIO ASIGNADO:',
                     str(e)
                 )
 
@@ -4751,6 +4822,7 @@ def guardar_premio_asignado(request):
                     )
                 )
 
+        # Si form.is_valid() retorna False, se notifica que hay errores de entrada.
         else:
             messages.error(
                 request,
@@ -4760,10 +4832,19 @@ def guardar_premio_asignado(request):
                 )
             )
 
+    # =====================================================
+    # MÉTODO GET: CARGA INICIAL DE LA VISTA
+    # =====================================================
+    # Si la petición no es POST, se genera una instancia vacía del formulario para crear un nuevo registro.
     else:
 
         form = PremioAsignadoForm()
 
+    # =====================================================
+    # RENDERIZADO DE LA PLANTILLA (GET o POST con error)
+    # =====================================================
+    # Se renderiza la plantilla HTML enviando el formulario y el historial de premios asignados.
+    # 'select_related' optimiza la consulta SQL realizando JOINs a las tablas relacionadas.
     return render(
         request,
         'kpi_AsigPremio.html',
@@ -4771,13 +4852,9 @@ def guardar_premio_asignado(request):
             'form': form,
             'premios_asignados':
                 PremioAsignado.objects.select_related(
-
                     'idPremio',
-
                     'id_KPI',
-
                     'id_KPI__idEmpleado',
-
                     'id_KPI__idEmpleado__idPersona'
                 ).order_by(
                     '-Fecha_Registro'
@@ -4790,29 +4867,44 @@ def guardar_premio_asignado(request):
 # VISTA: OBTENER MONTO LIQUIDADO (AJAX)
 # =========================================================
 def obtener_monto_liquidado(request, idPremio, id_KPI):
+    """
+    Endpoint de API para consumo vía AJAX.
+    Calcula dinámicamente el monto total a liquidar combinando la bonificación
+    base del premio y el rendimiento alcanzado en el detalle del KPI.
+    
+    Fórmula:
+        Monto Liquidado = Premio.Monto + KpiDetalle.Monto_Total
+        
+    Argumentos:
+        request: Objeto HttpRequest.
+        idPremio (int/str): Identificador del premio seleccionado.
+        id_KPI (int/str): Identificador de la cabecera de KPI seleccionada.
+        
+    Retorna:
+        JsonResponse con los estados 'success', 'monto_liquidado' o mensaje de 'error'.
+    """
 
-    # =====================================================
-    # Calcula el monto liquidado en tiempo real:
-    #
-    # Premio.Monto + KPI_Detalle.Monto_Total
-    #
-    # Usado por el JavaScript de kpi_AsigPremio.html
-    # para mostrar la vista previa antes de guardar.
-    # =====================================================
     try:
-
+        # =====================================================
+        # 1. BÚSQUEDA Y VALIDACIÓN DE MODELOS BASE
+        # =====================================================
+        # Obtiene la instancia del Premio mediante su ID; lanza error HTTP 404 si no existe
         premio = get_object_or_404(Premio, idPremio=idPremio)
 
+        # Obtiene la cabecera del KPI asignado al empleado; lanza error HTTP 404 si no existe
         kpi = get_object_or_404(KpiCabecera, id_KPI=id_KPI)
 
+        # =====================================================
+        # 2. VALIDACIÓN DE COINCIDENCIA DE CATEGORÍA
+        # =====================================================
+        # Busca el detalle del KPI que coincida tanto con el KPI general 
+        # como con la categoría específica requerida por el premio asignado
         detalle_kpi = KpiDetalle.objects.filter(
-
             id_KPI=kpi,
-
             id_KPI_Categoria=premio.id_KPI_Categoria
-
         ).first()
 
+        # Si no hay registro de detalle para esa categoría, retorna respuesta JSON de error no bloqueante
         if detalle_kpi is None:
             return JsonResponse({
                 'success': False,
@@ -4822,14 +4914,23 @@ def obtener_monto_liquidado(request, idPremio, id_KPI):
                 )
             })
 
+        # =====================================================
+        # 3. CÁLCULO Y SUCESO
+        # =====================================================
+        # Sumatoria del valor estático del premio + la puntuación/monto dinámico del detalle KPI
         monto_liquidado = premio.Monto + detalle_kpi.Monto_Total
 
+        # Retorno de éxito estructurado para la previsualización en la plantilla del cliente
         return JsonResponse({
             'success': True,
-            'monto_liquidado': float(monto_liquidado)
+            'monto_liquidado': float(monto_liquidado)  # Casting a float para asegurar la serialización JSON
         })
 
+    # =========================================================
+    # 4. MANEJO DE EXCEPCIONES INESPERADAS
+    # =========================================================
     except Exception as e:
+        # Captura cualquier falla imprevista (ej. tipos de datos incompatibles) y la expone al script AJAX
         return JsonResponse({
             'success': False,
             'error': str(e)
@@ -4839,19 +4940,34 @@ def obtener_monto_liquidado(request, idPremio, id_KPI):
 # =========================================================================
 # VISTA: Dashboard / Historial de KPIs
 # =========================================================================
-@requiere_permiso("kpi", "ver")
+@requiere_permiso("kpi", "ver")  # Garantiza que el usuario tenga permisos de lectura en el módulo 'kpi'
 def historial_kpi_view(request):
+    """
+    Consolida la información general del módulo de KPIs: historial detallado, premios asignados,
+    métricas agrupadas (monto acumulado, promedio de alcance), ranking de colaboradores y resumen por categoría.
+    
+    Flujo de ejecución:
+    1. Captura los parámetros de filtrado desde la URL (`GET`).
+    2. Carga catálogos requeridos para los filtros desplegables.
+    3. Construye y filtra la consulta de detalles (`KpiDetalle`) aplicando relaciones con `select_related`.
+    4. Procesa agregaciones globales (`Sum`, `Avg`, `count`) para tarjetas informativas.
+    5. Consulta y filtra el historial de premios asignados (`PremioAsignado`).
+    6. Genera agrupaciones relacionales mediante `values()` y `annotate()` para ranking y resumen financiero.
+    7. Renderiza el dashboard en la plantilla `kpi.html`.
+    """
 
-    # ── Filtros desde GET ─────────────────────────────────────────────────
+    # ── 1. Captura de filtros desde parámetros GET ─────────────────────────
     empleado_filtro_id = request.GET.get('empleado_filtro', '')
     mes_filtro         = request.GET.get('mes_filtro', '')
     anio_filtro        = request.GET.get('anio_filtro', '')
 
-    # ── Catálogos para los selects ────────────────────────────────────────
+    # ── 2. Catálogos base para los selectores de la plantilla ────────────────
+    # Carga empleados activos optimizando el JOIN con la tabla Persona
     empleados  = Empleado.objects.filter(Activo=True).select_related('idPersona')
     categorias = KpiCategoria.objects.all()
 
-    # ── Historial base ────────────────────────────────────────────────────
+    # ── 3. Consulta base del historial de detalles ───────────────────────────
+    # Inclusión de múltiples JOINs previos (select_related) para evitar peticiones N+1 al recorrer el listado
     detalles = KpiDetalle.objects.select_related(
         'id_KPI',
         'id_KPI__idEmpleado',
@@ -4860,7 +4976,7 @@ def historial_kpi_view(request):
         'id_KPI_Categoria',
     ).all()
 
-    # ── Aplicar filtros ───────────────────────────────────────────────────
+    # ── 4. Aplicación dinámica de filtros a los detalles de KPI ─────────────
     if empleado_filtro_id:
         detalles = detalles.filter(id_KPI__idEmpleado_id=empleado_filtro_id)
 
@@ -4870,14 +4986,19 @@ def historial_kpi_view(request):
     if anio_filtro:
         detalles = detalles.filter(id_KPI__anio=anio_filtro)
 
+    # Ordenamiento cronológico descendente (Año más reciente -> Mes más reciente)
     detalles = detalles.order_by('-id_KPI__anio', '-id_KPI__mes')
 
-    # ── Estadísticas resumen ──────────────────────────────────────────────
+    # ── 5. Cálculo de métricas y estadísticas resumidas ──────────────────────
     total_kpis = detalles.count()
+    
+    # Sumatoria total pagada por concepto de bonos/detalles (retorna 0 si la consulta no devuelve registros)
     total_bonos = detalles.aggregate(t=Sum('Monto_Total'))['t'] or 0
+    
+    # Promedio global de porcentaje de alcance en los KPIs filtrados
     pct_promedio = detalles.aggregate(p=Avg('pct_Alcanzado'))['p'] or 0
 
-    # Premios asignados en el período filtrado
+    # ── 6. Consulta y filtrado de premios asignados ─────────────────────────
     premios_qs = PremioAsignado.objects.select_related(
         'idPremio',
         'id_KPI',
@@ -4886,6 +5007,7 @@ def historial_kpi_view(request):
         'idPremio__id_KPI_Categoria',
     ).all()
 
+    # Replicación de la misma lógica de filtrado sobre el QuerySet de premios asignados
     if empleado_filtro_id:
         premios_qs = premios_qs.filter(id_KPI__idEmpleado_id=empleado_filtro_id)
     if mes_filtro:
@@ -4895,7 +5017,8 @@ def historial_kpi_view(request):
 
     total_premios = premios_qs.count()
 
-    # ── Top colaboradores (por porcentaje promedio) ───────────────────────
+    # ── 7. Top 5 colaboradores con mejor rendimiento promedio ────────────────
+    # Agrupa por colaborador y calcula el promedio del porcentaje alcanzado de sus KPIs
     top_colaboradores = (
         KpiDetalle.objects
         .values(
@@ -4904,10 +5027,11 @@ def historial_kpi_view(request):
             'id_KPI__idEmpleado__idPersona__Foto',
         )
         .annotate(pct_prom=Avg('pct_Alcanzado'))
-        .order_by('-pct_prom')[:5]
+        .order_by('-pct_prom')[:5]  # Limita el resultado a los mejores 5
     )
 
-    # ── Resumen financiero ────────────────────────────────────────────────
+    # ── 8. Resumen financiero agrupado por categoría de KPI ───────────────────
+    # Consolida el total invertido o pagado acumulado por cada tipo de categoría/indicador
     resumen_financiero = (
         KpiDetalle.objects
         .values('id_KPI_Categoria__tipo_categoria')
@@ -4915,25 +5039,31 @@ def historial_kpi_view(request):
         .order_by('-total')
     )
 
+    # ── 9. Construcción del contexto y renderizado de respuesta ──────────────
     context = {
         'empleados': empleados,
         'categorias': categorias,
 
+        # Mantenimiento de los filtros aplicados para la plantilla HTML
         'empleado_filtro_id': empleado_filtro_id,
         'mes_filtro': mes_filtro,
         'anio_filtro': anio_filtro,
 
+        # Colecciones de registros principales
         'detalles': detalles,
         'premios_qs': premios_qs,
 
+        # Indicadores numéricos (KPIs del dashboard)
         'total_kpis': total_kpis,
         'total_bonos': total_bonos,
-        'pct_promedio': round(pct_promedio, 2),
+        'pct_promedio': round(pct_promedio, 2),  # Redondeo de la métrica a 2 decimales
         'total_premios': total_premios,
 
+        # Agregaciones para gráficos y tablas de resumen
         'top_colaboradores': top_colaboradores,
         'resumen_financiero': resumen_financiero,
 
+        # Lista de mapeo para selector de meses en la interfaz
         'meses': [
             (1,'Enero'), (2,'Febrero'), (3,'Marzo'), (4,'Abril'),
             (5,'Mayo'), (6,'Junio'), (7,'Julio'), (8,'Agosto'),
@@ -4949,24 +5079,48 @@ def historial_kpi_view(request):
 # GUARDAR CABECERA DEL ONBOARDING
 # Selección de Departamento y Empleado, y guardado en BD
 # =========================================================
-@requiere_permiso("onboarding", "ver")
+@requiere_permiso("onboarding", "ver")  # Exige al menos permisos de lectura/ver en el módulo 'onboarding'
 def registrar_onboarding(request, pk=None):
+    """
+    Gestiona la creación, edición y visualización de la cabecera del proceso de Onboarding
+    para un colaborador, además de cargar el listado de actividades asociadas.
+    
+    Flujo de ejecución:
+    1. Evalúa el parámetro opcional `pk`:
+       - Si está presente, recupera la instancia existente de `Onboarding` y habilita el 'paso dos'.
+       - Si es `None`, se prepara para crear un registro nuevo.
+    2. Si la petición es POST:
+       a. Determina dinámicamente la acción ('crear' o 'editar') para validar permisos con `bloquear_si_no_puede`.
+       b. Instancia `OnboardingForm` con los datos recibidos (request.POST) e instancia actual.
+       c. Si el formulario es válido, guarda el registro y redirige a la vista de gestión (`gestionar_onboarding`).
+    3. Si la petición es GET:
+       a. Instancia el formulario `OnboardingForm` (vacío o cargado con la instancia existente).
+    4. Consulta el catálogo general de actividades de onboarding con JOINs optimizados via `select_related`.
+    5. Renderiza la interfaz `onboarding.html` con ambos formularios y el contexto necesario.
+    """
 
+    # Inicialización de variables para el control de la interfaz
     onboarding = None
     paso_dos_habilitado = False
 
+    # ── 1. Carga de instancia existente (Modo Edición / Detalle) ───────────
     if pk:
+        # Recupera el proceso de Onboarding por ID; si no existe, lanza un HTTP 404
         onboarding = get_object_or_404(
             Onboarding,
             pk=pk
         )
 
+        # Habilita en el frontend el formulario secundario / paso 2 (asignación de actividades)
         paso_dos_habilitado = True
 
+    # ── 2. Procesamiento del Formulario (POST) ─────────────────────────────
     if request.method == "POST":
 
+        # Determina la acción para evaluar permisos según la existencia de la instancia
         accion = "editar" if onboarding else "crear"
 
+        # Verificación explícita de seguridad con base en la acción identificada
         bloqueo = bloquear_si_no_puede(
             request,
             "onboarding",
@@ -4974,15 +5128,18 @@ def registrar_onboarding(request, pk=None):
         )
 
         if bloqueo:
-            return bloqueo
+            return bloqueo  # Corta el flujo si el usuario carece de permisos de creación/edición
 
+        # Instancia el formulario vinculando la data POST y el objeto (para crear o actualizar)
         form = OnboardingForm(
             request.POST,
             instance=onboarding
         )
 
+        # Validaciones de reglas de modelo y campos requeridos
         if form.is_valid():
 
+            # Inserción o actualización en la base de datos
             nuevo = form.save()
 
             messages.success(
@@ -4990,6 +5147,7 @@ def registrar_onboarding(request, pk=None):
                 f"Proceso de Onboarding #{nuevo.id_Onboarding} creado correctamente."
             )
 
+            # Redirección mediante el patrón Post/Redirect/Get hacia la gestión detallada
             return redirect(
                 "gestionar_onboarding",
                 pk=nuevo.id_Onboarding
@@ -4997,13 +5155,16 @@ def registrar_onboarding(request, pk=None):
 
         else:
 
+            # Notificación de error si falla la validación
             messages.error(
                 request,
                 "Revise los datos del formulario."
             )
 
+    # ── 3. Solicitud inicial (GET) ──────────────────────────────────────────
     else:
 
+        # Instancia el formulario limpio o precargado con los datos del Onboarding existente
         form = OnboardingForm(
             instance=onboarding
         )
@@ -5011,6 +5172,8 @@ def registrar_onboarding(request, pk=None):
     # =====================================================
     # CARGAR ACTIVIDADES REGISTRADAS
     # =====================================================
+    # Optimización ORM con select_related para evitar peticiones N+1 al listar las actividades,
+    # ordenadas de forma descendente por el ID del proceso de Onboarding.
     actividades = OnboardingActividad.objects.select_related(
         "idActividad",
         "id_Estatus_Vacante",
@@ -5019,12 +5182,13 @@ def registrar_onboarding(request, pk=None):
         "-id_Onboarding__id_Onboarding"
     )
 
+    # ── 4. Construcción del Contexto y Renderizado ─────────────────────────
     context = {
-        "form": form,
-        "form_detalle": OnboardingActividadForm(),
-        "onboarding": onboarding,
-        "paso_dos_habilitado": paso_dos_habilitado,
-        "actividades": actividades,
+        "form": form,                                     # Formulario de cabecera (OnboardingForm)
+        "form_detalle": OnboardingActividadForm(),       # Formulario secundario para agregar actividades
+        "onboarding": onboarding,                         # Instancia del onboarding (o None)
+        "paso_dos_habilitado": paso_dos_habilitado,       # Flag para activar la segunda etapa en el HTML
+        "actividades": actividades,                       # Listado general de actividades
     }
 
     return render(
@@ -5034,45 +5198,76 @@ def registrar_onboarding(request, pk=None):
     )
 
 
+
 # =========================================================
 # GUARDAR DETALLE DE ACTIVIDAD DEL ONBOARDING
 # =========================================================
-@requiere_permiso("onboarding", "editar")  # O la clave de permiso que utilices
+@requiere_permiso("onboarding", "editar")  # Restringe la acción a usuarios con permiso de modificación en 'onboarding'
 def guardar_detalle_onboarding(request, pk):
+    """
+    Asigna y guarda una nueva actividad específica dentro del proceso de Onboarding de un colaborador.
+    
+    Argumentos:
+        request: Objeto HttpRequest de Django.
+        pk (int/str): Identificador primario de la cabecera de Onboarding existente.
 
-    # 1. Obtener el registro principal de Onboarding o lanzar 404
+    Flujo de ejecución:
+    1. Obtiene la cabecera del proceso (`Onboarding`) o responde con HTTP 404 si no existe.
+    2. Procesa la solicitud si es de tipo POST.
+    3. Instancia el formulario `OnboardingActividadForm` con los datos enviados.
+    4. Si el formulario es válido:
+       a. Crea el objeto en memoria sin guardar en BD (`commit=False`).
+       b. Asigna la relación de clave foránea con la cabecera (`id_Onboarding`).
+       c. Guarda la actividad en la base de datos de manera definitiva.
+    5. Maneja posibles excepciones de base de datos (`IntegrityError`) o errores imprevistos.
+    6. En caso de fallos de validación, itera y notifica los errores por cada campo.
+    7. Redirige siempre a la vista principal de gestión del Onboarding actual.
+    """
+
+    # 1. Obtención y validación de la cabecera padre
     onboarding = get_object_or_404(Onboarding, pk=pk)
 
-    # 2. Solo procesar si la petición es mediante POST
+    # 2. Procesamiento del envío del formulario (POST)
     if request.method == "POST":
+        # Instancia el formulario vinculando los datos enviados por el usuario
         form = OnboardingActividadForm(request.POST)
 
+        # Validaciones de tipos de datos y reglas del formulario
         if form.is_valid():
             try:
+                # Instancia el objeto OnboardingActividad en memoria reteniendo el guardado en la BD
                 detalle = form.save(commit=False)
+                
+                # Asocia manualmente la clave foránea del Onboarding recuperado previamente
                 detalle.id_Onboarding = onboarding
+                
+                # Guarda definitivamente el registro en la base de datos
                 detalle.save()
 
+                # Notificación de éxito al usuario
                 messages.success(request, "Actividad registrada correctamente.")
 
             except IntegrityError as e:
+                # Captura violaciones de restricciones en la BD (ej. valores nulos no permitidos, claves duplicadas)
                 messages.error(
                     request, 
                     f"Error de base de datos al registrar la actividad: {e}"
                 )
             except Exception as e:
+                # Captura cualquier otra falla inesperada durante el proceso de guardado
                 messages.error(
                     request, 
                     f"Ocurrió un error inesperado al guardar la actividad: {e}"
                 )
         else:
-            # Notificar errores específicos de validación del formulario
+            # Iteración sobre los errores de validación del formulario para notificar al usuario campo por campo
             for field, errors in form.errors.items():
                 for error in errors:
                     messages.error(request, f"Error en {field}: {error}")
 
-    # 3. Redirigir siempre a la gestión del onboarding
+    # 3. Redirección asegurada a la pantalla de gestión principal del Onboarding (Patrón PRG)
     return redirect("gestionar_onboarding", pk=onboarding.pk)
+
 
 
 def elec_Offboarding_view(request):
@@ -5083,24 +5278,52 @@ def elec_Offboarding_view(request):
 # GUARDAR CABECERA DEL OFFBOARDING
 # Proceso de salida de un empleado
 # =========================================================
-@requiere_permiso("offboarding", "ver")
+@requiere_permiso("offboarding", "ver")  # Restringe la vista a usuarios que cuenten con permiso de lectura en 'offboarding'
 def registrar_offboarding(request, pk=None):
+    """
+    Gestiona la creación, edición y consulta histórica de la cabecera del proceso de desvinculación 
+    (Offboarding) de un colaborador.
+    
+    Argumentos:
+        request: Objeto HttpRequest de Django.
+        pk (int/str, opcional): Identificador primario del proceso de Offboarding a editar/visualizar.
 
+    Flujo de ejecución:
+    1. Evalúa el parámetro opcional `pk`:
+       - Si está presente, recupera el objeto `Offboarding` y habilita el 'paso dos' de la interfaz.
+       - Si es `None`, se prepara para un nuevo registro.
+    2. Si la petición es POST:
+       a. Determina dinámicamente la acción ('crear' o 'editar') para validar permisos con `bloquear_si_no_puede`.
+       b. Instancia `OffboardingForm` con los datos enviados (request.POST) e instancia actual.
+       c. Si el formulario es válido, guarda el registro y redirige a la vista de gestión (`gestionar_offboarding`).
+    3. Si la petición es GET:
+       a. Instancia `OffboardingForm` (vacío o cargado con la información previa del registro).
+    4. Consulta la lista completa de procesos de Offboarding optimizando los JOINs con `select_related`.
+    5. Renderiza la plantilla `registrar_off.html` con el formulario y el historial de salidas.
+    """
+
+    # Inicialización de variables para el flujo de la vista
     offboarding = None
     paso_dos_habilitado = False
 
+    # ── 1. Carga de registro existente (Modo Edición / Detalle) ────────────
     if pk:
+        # Busca el proceso de Offboarding por clave primaria; si no existe, genera una respuesta HTTP 404
         offboarding = get_object_or_404(
             Offboarding,
             pk=pk
         )
 
+        # Activa la segunda etapa/paso en la plantilla frontend (ej. asignación de tareas de desvinculación)
         paso_dos_habilitado = True
 
+    # ── 2. Procesamiento de la Petición POST (Crear / Editar) ─────────────
     if request.method == "POST":
 
+        # Evalúa la acción a ejecutar según si se trata de un registro previo o una nueva entrada
         accion = "editar" if offboarding else "crear"
 
+        # Validación explícita de seguridad para verificar permisos específicos del usuario
         bloqueo = bloquear_si_no_puede(
             request,
             "offboarding",
@@ -5108,15 +5331,18 @@ def registrar_offboarding(request, pk=None):
         )
 
         if bloqueo:
-            return bloqueo
+            return bloqueo  # Detiene el flujo si el usuario no tiene los permisos requeridos
 
+        # Asocia los datos recibidos con la instancia del formulario
         form = OffboardingForm(
             request.POST,
             instance=offboarding
         )
 
+        # Validación del formulario conforme a las reglas del Modelo
         if form.is_valid():
 
+            # Guarda o actualiza el registro en la base de datos
             nuevo = form.save()
 
             messages.success(
@@ -5124,6 +5350,7 @@ def registrar_offboarding(request, pk=None):
                 f"Proceso de Offboarding #{nuevo.id_Offboarding} creado correctamente."
             )
 
+            # Redirección aplicando el patrón Post/Redirect/Get hacia la gestión detallada
             return redirect(
                 "gestionar_offboarding",
                 pk=nuevo.id_Offboarding
@@ -5131,25 +5358,31 @@ def registrar_offboarding(request, pk=None):
 
         else:
 
+            # Notificación de error si falla la validación del formulario
             messages.error(
                 request,
                 "Revise los datos del formulario."
             )
 
+    # ── 3. Petición Inicial GET ───────────────────────────────────────────
     else:
 
+        # Genera el formulario limpio para creación o precargado para edición
         form = OffboardingForm(
             instance=offboarding
         )
 
+    # ── 4. Construcción del Contexto y Renderizado de la Plantilla ─────────
+    # Consulta el listado de salidas históricas utilizando select_related para traer 
+    # en una sola consulta SQL los datos del empleado, su información personal y la causa de salida.
     context = {
-        "form": form,
-        "offboarding": offboarding,
-        "paso_dos_habilitado": paso_dos_habilitado,
+        "form": form,                                    # Formulario principal del proceso
+        "offboarding": offboarding,                      # Instancia del proceso cargado (o None)
+        "paso_dos_habilitado": paso_dos_habilitado,      # Flag de control para habilitar el paso 2
         "offboardings": Offboarding.objects.select_related(
             "idEmpleado__idPersona",
             "idCausa"
-        ).order_by("-Fecha_Salida")
+        ).order_by("-Fecha_Salida")                       # Orden cronológico descendente por fecha de salida
     }
 
     return render(
@@ -5159,60 +5392,66 @@ def registrar_offboarding(request, pk=None):
     )
 
 
+
 # =========================================================
 # GUARDAR CHECKLIST DE OFFBOARDING
 # Crea o actualiza el checklist correspondiente
 # al proceso de Offboarding seleccionado
 # =========================================================
-@requiere_permiso("offboarding", "ver")
+@requiere_permiso("offboarding", "ver")  # Restringe el acceso a usuarios con permiso de lectura en 'offboarding'
 def guardar_checklist_offboarding(request):
+    """
+    Gestiona la creación, actualización y sincronización de tareas/actividades (checklist) 
+    asociadas a un proceso de desvinculación (Offboarding).
+
+    Argumentos:
+        request: Objeto HttpRequest de Django.
+
+    Flujo de ejecución:
+    1. Si es POST:
+       a. Extrae los parámetros enviados desde el formulario (IDs, fechas, lista de actividades).
+       b. Valida que los campos obligatorios estén presentes (Offboarding, Estado, Actividades).
+       c. Determina la acción ('crear' o 'editar') y valida permisos con `bloquear_si_no_puede`.
+       d. Calcula dinámicamente el porcentaje de avance (`pct_listo`) con base en el catálogo total.
+       e. Inicia una transacción atómica (`transaction.atomic()`):
+          - Crea o actualiza la cabecera `OffboardingChecklist`.
+          - Elimina los detalles previos en `OffboardingChecklistDetalle`.
+          - Reinserta los detalles seleccionados.
+       f. Captura excepciones de integridad o fallos inesperados.
+    2. Construye el contexto necesario para el renderizado (procesos de Offboarding, catálogo, estatus).
+    3. Renderiza la plantilla `checklist_off.html`.
+    """
 
     if request.method == "POST":
 
         try:
 
             # =====================================================
-            # DATOS RECIBIDOS DEL FORMULARIO
+            # 1. EXTRACCIÓN DE DATOS RECIBIDOS DEL FORMULARIO
             # =====================================================
-            id_offboarding = request.POST.get(
-                "id_Offboarding"
-            )
-
-            id_estatus = request.POST.get(
-                "id_Estatus_Vacante"
-            )
-
-            fecha_comp = request.POST.get(
-                "Fecha_Comp"
-            )
-
-            observacion = request.POST.get(
-                "Observacion"
-            )
-
-            actividades = request.POST.getlist(
-                "actividades[]"
-            )
+            id_offboarding = request.POST.get("id_Offboarding")
+            id_estatus = request.POST.get("id_Estatus_Vacante")
+            fecha_comp = request.POST.get("Fecha_Comp")
+            observacion = request.POST.get("Observacion")
+            # Obtiene la lista de IDs del catálogo seleccionados en los checkboxes
+            actividades = request.POST.getlist("actividades[]")
 
             # =====================================================
-            # VALIDACIONES
+            # 2. VALIDACIONES DE CAMPOS OBLIGATORIOS
             # =====================================================
             if not id_offboarding:
-
                 messages.error(
                     request,
                     "Debe seleccionar un proceso de Offboarding."
                 )
 
             elif not id_estatus:
-
                 messages.error(
                     request,
                     "Debe seleccionar un estado."
                 )
 
             elif not actividades:
-
                 messages.warning(
                     request,
                     "Debe seleccionar al menos una actividad."
@@ -5221,35 +5460,35 @@ def guardar_checklist_offboarding(request):
             else:
 
                 # =================================================
-                # OBTENER EL OFFBOARDING SELECCIONADO
+                # 3. OBTENCIÓN DE ENTIDADES ASOCIADAS
                 # =================================================
+                # Valida que el proceso de Offboarding exista en la BD
                 offboarding = get_object_or_404(
                     Offboarding,
                     id_Offboarding=id_offboarding
                 )
 
-                # =================================================
-                # OBTENER EL ESTADO SELECCIONADO
-                # =================================================
+                # Valida que el estado/estatus exista en la BD
                 estado = get_object_or_404(
                     Estatus,
                     id_Estatus_Vacante=id_estatus
                 )
 
                 # =================================================
-                # ¿ES CREAR O EDITAR?
+                # 4. DETERMINACIÓN DE ACCIÓN Y VERIFICACIÓN DE PERMISOS
                 # =================================================
                 try:
-
+                    # Intenta recuperar un checklist previo para saber si es una edición
                     OffboardingChecklist.objects.get(
                         id_Offboarding=offboarding
                     )
-
                     accion = "editar"
 
                 except OffboardingChecklist.DoesNotExist:
+                    # Si no existe, la acción será una creación
                     accion = "crear"
 
+                # Verificación explícita de seguridad según la acción determinada
                 bloqueo = bloquear_si_no_puede(
                     request,
                     "offboarding",
@@ -5257,92 +5496,65 @@ def guardar_checklist_offboarding(request):
                 )
 
                 if bloqueo:
-                    return bloqueo
+                    return bloqueo  # Detiene el flujo si carece de permisos
 
                 # =================================================
-                # CALCULAR PORCENTAJE
+                # 5. CÁLCULO DEL PORCENTAJE DE AVANCE
                 # =================================================
-
                 total_catalogo = OffboardingCatalogo.objects.count()
-
-                total_seleccionadas = len(
-                    actividades
-                )
+                total_seleccionadas = len(actividades)
 
                 if total_catalogo > 0:
-
+                    # Registra el avance proporcional según el total de items en el catálogo global
                     pct_listo = round(
-                        (
-                            total_seleccionadas /
-                            total_catalogo
-                        ) * 100,
+                        (total_seleccionadas / total_catalogo) * 100,
                         2
                     )
-
                 else:
-
-                    pct_listo = Decimal(
-                        "0.00"
-                    )
+                    pct_listo = Decimal("0.00")
 
                 # =================================================
-                # TRANSACCIÓN
+                # 6. OPERACIONES DENTRO DE TRANSACCIÓN ATÓMICA
                 # =================================================
+                # Garantiza que todas las operaciones en BD (cabecera y detalles) se ejecuten o reviertan juntas
                 with transaction.atomic():
 
+                    # Intenta recuperar la cabecera existente
                     try:
-
                         checklist = OffboardingChecklist.objects.get(
                             id_Offboarding=offboarding
                         )
-
                         creado = False
 
+                    # Si no existe, registra la nueva cabecera
                     except OffboardingChecklist.DoesNotExist:
-
                         checklist = OffboardingChecklist.objects.create(
-
                             Fecha_Asignacion=date.today(),
-
-                            Fecha_Comp=(
-                                fecha_comp
-                                if fecha_comp
-                                else None
-                            ),
-
+                            Fecha_Comp=fecha_comp if fecha_comp else None,
                             Observacion=observacion,
-
                             pct_listo=pct_listo,
-
                             id_Offboarding=offboarding,
-
                             id_Estatus_Vacante=estado
                         )
-
                         creado = True
 
+                    # Si ya existía la cabecera, actualiza sus valores
                     if not creado:
-
-                        checklist.Fecha_Comp = (
-                            fecha_comp
-                            if fecha_comp
-                            else None
-                        )
-
+                        checklist.Fecha_Comp = fecha_comp if fecha_comp else None
                         checklist.Observacion = observacion
                         checklist.pct_listo = pct_listo
                         checklist.id_Estatus_Vacante = estado
-
                         checklist.save()
 
+                    # Estrategia de sincronización de detalles: limpia registros anteriores
                     OffboardingChecklistDetalle.objects.filter(
                         id_Check=checklist
                     ).delete()
 
                     registros_creados = 0
 
+                    # Reinserta las actividades que fueron marcadas en la interfaz
                     for id_catalogo in actividades:
-
                         actividad = get_object_or_404(
                             OffboardingCatalogo,
                             idCatalogo=id_catalogo
@@ -5356,12 +5568,12 @@ def guardar_checklist_offboarding(request):
 
                         registros_creados += 1
 
+                # Feedback al usuario según el resultado de la transacción
                 if creado:
                     messages.success(
                         request,
                         f"Checklist #{checklist.id_Check} creado correctamente para el Offboarding #{offboarding.id_Offboarding}."
                     )
-
                 else:
                     messages.success(
                         request,
@@ -5369,85 +5581,62 @@ def guardar_checklist_offboarding(request):
                     )
 
         except IntegrityError as e:
-
-            print(
-                "ERROR DE INTEGRIDAD:",
-                e
-            )
-
+            # Captura de errores de restricciones en la base de datos
+            print("ERROR DE INTEGRIDAD:", e)
             messages.error(
                 request,
                 f"Error de integridad en la base de datos: {e}"
             )
 
         except Exception as e:
-
-            print(
-                "ERROR:",
-                e
-            )
-
+            # Captura de errores imprevistos
+            print("ERROR:", e)
             messages.error(
                 request,
                 f"Error al guardar el checklist: {e}"
             )
 
     # =========================================================
-    # DATOS PARA MOSTRAR LA PÁGINA
+    # 7. CONSTRUCCIÓN DEL CONTEXTO PARA LA VISTA (GET / POST)
     # =========================================================
 
+    # Consulta optimizada de procesos de Offboarding con JOINs a Empleado, Persona y Causa
     offboardings = Offboarding.objects.select_related(
         "idEmpleado",
         "idEmpleado__idPersona",
         "idCausa"
+    ).order_by("-Fecha_Salida")
 
-    ).order_by(
-        "-Fecha_Salida"
-    )
-
+    # Mapea dinámicamente el objeto Checklist correspondiente a cada proceso para usar en plantilla
     for proceso in offboardings:
         try:
-
-            proceso.checklist_obj = (
-                OffboardingChecklist.objects.get(
-                    id_Offboarding=proceso.id_Offboarding
-                )
+            proceso.checklist_obj = OffboardingChecklist.objects.get(
+                id_Offboarding=proceso.id_Offboarding
             )
-
         except OffboardingChecklist.DoesNotExist:
             proceso.checklist_obj = None
 
+    # Agrupa los catálogos y referencias necesarias para construir los controles de la plantilla
     context = {
         "offboardings": offboardings,
         "catalogo": OffboardingCatalogo.objects.order_by(
             "Num_Etapa",
             "idCatalogo"
         ),
-
         "checklists": OffboardingChecklist.objects.select_related(
             "id_Offboarding",
             "id_Estatus_Vacante"
-        ).order_by(
-            "-Fecha_Asignacion"
-        ),
-
-        "estados": Estatus.objects.order_by(
-            "id_Estatus_Vacante"
-        )
+        ).order_by("-Fecha_Asignacion"),
+        "estados": Estatus.objects.order_by("id_Estatus_Vacante")
     }
 
+    # Renderizado final de la vista
     return render(
         request,
         "checklist_off.html",
         context
     )
 
-
-from decimal import Decimal
-from datetime import date
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib import messages
-from django.db import transaction, IntegrityError
 
 # =========================================================
 # VISTA: MODIFICAR / CARGAR CHECKLIST EXISTENTE
@@ -5575,64 +5764,100 @@ def ver_checklist_offboarding(request, id_check):
 # =========================================================
 # GUARDAR USUARIO DEL SISTEMA
 # =========================================================
-@requiere_permiso("usuarios_sistema", "crear")  # O el decorador de seguridad/permisos que utilices
+@requiere_permiso("usuarios_sistema", "crear")  # Restringe la acción a usuarios con permiso de creación en 'usuarios_sistema'
 def guardar_usuario_sistema(request):
+    """
+    Gestiona el registro e inserción de nuevas cuentas de acceso al sistema (UsuarioSistema),
+    vinculándolas con un empleado activo y un rol específico, además de renderizar la gestión general de usuarios.
+
+    Argumentos:
+        request: Objeto HttpRequest de Django.
+
+    Flujo de ejecución:
+    1. Si es POST:
+       a. Extrae y sanitiza (`strip()`) los datos recibidos del formulario (correo, contraseña, rol, empleado, activo).
+       b. Ejecuta un flujo de validaciones secuenciales:
+          - Campos obligatorios (correo, contraseña, rol, empleado, estado).
+          - Unicidad de correo electrónico en la base de datos.
+          - Relación 1:1 con Empleado (evita duplicar usuario a un mismo empleado).
+       c. Si supera las validaciones, obtiene las instancias referenciadas (`Roles`, `Empleado`).
+       d. Hashea la contraseña con `make_password` y registra la entidad `UsuarioSistema`.
+       e. Si todo se procesa correctamente, redirige mediante PRG para evitar reenvíos de formulario.
+       f. Captura posibles violaciones de unicidad en BD (`IntegrityError`) o excepciones generales.
+    2. Si es GET (o falla la petición/redirección):
+       - Construye el contexto consultando catálogos de empleados activos, roles y lista global de usuarios
+         aplicando optimizaciones ORM (`select_related`).
+    3. Renderiza la plantilla `usuarios.html`.
+    """
 
     if request.method == "POST":
-        # Limpieza inicial de inputs
+
+        # ── 1. Limpieza y extracción inicial de inputs ──────────────────────
         correo = request.POST.get("Correo", "").strip()
         contrasenia = request.POST.get("Contrasenia", "").strip()
         id_rol = request.POST.get("idRol")
         id_empleado = request.POST.get("idEmpleado_Admin")
         activo_raw = request.POST.get("Activo")
 
-        # ----------------------------------------------------
-        # VALIDACIONES BÁSICAS
-        # ----------------------------------------------------
+        # ── 2. Validaciones básicas y reglas de negocio ─────────────────────
         if not correo:
             messages.error(request, "Debe ingresar un correo electrónico.")
+
         elif not contrasenia:
             messages.error(request, "Debe ingresar una contraseña.")
+
         elif not id_rol:
             messages.error(request, "Debe seleccionar un rol.")
+
         elif not id_empleado:
             messages.error(request, "Debe seleccionar un empleado.")
+
         elif activo_raw is None or activo_raw == "":
             messages.error(request, "Debe seleccionar el estado del usuario.")
+
+        # Validación de unicidad: No se permite registrar un correo que ya exista
         elif UsuarioSistema.objects.filter(Correo=correo).exists():
             messages.error(request, "Ya existe un usuario registrado con ese correo.")
+
+        # Validación de relación 1 a 1: Garantiza que un empleado solo posea una cuenta de acceso
         elif UsuarioSistema.objects.filter(idEmpleado_Admin=id_empleado).exists():
             messages.error(request, "El empleado seleccionado ya tiene un usuario asignado.")
+
         else:
             try:
-                # Búsquedas directas por PK (sin select_related innecesarios para el INSERT)
+                # ── 3. Recuperación de modelos relacionados ───────────────────
+                # Búsqueda directa por clave primaria para el INSERT (sin joins innecesarios)
                 rol = get_object_or_404(Roles, pk=id_rol)
                 empleado = get_object_or_404(Empleado, pk=id_empleado)
 
-                # Creación del objeto
+                # ── 4. Creación e inserción del nuevo usuario ────────────────
                 UsuarioSistema.objects.create(
                     Correo=correo,
-                    Contrasenia=make_password(contrasenia),
+                    Contrasenia=make_password(contrasenia),  # Encriptación segura de la contraseña
                     idRol=rol,
-                    Activo=(activo_raw == "1"),
+                    Activo=(activo_raw == "1"),             # Conversión a valor booleano
                     idEmpleado_Admin=empleado
                 )
 
                 messages.success(request, "Usuario registrado correctamente.")
+                
+                # Redirección para aplicar el patrón Post/Redirect/Get (PRG)
                 return redirect("guardar_usuario_sistema")
 
             except IntegrityError as e:
+                # Captura violaciones de claves únicas directamente notificadas por la BD
                 messages.error(
                     request, 
                     "Error de integridad: El correo o el empleado ya se encuentran vinculados a otro usuario."
                 )
             except Exception as e:
+                # Captura de fallas imprevistas durante la inserción
                 messages.error(request, f"Ocurrió un error al guardar el usuario: {e}")
 
-    # ---------------------------------------------------------
-    # DATOS PARA EL TEMPLATE (Solo se ejecutan si no hubo un POST exitoso)
-    # ---------------------------------------------------------
+    # ── 5. Carga de datos para el Template (GET o fallback tras POST) ────────
+    # Se obtienen los catálogos requeridos para renderizar el formulario y el listado general
     context = {
+        # Lista de empleados activos ordenados alfabéticamente por nombre
         "empleados": Empleado.objects.select_related(
             "idPersona", 
             "idPuesto"
@@ -5642,8 +5867,10 @@ def guardar_usuario_sistema(request):
             "idPersona__Nombre_Completo"
         ),
 
+        # Catálogo de roles disponibles
         "roles": Roles.objects.order_by("TipoRol"),
 
+        # Listado global de usuarios optimizado con select_related para traer Persona y Puesto en un solo JOIN
         "usuarios": UsuarioSistema.objects.select_related(
             "idRol",
             "idEmpleado_Admin",
@@ -5652,6 +5879,7 @@ def guardar_usuario_sistema(request):
         ).order_by("Correo")
     }
 
+    # ── 6. Renderizado de la respuesta ──────────────────────────────────────
     return render(request, "usuarios.html", context)
 
 
@@ -5742,202 +5970,154 @@ def modificar_usuario_sistema(request, id_Admin):
     return render(request, "usuarios.html", context)
 
 
-def login_usuario(request):
 
-    # =========================================================
-    # SI EL USUARIO ENVÍA EL FORMULARIO
-    # =========================================================
+# =========================================================
+# GUARDAR USUARIO DEL SISTEMA
+# =========================================================
+@requiere_permiso("usuarios_sistema", "crear")  # Restringe la acción a usuarios con permiso de creación en 'usuarios_sistema'
+def guardar_usuario_sistema(request):
+    """
+    Gestiona el registro e inserción de nuevas cuentas de acceso al sistema (UsuarioSistema),
+    vinculándolas con un empleado activo y un rol específico, además de renderizar la gestión general de usuarios.
+
+    Argumentos:
+        request: Objeto HttpRequest de Django.
+
+    Flujo de ejecución:
+    1. Si es POST:
+       a. Extrae y sanitiza (`strip()`) los datos recibidos del formulario (correo, contraseña, rol, empleado, activo).
+       b. Ejecuta un flujo de validaciones secuenciales:
+          - Campos obligatorios (correo, contraseña, rol, empleado, estado).
+          - Unicidad de correo electrónico en la base de datos.
+          - Relación 1:1 con Empleado (evita duplicar usuario a un mismo empleado).
+       c. Si supera las validaciones, obtiene las instancias referenciadas (`Roles`, `Empleado`).
+       d. Hashea la contraseña con `make_password` y registra la entidad `UsuarioSistema`.
+       e. Si todo se procesa correctamente, redirige mediante PRG para evitar reenvíos de formulario.
+       f. Captura posibles violaciones de unicidad en BD (`IntegrityError`) o excepciones generales.
+    2. Si es GET (o falla la petición/redirección):
+       - Construye el contexto consultando catálogos de empleados activos, roles y lista global de usuarios
+         aplicando optimizaciones ORM (`select_related`).
+    3. Renderiza la plantilla `usuarios.html`.
+    """
+
     if request.method == "POST":
 
-        # =====================================================
-        # OBTENER DATOS DEL FORMULARIO
-        # =====================================================
-        correo = request.POST.get(
-            "Correo",
-            ""
-        ).strip()
+        # ── 1. Limpieza y extracción inicial de inputs ──────────────────────
+        correo = request.POST.get("Correo", "").strip()
+        contrasenia = request.POST.get("Contrasenia", "").strip()
+        id_rol = request.POST.get("idRol")
+        id_empleado = request.POST.get("idEmpleado_Admin")
+        activo_raw = request.POST.get("Activo")
 
-        contrasenia = request.POST.get(
-            "Contrasenia",
-            ""
-        ).strip()
+        # ── 2. Validaciones básicas y reglas de negocio ─────────────────────
+        if not correo:
+            messages.error(request, "Debe ingresar un correo electrónico.")
 
+        elif not contrasenia:
+            messages.error(request, "Debe ingresar una contraseña.")
 
-        # =====================================================
-        # VALIDAR CAMPOS VACÍOS
-        # =====================================================
-        if not correo or not contrasenia:
+        elif not id_rol:
+            messages.error(request, "Debe seleccionar un rol.")
 
-            messages.error(
-                request,
-                "Debe ingresar el correo electrónico y la contraseña."
-            )
+        elif not id_empleado:
+            messages.error(request, "Debe seleccionar un empleado.")
 
-            return render(
-                request,
-                "login.html"
-            )
+        elif activo_raw is None or activo_raw == "":
+            messages.error(request, "Debe seleccionar el estado del usuario.")
 
+        # Validación de unicidad: No se permite registrar un correo que ya exista
+        elif UsuarioSistema.objects.filter(Correo=correo).exists():
+            messages.error(request, "Ya existe un usuario registrado con ese correo.")
 
-        # =====================================================
-        # BUSCAR USUARIO POR CORREO
-        # =====================================================
-        usuario = (
-            UsuarioSistema.objects
-            .filter(
-                Correo=correo
-            )
-            .select_related(
-                "idRol",
-                "idEmpleado_Admin",
-                "idEmpleado_Admin__idPersona",
-                "idEmpleado_Admin__idPuesto"
-            )
-            .first()
-        )
-
-        # =====================================================
-        # VALIDAR CORREO Y CONTRASEÑA
-        # =====================================================
-        if (
-            usuario is None
-            or not check_password(
-                contrasenia,
-                usuario.Contrasenia
-            )
-        ):
-
-            messages.error(
-                request,
-                "El correo electrónico o la contraseña son incorrectos."
-            )
-
-            return render(
-                request,
-                "login.html"
-            )
-
-        # =====================================================
-        # VALIDAR SI EL USUARIO ESTÁ ACTIVO
-        # =====================================================
-        if not usuario.Activo:
-            messages.error(
-                request,
-                "Su cuenta se encuentra inactiva. Contacte al administrador del sistema."
-            )
-
-            return render(
-                request,
-                "login.html"
-            )
-
-
-        # =====================================================
-        # OBTENER EMPLEADO
-        # =====================================================
-        empleado = usuario.idEmpleado_Admin
-
-        # =====================================================
-        # OBTENER PERSONA
-        # =====================================================
-        persona = empleado.idPersona
-
-        # =====================================================
-        # GUARDAR INFORMACIÓN DEL USUARIO
-        # =====================================================
-        request.session["usuario_id"] = (
-            usuario.id_Admin
-        )
-
-        request.session["usuario_correo"] = (
-            usuario.Correo
-        )
-
-        # =====================================================
-        # GUARDAR INFORMACIÓN DEL ROL
-        # =====================================================
-        request.session["usuario_rol_id"] = (
-            usuario.idRol.idRol
-        )
-
-        request.session["usuario_rol"] = (
-            usuario.idRol.TipoRol
-        )
-
-        # =====================================================
-        # GUARDAR INFORMACIÓN DEL EMPLEADO
-        # =====================================================
-        request.session["empleado_id"] = (
-            empleado.idEmpleado
-        )
-
-        request.session["empleado_nombre"] = (
-            persona.Nombre_Completo
-        )
-
-        # =====================================================
-        # GUARDAR PUESTO
-        # =====================================================
-        if empleado.idPuesto:
-            request.session["empleado_puesto"] = (
-                empleado.idPuesto.Nombre
-            )
+        # Validación de relación 1 a 1: Garantiza que un empleado solo posea una cuenta de acceso
+        elif UsuarioSistema.objects.filter(idEmpleado_Admin=id_empleado).exists():
+            messages.error(request, "El empleado seleccionado ya tiene un usuario asignado.")
 
         else:
-            request.session["empleado_puesto"] = (
-                "Sin puesto"
-            )
+            try:
+                # ── 3. Recuperación de modelos relacionados ───────────────────
+                # Búsqueda directa por clave primaria para el INSERT (sin joins innecesarios)
+                rol = get_object_or_404(Roles, pk=id_rol)
+                empleado = get_object_or_404(Empleado, pk=id_empleado)
+
+                # ── 4. Creación e inserción del nuevo usuario ────────────────
+                UsuarioSistema.objects.create(
+                    Correo=correo,
+                    Contrasenia=make_password(contrasenia),  # Encriptación segura de la contraseña
+                    idRol=rol,
+                    Activo=(activo_raw == "1"),             # Conversión a valor booleano
+                    idEmpleado_Admin=empleado
+                )
+
+                messages.success(request, "Usuario registrado correctamente.")
+                
+                # Redirección para aplicar el patrón Post/Redirect/Get (PRG)
+                return redirect("guardar_usuario_sistema")
+
+            except IntegrityError as e:
+                # Captura violaciones de claves únicas directamente notificadas por la BD
+                messages.error(
+                    request, 
+                    "Error de integridad: El correo o el empleado ya se encuentran vinculados a otro usuario."
+                )
+            except Exception as e:
+                # Captura de fallas imprevistas durante la inserción
+                messages.error(request, f"Ocurrió un error al guardar el usuario: {e}")
+
+    # ── 5. Carga de datos para el Template (GET o fallback tras POST) ────────
+    # Se obtienen los catálogos requeridos para renderizar el formulario y el listado general
+    context = {
+        # Lista de empleados activos ordenados alfabéticamente por nombre
+        "empleados": Empleado.objects.select_related(
+            "idPersona", 
+            "idPuesto"
+        ).filter(
+            Activo=True
+        ).order_by(
+            "idPersona__Nombre_Completo"
+        ),
+
+        # Catálogo de roles disponibles
+        "roles": Roles.objects.order_by("TipoRol"),
+
+        # Listado global de usuarios optimizado con select_related para traer Persona y Puesto en un solo JOIN
+        "usuarios": UsuarioSistema.objects.select_related(
+            "idRol",
+            "idEmpleado_Admin",
+            "idEmpleado_Admin__idPersona",
+            "idEmpleado_Admin__idPuesto"
+        ).order_by("Correo")
+    }
+
+    # ── 6. Renderizado de la respuesta ──────────────────────────────────────
+    return render(request, "usuarios.html", context)
 
 
-        # =====================================================
-        # NO ES NECESARIO GUARDAR LA FOTO EN LA SESIÓN
-        #
-        # La foto se obtiene directamente desde Persona
-        # en la vista inicio_view.
-        # =====================================================
-        request.session.pop(
-            "empleado_foto",
-            None
-        )
 
-        # =====================================================
-        # MENSAJE DE BIENVENIDA
-        # =====================================================
-        messages.success(
-            request,
-            f"Bienvenido(a), {persona.Nombre_Completo}."
-        )
-
-        # =====================================================
-        # REDIRIGIR AL INICIO
-        # =====================================================
-        return redirect(
-            "inicio"
-        )
-
-    # =========================================================
-    # MOSTRAR LOGIN
-    # =========================================================
-    return render(
-        request,
-        "login.html"
-    )
-
-
-def cerrar_sesion(request):
-    logout(request)
-    return redirect('login_usuario')
-
-
-
-import json
-from django.core.serializers.json import DjangoJSONEncoder
-from django.shortcuts import render
-# Asegúrate de importar Empleado desde tus modelos
-from .models import AccionTipo, RotacionPersonal, Empleado
-
-@requiere_permiso("acciones_personal", "ver")
+# =========================================================
+# VISTA: MÓDULO DE REPORTES DE ACCIONES DE PERSONAL
+# =========================================================
+@requiere_permiso("acciones_personal", "ver")  # Restringe el acceso a usuarios con permiso de lectura en 'acciones_personal'
 def modulo_reportes(request):
+    """
+    Consolida, agrupa y serializa la información histórica de las acciones de personal por colaborador, 
+    así como datos de rotación y el listado de empleados activos para la generación de reportes e informes.
+
+    Argumentos:
+        request: Objeto HttpRequest de Django.
+
+    Flujo de ejecución:
+    1. Consulta el historial de `AccionTipo` optimizando relaciones (`select_related`) para evitar consultas N+1.
+    2. Agrupa dinámicamente las acciones registradas por colaborador en un diccionario (`empleados_dict`), 
+       extrayendo datos personales, de puesto, departamento y el detalle particular de cada movimiento.
+    3. Serializa la estructura agrupada a formato JSON (`DjangoJSONEncoder`) para su fácil manipulación en el cliente/JS.
+    4. Consulta los registros históricos de rotación de personal (`RotacionPersonal`).
+    5. Carga el catálogo general de empleados activos con sus correspondientes datos de `Persona` y `Puesto`.
+    6. Renderiza la plantilla `reportes.html` enviando las colecciones de datos procesadas.
+    """
+
+    # ── 1. Consulta optimizada del historial de acciones de personal ───────
+    # Incluye en un solo JOIN profundo las relaciones con Empleado, Persona, Puesto, Departamento, Detalle y Premios
     acciones = AccionTipo.objects.select_related(
         'idAccion',
         'idAccion__idEmpleado',
@@ -5950,20 +6130,29 @@ def modulo_reportes(request):
         'id_PremioAsignado__idPremio'
     ).order_by('-idAccion__Fecha', '-idAccion_Tipo')
 
+    # Diccionario temporal para consolidar la información agrupada por ID de empleado
     empleados_dict = {}
 
+    # ── 2. Procesamiento y agrupación de datos por colaborador ────────────
     for item in acciones:
+        # Extrae la instancia del empleado vinculada a la acción de personal
         emp = item.idAccion.idEmpleado if item.idAccion else None
+        
+        # Ignora registros huérfanos o que no tengan entidad de Persona asociada
         if not emp or not emp.idPersona:
             continue
 
         emp_id = str(emp.pk)
 
+        # Si el empleado aún no está registrado en el diccionario, inicializa su estructura base
         if emp_id not in empleados_dict:
             persona = emp.idPersona
             puesto = emp.idPuesto
+            
+            # Obtiene el departamento de forma segura previniendo errores de atributos inexistentes
             departamento = puesto.idDepartamento if puesto and hasattr(puesto, 'idDepartamento') else None
 
+            # Extracción defensiva de propiedades para evitar fallos por valores nulos
             nombre_completo = getattr(persona, 'Nombre_Completo', str(persona))
             cedula_val = getattr(persona, 'Cedula', '---') or '---'
             nombre_puesto = getattr(puesto, 'Nombre', '---') if puesto else '---'
@@ -5975,12 +6164,13 @@ def modulo_reportes(request):
                 'cedula': str(cedula_val),
                 'puesto': str(nombre_puesto),
                 'departamento': str(nombre_depto),
-                'acciones': []
+                'acciones': []  # Lista que contendrá el detalle de cada acción del colaborador
             }
 
-        # EXTRAEMOS EL DETALLE REGISTRADO EN ACCION TIPO
+        # Extrae el detalle específico de la acción (prioriza el propio registro sobre la categoría)
         detalle_especifico = item.Detalle or (item.id_Detalle_Accion.Detalle if item.id_Detalle_Accion else '')
 
+        # Agrega la acción actual a la lista de acciones del colaborador correspondiente
         empleados_dict[emp_id]['acciones'].append({
             'tipo': item.id_Detalle_Accion.Accion if item.id_Detalle_Accion else 'Otro',
             'detalle': detalle_especifico,
@@ -5989,11 +6179,14 @@ def modulo_reportes(request):
             'mes': item.idAccion.Fecha.month if item.idAccion and item.idAccion.Fecha else None,
         })
 
+    # ── 3. Serialización a JSON y consultas complementarias ──────────────
+    # Convierte la estructura agrupada de colaboradores a JSON para su uso en componentes JS/DataTables
     empleados_json = json.dumps(list(empleados_dict.values()), cls=DjangoJSONEncoder)
+    
+    # Consulta el historial de rotaciones ordenado cronológicamente (Año -> Mes descendente)
     rotaciones = RotacionPersonal.objects.order_by('-Anio', '-Mes')
 
-    
-    # Consulta para traer a todos los empleados activos junto con su Persona y Puesto
+    # Consulta optimizada para el listado general de empleados activos (para filtros o selectores)
     todos_los_empleados = Empleado.objects.select_related(
         'idPersona', 
         'idPuesto'
@@ -6001,15 +6194,23 @@ def modulo_reportes(request):
         Activo=True
     ).order_by('idPersona__Nombre_Completo')
 
+    # ── 4. Construcción del Contexto y Renderizado de la Respuesta ──────────
     context = {
-        'acciones': acciones,
-        'empleados_lista': list(empleados_dict.values()),
-        'todos_los_empleados': todos_los_empleados,
-        'empleados_data_json': empleados_json,
-        'rotaciones': rotaciones,
+        'acciones': acciones,                                  # QuerySet original de acciones de personal
+        'empleados_lista': list(empleados_dict.values()),      # Lista estructurada en Python
+        'todos_los_empleados': todos_los_empleados,            # Lista de empleados activos para filtros
+        'empleados_data_json': empleados_json,                 # Data estructurada en JSON para JS
+        'rotaciones': rotaciones,                              # QuerySet de rotación de personal
     }
 
     return render(request, 'reportes.html', context)
 
+
+
 def configuraciones_view(request):
     return render(request, 'configuraciones.html')
+
+
+def cerrar_sesion(request):
+    logout(request)
+    return redirect('login_usuario')
