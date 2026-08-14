@@ -1,145 +1,143 @@
 from django.urls import path
-from .views import home
 from . import views
 
-#Esto indica que al entrar a la raíz de esta app (/), se mostrará login.html.
+# ==============================================================================
+# ENRUTADOR PRINCIPAL DE LA APLICACIÓN (URLS)
+# Configuración y organización modular de las rutas del sistema de Gestión Humana
+# ==============================================================================
+
 urlpatterns = [
-    path('', home, name='home'),
 
-    # Ruta para el dashboard (pantalla de inicio después del login)
-    path("inicio/", views.inicio_view, name="inicio"),
-
-    # Ruta para el dashboard (pantalla de eleccion (Personas o Empleado))
-    path('per_emp.html/', views.per_emp_view, name='per_emp'),
-
-    # Ruta para el dashboard (pantalla de registro de personas)
-    path('personas/', views.registrar_persona, name='personas'), #Listo para registrar personas, se llama a la función registrar_persona en views.py
-
-    # Ruta para el dashboard (pantalla de registro de empresas)
-    path('empresas/', views.registrar_empresa, name='empresas'),
-
-    # Ruta para el dashboard (pantalla de eleccion (Gerencia, Departamento y Puesto))
-    path('comple_Empresa.html/', views.comple_Empresa_view, name='comple_Empresa'),
-
-    # Ruta para el dashboard (pantalla de registro de gerencia)
-    path('gerencias/', views.gerencias_view, name='gerencias'),
-
-    # Ruta para el dashboard (pantalla de registro de departamento)
-    path('departamentos/', views.departamentos_view, name='departamentos'),
-
-    # Ruta para el dashboard (pantalla de registro de puesto)
-    path('puestos/', views.puestos_view, name='puestos'),
-
-    # Ruta para el dashboard (pantalla de registro de puesto)
-    path('compensacion-puesto/', views.compensacion_puesto_view, name='compensacion_puesto'),
-
-    # Ruta para el dashboard (pantalla de registro de empleado)
-    path('empleados/', views.registrar_empleado, name='empleados'),
-
-    # Ruta para el dashboard (pantalla de registro de pasantes)
-    path('pasantes/', views.registrar_pasante, name='pasantes'),
-
-    # Ruta para el dashboard (pantalla de eleccion (Registro o Consulta de salario))
-    path('salarios/', views.registrar_salario, name='salarios'),
-
-    # Vacante candidato (para ingresar el empleado o persona interesado))
-    path('reclutamiento.html/', views.reclutamiento_view, name='reclutamiento'),
-
-    #Ruta para el dashboard (pantalla de registro de vacantes)
-    path('vacantes/', views.registrar_vacante, name='vacantes'),
+    # --------------------------------------------------------------------------
+    # 1. INICIO Y AUTENTICACIÓN
+    # --------------------------------------------------------------------------
+    # Ruta raíz (/): Redirige o muestra la pantalla principal / Login
+    path('', views.home, name='home'),
     
-    # Ruta para el dashboard (pantalla de resgistro vacante abierta)
-    path('candidatos/', views.registrar_candidato, name='candidatos'),
-   
-    # Ruta para el dashboard (pantalla de eleccion (Solicitud o Consulta de Vacaciones))
-    path('vacaciones.html/', views.vacaciones_view, name='vacaciones'),
-   
-    # Ruta para el dashboard (pantalla de solicitud de vacaciones)
-    path('solicitudes-vacaciones/', views.registrar_solicitud_vacacion, name='solicitudes_vacaciones'),
-   
-    # Ruta para el dashboard (pantalla de consulta del saldo de vacaciones)
-    path('guardar_saldo_vacaciones/', views.guardar_saldo_vacaciones, name='guardar_saldo_vacaciones'),
-
-    # Ruta para el dashboard (pantalla de eleccion (Asistencia o Permiso))
-    path('elec_Asistencia.html/', views.elec_Asistencia_view, name='elec_Asistencia'),
-
-    # Ruta para el dashboard (pantalla de registro de asistencia)
-    path('guardar_asistencia/', views.guardar_asistencia, name='guardar_asistencia'),
-
-    # Ruta para el dashboard (pantalla de registro de permiso)
-    path('guardar_permiso/', views.guardar_permiso, name='guardar_permiso'),
-
-    # Ruta para el dashboard (pantalla de acción o rotación de personal)
-    path('accion_rotacion.html/', views.accion_rotacion_view, name='accion_rotacion'),
-
-    # Ruta para el dashboard (pantalla de registro de acciones del personal)
-    path('accion/gestionar/', views.registrar_cabecera_accion, name='crear_accion'),
-
-
-    # Ruta para el dashboard (pantalla de registro de rotación)
-    path("rotacion-personal/", views.rotacion_personal, name="rotacion_personal"),
-
-
-
-    # Ruta para el dashboard (pantalla de eleccion (Evaluación de Empleado o Jefatura))
-    path('evaluaciones.html/', views.evaluaciones_view, name='evaluaciones'),
-
-    # Ruta para el dashboard (pantalla de registro de evaluación de empleados)
-    path('evaluaciones/nueva/', views.crear_evaluacion, name='crear_evaluacion'),
-
-    # Ruta para el dashboard (pantalla de registro de evaluación de jefatura)
-    path('eva-jefatura/', views.crear_evaluacion_jefatura, name='crear_evaluacion_jefatura'),
-
-    # Ruta para el dashboard (pantalla de resgistro evaluación matriz)
-    path('matriz-9box/', views.crear_matriz_9box, name='crear_matriz_9box'),
+    # Pantalla principal del sistema tras iniciar sesión
+    path('inicio/', views.inicio_view, name='inicio'),
     
-    # Ruta para el dashboard (pantalla de vista de resultados de la evaluación)
-    path('dashboard-resultados/', views.dashboard_resultados, name='dashboard_resultados'),
-    
-    #Ruta para el dashboard (pantalla de eleccion del tipo de componente de KPI)
-    path('elec_KPI.html/', views.elec_KPI_view, name='elec_KPI'),
-    
-    # Ruta para el dashboard (pantalla de registro de KPI)
-    path('kpi/registrar/', views.registrar_kpi_view, name='registrar_kpi'),
-
-    # Ruta para el dashboard (pantalla de registro de KPI)
-    path('premios/nuevo/', views.crear_premio, name='crear_premio'),
-    
-    # Ruta para el dashboard (pantalla de asignar premios a KPIs)
-    path('premios-asignados/', views.guardar_premio_asignado, name='guardar_premio_asignado'),
-    
-  
-    # Ruta para el dashboard (pantalla de configuraciones del sistema)
-    path('dashboard-kpi/historial/', views.historial_kpi_view, name='historial_kpi'),
-
-    # Ruta para el dashboard (pantalla de eleccion de offboarding)
-    path('elec_Offboarding.html/', views.elec_Offboarding_view, name='elec_Offboarding'),
-
-    # Ruta para el dashboard (pantalla de onboarding)
-    path("onboarding/", views.registrar_onboarding, name="crear_onboarding"),
-    
-    # Ruta para el dashboard (pantalla de registro de offboarding)
-    path("offboarding/", views.registrar_offboarding, name="crear_offboarding"),
-
-    path("offboarding/guardar-checklist/", views.guardar_checklist_offboarding, name="guardar_checklist_offboarding"),
-    
-
-
-    # Ruta para el dashboard (pantalla de resgistro usuarios con permisos)
-    path("usuarios/guardar/", views.guardar_usuario_sistema, name="guardar_usuario_sistema"),
-    path("login/", views.login_usuario, name="login_usuario"),
+    # Inicio y cierre de sesión de usuarios
+    path('login/', views.login_usuario, name='login_usuario'),
     path('logout/', views.cerrar_sesion, name='cerrar_sesion'),
 
 
-
-    # Ruta para el dashboard (pantalla de configuraciones del sistema)
-    path('configuraciones.html/', views.configuraciones_view, name='configuraciones'),
-
-
+    # --------------------------------------------------------------------------
+    # 2. ESTRUCTURA ORGANIZACIONAL Y CONFIGURACIÓN DE EMPRESA
+    # --------------------------------------------------------------------------
+    # Menú de selección para Empresa (Gerencia, Departamento y Puesto)
+    path('empresa/menu-estructura/', views.comple_Empresa_view, name='comple_Empresa'),
     
+    # Gestión de la estructura jerárquica
+    path('empresas/', views.registrar_empresa, name='empresas'),
+    path('gerencias/', views.gerencias_view, name='gerencias'),
+    path('departamentos/', views.departamentos_view, name='departamentos'),
+    path('puestos/', views.puestos_view, name='puestos'),
+    path('compensacion-puesto/', views.compensacion_puesto_view, name='compensacion_puesto'),
+
+
+    # --------------------------------------------------------------------------
+    # 3. GESTIÓN DE EXPEDIENTES Y PERSONAL
+    # --------------------------------------------------------------------------
+    # Menú de navegación rápida (Personas vs. Empleados)
+    path('personal/menu-personas-empleados/', views.per_emp_view, name='per_emp'),
     
-    # Ruta para el dashboard (pantalla de configuraciones del sistema)
+    # Registro de personas, colaboradores y pasantes
+    path('personas/', views.registrar_persona, name='personas'),
+    path('empleados/', views.registrar_empleado, name='empleados'),
+    path('pasantes/', views.registrar_pasante, name='pasantes'),
+
+
+    # --------------------------------------------------------------------------
+    # 4. NOMINA Y SALARIOS
+    # --------------------------------------------------------------------------
+    # Menú y registro/consulta de estructuras salariales
+    path('salarios/', views.registrar_salario, name='salarios'),
+
+
+    # --------------------------------------------------------------------------
+    # 5. RECLUTAMIENTO Y SELECCIÓN DE PERSONAL
+    # --------------------------------------------------------------------------
+    # Menú de reclutamiento (Postulación de candidatos / Empleados)
+    path('reclutamiento/menu/', views.reclutamiento_view, name='reclutamiento'),
+    
+    # Gestión de plazas vacantes y candidatos
+    path('vacantes/', views.registrar_vacante, name='vacantes'),
+    path('candidatos/', views.registrar_candidato, name='candidatos'),
+
+
+    # --------------------------------------------------------------------------
+    # 6. GESTIÓN DE TIEMPO: VACACIONES, ASISTENCIA Y PERMISOS
+    # --------------------------------------------------------------------------
+    # Menú principal del módulo de vacaciones
+    path('vacaciones/menu/', views.vacaciones_view, name='vacaciones'),
+    path('vacaciones/solicitudes/', views.registrar_solicitud_vacacion, name='solicitudes_vacaciones'),
+    path('vacaciones/saldo/guardar/', views.guardar_saldo_vacaciones, name='guardar_saldo_vacaciones'),
+
+    # Menú y gestión de asistencias/licencias
+    path('asistencia/menu/', views.elec_Asistencia_view, name='elec_Asistencia'),
+    path('asistencia/guardar/', views.guardar_asistencia, name='guardar_asistencia'),
+    path('permisos/guardar/', views.guardar_permiso, name='guardar_permiso'),
+
+
+    # --------------------------------------------------------------------------
+    # 7. MOVIMIENTOS, ACCIONES DE PERSONAL Y ROTACIÓN
+    # --------------------------------------------------------------------------
+    # Menú de selección entre Acciones de Personal y Rotación
+    path('movimientos/menu-accion-rotacion/', views.accion_rotacion_view, name='accion_rotacion'),
+    
+    # Procesamiento de acciones del personal e historial de rotación
+    path('accion/gestionar/', views.registrar_cabecera_accion, name='crear_accion'),
+    path('rotacion-personal/', views.rotacion_personal, name='rotacion_personal'),
+
+
+    # --------------------------------------------------------------------------
+    # 8. EVALUACIÓN DEL DESEMPEÑO Y DESARROLLO (MATRIZ 9-BOX)
+    # --------------------------------------------------------------------------
+    # Menú principal de evaluaciones
+    path('evaluaciones/menu/', views.evaluaciones_view, name='evaluaciones'),
+    
+    # Registro de evaluaciones operativas y de jefatura
+    path('evaluaciones/nueva/', views.crear_evaluacion, name='crear_evaluacion'),
+    path('evaluaciones/jefatura/', views.crear_evaluacion_jefatura, name='crear_evaluacion_jefatura'),
+    
+    # Análisis de potencial y desempeño (9-Box y Dashboard de Resultados)
+    path('evaluaciones/matriz-9box/', views.crear_matriz_9box, name='crear_matriz_9box'),
+    path('evaluaciones/dashboard-resultados/', views.dashboard_resultados, name='dashboard_resultados'),
+
+
+    # --------------------------------------------------------------------------
+    # 9. GESTIÓN DE KPIS, METAS Y INCENTIVOS (PREMIOS)
+    # --------------------------------------------------------------------------
+    # Menú de selección de componentes de KPI
+    path('kpis/menu/', views.elec_KPI_view, name='elec_KPI'),
+    path('kpis/registrar/', views.registrar_kpi_view, name='registrar_kpi'),
+    path('kpis/historial/', views.historial_kpi_view, name='historial_kpi'),
+    
+    # Configuración e incentivos vinculados a los KPIs
+    path('premios/nuevo/', views.crear_premio, name='crear_premio'),
+    path('premios/asignados/', views.guardar_premio_asignado, name='guardar_premio_asignado'),
+
+
+    # --------------------------------------------------------------------------
+    # 10. ONBOARDING Y OFFBOARDING (CICLO DE VIDA DEL EMPLEADO)
+    # --------------------------------------------------------------------------
+    # Menú y registro de incorporación (Onboarding)
+    path('onboarding/', views.registrar_onboarding, name='crear_onboarding'),
+    
+    # Menú, registro y control de checklist de salida (Offboarding)
+    path('offboarding/menu/', views.elec_Offboarding_view, name='elec_Offboarding'),
+    path('offboarding/', views.registrar_offboarding, name='crear_offboarding'),
+    path('offboarding/guardar-checklist/', views.guardar_checklist_offboarding, name='guardar_checklist_offboarding'),
+
+
+    # --------------------------------------------------------------------------
+    # 11. SEGURIDAD, REPORTES Y CONFIGURACIÓN DEL SISTEMA
+    # --------------------------------------------------------------------------
+    # Administración de usuarios y accesos al sistema
+    path('usuarios/guardar/', views.guardar_usuario_sistema, name='guardar_usuario_sistema'),
+    
+    # Configuración general y reportes consolidados
+    path('configuraciones/', views.configuraciones_view, name='configuraciones'),
     path('reportes/', views.modulo_reportes, name='reportes'),
-   
 ]
-
