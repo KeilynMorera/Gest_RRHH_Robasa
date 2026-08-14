@@ -81,8 +81,6 @@ DATABASES = {
     'default': {
         'ENGINE': 'mssql',
         'NAME': 'DB_Gest_TalenHum',
-        'USER': 'sa',
-        'PASSWORD': 'BD-K-HYU05',
         'HOST': '127.0.0.1',
         'PORT': '1433',
 
